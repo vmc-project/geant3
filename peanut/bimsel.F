@@ -1,7 +1,10 @@
 *
-* $Id: bimsel.F,v 1.3 2004/02/24 15:50:30 brun Exp $
+* $Id: bimsel.F,v 1.4 2004/12/17 11:46:46 brun Exp $
 *
 * $Log: bimsel.F,v $
+* Revision 1.4  2004/12/17 11:46:46  brun
+* Several protections introduced by Rachid Guernane and Peter Hristov
+*
 * Revision 1.3  2004/02/24 15:50:30  brun
 * From Peter Hristov:
 * We had some problems with the Geant3 version during the tests for the
@@ -333,7 +336,7 @@ c$$$               ANGRED = ACOS ( DUMMY ) / PI
                   PRINT*,
      &            '*** ILLEGAL ACOS ARGUMENT               ***',DUMMY
                   PRINT*,'*******************************************'
-                  ANGRED = ACOS ( SIGN(1,DUMMY)*.99D+00 ) / PI
+                  ANGRED = ACOS ( SIGN(1D0,DUMMY)*.99D+00 ) / PI
                ENDIF
                X1 = X1 / ( R0PROT * RPRONU * RADCO2 )
                DSKRED = ( 0.5D+00 * X1 * X1 + X1 + 1.D+00 ) * EXP (-X1)
