@@ -1,4 +1,4 @@
-// $Id: run_g3.C,v 1.1.1.1 2002/09/27 10:00:02 brun Exp $
+// $Id: E02.C,v 1.1 2003/11/28 12:00:25 brun Exp $
 //
 // Macro for running Example02 with Geant3 
 
@@ -13,7 +13,7 @@
   new TGeoManager("E02","test"); 
   
   // Load Geant3 libraries
-  gROOT->ProcessLine(".L dummies.C+");
+  gSystem->Load("../lib/tgt_Linux/libdummies");
   gSystem->Load("../lib/tgt_Linux/libgeant321.so");
   
   // Load this example library
