@@ -15,6 +15,20 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.13  2003/09/26 15:01:08  brun
+From Ivana;
+- implemented new functions from TVirtualMC
+  enabling user to define own particles and ions
+  + getter functions::
+    DefineParticle(..)
+    DefineIon(..)
+    ParticleName(..) const
+    ParticleMass(..) const
+    Double_t  ParticleCharge(..) const
+    Double_t  ParticleLifeTime(..) const
+    TMCParticleType ParticleMCType(..) const
+- corrected charge in AddParticlesToPdgDataBase
+
 Revision 1.12  2003/07/22 06:53:28  brun
 This version does not yet support TGeo geometry.
 TVirtualMC must be initialized with the 3rd argument set to kFALSE
@@ -1383,7 +1397,7 @@ TString  TGeant3::ParticleName(Int_t pdg) const
 //  Return G3 particle name
 // ---
 
-  char name[20];
+  char name[21];
   Int_t itrtyp;
   Float_t amass, charge, tlife;
   Gfpart(pdg, name, itrtyp,amass, charge, tlife);
