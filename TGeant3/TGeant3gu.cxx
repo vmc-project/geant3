@@ -233,14 +233,18 @@ void gudcay()
 // Initialize 4-momentum vector    
     Int_t ipart = geant3->Gckine()->ipart;
     static TLorentzVector p;
+
+    Float_t pmom = geant3->Gctrak()->vect[6];
+
+    p[0] = pmom * (geant3->Gctrak()->vect[3]);
+    p[1] = pmom * (geant3->Gctrak()->vect[4]);
+    p[2] = pmom * (geant3->Gctrak()->vect[5]);
+    p[3] = geant3->Gctrak()->getot;
     
-    p[0]=geant3->Gctrak()->vect[3];
-    p[1]=geant3->Gctrak()->vect[4];
-    p[2]=geant3->Gctrak()->vect[5];
-    p[3]=geant3->Gctrak()->vect[6];    
     
 // Convert from geant to lund particle code
     Int_t iplund=gMC->PDGFromId(ipart);
+    
 // Particle list
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
