@@ -15,6 +15,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.3  2002/12/10 07:58:36  brun
+Update by Federico for the calls to Grndm
+
 Revision 1.2  2002/12/06 16:50:30  brun
 >From Federico:
 the following modifications provide an >6% improvement in speed for
@@ -1276,6 +1279,18 @@ void TGeant3::TrackPosition(TLorentzVector &xyz) const
 }
 
 //_____________________________________________________________________________
+void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
+{
+  //
+  // Return the current position in the master reference frame of the
+  // track being transported
+  //
+  x=fGctrak->vect[0];
+  y=fGctrak->vect[1];
+  z=fGctrak->vect[2];
+}
+
+//_____________________________________________________________________________
 Double_t TGeant3::TrackTime() const
 {
   //
@@ -1296,6 +1311,20 @@ void TGeant3::TrackMomentum(TLorentzVector &xyz) const
   xyz[1]=fGctrak->vect[4]*ptot;
   xyz[2]=fGctrak->vect[5]*ptot;
   xyz[3]=fGctrak->getot;
+}
+
+//_____________________________________________________________________________
+void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const
+{
+  //
+  // Return the direction and the momentum (GeV/c) of the track
+  // currently being transported
+  //
+  Double_t ptot=fGctrak->vect[6];
+  px  =fGctrak->vect[3]*ptot;
+  py  =fGctrak->vect[4]*ptot;
+  pz  =fGctrak->vect[5]*ptot;
+  etot=fGctrak->getot;
 }
 
 //_____________________________________________________________________________
@@ -4967,7 +4996,7 @@ void gudcay()
 
 // Initialize 4-momentum vector    
     Int_t ipart = geant3->Gckine()->ipart;
-    TLorentzVector p;
+    static TLorentzVector p;
     
     p[0]=geant3->Gctrak()->vect[3];
     p[1]=geant3->Gctrak()->vect[4];
@@ -5319,21 +5348,20 @@ void gustep()
 //
 
 
-  TLorentzVector x;
-  Float_t r;
   Int_t ipp, jk, nt;
   Float_t polar[3]={0,0,0};
   Float_t mom[3];
-  TMCProcess pProc;
-
+  static TMCProcess pProc;
   
+  TVirtualMCApplication *app = TVirtualMCApplication::Instance();
   TGeant3* geant3 = (TGeant3*) gMC;
   TVirtualMCStack* stack = gMC->GetStack();
   //     Stop particle if outside user defined tracking region 
-  gMC->TrackPosition(x);
-  r=TMath::Sqrt(x[0]*x[0]+x[1]*x[1]);
-  if (r > TVirtualMCApplication::Instance()->TrackingRmax() ||
-      TMath::Abs(x[2]) > TVirtualMCApplication::Instance()->TrackingZmax()) {
+  Double_t x, y, z, rmax;
+  gMC->TrackPosition(x,y,z);
+  rmax = app->TrackingRmax();
+  if (x*x+y*y > rmax*rmax ||
+      TMath::Abs(z) > app->TrackingZmax()) {
 	gMC->StopTrack();
   }
 
@@ -5364,7 +5392,7 @@ void gustep()
       }
   }
   // --- Particle leaving the setup ?
-  if (!gMC->IsTrackOut()) TVirtualMCApplication::Instance()->Stepping();
+  if (!gMC->IsTrackOut()) app->Stepping();
 
   // --- Standard GEANT debug routine 
   if(geant3->Gcflag()->idebug) geant3->Gdebug();
