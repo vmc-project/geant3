@@ -16,6 +16,15 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.22  2004/02/03 12:47:34  brun
+>From Andrei Gheata:
+TGeant3:
+
+- calls to gtonly return now always a true value (G3 is seeing an ONLY
+geometry with TGeo)
+- IsSameLocation inside gtnext not yet eliminated, but I am getting only
+1 exception instead of 400 now (when the location really changes)
+
 Revision 1.21  2004/01/28 18:05:24  brun
 New version from Peter Hristov adding the graphics interface
 
@@ -36,7 +45,7 @@ Revision 1.17  2003/12/10 10:32:09  brun
 Add a protection in TGeant3::Gsmate in case the material density is null
 
 Revision 1.16  2003/12/01 23:51:22  brun
-From Andrei and Peter:
+>From Andrei and Peter:
 add a few missing cases when compiling with the WITHROOT option.
 
 Revision 1.15  2003/11/28 09:44:15  brun
@@ -46,7 +55,7 @@ Revision 1.14  2003/10/09 06:28:45  brun
 In TGeant3::ParticleName, increase size of local array name[20] to name[21]
 
 Revision 1.13  2003/09/26 15:01:08  brun
-From Ivana;
+>From Ivana;
 - implemented new functions from TVirtualMC
   enabling user to define own particles and ions
   + getter functions::
@@ -68,7 +77,7 @@ Changes to reflect the equivalent changes in the abstract classes in vmc
 (thanks Peter Hristov)
 
 Revision 1.10  2003/07/16 07:40:09  brun
-From Andreas Morsch
+>From Andreas Morsch
 
 - default g3 specific initialisation moved to TGeant3::Init()
   (This avoids the cast to TGeant3* in the Config.C)
@@ -78,11 +87,11 @@ Revision 1.9  2003/06/03 21:26:46  brun
 New version of gustep by Andreas Morsch
 
 Revision 1.8  2003/02/28 10:41:49  brun
-From Andreas
+>From Andreas
  In DefineParticles(): rho0 decay channel corrected
 
 Revision 1.7  2003/02/04 17:50:34  brun
-From Ivana
+>From Ivana
  In Mixture(): pass abs(nlmat) to CreateFloatArray calls
  as nlmat can be negative.
 
@@ -4182,6 +4191,9 @@ void TGeant3::Gdopt(const char *name,const char *value)
   //     USER    ON       User graphics options in the raytracing.
   //             OFF (D)  Automatic graphics options.
   //  
+  #ifdef WITHROOT
+  return;
+  #endif
   InitHIGZ();
   char vname[5];
   Vname(name,vname);
@@ -4229,6 +4241,10 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
   //  Finally, some examples are given for the ray-tracing. (A possible
   //  string for the NAME of the volume can be found using the command DTREE).
   //
+  #ifdef WITHROOT
+  return;
+  #endif
+  
   InitHIGZ();
   gHigz->Clear();
   char vname[5];
@@ -4267,6 +4283,10 @@ void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
   //  When HIDE Mode is ON, it is possible to get the same effect with
   //  the CVOL/BOX function.
   //  
+  #ifdef WITHROOT
+  return;
+  #endif
+
   InitHIGZ();
   gHigz->Clear();
   char vname[5];
@@ -4296,6 +4316,10 @@ void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
   //  cutthe and cutphi and placed at the distance cutval from the origin.
   //  The resulting picture is seen from the viewing angles theta,phi.
   //
+  #ifdef WITHROOT
+  return;
+  #endif
+
   InitHIGZ();
   gHigz->Clear();
   char vname[5];
@@ -4372,6 +4396,10 @@ void TGeant3::Gdspec(const char *name)
   //  SHAD and according the current SetClipBox clipping parameters for that
   //  volume.
   //  
+  #ifdef WITHROOT
+  return;
+  #endif
+
   InitHIGZ();
   gHigz->Clear();
   char vname[5];
@@ -4386,6 +4414,9 @@ void TGeant3::DrawOneSpec(const char *name)
   //  Function called when one double-clicks on a volume name
   //  in a TPavelabel drawn by Gdtree.
   //
+  #ifdef WITHROOT
+  return;
+  #endif
   THIGZ *higzSave = gHigz;
   higzSave->SetName("higzSave");
   THIGZ *higzSpec = (THIGZ*)gROOT->FindObject("higzSpec");
@@ -4420,6 +4451,10 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
   //    - drawing tree
   //    - drawing tree of parent
   //  
+  #ifdef WITHROOT
+  return;
+  #endif
+
   InitHIGZ();
   gHigz->Clear();
   char vname[5];
@@ -4438,6 +4473,10 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
   //
   //  This function draws the logical tree of the parent of name.
   //  
+  #ifdef WITHROOT
+  return;
+  #endif
+
   InitHIGZ();
   gHigz->Clear();
   // Scan list of volumes in JVOLUM
@@ -4461,9 +4500,6 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
       }
     }
   }
-#endif
-#ifdef WITHROOT
-  Warning("GdtreeParent","not yet implemented");
 #endif
 } 
  
@@ -4588,6 +4624,10 @@ void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
   //  coordinates.
   
 //  InitHIGZ();
+  #ifdef WITHROOT
+  return;
+  #endif
+
   char vname[5];
   Vname(name,vname);
   Float_t fxmin = xmin;
@@ -5553,12 +5593,13 @@ void TGeant3::FinishGeometry()
                stemax,deemax, epsil, stmin);
       med->SetUniqueID(kmed);	         	        
     }
-  }
-
-  TGeoVolume *top = (TGeoVolume*)gGeoManager->GetListOfVolumes()->First();
-  gGeoManager->SetTopVolume(top);
-  if (gDebug > 0) printf("FinishGeometry, calling CloseGeometry\n");
-  gGeoManager->CloseGeometry();  
+    if (gDebug > 0) printf("FinishGeometry, geometry retreived from file, materials/media mapped to G3\n");
+  } else {
+    TGeoVolume *top = (TGeoVolume*)gGeoManager->GetListOfVolumes()->First();
+    gGeoManager->SetTopVolume(top);
+    if (gDebug > 0) printf("FinishGeometry, calling CloseGeometry\n");
+    gGeoManager->CloseGeometry();  
+  }  
 #endif
 
   //  gROOT->GetListOfBrowsables()->Add(gGeoManager);
@@ -5587,7 +5628,7 @@ void TGeant3::Init()
 
     DefineParticles();   
     fApplication->AddParticles();
-    fApplication->ConstructGeometry();
+    if (!fImportRootGeometry) fApplication->ConstructGeometry();
     FinishGeometry();
     fApplication->InitGeometry();
 }
