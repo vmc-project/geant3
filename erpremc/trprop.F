@@ -1,7 +1,10 @@
 *
-* $Id: trprop.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: trprop.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: trprop.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -279,10 +282,6 @@ C
       GO TO 999
   903 IERR=3
       IF(INIT.NE.0) GO TO 30
-C     WRITE (LOUT, 998) DH2,DFI,ALFA,XL
-C 998 FORMAT(1H0,48H *** S/R TRPROP   DELTA(H*ALFA/P)  OR DELTA(PHI),5X
-C    1,22HEXCEEDS TOLERANCE     /1H0,4E12.5//16H **********    ,
-C    251HATTENTION !   NO FURTHER WARNINGS WILL BE GIVEN    ///)
       INIT=1
       GO TO 30
   904 IERR=4
