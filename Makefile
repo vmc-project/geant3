@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.15 2004/05/27 19:28:15 brun Exp $
+# $Id: Makefile,v 1.16 2004/06/09 13:47:00 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -107,8 +107,8 @@ OBJS2	:= $(COBJ2)
 
 # C++ compilation flags
 
-CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. \
-			-I$(ROOTSYS)/include -ITGeant3
+CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. -I$(ROOT_INCDIR) -ITGeant3
+
 # C compilation flags
 
 CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
