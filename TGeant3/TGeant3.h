@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.12 2004/05/28 13:45:00 brun Exp $ */
+/* $Id: TGeant3.h,v 1.13 2004/06/08 10:27:20 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -763,8 +763,8 @@ public:
    virtual  void  Gtrack(); 
    virtual  void  Gtreve(); 
    virtual  void  GtreveRoot(); 
-   virtual  void  Grndm(Float_t *rvec, const Int_t len) const;
-   virtual  void  Grndmq(Int_t &is1, Int_t &is2, const Int_t iseq, const Text_t *chopt); 
+   virtual  void  Grndm(Float_t *rvec, Int_t len) const;
+   virtual  void  Grndmq(Int_t &is1, Int_t &is2, Int_t iseq, const Text_t *chopt); 
  
       // functions from GGEOM 
    virtual  void  Gdxyz(Int_t it); 
@@ -869,7 +869,7 @@ public:
   // Routines from GEANE
 
     virtual void Ertrgo();
-    virtual void Ertrak(const Float_t *const x1, const Float_t *const p1, 
+    virtual void Ertrak(const Float_t *x1, const Float_t *p1, 
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt);
         

@@ -16,6 +16,12 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.28  2004/06/08 10:27:19  brun
+From Ivana:
+- Added Bool_t return value to methods
+  SetCut(), SetProcess(), DefineParticle(), DefineIon()
+- Removed  DefineParticles()
+
 Revision 1.27  2004/05/28 13:45:00  brun
 From Ivana
 Implementation of StopRun (new function in TVirtualMC)
@@ -3315,7 +3321,7 @@ void  TGeant3::GtreveRoot()
 } 
 
 //_____________________________________________________________________________
-void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const 
+void  TGeant3::Grndm(Float_t *rvec, Int_t len) const 
 {
   //
   //  To set/retrieve the seed of the random number generator
@@ -3325,7 +3331,7 @@ void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const
 }
 
 //_____________________________________________________________________________
-void  TGeant3::Grndmq(Int_t &/*is1*/, Int_t &/*is2*/, const Int_t /*iseq*/,
+void  TGeant3::Grndmq(Int_t &/*is1*/, Int_t &/*is2*/, Int_t /*iseq*/,
 		      const Text_t */*chopt*/)
 {
   //
@@ -5029,7 +5035,7 @@ void TGeant3::Ertrgo()
 }
 
 //______________________________________________________________________________
-void TGeant3::Ertrak(const Float_t *const x1, const Float_t *const p1, 
+void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1, 
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt)
 {
