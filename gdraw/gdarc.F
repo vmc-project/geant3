@@ -1,7 +1,10 @@
 *
-* $Id: gdarc.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdarc.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdarc.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -24,7 +27,7 @@ C.    *       of the circle of radius R centered on Z-axis,            *
 C.    *       at a distance of Z0 from the origin,                     *
 C.    *       on a plane parallel to X-Y plane                         *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAWS                                       *
+C.    *    ==>Called by : G3DRAWS                                       *
 C.    *       Authors : A.McPherson, P.Zanarini   *********            *
 C.    *                                                                *
 C.    ******************************************************************
@@ -75,6 +78,6 @@ C
 C
 CM             Short circuit in case of GMR
 C
-      IF ( IGMR .EQ. 0 ) CALL GDRAWV(U,V,NP)
+      IF ( IGMR .EQ. 0 ) CALL G3DRAWV(U,V,NP)
 CM
       END

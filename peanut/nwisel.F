@@ -1,7 +1,10 @@
 *
-* $Id: nwisel.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: nwisel.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: nwisel.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -232,7 +235,7 @@
             R1TRAJ = RADTOT
          END IF
          CALL GRNDM(RNDM,1)
-         ANMFP  = - LOG ( 1.D+00 - RNDM (1) ) / DSKRED
+         ANMFP  = - LOG ( RNDM (1) ) / DSKRED
          IF ( BIMPCT .GT. RAD1O2 ) THEN
             SBTTSQ = 4.D+00 * ( RADTOT**2 - BIMPCT**2 ) * RHOBIM**2
             IF ( SBTTSQ .LE. ( ANMFP / SIGMAA )**2 ) GO TO 4500
@@ -266,7 +269,7 @@
          SIGMAN = SIGMN0
  4900    CONTINUE
            CALL GRNDM(RNDM,1)
-           ANMFP = - LOG ( 1.D+00 - RNDM (1) ) / DSKRED
+           ANMFP = - LOG ( RNDM (1) ) / DSKRED
          IF ( SBRES * SIGMAA .LE. ANMFP ) GO TO 4500
  5000 CONTINUE
       SBUSED = SBUSED * RHRUSF + ANMFP / SIGMAA

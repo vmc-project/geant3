@@ -1,16 +1,5 @@
 *
-* $Id: gdcurs.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcurs.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:22  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -30,7 +19,7 @@ C.    *       The routine returns then in U0,V0 the user coordinates   *
 C.    *       of the graphics cursor, and in MCHAR the ascii value     *
 C.    *       of the key pressed.                                      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDTREE                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DTREE                     *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,7 +1,10 @@
 *
-* $Id: gbrelm.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrelm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrelm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      FUNCTION GBRELM(Z,T,BCUT)
+      FUNCTION G3BRELM(Z,T,BCUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  To calculate energy loss due to soft muon BREMSSTRAHLUNG.     *
 C.    *                                                                *
-C.    *    ==>Called by : GBRELA                                       *
+C.    *    ==>Called by : G3BRELA                                      *
 C.    *       Author  L.Urban  *********                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -56,7 +59,7 @@ C        CONMX=0.75*SQRT(2.7182...)*EMMU
 C.
 C.    ------------------------------------------------------------------
 C.
-      GBRELM=0.
+      G3BRELM=0.
       IF(BCUT.LE.0.) GOTO 99
 C
       Z3=Z**0.333333
@@ -93,7 +96,7 @@ C
 C
       FAC=E*(BCUT/E)**BETA
       FAC=Z*(Z+AKSI*(1.+DEL*LOG(Z)))*FAC
-      GBRELM=FAC*S
+      G3BRELM=FAC*S
       GOTO 99
 C
   60  Y=Z3
@@ -115,7 +118,7 @@ C
 C
       FAC=Z*(Z+1.)*ECMAX
       IF(FAC.LE.0.) GOTO 99
-      GBRELM=FAC*S
+      G3BRELM=FAC*S
 C
   99  RETURN
       END

@@ -1,7 +1,10 @@
 *
-* $Id: grayl.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grayl.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: grayl.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,13 +21,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GRAYL
+      SUBROUTINE G3RAYL
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates COHERENT SCATTERING mechanism                       *
 C.    *                                                                *
-C.    *    ==>Called by : GTGAMA                                       *
+C.    *    ==>Called by : G3TGAMA                                      *
 C.    *       Author    G.Tromba, P.Bregant                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -99,8 +102,8 @@ C            Set new VECT(I), i=4,5,6
 C
 C             Rotate scattered photon into GEANT system
 C
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
-      IF (ROTATE) CALL GDROT(VROT,COSTH,SINTH,COSPH,SINPH)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      IF (ROTATE) CALL G3DROT(VROT,COSTH,SINTH,COSPH,SINPH)
  
       VMROT=1./SQRT(VROT(1)*VROT(1)+VROT(2)*VROT(2)+VROT(3)*VROT(3))
       VECT(4)=VROT(1)*VMROT

@@ -1,7 +1,10 @@
 *
-* $Id: ghstop.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: ghstop.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: ghstop.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -88,7 +91,7 @@ C --- ONLY DEPOSIT ALL KINETIC ENERGY FOR P AND HEAVY FRAGMENTS ---
       IF (IPART.GE.45 .AND. IPART.LE.48) GO TO 140
 C
 C --- LET ALL OTHER PARTICLES DECAY ---
-      CALL GDECAY
+      CALL G3DECAY
       IF(NGKINE.GT.0) THEN
       NMEC=NMEC+1
       LMEC(NMEC)=5

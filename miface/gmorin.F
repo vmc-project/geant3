@@ -1,7 +1,10 @@
 *
-* $Id: gmorin.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: gmorin.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: gmorin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -76,7 +79,7 @@ C   Loop for XMASS extracted from GCALOR routine CALINI  K.L-P
 C
       IFINIT(7) = 1
       DO 5 I=0,11
-         CALL GFPART(IPID(I),NAP,ITR,AM,CH,TL,UB,NW)
+         CALL G3FPART(IPID(I),NAP,ITR,AM,CH,TL,UB,NW)
          XMASS(I)=AM
     5 CONTINUE
 C

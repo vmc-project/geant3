@@ -1,21 +1,10 @@
 *
-* $Id: gdrayt.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrayt.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 03/07/94  19.26.33  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAYT(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
+      SUBROUTINE G3DRAYT(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -126,7 +115,7 @@ C
      +                           FZUV
          ENDIF
          ISFILL=0
-         CALL GFIND('*','FILL',ISFILL)
+         CALL G3FIND('*','FILL',ISFILL)
          IF(ISFILL.EQ.0)ISFILL=10
 *         CALL ISMKSC(0.)
          CALL ISMK(1)
@@ -170,7 +159,7 @@ C
                                  ZPINTS=ZROTS(3,4)+ZROTS(3,1)*
      +                           UUU+ZROTS(3,2)*VVV+ZROTS(3,3)*
      +                           ZUV
-*            print *,xpints,ypints,zpints,'vertex from gdraw'
+*            print *,xpints,ypints,zpints,'vertex from g3draw'
             ISSEEN=0
             CALL GTRIGC
 *            IEVENT=IEVENT+1

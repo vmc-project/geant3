@@ -1,7 +1,10 @@
 *
-* $Id: gdrot.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gdrot.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdrot.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDROT(P,COSTH,SINTH,COSPH,SINPH)
+      SUBROUTINE G3DROT(P,COSTH,SINTH,COSPH,SINPH)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -23,7 +26,7 @@ C.    *  Rotates vector from one reference system into another.        *
 C.    *  THETA and PHI are anti-clockwise Eulerian angles between the  *
 C.    *  two systems.                                                  *
 C.    *                                                                *
-C.    *    ==>Called by : GBREME,GCOMP,GDECAY,GDECA3,GDRAY,GPAIRG      *
+C.    *    ==>Called by : G3BREME,G3COMP,G3DECAY,G3DECA3,G3DRAY,G3PAIRG*
 C.    *       Author    M.Hansroul, G.Patrick  *********               *
 C.    *                                                                *
 C.    *                                                                *

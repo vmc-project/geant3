@@ -1,7 +1,15 @@
 *
-* $Id: gphxsi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphxsi.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gphxsi.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,12 +23,12 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHXSI
+      SUBROUTINE G3PHXSI
 *.
 *.    ******************************************************************
 *.    *  Creates PHXS bank containing x-section constants              *
 *.    *                                                                *
-*.    *    ==>CALLED BY : GPHYSI                                       *
+*.    *    ==>CALLED BY : G3PHYSI                                      *
 *.    *       AUTHOR : J. CHWASTOWSKI                                  *
 *.    *                                                                *
 *.    ******************************************************************
@@ -39,6 +47,7 @@
 #include "geant321/gcpmxz.inc"
 #include "geant321/gcphxs.inc"
 #include "geant321/gc10ev.inc"
+      COMMON / FIXIT / JPHXS, JPHFN
       CHARACTER*1 CHSHEL, CHGROU
       DIMENSION EUP(MAXINT),TMP(MAXPOW,MAXINT),ESHL(24)
       PARAMETER (NXSB=73,NXSBF=70)
@@ -64,7 +73,7 @@ c
                   NZ=NZ+1
                ENDIF
    10       CONTINUE
-            CALL GWORK(3*NZ+1)
+            CALL G3WORK(3*NZ+1)
             WS(1) = NZ
 *
 * Calculate weigths
@@ -149,7 +158,7 @@ c
          NZ = Q(JPHXS+1)
 * Create a temporary working space
          IBINS = 5*NZ+NZ*(MAXPOW+1)*(MAXINT+1)
-         CALL GWORK(IBINS)
+         CALL G3WORK(IBINS)
          DO 60 I = 1,IBINS
             WS(I) = 0.0
    60    CONTINUE
@@ -162,7 +171,7 @@ c
             DO 70 I = 1,24
                ESHL(I) = 0.0
    70       CONTINUE
-            CALL GFSHLS(ZCUR,ESHL,NSHL)
+            CALL G3FSHLS(ZCUR,ESHL,NSHL)
             DO 80 I = 1,NSHL
                ESHL(I) = ESHL(I)*1.E-3
    80       CONTINUE
@@ -313,7 +322,7 @@ c                  Q(JPHFN+KFN) = TMP(J,I)*Q(JPHXS+1+2*NZ+N)
   150          CONTINUE
   160       CONTINUE
 * Get shells decay parameters
-            CALL GFSHDC(N,ZCUR)
+            CALL G3FSHDC(N,ZCUR)
   170    CONTINUE
 * Now find intervals and calculate the coofs for each
          K = 0

@@ -1,7 +1,10 @@
 *
-* $Id: gpdigi.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gpdigi.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpdigi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.20  by  S.Giani
 *-- Author :
-      SUBROUTINE GPDIGI(IUSET,IUDET)
+      SUBROUTINE G3PDIGI(IUSET,IUDET)
 C.
 C.    **************************************************************************
 C.    *                                                                        *
@@ -31,7 +34,7 @@ C.    *          -- Track  numbers packed                                      *
 C.    *          -- Volume numbers packed                                      *
 C.    *          -- Digits packed                                              *
 C.    *                                                                        *
-C.    *    ==>Called by : <USER>, GPRINT                                       *
+C.    *    ==>Called by : <USER>, G3PRINT                                      *
 C.    *       Author    W.Gebel  *********                                     *
 C.    *                                                                        *
 C.    **************************************************************************

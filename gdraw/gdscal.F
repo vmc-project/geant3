@@ -1,16 +1,5 @@
 *
-* $Id: gdscal.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdscal.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:27  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -23,7 +12,7 @@ C.    *       Draw an unitary length segment at position (U0,V0)       *
 C.    *       correspondent to current scale factor GSCU               *
 C.    *       and zoom factor GZUA                                     *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC                     *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -69,17 +58,17 @@ C
       U(2)=U0+DX
       V(1)=V0
       V(2)=V0
-      CALL GDRAWV(U,V,2)
+      CALL G3DRAWV(U,V,2)
       U(2)=U0-DX
       V(1)=V0+DY
       V(2)=V0-DY
-      CALL GDRAWV(U,V,2)
+      CALL G3DRAWV(U,V,2)
       U(1)=U0+DX
       U(2)=U0+DX
-      CALL GDRAWV(U,V,2)
+      CALL G3DRAWV(U,V,2)
 C
       CSIZ=SLEN/4.
       VV0=V0+3.*DY
-      CALL GDRAWT(U0,VV0,IUMC,CSIZ,0.,1,0)
+      CALL G3DRAWT(U0,VV0,IUMC,CSIZ,0.,1,0)
 C
       END

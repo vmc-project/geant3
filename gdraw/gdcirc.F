@@ -1,16 +1,5 @@
 *
-* $Id: gdcirc.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcirc.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:22  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -23,7 +12,7 @@ C.    *       Draw a circle of radius R centered on Z-axis,            *
 C.    *       at a distance of Z0 from the origin,                     *
 C.    *       on a plane parallel to X-Y plane                         *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAWS                                       *
+C.    *    ==>Called by : G3DRAWS                                       *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -49,7 +38,7 @@ C
 CM
       U(41)=U(1)
       V(41)=V(1)
-      CALL GDRAWV(U,V,41)
+      CALL G3DRAWV(U,V,41)
 C
   999 RETURN
       END

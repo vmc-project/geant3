@@ -1,7 +1,10 @@
 *
-* $Id: gphsig.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphsig.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphsig.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,15 +18,15 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GPHSIG(Z,E)
+      FUNCTION G3PHSIG(Z,E)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Function to compute the photoeffect total cross-section  *
 C.    *       as a function of Z and E                                 *
-C.    *           (E in GeV,  GPHSIG in barn)                          *
+C.    *           (E in GeV,  G3PHSIG in barn)                         *
 C.    *                                                                *
-C.    *    ==>Called by : GPHOTI                                       *
+C.    *    ==>Called by : G3PHOTI                                      *
 C.    *       Author : L.Urban   *********                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -65,7 +68,7 @@ C
          S=C(19)
       ENDIF
 C
-  50  GPHSIG=S*Z**AZ*X**BE
-      IF(GPHSIG.LT.0.)GPHSIG=0.
+  50  G3PHSIG=S*Z**AZ*X**BE
+      IF(G3PHSIG.LT.0.)G3PHSIG=0.
 C
       END

@@ -1,7 +1,10 @@
 *
-* $Id: ghsigm.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: ghsigm.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ghsigm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GHSIGM(P,IPART,A)
+      FUNCTION G3HSIGM(P,IPART,A)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *                momentum P (GEV/C)                              *
 C.    *                GEANT type IPART                                *
 C.    *      on a nucleus of atomic number A                           *
 C.    *                                                                *
-C.    *    ==>Called by : GPHADR                                       *
+C.    *    ==>Called by : G3PHADR                                      *
 C.    *       Author    R.Barlow  *********                            *
 C.    *       Modified to deal with K0 and extend to 41 particle       *
 C.    *                types by John Allison, 31/1/84. *               *
@@ -33,7 +36,7 @@ C.    *                                                                *
 C.    ******************************************************************
 C.
 C              The array NTYPE maps the GEANT particle type (IPART)
-C              onto GHSIG's internal particle type.  Simple assumptions
+C              onto G3HSIG's internal particle type.  Simple assumptions
 C              are made for highly flavoured particles.  The K0 is
 C              given a non-existent internal type 6 which causes the
 C              mean of the K+ and K- cross sections to be calculated.
@@ -44,15 +47,15 @@ C
 C.
 C.    ------------------------------------------------------------------
 C.
-      GHSIGM = 1.E-20
+      G3HSIGM = 1.E-20
       IF (IPART .GT. 41) RETURN
       ITYPE  = NTYPE(IPART)
       IF (ITYPE .EQ. 0) RETURN
 C
       IF (ITYPE .NE. 6)THEN
-         GHSIGM = GHSIG(P, ITYPE, A)
+         G3HSIGM = G3HSIG(P, ITYPE, A)
       ELSE
-         GHSIGM = 0.5 * (GHSIG(P, 3, A) + GHSIG(P, 4, A))
+         G3HSIGM = 0.5 * (G3HSIG(P, 3, A) + G3HSIG(P, 4, A))
       ENDIF
 C
       END

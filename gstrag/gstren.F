@@ -1,7 +1,10 @@
 *
-* $Id: gstren.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstren.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstren.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GSTREN (GAMMA,ECUT,STEP)
+      FUNCTION G3STREN (GAMMA,ECUT,STEP)
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Simulation of energy loss straggling in thin layers.         *
 C.    *   Sampling is done from the tables which are prepared          *
 C.    *   in GSTINI.                                                   *
 C.    *                                                                *
-C.    *   ==> Called by : GTELEC, GTHADR, GTMUON                       *
+C.    *   ==> Called by : G3TELEC, G3THADR, G3TMUON                    *
 C.    *       Authors   : K. Lassila-Perini, I. Gavrilenko             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -69,7 +72,7 @@ C...
 *
       DAN      = ANMAX-ANMIN
       AMU      = DAN*STEP
-      CALL GPOISS(AMU,N,1)
+      CALL G3POISS(AMU,N,1)
       NICOLL   = MAX(N,1)
       DO 80  I  = 1,NICOLL
    50    K1 = 1
@@ -96,5 +99,5 @@ C...
          GSTLOC = GSTLOC+EE
    80 CONTINUE
 *
-   90 GSTREN  = GSTLOC*1.E-9
+   90 G3STREN  = GSTLOC*1.E-9
       END

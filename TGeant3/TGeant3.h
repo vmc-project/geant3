@@ -3,14 +3,27 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.1 2002/07/09 16:30:01 alibrary Exp $ */
+/* $Id: TGeant3.h,v 1.15 2004/07/09 12:15:12 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
 //////////////////////////////////////////////// 
 
+#define WITHG3
+#ifdef WITHROOT
+#undef WITHG3
+#endif
+#ifdef WITHBOTH
+#undef WITHG3
+#undef WITHROOT
+#endif
+
 #include "TVirtualMC.h" 
 #include "TMCProcess.h" 
+#include "TMCParticleType.h"
+#include "TGeoMCGeometry.h" 
+
+class TGeoMaterial;
 
 //______________________________________________________________
 //
@@ -22,7 +35,7 @@
 //----------QUEST 
 //      COMMON/QUEST/IQUEST(100) 
 typedef struct { 
-  Int_t    iquest[100]; 
+  Int_t   iquest[100]; 
 } Quest_t; 
  
 //----------GCBANK
@@ -178,7 +191,7 @@ typedef struct {
   Float_t  vect[7]; 
   Float_t  getot; 
   Float_t  gekin; 
-  Int_t    vout[7]; 
+  Float_t  vout[7]; 
   Int_t    nmec; 
   Int_t    lmec[MAXMEC]; 
   Int_t    namec[MAXMEC]; 
@@ -516,6 +529,12 @@ typedef struct {
   Float_t   tlrad;
 } Erwork_t;
 
+//----------GCCHAN
+//      COMMON/GCCHAN/LSAMVL 
+typedef struct { 
+  Bool_t    lsamvl; 
+} Gcchan_t; 
+
 /************************************************************************
  *                                                                      *
  *      Commons for GEANE                                               *
@@ -527,10 +546,7 @@ class TGeant3 : public TVirtualMC {
 public: 
   TGeant3(); 
   TGeant3(const char *title, Int_t nwgeant=0); 
-  virtual ~TGeant3() {if(fVolNames) {
-    delete [] fVolNames;
-    fVolNames=0;}
-  } 
+  virtual ~TGeant3();
 
   virtual void LoadAddress(); 
  
@@ -553,11 +569,12 @@ public:
   Int_t VolId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
-  void  DefineParticles();
   const char* VolName(Int_t id) const;
   Double_t Xsec(char* reac, Double_t energy, Int_t part, Int_t mate);
   void  TrackPosition(TLorentzVector &xyz) const;
+  void  TrackPosition(Double_t &x, Double_t &y, Double_t &z) const;
   void  TrackMomentum(TLorentzVector &xyz) const;  
+  void  TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const;
   Int_t NofVolumes() const;
   Int_t VolId2Mate(Int_t id) const;
   Double_t TrackTime() const;  
@@ -580,15 +597,27 @@ public:
   Int_t  StepProcesses(TArrayI &proc) const;
   void   GetSecondary(Int_t isec, Int_t& ipart, TLorentzVector &x, 
 		      TLorentzVector &p);
+  Bool_t SecondariesAreOrdered() const {return kTRUE;}
   void   StopTrack();
   void   StopEvent();
+  void   StopRun();
   Double_t MaxStep() const;
   void  SetMaxStep(Double_t maxstep);
   void  SetMaxNStep(Int_t maxnstp);
   Int_t GetMaxNStep() const;
-  void SetCut(const char* cutName, Double_t cutValue);
-  void SetProcess(const char* flagName, Int_t flagValue);
-  //  void GetParticle(const Int_t pdg, char *name, Float_t &mass) const;
+  Bool_t SetCut(const char* cutName, Double_t cutValue);
+  Bool_t SetProcess(const char* flagName, Int_t flagValue);
+  const char *GetPath();
+  const char *GetNodeName();
+  Bool_t DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                   Double_t mass, Double_t charge, Double_t lifetime);
+  Bool_t DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+                   Double_t excEnergy, Double_t mass);
+  virtual TString   ParticleName(Int_t pdg) const;	  
+  virtual Double_t  ParticleMass(Int_t pdg) const;	  
+  virtual Double_t  ParticleCharge(Int_t pdg) const;	  
+  virtual Double_t  ParticleLifeTime(Int_t pdg) const;	  
+  virtual TMCParticleType ParticleMCType(Int_t pdg) const;
 
   virtual Int_t GetMedium() const;
   virtual Double_t Edep() const;
@@ -616,7 +645,9 @@ public:
 			Double_t stmin, Double_t* ubuf, Int_t nbuf);
 
   virtual void   Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
-			Double_t phiy, Double_t thez, Double_t phiz);
+			Double_t phiy, Double_t thez, Double_t phiz);			
+
+  virtual void   SetRootGeometry();			
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                         //
@@ -683,7 +714,7 @@ public:
    virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, Double_t &dens, 
                          Double_t &radl, Double_t &absl, Double_t* ubuf, Int_t& nbuf); 
    virtual  void  Gfpart(Int_t ipart, char *name, Int_t &itrtyp,  
-                         Float_t &amass, Float_t &charge, Float_t &tlife); 
+                         Float_t &amass, Float_t &charge, Float_t &tlife) const; 
    virtual  void  Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,  
                          Int_t &ifield, Float_t &fieldm, Float_t &tmaxfd, 
                          Float_t &stemax, Float_t &deemax, Float_t &epsil, 
@@ -735,8 +766,8 @@ public:
    virtual  void  Gtrack(); 
    virtual  void  Gtreve(); 
    virtual  void  GtreveRoot(); 
-   virtual  void  Grndm(Float_t *rvec, const Int_t len) const; 
-   virtual  void  Grndmq(Int_t &is1, Int_t &is2, const Int_t iseq, const Text_t *chopt); 
+   virtual  void  Grndm(Float_t *rvec, Int_t len) const;
+   virtual  void  Grndmq(Int_t &is1, Int_t &is2, Int_t iseq, const Text_t *chopt); 
  
       // functions from GGEOM 
    virtual  void  Gdxyz(Int_t it); 
@@ -837,12 +868,11 @@ public:
    virtual  void  Vname(const char *name, char *vname);
 
    virtual  void  InitLego();
-   virtual  TMCGeomType GetMCGeomType() const { return kGeant3; }
 
   // Routines from GEANE
 
     virtual void Ertrgo();
-    virtual void Ertrak(const Float_t *const x1, const Float_t *const p1, 
+    virtual void Ertrak(const Float_t *x1, const Float_t *p1, 
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt);
         
@@ -852,7 +882,7 @@ public:
   virtual void BuildPhysics();
   virtual void Init();
   virtual void ProcessEvent();
-  virtual void ProcessRun(Int_t nevent);
+  virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
 
   // 
@@ -865,7 +895,7 @@ public:
 
 protected:
   Int_t fNextVol;    // Iterator for GeomIter
-
+  char  fPath[512];  // Current path of G3
 //--------------Declarations for ZEBRA--------------------- 
   Int_t *fZiq;                //! Good Old IQ of Zebra
   Int_t *fZlq;                //! Good Old LQ of Zebra
@@ -893,6 +923,7 @@ protected:
   Gckin2_t *fGckin2;          //! GCKIN2 common structure
   Gckin3_t *fGckin3;          //! GCKIN3 common structure
   Gctrak_t *fGctrak;          //! GCTRAK common structure
+  Gcchan_t *fGcchan;          //! GCCHAN common structure
 
   // commons for GEANE
   Ertrio_t *fErtrio;          //! ERTRIO common structure
@@ -904,21 +935,58 @@ protected:
 
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
 
-  enum {kMaxParticles = 100};
+  enum { kMaxParticles = 100};
 
+  Int_t fNG3Particles;            // Number of G3 particles
   Int_t fNPDGCodes;               // Number of PDG codes known by G3
 
   Int_t fPDGCode[kMaxParticles];  // Translation table of PDG codes
+  TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
+  Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
+                                        // (materials and medias are filled in FinishGeometry()  
+  Bool_t           fStopRun;     // The flag for stopping run by a user
 
   TMCProcess G3toVMC(Int_t iproc) const;
 
 private:
-  TGeant3(const TGeant3 &) {}
+
+  void   DefineParticles();
+  Int_t  ImportMaterial(const TGeoMaterial* material);
+  Int_t  TransportMethod(TMCParticleType particleType) const;
+  TString  ParticleClass(TMCParticleType particleType) const;
+  TMCParticleType ParticleType(Int_t itrtyp) const;
+
+  enum {kTRIG = BIT(14),
+        kSWIT = BIT(15),
+        kDEBU = BIT(16),
+        kAUTO = BIT(17),
+        kABAN = BIT(18),
+        kOPTI = BIT(19),
+        kERAN = BIT(20)
+  };
+  TGeant3(const TGeant3 &) : TVirtualMC() {}
   TGeant3 & operator=(const TGeant3&) {return *this;}
   
   // array conversion
   Float_t* CreateFloatArray(Double_t* array, Int_t size) const;
+  Int_t    NextKmat() const;
   
+  // functions for building geometry with different interface
+  // for double and single precision
+  void  G3Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
+	            Double_t dens, Double_t radl, Double_t absl, 
+	            Float_t* buf=0, Int_t nwbuf=0);
+  void  G3Mixture(Int_t& kmat, const char* name, Float_t* a,Float_t* z,
+	            Double_t dens, Int_t nlmat, Float_t* wmat);
+  void  G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
+	            Int_t ifield, Double_t fieldm, Double_t tmaxfd,
+		    Double_t stemax, Double_t deemax, Double_t epsil,
+	            Double_t stmin, Float_t* ubuf=0, Int_t nbuf=0);
+  Int_t G3Gsvolu(const char *name, const char *shape, Int_t nmed,  
+                    Float_t *upar, Int_t np); 
+  void  G3Gsposp(const char *name, Int_t nr, const char *mother,  
+                    Double_t x, Double_t y, Double_t z, Int_t irot, const char *konly, Float_t *upar, Int_t np); 
+
   ClassDef(TGeant3,1)  //C++ interface to Geant basic routines 
 }; 
 

@@ -1,7 +1,10 @@
 *
-* $Id: gbremm.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbremm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbremm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GBREMM
+      SUBROUTINE G3BREMM
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Simulates discrete hard BREMSSTRAHLUNG by muons.              *
 C.    *                                                                *
 C.    *                                                                *
-C.    *    ==>Called by : GTMUON                                       *
+C.    *    ==>Called by : G3TMUON                                      *
 C.    *       Author     L.Urban  *********                            *
 C.    *                                                                *
 C.    ******************************************************************
@@ -80,7 +83,7 @@ C             Generate emitted photon angles with respect to a Z-axis
 C             defined along parent track. PHI is generated isotropically
 C             and THETA is assigned a universal angular distribution
 C
-      THETA  = GBTETH(EEM1, AMASS, V)*AMASS/EEM1
+      THETA  = G3BTETH(EEM1, AMASS, V)*AMASS/EEM1
       SINTH  = SIN(THETA)
       COSTH  = COS(THETA)
       CALL GRNDM(RNDM,1)
@@ -103,7 +106,7 @@ C
 C
 C             Rotate photon into GEANT system
 C
-      CALL GVROT(VECT(4),GKIN)
+      CALL G3VROT(VECT(4),GKIN)
 C
 C             Correct track for lost energy
 C
@@ -111,7 +114,7 @@ C
       GEKIN = GEKIN - EGAMMA
       GETOT = GEKIN + AMASS
       VECT(7)=SQRT (ABS((GETOT+AMASS)*GEKIN))
-      CALL GEKBIN
+      CALL G3EKBIN
 C
 C             Update probabilities
 C
