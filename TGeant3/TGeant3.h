@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.9 2003/09/26 15:01:08 brun Exp $ */
+/* $Id: TGeant3.h,v 1.10 2003/11/28 09:43:05 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -958,7 +958,7 @@ private:
         kOPTI = BIT(19),
         kERAN = BIT(20)
   };
-  TGeant3(const TGeant3 &) {}
+  TGeant3(const TGeant3 &) : TVirtualMC() {}
   TGeant3 & operator=(const TGeant3&) {return *this;}
   
   // array conversion
