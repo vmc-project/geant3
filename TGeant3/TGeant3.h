@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.10 2003/11/28 09:43:05 brun Exp $ */
+/* $Id: TGeant3.h,v 1.11 2003/12/03 02:27:07 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -597,6 +597,7 @@ public:
 		      TLorentzVector &p);
   void   StopTrack();
   void   StopEvent();
+  void   StopRun();
   Double_t MaxStep() const;
   void  SetMaxStep(Double_t maxstep);
   void  SetMaxNStep(Int_t maxnstp);
@@ -878,7 +879,7 @@ public:
   virtual void BuildPhysics();
   virtual void Init();
   virtual void ProcessEvent();
-  virtual void ProcessRun(Int_t nevent);
+  virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
 
   // 
@@ -940,6 +941,7 @@ protected:
   TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled in FinishGeometry()  
+  Bool_t           fStopRun;     // The flag for stopping run by a user
 
   TMCProcess G3toVMC(Int_t iproc) const;
 

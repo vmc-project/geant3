@@ -16,6 +16,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.26  2004/05/14 08:32:01  brun
+In function gtnext, call GetNextBoundary(-step) instead of (step).
+This fixes a problem when tracking Cherenkov photons.
+(Thanks to Yuri Kharlov for reporting the problem and Andrei for fixing it)
+
 Revision 1.25  2004/03/23 11:16:44  brun
 From Ivana
 With the previous changes by Andrei, all fixes by Ivana were lost.
@@ -684,7 +689,8 @@ TGeant3::TGeant3()
     fNG3Particles(0),
     fNPDGCodes(0),
     fMCGeo(0),
-    fImportRootGeometry(kFALSE)
+    fImportRootGeometry(kFALSE),
+    fStopRun(kFALSE)
 { 
   //
   // Default constructor
@@ -699,7 +705,8 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
 #else       
        : TVirtualMC("TGeant3",title, kFALSE),
 #endif
-         fImportRootGeometry(kFALSE)
+         fImportRootGeometry(kFALSE),
+         fStopRun(kFALSE)
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
@@ -2026,6 +2033,18 @@ void TGeant3::StopEvent()
   // Stop simulation of the current event and skip to the next
   //
   fGcflag->ieotri=1;
+}
+
+//_____________________________________________________________________________
+void TGeant3::StopRun()
+{
+  //
+  // Stop simulation of the current event and set the abort run flag to true
+  //
+
+  StopTrack();
+  StopEvent();
+  fStopRun = kTRUE;
 }
 
 //_____________________________________________________________________________
@@ -5649,21 +5668,32 @@ void TGeant3::Init()
 }
 
 //____________________________________________________________________________
-void TGeant3::ProcessRun(Int_t nevent)
+Bool_t TGeant3::ProcessRun(Int_t nevent)
 {
   //
-  // Process the run
-  //
+  // Process the run and return true if run has finished successfully,
+  // return false in other cases (run aborted by user)
   
   Int_t todo = TMath::Abs(nevent);
   for (Int_t i=0; i<todo; i++) {
-  // Process one run (one run = one event)
+     // Process one run (one run = one event)
      fGcflag->idevt  = i;
      fGcflag->ievent = i+1;
+     if (fStopRun) break;
      fApplication->BeginEvent();
+     if (fStopRun) break;
      ProcessEvent();
+     if (fStopRun) break;
      fApplication->FinishEvent();
+     if (fStopRun) break;
   }
+  
+  if (fStopRun) printf(" **** Run stopped ***\n");
+  
+  Bool_t returnValue = !fStopRun;
+  fStopRun = kFALSE;
+
+  return returnValue;
 }
 
 //_____________________________________________________________________________
