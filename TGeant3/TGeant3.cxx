@@ -15,6 +15,10 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.8  2003/02/28 10:41:49  brun
+From Andreas Morsch
+in DefineParticles: rho0 decay channel corrected
+
 Revision 1.7  2003/02/04 17:50:34  brun
 From Ivana
  In Mixture(): pass abs(nlmat) to CreateFloatArray calls
@@ -5361,6 +5365,7 @@ void gufld(Float_t *x, Float_t *b)
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
 }
 
+
 //______________________________________________________________________
 void gustep()
 {
@@ -5386,6 +5391,7 @@ void gustep()
   TVirtualMCApplication *app = TVirtualMCApplication::Instance();
   TGeant3* geant3 = (TGeant3*) gMC;
   TVirtualMCStack* stack = gMC->GetStack();
+  Float_t wgt = stack->GetCurrentTrack()->GetWeight();
   //     Stop particle if outside user defined tracking region 
   Double_t x, y, z, rmax;
   geant3->TrackPosition(x,y,z);
@@ -5397,13 +5403,14 @@ void gustep()
 
   // --- Add new created particles 
   if (gMC->NSecondaries() > 0) {
+ 
     pProc=gMC->ProdProcess(0);
     for (jk = 0; jk < geant3->Gcking()->ngkine; ++jk) {
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
       // --- Skip neutrinos! 
       if (ipp != 4) {
         geant3->SetTrack(1,stack->CurrentTrack(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
-			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, 1., 0);
+			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, wgt, 0);
       }
     }
   }
@@ -5418,7 +5425,7 @@ void gustep()
 		       geant3->Gckin2()->xphot[jk],     //position
 		       &geant3->Gckin2()->xphot[jk][7], //polarisation
 		       geant3->Gckin2()->xphot[jk][10], //time of flight
-		       kPCerenkov, nt, 1., 0);
+		       kPCerenkov, nt, wgt, 0);
       }
   }
   // --- Particle leaving the setup ?
