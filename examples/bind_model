@@ -1,6 +1,0 @@
-#!/bin/sh
-g77 -O -g   -c model.F 
-g++ -c -g -I../TGeant3 -I$ROOTSYS/include gmain.C
-g++ -o model gmain.o model.o `root-config --glibs` \
--lVMC -lPhysics -lEG -lEGPythia6 -lGeom $PYTHIA6/libPythia6.so \
--L../lib/tgt_Linux/ -lgeant321 -L$CERNLIB -lpacklib -lg2c

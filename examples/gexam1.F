@@ -421,6 +421,13 @@ C
       NR=20
       CALL FFKEY('BINS',NL,2,'INTEGER')
       CALL FFKEY('MATE',IMAT,1,'INTEGER')
+
+      write(lout,1000)
+ 1000 format(/,' ========> Reading ffread data cards : type <======='
+     +,/,'read 4'
+     +,/,'your own data cards if any'
+     +,/,'stop',/,'      Now waiting for input',/)
+
       CALL GFFGO
       CALL GZINIT
       CALL GPART

@@ -683,7 +683,7 @@ C
       CALL GINIT
 *
 *             Prints version number
-      WRITE(LOUT,1000)
+      WRITE(LOUT,1001)
 *
 *             Define a data card 'GAST' to change gas type
 *
@@ -695,6 +695,12 @@ C
 *
 *             Read data cards with FFREAD
 *
+      write(lout,1000)
+ 1000 format(/,' ========> Reading ffread data cards : type <======='
+     +,/,'read 4'
+     +,/,'your own data cards if any'
+     +,/,'stop',/,'      Now waiting for input',/)
+
       CALL GFFGO
 *
 *             Initialize GEANT/ZBOOK data structures
@@ -720,7 +726,7 @@ C
 *
       CALL UHINIT
 *
- 1000 FORMAT(/,' **** GEXAM4 VERSION 1.17.00 ( 10 May 1988 ) ',/)
+ 1001 FORMAT(/,' **** GEXAM4 VERSION 1.17.00 ( 10 May 1988 ) ',/)
 *
       END
 

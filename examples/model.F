@@ -28,7 +28,7 @@ C..geant..
 *
 *             Prints version number
 *
-      WRITE(LOUT,1000)
+      WRITE(LOUT,1001)
 *
 *             IKINE  = particle type (default=1=gamma)
 *             PKINE(1)=particle energy
@@ -40,6 +40,13 @@ C..geant..
 *             Read data cards with FFREAD
 *
 C..geant..
+
+      write(lout,1000)
+ 1000 format(/,' ========> Reading ffread data cards : type <======='
+     +,/,'read 4'
+     +,/,'your own data cards if any'
+     +,/,'stop',/,'      Now waiting for input',/)
+
       CALL GFFGO
 *
 *             Initialize GEANT/ZBOOK data structures
@@ -68,7 +75,7 @@ C..geant..
 C..book user histograms:
       CALL UHINIT
 *
- 1000 FORMAT(/,'  MODE VERSION 1.00 : ',/)
+ 1001 FORMAT(/,'  MODE VERSION 1.00 : ',/)
       END
 
       SUBROUTINE UHINIT

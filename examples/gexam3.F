@@ -62,6 +62,12 @@ C
       FLDVAL=3.9
       CALL FFKEY('FIEL',ISWFLD,2,'MIXED')
 C
+      write(6,1000)
+ 1000 format(/,' ========> Reading ffread data cards : type <======='
+     +,/,'read 4'
+     +,/,'your own data cards if any'
+     +,/,'stop',/,'      Now waiting for input',/)
+
       CALL GFFGO
 C
       CALL GZINIT

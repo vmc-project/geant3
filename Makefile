@@ -1,8 +1,9 @@
-# $Id: Makefile,v 1.9 2003/12/03 02:27:07 brun Exp $
+# $Id: Makefile,v 1.10 2003/12/03 02:29:35 brun Exp $
 
 ############################### geant321 Makefile #############################
 
 PACKAGE   = geant321
+PACKAGE2  = dummies
 
 ifeq ($(PLATFORM),)
 PLATFORM = $(shell uname)
@@ -10,8 +11,17 @@ endif
 
 BINDIR  = tgt_$(PLATFORM)
 LIBDIR  = $(shell pwd)/lib/tgt_$(PLATFORM)
+CONFDIR = $(shell pwd)/config
 
-include config/Makefile.$(PLATFORM)
+ifeq ($(ROOTSYS),)
+ROOT_INCDIR = $(shell root-config --incdir)
+ROOT_BINDIR = $(shell root-config --prefix)/bin
+else
+ROOT_INCDIR = $(ROOTSYS)/include
+ROOT_BINDIR = $(ROOTSYS)/bin
+endif
+
+include $(CONFDIR)/Makefile.$(PLATFORM)
 
 ############################### Sources #######################################
 
@@ -20,7 +30,7 @@ GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
         minicern
 
-include config/MakeRules
+include $(CONFDIR)/MakeRules
 
 
 # C++ Headers
@@ -70,6 +80,8 @@ endif
 ifneq ($(PLATFORM),HP-UX)
 	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
 endif
+CSRC	:= $(filter-out added/dummies2.c,$(CSRC))
+
 CXXSRC	:= $(wildcard $(patsubst %,%/*.cxx,$(GDIRS))) \
            $(wildcard TGeant3/*.cxx)
 SRCS	:= $(FSRC) $(CSRC) $(CXXSRC)
@@ -86,10 +98,17 @@ COBJ	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC))
 CXXOBJ	:= $(patsubst %.cxx,$(BINDIR)/%.o,$(CXXSRC))
 OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
 
+# Dummies objects separated from geant321.so library
+
+CSRC2	:= added/dummies2.c
+COBJ2	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC2))
+OBJS2	:= $(COBJ2)
+
+
 # C++ compilation flags
 
 CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) $(CLIBDEFS) -I. \
-			-I$(ROOTSYS)/include -ITGeant3
+			-I$(ROOT_INCDIR) -ITGeant3
 
 # C compilation flags
 
@@ -102,13 +121,13 @@ ifeq ($(PLATFORM),Linux)
    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
 endif
 
-DEPINC 		+= -I. -I$(ROOTSYS)/include
+DEPINC 		+= -I. -I$(ROOT_INCDIR)
 
 ############################### Targets #######################################
 
 
-SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL)
-ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a
+SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/lib$(PACKAGE2).$(SL)
+ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a $(LIBDIR)/lib$(PACKAGE2).a
 
 ifeq ($(PLATFORM),OSF1)
         default:	depend $(ALIBRARY) $(SLIBRARY) 
@@ -119,6 +138,9 @@ endif
 $(LIBDIR)/lib$(PACKAGE).$(SL):  $(OBJS)
 $(LIBDIR)/lib$(PACKAGE).a:  $(OBJS)
 
+$(LIBDIR)/lib$(PACKAGE2).$(SL):  $(OBJS2)
+$(LIBDIR)/lib$(PACKAGE2).a:  $(OBJS2)
+
 DICT:= $(GDICT) $(DDICT)
 
 $(GDICT): $(HDRS)
@@ -128,12 +150,12 @@ $(DDICT): $(DHDRS)
 depend:		$(SRCS)
 
 TOCLEAN		= $(BINDIR)
-TOCLEANALL		= $(BINDIR) $(LIBDIR)
+TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-MAKEDIST	= config/makedist.sh lib
-MAKEDISTSRC	= config/makedist.sh
+MAKEDIST	= $(CONFDIR)/makedist.sh lib
+MAKEDISTSRC	= $(CONFDIR)/makedist.sh
 
-include config/MakeMacros
+include $(CONFDIR)/MakeMacros
 
 ############################### Dependencies ##################################
 
