@@ -16,6 +16,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.19  2004/01/28 08:14:48  brun
+Add a CPP option STATISTICS to monitor the fequency of calls to the geometry functions.
+
 Revision 1.18  2003/12/10 15:39:37  brun
 iFollowing recent improvements by Andrei, replace in ggperp
 the computation of normals:
@@ -425,7 +428,7 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-     for (Int_t i=0;i<n;i++) r[i] = gRandom->RndmArray();
+     gRandom->RndmArray(n,r);
   }
 
   void type_of_call grndmq(Int_t &is1, Int_t &is2, const Int_t &,
