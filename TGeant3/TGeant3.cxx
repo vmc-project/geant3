@@ -16,6 +16,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.15  2003/11/28 09:44:15  brun
+New version of TGeant3 supporting the options WITHG3 and WITHROOT
+
 Revision 1.14  2003/10/09 06:28:45  brun
 In TGeant3::ParticleName, increase size of local array name[20] to name[21]
 
@@ -2294,6 +2297,7 @@ void TGeant3::Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
   //
   //  it defines the rotation matrix number irot.
   //  
+  krot = -1;
 #if defined(WITHG3) || defined(WITHBOTH)
   Int_t jrotm=fGclink->jrotm;
   krot=1;
@@ -2321,11 +2325,13 @@ Int_t TGeant3::GetMedium() const
   //
   // Return the number of the current medium
   //
+#if defined(WITHROOT) || defined(WITHBOTH)
   Int_t imed = 0;
   TGeoNode *node = gGeoManager->GetCurrentNode();
   if (!node) imed = gGeoManager->GetTopNode()->GetVolume()->GetMedium()->GetId();
   else       imed = node->GetVolume()->GetMedium()->GetId();
   //printf("==GetMedium: ROOT id=%i  numed=%i\n", imed,fGctmed->numed);
+#endif
   return fGctmed->numed;
 }
 
@@ -2737,7 +2743,9 @@ void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
   g3smate(imat,PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf
 	 PASSCHARL(name)); 
   
-  gGeoManager->Material(name,a,z,dens,imat);
+#if defined(WITHROOT) || defined(WITHBOTH)
+ gGeoManager->Material(name,a,z,dens,imat);
+#endif
 } 
  
 //_____________________________________________________________________________
@@ -2758,6 +2766,7 @@ void  TGeant3::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
   //
   g3smixt(imat,PASSCHARD(name), a, z,dens, nlmat,wmat PASSCHARL(name)); 
   
+#if defined(WITHROOT) || defined(WITHBOTH) 
   Int_t i;
   if (nlmat < 0) {
      nlmat = - nlmat;
@@ -2770,6 +2779,7 @@ void  TGeant3::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
      }
   }
   gGeoManager->Mixture(name, a, z, dens, nlmat, wmat, imat);
+#endif
 } 
  
 //_____________________________________________________________________________
@@ -2825,7 +2835,9 @@ void  TGeant3::Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,
 	 deemax, epsil, stmin, ubuf, nbuf PASSCHARL(name)); 
   
   //printf("Creating medium: %s, numed=%d, nmat=%d\n",name,numed,nmat);
+#if defined(WITHROOT) || defined(WITHBOTH)
   gGeoManager->Medium(name,numed,nmat, isvol, ifield, fieldm, tmaxfd, stemax,deemax, epsil, stmin);
+#endif
 } 
  
 //_____________________________________________________________________________
@@ -6128,6 +6140,10 @@ void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
 #if defined(WITHG3) || defined(WITHBOTH)
   g3lvolu(nlev, lnam, lnum, ier); 
 #endif
+
+#if defined(WITHBOTH)
+  gGeoManager->cd(geant3->GetPath());
+#endif
  }
 
 
@@ -6148,7 +6164,7 @@ void gtnext()
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
    Double_t gsnext  = gctrak->snext;
    Double_t gsafety = gctrak->safety;
-   gGeoManager->FindNextBoundary();
+   gGeoManager->FindNextBoundary(step);
    Double_t rsnext  = gGeoManager->GetStep();
    Double_t rsafety = gGeoManager->GetSafeDistance();
    const char *rpath = gGeoManager->GetPath();
@@ -6188,13 +6204,11 @@ void gtnext()
    gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
 
-   if (!gGeoManager->IsSameLocation(x[0],x[1],x[2],kTRUE)) {
-      gCurrentNode = gGeoManager->GetCurrentNode();
-      if (gCurrentNode) {
-         gcvolu->nlevel = 1 + gGeoManager->GetLevel();
-         gGeoManager->GetBranchNames(gcvolu->names);
-         gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
-      }
+   if (!gGeoManager->IsSameLocation(x[0],x[1],x[2])) {
+      gctrak->safety = 0.;
+      gctrak->snext = 0.;
+      gctrak->ignext = 1;
+      return;
    }
    gGeoManager->FindNextBoundary(step);
    gctrak->safety = gGeoManager->GetSafeDistance();
