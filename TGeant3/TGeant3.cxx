@@ -16,14 +16,18 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.29  2004/06/17 13:56:53  rdm
+changed several "const int" arguments to "int". Was causing warnings of
+type "qualifier is meaningless".
+
 Revision 1.28  2004/06/08 10:27:19  brun
-From Ivana:
+>From Ivana:
 - Added Bool_t return value to methods
   SetCut(), SetProcess(), DefineParticle(), DefineIon()
 - Removed  DefineParticles()
 
 Revision 1.27  2004/05/28 13:45:00  brun
-From Ivana
+>From Ivana
 Implementation of StopRun (new function in TVirtualMC)
 
 Revision 1.26  2004/05/14 08:32:01  brun
@@ -32,12 +36,12 @@ This fixes a problem when tracking Cherenkov photons.
 (Thanks to Yuri Kharlov for reporting the problem and Andrei for fixing it)
 
 Revision 1.25  2004/03/23 11:16:44  brun
-From Ivana
+>From Ivana
 With the previous changes by Andrei, all fixes by Ivana were lost.
 This patch merges Ivana and Andrei versions.
 
 Revision 1.23  2004/03/15 12:18:45  brun
-From Andrei Gheata:
+>From Andrei Gheata:
  - minor modifications to cope with geometry retreival from file:
  - ConstructGeometry does not need to be called
  - CloseGeometry not needed
@@ -5653,7 +5657,7 @@ void TGeant3::FinishGeometry()
       Double_t stmin  = med->GetParam(7);
       G3Medium(kmed, med->GetName(), nmat, isvol, ifield, fieldm, tmaxfd,
                stemax,deemax, epsil, stmin);
-      med->SetUniqueID(kmed);	         	        
+      med->SetId(kmed);	         	        
     }
     if (gDebug > 0) printf("FinishGeometry, geometry retreived from file, materials/media mapped to G3\n");
   } else {
