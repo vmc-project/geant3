@@ -1,4 +1,4 @@
-# $Id: Makefile.Darwin,v 1.1 2003/06/30 07:42:34 brun Exp $
+# $Id: Makefile.macosx,v 1.1 2004/05/13 19:43:03 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -35,9 +35,9 @@ CLIBFOPT      = $(CLIBDEFS)
 LD            = export MACOSX_DEPLOYMENT_TARGET=10.3 ; \
 		unset LD_PREBIND ; \
 		g++
-LDFLAGS       = $(OPT) -Xlinker -bind_at_load -flat_namespaces 
+LDFLAGS       = $(OPT) -Xlinker -bind_at_load
 
 SHLD	      = $(LD)
-SOFLAGS       = -dynamiclib -flat_namespace -undefined dynamic_lookup -single_module
-#SHLIB         = -L/sw/lib -lg2c
+SOFLAGS       = -dynamiclib -undefined dynamic_lookup -single_module
+SHLIB         = -L/sw/lib -lg2c
 
