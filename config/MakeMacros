@@ -38,3 +38,9 @@ tgt_$(PLATFORM)/Make-depend:
 		@[ -d $(dir $@) ] || mkdir $(dir $@)
 		@cp config/Makedepend $@
 
+dist:
+	@$(MAKEDIST)
+
+distsrc:
+	@$(MAKEDISTSRC)
+
