@@ -1,4 +1,4 @@
-# $Id: $
+# $Id: Makefile,v 1.3 2002/10/08 13:23:11 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -28,7 +28,7 @@ DSRCS          = TGeant3/TGeant3Dummy.cxx
 
 # C++ Headers
 
-DHDRS          = TGeant3/TGeant3.h TGeant3/geant3LinkDef.h
+DHDRS          = TGeant3/TGeant3.h TGeant3/geant3DummyLinkDef.h
 
 # Dummy library dictionary
 
