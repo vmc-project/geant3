@@ -15,6 +15,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.6  2003/01/31 18:23:06  brun
+Ivana's suggested corrections.
+- corrected tau pdg code
+- Warning if external decayer needed but not defined.
+
 Revision 1.5  2003/01/23 11:34:04  brun
 In gustep, replace
    gMC->TrackPosition(x,y,z);
@@ -1755,9 +1760,9 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   // weigths.
   //
 
-  Float_t* fa = CreateFloatArray(a, nlmat);  
-  Float_t* fz = CreateFloatArray(z, nlmat);  
-  Float_t* fwmat = CreateFloatArray(wmat, nlmat);  
+  Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));  
+  Float_t* fz = CreateFloatArray(z, TMath::Abs(nlmat));  
+  Float_t* fwmat = CreateFloatArray(wmat, TMath::Abs(nlmat));  
 
   Mixture(kmat, name, fa, fz, dens, nlmat, fwmat);
   for (Int_t i=0; i<nlmat; i++) {
