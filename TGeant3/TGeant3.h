@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.2 2002/09/20 14:44:17 brun Exp $ */
+/* $Id: TGeant3.h,v 1.3 2002/12/06 16:50:30 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -735,8 +735,7 @@ public:
    virtual  void  Gtrack(); 
    virtual  void  Gtreve(); 
    virtual  void  GtreveRoot(); 
-   virtual  void  Grndm(Float_t *rvec, const Int_t len) const 
-     {for(Int_t i=0; i<len; rvec[i++]=gMC->GetRandom()->Rndm());}
+   virtual  void  Grndm(Float_t *rvec, const Int_t len) const;
    virtual  void  Grndmq(Int_t &is1, Int_t &is2, const Int_t iseq, const Text_t *chopt); 
  
       // functions from GGEOM 

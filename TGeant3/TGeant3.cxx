@@ -15,6 +15,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.2  2002/12/06 16:50:30  brun
+>From Federico:
+the following modifications provide an >6% improvement in speed for
+AliRoot.
+
 Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 initial import into CVS
 
@@ -333,7 +338,8 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-    for(Int_t i=0; i<n; r[i++]=gMC->GetRandom()->Rndm());
+    TRandom *rr=gMC->GetRandom();
+    for(Int_t i=0; i<n; r[i++]=rr->Rndm());
   }
 
   void type_of_call grndmq(Int_t &, Int_t &, const Int_t &,
@@ -2556,6 +2562,16 @@ void  TGeant3::GtreveRoot()
   //
   gtreveroot(); 
 } 
+
+//_____________________________________________________________________________
+void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const 
+{
+  //
+  //  To set/retrieve the seed of the random number generator
+  //
+  TRandom* r=gMC->GetRandom();
+  for(Int_t i=0; i<len; rvec[i++]=r->Rndm());
+}
 
 //_____________________________________________________________________________
 void  TGeant3::Grndmq(Int_t &/*is1*/, Int_t &/*is2*/, const Int_t /*iseq*/,
