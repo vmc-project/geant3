@@ -57,7 +57,6 @@
             NCVOLS=0
          ENDIF
       end
-
       subroutine setbomb(boom)
 *
 *      set the bomb factor
