@@ -1,7 +1,10 @@
 *
-* $Id: gfshdc.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfshdc.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfshdc.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -30,6 +33,7 @@ C.
 #include "geant321/gcjloc.inc"
 #include "geant321/gconsp.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / JPHFN
       REAL ONEEV
       PARAMETER (ONEEV = 1.E-9)
       DIMENSION PRB(4),PRBR(92),ER(92),PRBNR(92),ENR(92)

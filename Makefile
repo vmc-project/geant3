@@ -1,4 +1,4 @@
-# $ Id:  $
+# $Id: Makefile,v 1.5 2002/11/22 11:27:30 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -28,7 +28,7 @@ DSRCS          = TGeant3/TGeant3Dummy.cxx
 
 # C++ Headers
 
-DHDRS          = TGeant3/TGeant3.h TGeant3/geant3LinkDef.h
+DHDRS          = TGeant3/TGeant3.h TGeant3/geant3DummyLinkDef.h
 
 # Dummy library dictionary
 
@@ -58,6 +58,15 @@ ifneq ($(PLATFORM),SunOS)
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
 ifeq ($(PLATFORM),Linux)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),icc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-ecc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-gcc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),HP-UX)
@@ -128,6 +137,9 @@ depend:		$(SRCS)
 
 TOCLEAN		= $(BINDIR)
 TOCLEANALL		= $(BINDIR) $(LIBDIR)
+
+MAKEDIST	= config/makedist.sh lib
+MAKEDISTSRC	= config/makedist.sh
 
 include config/MakeMacros
 

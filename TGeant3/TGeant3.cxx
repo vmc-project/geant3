@@ -15,6 +15,39 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.7  2003/02/04 17:50:34  brun
+From Ivana
+ In Mixture(): pass abs(nlmat) to CreateFloatArray calls
+ as nlmat can be negative.
+
+Revision 1.6  2003/01/31 18:23:06  brun
+Ivana's suggested corrections.
+- corrected tau pdg code
+- Warning if external decayer needed but not defined.
+
+Revision 1.5  2003/01/23 11:34:04  brun
+In gustep, replace
+   gMC->TrackPosition(x,y,z);
+by
+   geant3->TrackPosition(x,y,z);
+
+Revision 1.4  2003/01/06 17:20:52  brun
+Add new functions TrackPosition and TrackMomentum as alternative to the original
+functions filling a TLorentzVector object.
+Use these new functions in gustep and gudcay.
+This makes a 25 per cent speed improvement in case of Alice.
+
+Revision 1.3  2002/12/10 07:58:36  brun
+Update by Federico for the calls to Grndm
+
+Revision 1.2  2002/12/06 16:50:30  brun
+>From Federico:
+the following modifications provide an >6% improvement in speed for
+AliRoot.
+
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 Revision 1.5  2002/07/10 09:33:19  hristov
 Array with variable size created by new
 
@@ -330,11 +363,8 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-    //gMC->GetRandom()->Rndm(r,n);
-    Double_t * rdouble = new Double_t[n];
-    gMC->GetRandom()->RndmArray(n,rdouble);
-    for (Int_t i=0; i<n; i++) r[i] = rdouble[i];
-    delete [] rdouble;
+    TRandom *rr=gMC->GetRandom();
+    for(Int_t i=0; i<n; r[i++]=rr->Rndm());
   }
 
   void type_of_call grndmq(Int_t &, Int_t &, const Int_t &,
@@ -918,10 +948,10 @@ void TGeant3::DefineParticles()
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
   Gspart(56, "Tau+", 5, 1.77705, +1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=15;           //56 = Tau+
+  fPDGCode[fNPDGCodes++] = -15;        //56 = Tau+
 
   Gspart(57, "Tau-", 5, 1.77705, -1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=-15;          //57 = Tau-  
+  fPDGCode[fNPDGCodes++] = 15;          //57 = Tau-  
 
   Gspart(58, "B0",     3, 5.2792, +0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
@@ -1097,7 +1127,7 @@ void TGeant3::DefineParticles()
     }
     ipa = 44;
     bratio[0] = 100.;
-    mode[0] = 707;
+    mode[0] = 809;
     Gsdk(ipa, bratio, mode);
     /*
 // --- jpsi ---
@@ -1271,6 +1301,18 @@ void TGeant3::TrackPosition(TLorentzVector &xyz) const
 }
 
 //_____________________________________________________________________________
+void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
+{
+  //
+  // Return the current position in the master reference frame of the
+  // track being transported
+  //
+  x=fGctrak->vect[0];
+  y=fGctrak->vect[1];
+  z=fGctrak->vect[2];
+}
+
+//_____________________________________________________________________________
 Double_t TGeant3::TrackTime() const
 {
   //
@@ -1291,6 +1333,20 @@ void TGeant3::TrackMomentum(TLorentzVector &xyz) const
   xyz[1]=fGctrak->vect[4]*ptot;
   xyz[2]=fGctrak->vect[5]*ptot;
   xyz[3]=fGctrak->getot;
+}
+
+//_____________________________________________________________________________
+void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const
+{
+  //
+  // Return the direction and the momentum (GeV/c) of the track
+  // currently being transported
+  //
+  Double_t ptot=fGctrak->vect[6];
+  px  =fGctrak->vect[3]*ptot;
+  py  =fGctrak->vect[4]*ptot;
+  pz  =fGctrak->vect[5]*ptot;
+  etot=fGctrak->getot;
 }
 
 //_____________________________________________________________________________
@@ -1709,9 +1765,9 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   // weigths.
   //
 
-  Float_t* fa = CreateFloatArray(a, nlmat);  
-  Float_t* fz = CreateFloatArray(z, nlmat);  
-  Float_t* fwmat = CreateFloatArray(wmat, nlmat);  
+  Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));  
+  Float_t* fz = CreateFloatArray(z, TMath::Abs(nlmat));  
+  Float_t* fwmat = CreateFloatArray(wmat, TMath::Abs(nlmat));  
 
   Mixture(kmat, name, fa, fz, dens, nlmat, fwmat);
   for (Int_t i=0; i<nlmat; i++) {
@@ -2559,17 +2615,13 @@ void  TGeant3::GtreveRoot()
 } 
 
 //_____________________________________________________________________________
-void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const
+void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const 
 {
   //
-  //   To generate a vector RVECV of LEN random numbers 
-  //   Copy of the CERN Library routine RANECU 
-
-  //GetRandom()->Rndm(rvec,len);
-  Double_t * rdouble = new Double_t[len];
-  GetRandom()->RndmArray(len,rdouble);
-  for (Int_t i=0; i<len; i++) rvec[i] = rdouble[i];
-  delete [] rdouble;
+  //  To set/retrieve the seed of the random number generator
+  //
+  TRandom* r=gMC->GetRandom();
+  for(Int_t i=0; i<len; rvec[i++]=r->Rndm());
 }
 
 //_____________________________________________________________________________
@@ -4959,14 +5011,22 @@ void gudcay()
 //
 //    ------------------------------------------------------------------
 //
-    
+//
+//  Check if external decayer available
+    TVirtualMCDecayer* decayer = gMC->GetDecayer();    
+    if (! decayer) {
+	Warning("gudcay","External decayer needed, but not defined !\n");
+	return;
+    }
     TGeant3* geant3=(TGeant3*) gMC;
+
     // set decay table
-    gMC->GetDecayer()->ForceDecay();
+    
+    decayer->ForceDecay();
 
 // Initialize 4-momentum vector    
     Int_t ipart = geant3->Gckine()->ipart;
-    TLorentzVector p;
+    static TLorentzVector p;
     
     p[0]=geant3->Gctrak()->vect[3];
     p[1]=geant3->Gctrak()->vect[4];
@@ -4979,10 +5039,10 @@ void gudcay()
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
 // Decay
-    gMC->GetDecayer()->Decay(iplund, &p);
+    decayer->Decay(iplund, &p);
     
 // Fetch Particles
-    Int_t np = geant3->GetDecayer()->ImportParticles(particles);
+    Int_t np = decayer->ImportParticles(particles);
     if (np <=1) return;
 
     TParticle *  iparticle = (TParticle *) particles->At(0);
@@ -5002,7 +5062,7 @@ void gudcay()
 	Int_t ks = iparticle->GetStatusCode();
 //
 // Deselect daughters of deselected particles
-// and jump skip the current particle
+// and skip the current particle
 	if (pFlag[i] == 1) {
 	    if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    continue;
@@ -5011,7 +5071,7 @@ void gudcay()
 // Decay products are deselected
 //	
 	if (ks != 1) { 
-	    Double_t lifeTime = gMC->GetDecayer()->GetLifetime(kf);
+	    Double_t lifeTime = decayer->GetLifetime(kf);
 	    if (lifeTime > (Double_t) 1.e-15) {
 		if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    } else{
@@ -5318,21 +5378,20 @@ void gustep()
 //
 
 
-  TLorentzVector x;
-  Float_t r;
   Int_t ipp, jk, nt;
   Float_t polar[3]={0,0,0};
   Float_t mom[3];
-  TMCProcess pProc;
-
+  static TMCProcess pProc;
   
+  TVirtualMCApplication *app = TVirtualMCApplication::Instance();
   TGeant3* geant3 = (TGeant3*) gMC;
   TVirtualMCStack* stack = gMC->GetStack();
   //     Stop particle if outside user defined tracking region 
-  gMC->TrackPosition(x);
-  r=TMath::Sqrt(x[0]*x[0]+x[1]*x[1]);
-  if (r > TVirtualMCApplication::Instance()->TrackingRmax() ||
-      TMath::Abs(x[2]) > TVirtualMCApplication::Instance()->TrackingZmax()) {
+  Double_t x, y, z, rmax;
+  geant3->TrackPosition(x,y,z);
+  rmax = app->TrackingRmax();
+  if (x*x+y*y > rmax*rmax ||
+      TMath::Abs(z) > app->TrackingZmax()) {
 	gMC->StopTrack();
   }
 
@@ -5363,7 +5422,7 @@ void gustep()
       }
   }
   // --- Particle leaving the setup ?
-  if (!gMC->IsTrackOut()) TVirtualMCApplication::Instance()->Stepping();
+  if (!gMC->IsTrackOut()) app->Stepping();
 
   // --- Standard GEANT debug routine 
   if(geant3->Gcflag()->idebug) geant3->Gdebug();
