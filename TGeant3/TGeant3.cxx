@@ -16,6 +16,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.25  2004/03/23 11:16:44  brun
+From Ivana
+With the previous changes by Andrei, all fixes by Ivana were lost.
+This patch merges Ivana and Andrei versions.
+
 Revision 1.23  2004/03/15 12:18:45  brun
 From Andrei Gheata:
  - minor modifications to cope with geometry retreival from file:
@@ -6378,7 +6383,7 @@ void gtnext()
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
    Double_t gsnext  = gctrak->snext;
    Double_t gsafety = gctrak->safety;
-   gGeoManager->FindNextBoundary(step);
+   gGeoManager->FindNextBoundary(-step);
    Double_t rsnext  = gGeoManager->GetStep();
    Double_t rsafety = gGeoManager->GetSafeDistance();
    const char *rpath = gGeoManager->GetPath();
@@ -6438,7 +6443,7 @@ void gtnext()
    }
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
    gGeoManager->SetLastPoint(x[0],x[1],x[2]);
-   gGeoManager->FindNextBoundary(step);
+   gGeoManager->FindNextBoundary(-step);
    gctrak->safety = gGeoManager->GetSafeDistance();
    Double_t snext  = gGeoManager->GetStep();
 //   printf("%7d SNEXT (%f,%f,%f,%f,%f,%f) step=%g snext=%g safety=%g\n", count_gtnext, x[0], x[1], x[2], x[3],x[4],x[5],step, snext,gctrak->safety);
