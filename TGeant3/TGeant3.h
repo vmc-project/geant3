@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.19 2004/12/17 11:55:47 brun Exp $ */
+/* $Id: TGeant3.h,v 1.20 2004/12/21 15:34:48 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -813,7 +813,7 @@ public:
    virtual  void  Gckpar(Int_t ish, Int_t npar, Float_t *par);
    virtual  void  Gckmat(Int_t itmed, char *natmed);
    virtual  Int_t  Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum);
-   virtual  void  Gsbool(const char* onlyVolName, const char* manyVolName) {}
+   virtual  void  Gsbool(const char* /*onlyVolName*/, const char* /*manyVolName*/) {}
 
       // functions from GDRAW
    virtual  void  DefaultRange();
