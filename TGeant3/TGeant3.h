@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.7 2003/07/16 07:40:10 brun Exp $ */
+/* $Id: TGeant3.h,v 1.8 2003/07/18 10:22:51 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -11,6 +11,7 @@
 
 #include "TVirtualMC.h" 
 #include "TMCProcess.h" 
+#include "TMCParticleType.h"
 
 //______________________________________________________________
 //
@@ -554,7 +555,6 @@ public:
   Int_t VolId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
-  void  DefineParticles();
   const char* VolName(Int_t id) const;
   Double_t Xsec(char* reac, Double_t energy, Int_t part, Int_t mate);
   void  TrackPosition(TLorentzVector &xyz) const;
@@ -591,7 +591,15 @@ public:
   Int_t GetMaxNStep() const;
   void SetCut(const char* cutName, Double_t cutValue);
   void SetProcess(const char* flagName, Int_t flagValue);
-  //  void GetParticle(const Int_t pdg, char *name, Float_t &mass) const;
+  void DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                   Double_t mass, Double_t charge, Double_t lifetime);
+  void DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+                   Double_t excEnergy, Double_t mass);
+  virtual TString   ParticleName(Int_t pdg) const;	  
+  virtual Double_t  ParticleMass(Int_t pdg) const;	  
+  virtual Double_t  ParticleCharge(Int_t pdg) const;	  
+  virtual Double_t  ParticleLifeTime(Int_t pdg) const;	  
+  virtual TMCParticleType ParticleMCType(Int_t pdg) const;
 
   virtual Int_t GetMedium() const;
   virtual Double_t Edep() const;
@@ -686,7 +694,7 @@ public:
    virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, Double_t &dens, 
                          Double_t &radl, Double_t &absl, Double_t* ubuf, Int_t& nbuf); 
    virtual  void  Gfpart(Int_t ipart, char *name, Int_t &itrtyp,  
-                         Float_t &amass, Float_t &charge, Float_t &tlife); 
+                         Float_t &amass, Float_t &charge, Float_t &tlife) const; 
    virtual  void  Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,  
                          Int_t &ifield, Float_t &fieldm, Float_t &tmaxfd, 
                          Float_t &stemax, Float_t &deemax, Float_t &epsil, 
@@ -906,15 +914,19 @@ protected:
 
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
 
-  enum {kMaxParticles = 100};
+  enum { kMaxParticles = 100 };
 
+  Int_t fNG3Particles;            // Number of G3 particles
   Int_t fNPDGCodes;               // Number of PDG codes known by G3
-
   Int_t fPDGCode[kMaxParticles];  // Translation table of PDG codes
 
   TMCProcess G3toVMC(Int_t iproc) const;
 
 private:
+  void  DefineParticles();
+  Int_t  TransportMethod(TMCParticleType particleType) const;
+  TString  ParticleClass(TMCParticleType particleType) const;
+  TMCParticleType ParticleType(Int_t itrtyp) const;
 
   enum {kTRIG = BIT(14),
         kSWIT = BIT(15),

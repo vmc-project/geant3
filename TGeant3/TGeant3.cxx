@@ -15,6 +15,10 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.12  2003/07/22 06:53:28  brun
+This version does not yet support TGeo geometry.
+TVirtualMC must be initialized with the 3rd argument set to kFALSE
+
 Revision 1.11  2003/07/18 10:22:50  brun
 Changes to reflect the equivalent changes in the abstract classes in vmc
 (thanks Peter Hristov)
@@ -547,6 +551,8 @@ ClassImp(TGeant3)
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3()
+ : fNG3Particles(0),
+   fNPDGCodes(0)
 { 
   //
   // Default constructor
@@ -573,6 +579,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   LoadAddress(); 
   //
   // Zero number of particles
+  fNG3Particles = 0;
   fNPDGCodes=0;
 } 
 
@@ -725,13 +732,13 @@ void TGeant3::AddParticlesToPdgDataBase() const
 //
 
   pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
-                     0,1,"Ion",kion+10020);
+                     0,3,"Ion",kion+10020);
   pdgDB->AddParticle("Triton","Triton",3*kAu2Gev+14.931e-3,kFALSE,
-                     khShGev/(12.33*kYear2Sec),1,"Ion",kion+10030);
+                     khShGev/(12.33*kYear2Sec),3,"Ion",kion+10030);
   pdgDB->AddParticle("Alpha","Alpha",4*kAu2Gev+2.424e-3,kTRUE,
-                     khShGev/(12.33*kYear2Sec),2,"Ion",kion+20040);
+                     khShGev/(12.33*kYear2Sec),6,"Ion",kion+20040);
   pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
-                     0,2,"Ion",kion+20030);
+                     0,6,"Ion",kion+20030);
 
 // Special particles
 //
@@ -889,40 +896,44 @@ void TGeant3::DefineParticles()
   Int_t mode[6];
   Int_t kz, ipa;
   Float_t bratio[6];
+  
+  fNG3Particles = 33;
 
   /* --- Define additional particles */
-  Gspart(33, "OMEGA(782)", 3, 0.782, 0., 7.836e-23);
+  Gspart(fNG3Particles++, "OMEGA(782)", 3, 0.782, 0., 7.836e-23);  // 33 = OMEGA(782)
   fPDGCode[fNPDGCodes++]=223;   // 33 = Omega(782)
   
-  Gspart(34, "PHI(1020)", 3, 1.019, 0., 1.486e-22);
+  Gspart(fNG3Particles++, "PHI(1020)", 3, 1.019, 0., 1.486e-22); // 34 = PHI(1020)
   fPDGCode[fNPDGCodes++]=333;   // 34 = PHI (1020)
 
-  Gspart(35, "D +", 4, 1.87, 1., 1.066e-12);
+  Gspart(fNG3Particles++, "D +", 4, 1.87, 1., 1.066e-12);        // 35 = D+
   fPDGCode[fNPDGCodes++]=411;   // 35 = D+
 
-  Gspart(36, "D -", 4, 1.87, -1., 1.066e-12);
+  Gspart(fNG3Particles++, "D -", 4, 1.87, -1., 1.066e-12);       // 36 = D-
   fPDGCode[fNPDGCodes++]=-411;  // 36 = D-
 
-  Gspart(37, "D 0", 3, 1.865, 0., 4.2e-13);
+  Gspart(fNG3Particles++, "D 0", 3, 1.865, 0., 4.2e-13);         // 37 = D0
   fPDGCode[fNPDGCodes++]=421;   // 37 = D0
 
-  Gspart(38, "ANTI D 0", 3, 1.865, 0., 4.2e-13);
+  Gspart(fNG3Particles++, "ANTI D 0", 3, 1.865, 0., 4.2e-13);    // 38 = Anti D0
   fPDGCode[fNPDGCodes++]=-421;  // 38 = D0 bar
 
-
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 39 = unassigned
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 40 = unassigned
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 41 = unassigned
 
-  Gspart(42, "RHO +", 4, 0.768, 1., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO +", 4, 0.768, 1., 4.353e-24);  // 42 = Rho+
   fPDGCode[fNPDGCodes++]=213;   // 42 = RHO+
 
-  Gspart(43, "RHO -", 4, 0.768, -1., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO -", 4, 0.768, -1., 4.353e-24); // 43 = Rho-
   fPDGCode[fNPDGCodes++]=-213;   // 43 = RHO-
 
-  Gspart(44, "RHO 0", 3, 0.768, 0., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO 0", 3, 0.768, 0., 4.353e-24);  // 44 = Rho0
   fPDGCode[fNPDGCodes++]=113;   //  44 = RHO0
 
   //
@@ -938,91 +949,98 @@ void TGeant3::DefineParticles()
 //
 // Ions 
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+10020;   // 45 = Deuteron
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+10030;   // 46 = Triton
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+20040;   // 47 = Alpha
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=0;            // 48 = geantino mapped to rootino
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+20030;   // 49 = HE3
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kspe+50;      // 50 = Cherenkov
+
 // special 
-  Gspart(51, "FeedbackPhoton", 7, 0., 0.,1.e20 );
+  Gspart(fNG3Particles++, "FeedbackPhoton", 7, 0., 0.,1.e20 );
   fPDGCode[fNPDGCodes++]=kspe+51;      // 51 = FeedbackPhoton
 //
-  Gspart(52, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
+  Gspart(fNG3Particles++, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
   fPDGCode[fNPDGCodes++]=4122;         //52 = Lambda_c+
 
-  Gspart(53, "Lambda_c-", 4, 2.2849, -1., 2.06e-13);
+  Gspart(fNG3Particles++, "Lambda_c-", 4, 2.2849, -1., 2.06e-13);
   fPDGCode[fNPDGCodes++]=-4122;        //53 = Lambda_c-  
 
-  Gspart(54, "D_s+", 4, 1.9685, +1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s+", 4, 1.9685, +1., 4.67e-13);
   fPDGCode[fNPDGCodes++]=431;          //54 = D_s+
 
-  Gspart(55, "D_s-", 4, 1.9685, -1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s-", 4, 1.9685, -1., 4.67e-13);
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
-  Gspart(56, "Tau+", 5, 1.77705, +1., 2.9e-13);
+  Gspart(fNG3Particles++, "Tau+", 5, 1.77705, +1., 2.9e-13);
   fPDGCode[fNPDGCodes++] = -15;        //56 = Tau+
 
-  Gspart(57, "Tau-", 5, 1.77705, -1., 2.9e-13);
+  Gspart(fNG3Particles++, "Tau-", 5, 1.77705, -1., 2.9e-13);
   fPDGCode[fNPDGCodes++] = 15;          //57 = Tau-  
 
-  Gspart(58, "B0",     3, 5.2792, +0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0",     3, 5.2792, +0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
 
-  Gspart(59, "B0 bar", 3, 5.2792, -0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0 bar", 3, 5.2792, -0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=-511;         //58 = B0bar
 
-  Gspart(60, "B+",     4, 5.2789, +1., 1.65e-12);
+  Gspart(fNG3Particles++, "B+",     4, 5.2789, +1., 1.65e-12);
   fPDGCode[fNPDGCodes++]=521;          //60 = B+
 
-  Gspart(61, "B-",     4, 5.2789, -1., 1.65e-12);
+  Gspart(fNG3Particles++, "B-",     4, 5.2789, -1., 1.65e-12);
   fPDGCode[fNPDGCodes++]=-521;         //61 = B-
 
-  Gspart(62, "Bs",     3, 5.3693, +0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs",     3, 5.3693, +0., 1.54e-12);
   fPDGCode[fNPDGCodes++]=531;          //62 = B_s
 
-  Gspart(63, "Bs bar", 3, 5.3693, -0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs bar", 3, 5.3693, -0., 1.54e-12);
   fPDGCode[fNPDGCodes++]=-531;         //63 = B_s bar
 
-  Gspart(64, "Lambda_b",     3, 5.624, +0., 1.24e-12);
+  Gspart(fNG3Particles++, "Lambda_b",     3, 5.624, +0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=5122;         //64 = Lambda_b
 
-  Gspart(65, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
+  Gspart(fNG3Particles++, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=-5122;        //65 = Lambda_b bar
 
-  Gspart(66, "J/Psi",       3, 3.09688, 0., 0.);
+  Gspart(fNG3Particles++, "J/Psi",       3, 3.09688, 0., 0.);
   fPDGCode[fNPDGCodes++]=443;          // 66 = J/Psi
 
-  Gspart(67, "Psi Prime",   3, 3.686,   0., 0.);
+  Gspart(fNG3Particles++, "Psi Prime",   3, 3.686,   0., 0.);
   fPDGCode[fNPDGCodes++]=20443;        // 67 = Psi prime
 
-  Gspart(68, "Upsilon(1S)", 3, 9.46037, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(1S)", 3, 9.46037, 0., 0.);
   fPDGCode[fNPDGCodes++]=553;          // 68 = Upsilon(1S)
 
-  Gspart(69, "Upsilon(2S)", 3, 10.0233, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(2S)", 3, 10.0233, 0., 0.);
   fPDGCode[fNPDGCodes++]=20553;        // 69 = Upsilon(2S)
 
-  Gspart(70, "Upsilon(3S)", 3, 10.3553, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(3S)", 3, 10.3553, 0., 0.);
   fPDGCode[fNPDGCodes++]=30553;        // 70 = Upsilon(3S)
 
-  Gspart(71, "Anti Neutrino (e)",       3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (e)",       3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-12;          // 71 = anti electron neutrino 
 
-  Gspart(72, "Neutrino (mu)",           3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Neutrino (mu)",           3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=14;           // 72 = muon neutrino 
 
-  Gspart(73, "Anti Neutrino (mu)", 3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (mu)", 3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-14;          // 73 = anti muon neutrino
 
-  Gspart(74, "Neutrino (tau)",     3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Neutrino (tau)",     3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=16;           // 74 = tau neutrino 
 
-  Gspart(75, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-16;          // 75 = anti tau neutrino
 
 /* --- Define additional decay modes --- */
@@ -1289,6 +1307,145 @@ void    TGeant3::SetProcess(const char* flagName, Int_t flagValue)
   else if(!strcmp(flagName,"CKOV"))
     fGctlit->itckov = flagValue;
   else  Warning("SetFlag","Flag %s not implemented\n",flagName);
+}
+
+//_____________________________________________________________________________
+void TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                    Double_t mass, Double_t charge, Double_t lifetime)
+{
+// 
+// Set a user defined particle
+// Function is ignored if particle with specified pdg
+// aready exists and error report is printed.  
+// ---
+
+  // Check if particle with specified pdg aready exists
+  // in TGeant3
+  if (IdFromPDG(pdg) > 0) {
+    Error("SetParticle", "Particle already exists.");
+    return;
+  }  
+
+  // Check if particle type is known to Geant3
+  Int_t itrtyp = TransportMethod(type);
+  if (itrtyp < 0) {
+    Error("SetParticle", "Unknown particle transport.");
+    return;
+  }
+
+  // Add particle to Geant3  
+  Gspart(fNG3Particles++, name, itrtyp, mass, charge, lifetime);
+ 
+  // Add particle to TDatabasePDG
+  // (if it does not yet exist here)
+  if (!TDatabasePDG::Instance()->GetParticle(pdg))
+    TDatabasePDG::Instance()
+      ->AddParticle(name, name, mass, kTRUE, 0, charge*3, 
+                    ParticleClass(type).Data(), pdg);
+  fPDGCode[fNPDGCodes++] = pdg;
+}
+
+//_____________________________________________________________________________
+void  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+                         Double_t excEnergy, Double_t mass)
+{
+//
+// Set a user defined ion.
+// ---
+
+  // Define pdgEncoding
+  //
+  Int_t pdg = 10000000 + 10000*Z + 10*A;
+  Int_t pdgMax = pdg + 9;
+  
+  // Find isomer number which is not yet used
+  while (TDatabasePDG::Instance()->GetParticle(pdg) &&
+         pdg < pdgMax) 
+      pdg++;
+  if (TDatabasePDG::Instance()->GetParticle(pdg))
+      Fatal("SetIon", "All isomer numbers are already used");
+
+  // Particle properties
+        // excitation energy not used by G3
+  if (mass < 1e-09) mass = 0.9382723 * A;
+     // approximative mass if not specified by user
+  Double_t charge = Q;
+  TMCParticleType partType = kPTIon;  
+  Double_t lifetime = 1.e20;
+  
+  // Call DefineParticle now
+  DefineParticle(pdg, name, partType, mass, charge, lifetime);
+}		       
+
+//_____________________________________________________________________________
+TString  TGeant3::ParticleName(Int_t pdg) const
+{
+//  Return G3 particle name
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t amass, charge, tlife;
+  Gfpart(pdg, name, itrtyp,amass, charge, tlife);
+  name[20] = '\0';
+  
+  return TString(name);  
+}
+	  
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleMass(Int_t pdg) const	  
+{
+//  Return G3 particle mass
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return mass;  
+}
+	  
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleCharge(Int_t pdg) const	  
+{
+// Return G3 particle charge (in e)
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return charge;  
+}
+
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleLifeTime(Int_t pdg) const	  
+{
+// Return G3 particle life time
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg, name, itrtyp, mass, charge, tlife);
+  
+  return tlife;  
+}
+
+//_____________________________________________________________________________
+TMCParticleType TGeant3::ParticleMCType(Int_t pdg) const
+{
+// Return MC particle type 
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return ParticleType(itrtyp);  
 }
 
 //_____________________________________________________________________________
@@ -2133,7 +2290,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
  
 //_____________________________________________________________________________
 void  TGeant3::Gfpart(Int_t ipart, char *name, Int_t &itrtyp,  
-		   Float_t &amass, Float_t &charge, Float_t &tlife) 
+		   Float_t &amass, Float_t &charge, Float_t &tlife) const 
 { 
   //
   // Return parameters for particle of type IPART
@@ -4649,6 +4806,8 @@ void TGeant3::Init()
     if (!TestBit(kOPTI)) SetOPTI(2);         // Select optimisation level for GEANT geometry searches (0,1,2)
     if (!TestBit(kERAN)) SetERAN(5.e-7);     //
 
+    DefineParticles();   
+    fApplication->AddParticles();
     fApplication->ConstructGeometry();
     FinishGeometry();
     fApplication->InitGeometry();
@@ -4776,6 +4935,67 @@ Float_t* TGeant3::CreateFloatArray(Double_t* array, Int_t size) const
   return floatArray;
 }
 
+//_____________________________________________________________________________
+Int_t  TGeant3::TransportMethod(TMCParticleType particleType) const
+{
+// 
+// Returns G3 transport method code for the specified MCParticleType
+// ---
+
+  switch (particleType) {
+    case kPTGamma:    return 1;    
+    case kPTElectron: return 2;      
+    case kPTNeutron:  return 3;
+    case kPTHadron:   return 4;
+    case kPTMuon:     return 5;
+    case kPTGeantino: return 6;
+    case kPTOpticalPhoton: return 7;
+    case kPTIon:      return 8;
+    default:          return -1; 
+  }
+}
+
+//_____________________________________________________________________________
+TMCParticleType  TGeant3::ParticleType(Int_t itrtyp) const
+{
+// 
+// Returns MCParticleType for the specified G3 transport method code
+// ---
+
+  switch (itrtyp) {
+    case 1:  return  kPTGamma;
+    case 2:  return  kPTElectron;
+    case 3:  return  kPTNeutron;
+    case 4:  return  kPTHadron;
+    case 5:  return  kPTMuon;
+    case 6:  return  kPTGeantino;
+    case 7:  return  kPTOpticalPhoton;
+    case 8:  return  kPTIon;
+    default: return  kPTUndefined; 
+  }
+}
+
+//_____________________________________________________________________________
+TString  TGeant3::ParticleClass(TMCParticleType particleType) const
+{
+// 
+// Returns particle class name (used in TDatabasePDG) for 
+// the specified MCParticleType
+// ---
+
+  // CHECK
+  switch (particleType) {
+    case kPTGamma:    return TString("Photon");    
+    case kPTElectron: return TString("Lepton");      
+    case kPTNeutron:  return TString("Hadron");
+    case kPTHadron:   return TString("Hadron");
+    case kPTMuon:     return TString("Lepton");
+    case kPTGeantino: return TString("Special");
+    case kPTIon:      return TString("Ion");
+    case kPTOpticalPhoton: return TString("Photon");
+    default:          return TString("Unknown");
+  }
+}
 
 //_____________________________________________________________________________
 void TGeant3::Streamer(TBuffer &R__b)
