@@ -2,7 +2,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: geant3LinkDef.h,v 1.2 2003/11/28 09:44:59 brun Exp $ */
+/* $Id: geant3LinkDef.h,v 1.3 2004/01/28 08:15:15 brun Exp $ */
 
 #pragma link off all globals;
 #pragma link off all classes;
@@ -21,6 +21,7 @@
 #pragma link C++ class Gckin2_t+;
 #pragma link C++ class Gckin3_t+;
 #pragma link C++ class Gcmate_t+;
+#pragma link C++ class Gcphlt_t+;
 #pragma link C++ class Gctmed_t+;
 #pragma link C++ class Gctrak_t+;
 #pragma link C++ class Gcvolu_t+;
