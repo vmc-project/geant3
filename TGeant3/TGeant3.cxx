@@ -16,6 +16,15 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.31  2004/07/09 12:15:12  brun
+>From Ivana:
+in case a user defines geometry via TGeo and associates more tracking
+ media with the same material, TGeant3 duplicates this material
+ for each tracking medium.
+ I haven't found a function for getting the number of
+ materials/media (TList) so I count them by a loop
+ - maybe it can be done more intelligently...
+
 Revision 1.30  2004/07/09 08:11:29  brun
 Fix by Ivana/Andrei to call TGeoMedium::setId and not TGeoMedium::SetUniqueID
 
@@ -2803,7 +2812,8 @@ void  TGeant3::Gfpart(Int_t ipart, char *name, Int_t &itrtyp,
   //
   // Return parameters for particle of type IPART
   //
-  Float_t *ubuf=0; 
+  //Float_t *ubuf=0; 
+  Float_t ubuf[100]; 
   Int_t   nbuf;
   Int_t igpart = IdFromPDG(ipart);
   g3fpart(igpart, PASSCHARD(name), itrtyp, amass, charge, tlife, ubuf, nbuf
@@ -3003,7 +3013,6 @@ void  TGeant3::Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,
   g3stmed(numed,PASSCHARD(name), nmat, isvol, ifield, fieldm, tmaxfd, stemax,
 	 deemax, epsil, stmin, ubuf, nbuf PASSCHARL(name)); 
   
-  //printf("Creating medium: %s, numed=%d, nmat=%d\n",name,numed,nmat);
 #if defined(WITHROOT) || defined(WITHBOTH)
   gGeoManager->Medium(name,numed,nmat, isvol, ifield, fieldm, tmaxfd, stemax,deemax, epsil, stmin);
 #endif
@@ -6136,10 +6145,12 @@ void ginvol(Float_t *x, Int_t &isame)
 #endif
 #ifdef WITHG3
    g3invol(x,isame);
+//   printf("   (%f, %f, %f) isame=%d\n", x[0], x[1], x[2], isame);
 #endif
 #ifdef WITHROOT
    if (gGeoManager->IsSameLocation(x[0], x[1], x[2])) isame = 1;
    else isame = 0;
+//   printf("   (%f, %f, %f) isame=%d\n", x[0], x[1], x[2], isame);
 #endif
 #ifdef STATISTICS
    statsnext=gctrak->snext;
@@ -6281,7 +6292,7 @@ void gtmedi(Float_t *x, Int_t &numed)
 #endif
 #ifdef WITHG3
    g3tmedi(x,numed);
-   // printf("   imed=%i\n", numed);
+//   printf("   imed=%i\n", numed);
 #endif
 #ifdef WITHROOT
 {
@@ -6313,7 +6324,7 @@ void gtmedi(Float_t *x, Int_t &numed)
       printf("found case with vol=0 in gtmedi\n");
    }
 //printf("found3 numed=%d\n",numed);
-   // printf("   imed=%i\n", numed);   
+//   printf("   imed=%i\n", numed);   
 }
 #endif
 #ifdef STATISTICS
@@ -6360,7 +6371,7 @@ void gmedia(Float_t *x, Int_t &numed, Int_t &check)
 #endif
 #ifdef WITHG3
    g3media(x,numed,check);
-   // printf("   imed=%i\n", numed);
+//   printf("   imed=%i\n", numed);
 #endif
 #ifdef WITHROOT
 {
@@ -6383,7 +6394,7 @@ void gmedia(Float_t *x, Int_t &numed, Int_t &check)
    } else {
       printf("found case with vol=0 in gmedia\n");
    }
-   // printf("   imed=%i\n", numed);
+//   printf("   imed=%i\n", numed);
 }
 #endif
 #ifdef STATISTICS
@@ -6514,6 +6525,7 @@ void gtnext()
 #endif
 #ifdef WITHG3
    g3tnext();
+//   printf("++ pstep=%f  snext=%f  safe=%f\n", gctrak->step, gctrak->snext, gctrak->safety);
 #ifdef STATISTICS
       goto stats;
 #else
@@ -6523,41 +6535,49 @@ void gtnext()
 #ifdef WITHROOT
 {
    Float_t *x = gctrak->vect;   
+   Float_t fltprec = 1.E-7;
    Double_t step = gctrak->step;
    gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
 //geant3->Gpcxyz();
-   if (!gGeoManager->IsSameLocation(x[0],x[1],x[2])) {
+//   if (!gGeoManager->IsSameLocation(x[0],x[1],x[2])) {
 //static int acount=0;
 //acount++;
 //printf("acount=%5d, x=%g, %g, %g, sleng=%g\n",acount,x[0],x[1],x[2],gctrak->sleng);
 //geant3->Gpcxyz();
-      gctrak->safety = 0.;
-      gctrak->snext = 0.;
-      gctrak->ignext = 1;
-#ifdef STATISTICS
-      goto stats;
-#else
-      return;
-#endif
-   }
+//      gctrak->safety = 0.;
+//      gctrak->snext = 0.;
+//      gctrak->ignext = 1;
+//#ifdef STATISTICS
+//      goto stats;
+//#else
+//      return;
+//#endif
+//   }
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
    gGeoManager->SetLastPoint(x[0],x[1],x[2]);
    gGeoManager->FindNextBoundary(-step);
    gctrak->safety = gGeoManager->GetSafeDistance();
    Double_t snext  = gGeoManager->GetStep();
 //   printf("%7d SNEXT (%f,%f,%f,%f,%f,%f) step=%g snext=%g safety=%g\n", count_gtnext, x[0], x[1], x[2], x[3],x[4],x[5],step, snext,gctrak->safety);
-//   if (snext<0) exit(1);   
+   if (snext<0) {
+      gctrak->safety = 0.;
+      gctrak->snext = 0.;
+      gctrak->ignext = 1;
+      return;
+   }      
    if (snext < step) {
-      gctrak->snext  = snext;
+      gctrak->snext  = snext + fltprec;
       gctrak->ignext = 1;
 #ifdef STATISTICS
       goto stats;
 #else
+//   printf("++ pstep=%f  snext=%f  safe=%f\n", gctrak->step, gctrak->snext, gctrak->safety);
       return;
 #endif
    }
    gctrak->ignext = 0;
    gctrak->snext = gctrak->step;
+//   printf("++ pstep=%f  snext=%f  safe=%f\n", gctrak->step, gctrak->snext, gctrak->safety);
 }
 #endif
 #ifdef STATISTICS
