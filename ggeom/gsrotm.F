@@ -1,7 +1,10 @@
 *
-* $Id: gsrotm.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsrotm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsrotm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -30,6 +33,7 @@ C.
 #include "geant321/gcunit.inc"
 #include "geant321/gconsp.inc"
 #include "geant321/gcnum.inc"
+      COMMON / FIXIT / JR
       DIMENSION ANGLES(6),IP(3)
       SAVE SINMIN
 #if defined(CERNLIB_SINGLE)

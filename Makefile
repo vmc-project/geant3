@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.4 2002/10/21 15:34:54 brun Exp $
+# $Id: Makefile,v 1.5 2002/11/22 11:27:30 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -61,6 +61,12 @@ ifeq ($(PLATFORM),Linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),icc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-ecc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-gcc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),HP-UX)

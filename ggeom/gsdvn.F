@@ -1,7 +1,10 @@
 *
-* $Id: gsdvn.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsdvn.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsdvn.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -44,6 +47,7 @@ C.
 #include "geant321/gcunit.inc"
 #include "geant321/gcdraw.inc"
 #include "geant321/gcshno.inc"
+      COMMON / FIXIT / JDIV, JVO
       CHARACTER*4 KNAME,MOTHER
       DIMENSION PAR(100),PARM(100),ATT(20)
       SAVE ATT

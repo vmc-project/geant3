@@ -1,7 +1,10 @@
 *
-* $Id: gphysi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphysi.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphysi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -47,6 +50,7 @@ C.
 #include "geant321/gctime.inc"
 #include "geant321/gctrak.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / LBANK, JTP
       DIMENSION CUTS(10),UCUT(10),MECA(5,13)
       EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
       CHARACTER*4 DNAME,KCUT(10)

@@ -1,7 +1,10 @@
 *
-* $Id: gcjump.inc,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gcjump.inc,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gcjump.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -23,6 +26,14 @@
 #include "geant321/gtjump.inc"
 #endif
       PARAMETER    (MAXJMP=30)
+#if defined(CERNLIB_LXIA64) && !defined(CERNLIB_TYPE)
+      INTEGER*8     JUDCAY, JUDIGI, JUDTIM, JUFLD , JUHADR, JUIGET,
+     +              JUINME, JUINTI, JUKINE, JUNEAR, JUOUT , JUPHAD,
+     +              JUSKIP, JUSTEP, JUSWIM, JUTRAK, JUTREV, JUVIEW,
+     +              JUPARA
+      INTEGER*8 JMPADR
+#endif
+
       COMMON/GCJUMP/JUDCAY, JUDIGI, JUDTIM, JUFLD , JUHADR, JUIGET,
      +              JUINME, JUINTI, JUKINE, JUNEAR, JUOUT , JUPHAD,
      +              JUSKIP, JUSTEP, JUSWIM, JUTRAK, JUTREV, JUVIEW,

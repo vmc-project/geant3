@@ -1,7 +1,10 @@
 *
-* $Id: ginit.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: ginit.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: ginit.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -85,6 +88,9 @@ C.
      +              GUINME, GUINTI, GUKINE, GUNEAR, GUOUT , GUPHAD,
      +              GUSKIP, GUSTEP, GUSWIM, GUTRAK, GUTREV, GUVIEW,
      +              GUPARA
+#if defined(CERNLIB_LXIA64)
+      INTEGER*8 JUMPAD
+#endif
 #endif
 C
 C             ZEBRA system common blocks

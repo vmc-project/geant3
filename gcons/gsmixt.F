@@ -1,7 +1,10 @@
 *
-* $Id: gsmixt.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gsmixt.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gsmixt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -43,6 +46,7 @@ C.
 #include "geant321/gcnum.inc"
 #include "geant321/gcunit.inc"
 #include "geant321/gcmzfo.inc"
+      COMMON / FIXIT / JMA, JMIXT, JMI1
       DIMENSION WMAT(1),A(1),Z(1)
       CHARACTER*(*) NAMATE
       CHARACTER*20 NAME

@@ -1,7 +1,10 @@
 *
-* $Id: gsmate.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gsmate.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gsmate.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -153,6 +156,7 @@ C.
 #include "geant321/gcmzfo.inc"
 #include "geant321/gcunit.inc"
 #include "geant321/gconsp.inc"
+      COMMON / FIXIT / JMA
       DIMENSION UBUF(1)
       CHARACTER*(*) NAMATE
       CHARACTER*20 NAME
