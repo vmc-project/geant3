@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.15 2004/07/09 12:15:12 brun Exp $ */
+/* $Id: TGeant3.h,v 1.16 2004/08/11 09:56:26 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -566,6 +566,7 @@ public:
   Int_t CurrentVolOffID(Int_t off, Int_t &copy) const;
   const char* CurrentVolName() const;
   const char *CurrentVolOffName(Int_t off) const;
+  const char* CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
@@ -576,6 +577,9 @@ public:
   void  TrackMomentum(TLorentzVector &xyz) const;  
   void  TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const;
   Int_t NofVolumes() const;
+  Int_t NofVolDaughters(const char* volName) const;
+  const char*  VolDaughterName(const char* volName, Int_t i) const;
+  Int_t        VolDaughterCopyNo(const char* volName, Int_t i) const;
   Int_t VolId2Mate(Int_t id) const;
   Double_t TrackTime() const;  
   Double_t TrackCharge() const;

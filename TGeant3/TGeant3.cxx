@@ -16,6 +16,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.34  2004/09/17 08:51:55  brun
+From Ivana
+ SetRootGeometry() allowed only with WITHROOT option;
+ added Fatal() for other modes.
+
 Revision 1.33  2004/08/25 07:28:54  brun
 From Ivana and Lionel Chaussard
  In method DefineParticles(), we had:
@@ -1107,6 +1112,15 @@ const char* TGeant3::CurrentVolOffName(Int_t off) const
 }
 
 //_____________________________________________________________________________
+const char* TGeant3::CurrentVolPath()
+{
+// Return the path in geometry tree for the current volume
+// ---
+
+  return GetPath();
+}  
+
+//_____________________________________________________________________________
 Int_t TGeant3::IdFromPDG(Int_t pdg) const 
 {
   //
@@ -1495,6 +1509,72 @@ Int_t TGeant3::NofVolumes() const
 #endif
 #ifdef WITHROOT
   return fMCGeo->NofVolumes();
+#endif
+}
+
+//_____________________________________________________________________________
+Int_t TGeant3::NofVolDaughters(const char* volName) const
+{
+// Return number of daughters of the volume specified by volName
+// According to A. Morsch' G3toRoot class
+// ---
+
+#if defined(WITHG3) || defined(WITHBOTH)
+  Int_t idvol = VolId(volName);
+
+  Int_t jvo = fZlq[fGclink->jvolum-idvol];
+  Int_t nin = Int_t(fZq[jvo+3]);
+  return nin;
+#endif
+
+#ifdef WITHROOT
+  return fMCGeo->NofVolDaughters(volName);
+#endif
+}
+
+//_____________________________________________________________________________
+const char*  TGeant3::VolDaughterName(const char* volName, Int_t i) const
+{
+// Return the name of i-th daughters of the volume specified by volName
+// According to A. Morsch' G3toRoot class
+// ---
+
+#if defined(WITHG3) || defined(WITHBOTH)
+  Int_t idvol = VolId(volName);
+
+  Int_t jvo = fZlq[fGclink->jvolum-idvol];
+  Int_t nin=i+1;
+  Int_t jin = fZlq[jvo-nin];
+  Int_t idvold = Int_t(fZq[jin+2]);;
+
+  return VolName(idvold);
+#endif
+
+#ifdef WITHROOT
+  return fMCGeo->VolDaughterName(volName, i);
+#endif
+}
+
+
+//_____________________________________________________________________________
+Int_t TGeant3::VolDaughterCopyNo(const char* volName, Int_t i) const
+{
+// Return the copyNo of i-th daughters of the volume specified by volName
+// According to A. Morsch' G3toRoot class
+// ---
+
+#if defined(WITHG3) || defined(WITHBOTH)
+  Int_t idvol = VolId(volName);
+
+  Int_t jvo = fZlq[fGclink->jvolum-idvol];
+  Int_t nin=i+1;
+  Int_t jin = fZlq[jvo-nin];
+
+  return  Int_t(fZq[jin +3]);
+#endif
+
+#ifdef WITHROOT
+  return fMCGeo->VolDaughterCopyNo(volName, i);
 #endif
 }
 
