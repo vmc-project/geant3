@@ -1,0 +1,40 @@
+############################   MACROS   #######################################
+
+$(DICT):
+		@echo "Generating $@"
+		@rootcint -f $@ -c $(filter -I%,$(CXXFLAGS)) $^
+
+$(SLIBRARY):
+		@echo "Generating $@"
+		@[ -d $(dir $@) ] || mkdir -p $(dir $@)
+		@rm -f $@
+		@-rm -rf tmp
+		@mkdir tmp
+		@cd tmp ; find ../$(BINDIR) -name '*.o' -exec ln -s {} . \;
+                ifeq ($(PLATFORM),aix)
+		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
+                else
+		   @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;\:
+                endif
+		@chmod 555 $@
+		@-rm -rf tmp
+
+$(ALIBRARY):	
+		@echo "Generating $@"
+		@[ -d $(dir $@) ] || mkdir -p $(dir $@)
+		@rm -f $@
+		@ar rv $@ $^
+
+clean:
+	rm -rf $(TOCLEAN)
+
+cleanall:
+	rm -rf $(TOCLEANALL)
+
+depend:
+		-@$(ROOTSYS)/bin/rmkdepend -ftgt_$(PLATFORM)/Make-depend -ptgt_$(PLATFORM)/ -- $(CXXFLAGS) $(DEPINC) -- $^ 2>/dev/null
+
+tgt_$(PLATFORM)/Make-depend:
+		@[ -d $(dir $@) ] || mkdir $(dir $@)
+		@cp config/Makedepend $@
+

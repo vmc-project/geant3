@@ -1,0 +1,37 @@
+*
+* $Id: gufld.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+*
+* $Log: gufld.F,v $
+* Revision 1.1.1.1  2002/06/16 15:18:42  hristov
+* Separate distribution  of Geant3
+*
+* Revision 1.1.1.1  1999/05/18 15:55:21  fca
+* AliRoot sources
+*
+* Revision 1.1.1.1  1995/10/24 10:21:46  cernlib
+* Geant
+*
+*
+#include "geant321/pilot.h"
+*CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
+*-- Author :
+      SUBROUTINE GUFLD(X,F)
+C.
+C.    ******************************************************************
+C.    *                                                                *
+C.    *       User routine to compute the magnetic field F             *
+C.    *       at space point X                                         *
+C.    *                                                                *
+C.    *    ==>Called by : GHELIX,GRKUTA                                *
+C.    *                                                                *
+C.    ******************************************************************
+C.
+      DIMENSION X(3),F(3)
+C.
+C.    ------------------------------------------------------------------
+C.
+      F(1)=0.
+      F(2)=0.
+      F(3)=0.
+C
+      END
