@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.5 2002/11/22 11:27:30 brun Exp $
+# $Id: Makefile,v 1.6 2002/12/02 16:37:44 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -58,6 +58,9 @@ ifneq ($(PLATFORM),SunOS)
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
 ifeq ($(PLATFORM),Linux)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Darwin)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),icc)

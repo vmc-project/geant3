@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.4 2002/12/10 07:58:36 brun Exp $ */
+/* $Id: TGeant3.h,v 1.5 2003/01/06 17:20:52 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -914,7 +914,7 @@ protected:
   TMCProcess G3toVMC(Int_t iproc) const;
 
 private:
-  TGeant3(const TGeant3 &) {}
+  TGeant3(const TGeant3& g3): TVirtualMC(g3) {}
   TGeant3 & operator=(const TGeant3&) {return *this;}
   
   // array conversion
