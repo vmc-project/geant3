@@ -1,4 +1,4 @@
-// $Id: TG3Application.cxx,v 1.2 2002/12/30 07:27:47 brun Exp $
+// $Id: TG3Application.cxx,v 1.1 2003/11/28 11:10:49 brun Exp $
 //
 // Class TG3Application
 // ----------------------- 
@@ -15,9 +15,7 @@
 #include <TVirtualMC.h>
 #include <TLorentzVector.h>
 
-#include <iostream>
-
-using namespace std;
+#include <Riostream.h>
 
 ClassImp(TG3Application)
 
