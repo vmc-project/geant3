@@ -1,7 +1,10 @@
 *
-* $Id: berttp.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: berttp.F,v 1.2 2002/11/21 11:40:24 brun Exp $
 *
 * $Log: berttp.F,v $
+* Revision 1.2  2002/11/21 11:40:24  brun
+* Fix a problem when getting the environment variable to reach the file flukaaf.dat
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -57,21 +60,21 @@ C---------------------------------------------------------------------
       ELSE
 #if defined(CERNLIB_UNIX)||defined(CERNLIB_CRAY)
          CHROOT=' '
-         CALL GETENVF('ALICE',CHROOT)
+         CALL GETENVF('G3SYS',CHROOT)
          LNROOT = LNBLNK(CHROOT)
          IF(LNROOT.LE.0) THEN
             FILNAM='flukaaf.dat'
          ELSE
-            FILNAM=CHROOT(1:LNROOT)//'/geant3/data/flukaaf.dat'
+            FILNAM=CHROOT(1:LNROOT)//'/data/flukaaf.dat'
          ENDIF
          INQUIRE(FILE=FILNAM,EXIST=EXISTS)
          IF(.NOT.EXISTS) THEN
            PRINT*,'**********************************'
            PRINT*,'*        F I F A C E             *'
            PRINT*,'*        -----------             *'
-           PRINT*,'*   File FLUKAAF.DAT not found   *'
+           PRINT*,'*   File flukaaf.dat not found   *'
            PRINT*,'*         Program STOP           *'
-           PRINT*,'*   Check CERN_ROOT environment  *'
+           PRINT*,'*   Check G3SYS environment      *'
            PRINT*,'*           variable             *'
            PRINT*,'**********************************'
            STOP
