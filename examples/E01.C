@@ -1,4 +1,4 @@
-// $Id: E01.C,v 1.2 2003/12/08 14:12:35 brun Exp $
+// $Id: E01.C,v 1.3 2003/12/08 14:20:11 brun Exp $
 //
 // Macro for running Example01 with Geant3 
 // Before running this macro, the libexampl01.so library
@@ -18,11 +18,11 @@
   new TGeoManager("E01","test"); 
   
   // Load Geant3 libraries
-  gSystem->Load("../lib/tgt_Linux/libdummies");
-  gSystem->Load("../lib/tgt_Linux/libgeant321");
+  gSystem->Load("../lib/tgt_linux/libdummies");
+  gSystem->Load("../lib/tgt_linux/libgeant321");
   
   // Load this example library
-  gSystem->Load("~/geant4_vmc/lib/tgt_Linux/libexample01");
+  gSystem->Load("~/geant4_vmc/lib/tgt_linux/libexample01");
 
   // MC application
   Ex01MCApplication* appl 
