@@ -1,7 +1,10 @@
 *
-* $Id: bimsel.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
+* $Id: bimsel.F,v 1.2 2003/11/28 11:23:57 brun Exp $
 *
 * $Log: bimsel.F,v $
+* Revision 1.2  2003/11/28 11:23:57  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
 * initial import into CVS
 *
@@ -265,7 +268,7 @@
          SIGMAN = SIGMN0
  4400    CONTINUE
          CALL GRNDM(RNDM,1)
-         ANMFP = - LOG ( 1.D+00 - RNDM (1) ) / DSKRED
+         ANMFP = - LOG ( RNDM (1) ) / DSKRED
          IF ( SBRES * SIGMAA .GT. ANMFP ) THEN
             GO TO 6000
          END IF
@@ -364,7 +367,7 @@
          YBIMPC = VBIMPC * BIMPCT
          ZBIMPC = WBIMPC * BIMPCT
          CALL GRNDM(RNDM,1)
-         ANMFP  = - LOG ( 1.D+00 - RNDM (1) ) / DSKRED
+         ANMFP  = - LOG ( RNDM (1) ) / DSKRED
          IF ( BIMPCT .GT. RAD1O2 ) THEN
             SBTTSQ = 4.D+00 * ( RADTOT**2 - BIMPCT**2 ) * RHOBIM**2
             IF ( SBTTSQ .LE. ( ANMFP / SIGMAA )**2 ) GO TO 5000

@@ -1,6 +1,6 @@
-  Eventv: ekin+am < pla,ij,igreyt  5.98498167  6.35198134 14 37
-  Eventv: Pla < 0.4 Poo  2.27149922  5.74723393 8  0.247930884 1
-Ferhav: kp,plabs,elabs,pprox,y,z,pfrmix,y,z 14  5.35096572E-05  0.13956751
+  Eventv: ekin+am < pla,ij,igreyt  8.6107164  8.76141702 14 14
+  Eventv: ekin+am < pla,ij,igreyt  6.43645557  6.60371699 14 27
+  Ferhav: kp,plabs,elabs,pprox,y,z,pfrmix,y,z 14  5.35096572E-05  0.13956751
  -0.102821232 -0.108461003  0.0480401064 -0.149106881  0.015884149 -0.117567006
     Lvmass,Am(kp),Eproj: F  0.1395675  0.210054597
   NUCEVT-FEREVT PX CONSERVATION FAILURE: PUX,PXFRM+PXCHCK -0.458926081

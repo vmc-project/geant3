@@ -1,7 +1,10 @@
 *
-* $Id: abbrch.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: abbrch.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: abbrch.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -70,7 +73,7 @@ C*****CHOICE OF THE CUT OFF ENERGY
       X=RNDM(1)
       IF(I.EQ.1)RX=E0
       IF(I.GT.1)RX=RE(J)
-      AM=AM0-1.D0/B1*LOG(1.D0-X)
+      AM=AM0-1.D0/B1*LOG(X)
       IF (RNDM(2).LT.CUTBAM)AM=AM0+0.9D0*RX*RNDM(3)
       X=RNDM(4)
       ESA=AM0-1.D0/B2*LOG(1.D0-X)
