@@ -1,20 +1,30 @@
-# $Id: Makefile.linuxicc,v 1.2 2004/05/13 09:12:40 brun Exp $
+# $Id: Makefile.linuxicc,v 1.2 2004/05/13 21:44:09 brun Exp $
 
 # Linux (with icc) platform dependent definitions for GEANT321 Makefile
 
 # The compilers
-CXX       = icc 
-F77	      = ifc
-CC	      = icc
+CXX           = icc
+CC            = icc
+
+ICC_MAJOR    := $(shell $(CXX) -V 2>&1 | awk '{ if (NR==1) print $$8 }' | \
+                cut -d'.' -f1)
+ICC_MINOR    := $(shell $(CXX) -V 2>&1 | awk '{ if (NR==1) print $$8 }' | \
+                cut -d'.' -f2)
+
+ifeq ($(ICC_MAJOR),8)
+F77           = ifort
+else
+F77           = ifc
+endif
 
 # Global optimisation
-OPT       = -O
+OPT           = -O
 
 # Shared library suffix
-SL	      = so
+SL            = so
 
 # AWK
-AWK	      = awk
+AWK           = awk
 
 # The options
 #
@@ -22,8 +32,8 @@ AWK	      = awk
 # not necessary any more
 #
 CXXOPTS       = $(OPT)
-COPT	      = $(OPT)
-FOPT	      = $(OPT)
+COPT          = $(OPT)
+FOPT          = $(OPT)
 
 # CERNLIB defines
 
@@ -35,10 +45,10 @@ CLIBFOPT      = $(CLIBDEFS)
 LD            = icc
 LDFLAGS       = $(OPT)
 
-SHLD	      = $(LD)
-SOFLAGS       = -Wl,-soname,$(notdir $@) -shared 
-SHLIB         = 
+SHLD          = $(LD)
+SOFLAGS       = -Wl,-soname,$(notdir $@) -shared
+SHLIB         =
 
-LIBS          = $(ROOTLIBS) 
+LIBS          = $(ROOTLIBS)
 LIBNOVER      = `find /lib -name 'libNoVersion*.so' | xargs --replace basename {} .so | sed -e 's/lib/ -l/'`
 
