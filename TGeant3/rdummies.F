@@ -14,19 +14,9 @@
       end
       subroutine gfind
       end      
-      subroutine igsa
-      end
 
 c      subroutine igtofl
 c      end
-      subroutine isfaci
-      end
-      subroutine isfais
-      end
-      subroutine isplci
-      end 
-      subroutine ifa
-      end
       subroutine gviewf
       end
 

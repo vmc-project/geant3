@@ -2,7 +2,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: geant3LinkDef.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
+/* $Id: geant3LinkDef.h,v 1.2 2003/11/28 09:44:59 brun Exp $ */
 
 #pragma link off all globals;
 #pragma link off all classes;
@@ -37,6 +37,19 @@
 #pragma link C++ class Eropts_t+;
 #pragma link C++ class Eroptc_t+;
 #pragma link C++ class Erwork_t+;
+
+#pragma link C++ enum G3DrawParamId;
+#pragma link C++ class  G3GUISliders+;
+#pragma link C++ class  G3GeometryGUI-;
+#pragma link C++ class  G3GuiGeomDialog+;
+#pragma link C++ class  G3GuiGeomMain-;
+#pragma link C++ class  G3Material+;
+#pragma link C++ class  G3Medium-;
+#pragma link C++ class  G3Node+;
+#pragma link C++ class  G3Volume+;
+#pragma link C++ class  G3toRoot+;
+#pragma link C++ class  THIGZ+;
+#pragma link C++ class  TPaveTree+;
 
 
 #endif
