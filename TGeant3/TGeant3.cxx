@@ -16,6 +16,13 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.18  2003/12/10 15:39:37  brun
+iFollowing recent improvements by Andrei, replace in ggperp
+the computation of normals:
+    Double_t *dblnorm = gGeoManager->FindNormal(kFALSE);
+with :
+    Double_t *dblnorm = gGeoManager->FindNormalFast();
+
 Revision 1.17  2003/12/10 10:32:09  brun
 Add a protection in TGeant3::Gsmate in case the material density is null
 
@@ -418,9 +425,7 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-     gMC->GetRandom()->RndmArray(n,r);
-     //TRandom *rr = gMC->GetRandom();
-     //for (Int_t i=0;i<n;i++) r[i] = rr->Rndm();
+     for (Int_t i=0;i<n;i++) r[i] = gRandom->RndmArray();
   }
 
   void type_of_call grndmq(Int_t &is1, Int_t &is2, const Int_t &,
@@ -590,7 +595,16 @@ Int_t count_gtmedi = 0;
 Int_t count_gtnext = 0;
 Gcchan_t *gcchan = 0;
 
-ClassImp(TGeant3) 
+//#define STATISTICS
+#ifdef STATISTICS
+#include "TTree.h"
+#include "TFile.h"
+Float_t oldvect[6], oldstep, oldsafety;
+Int_t statcode;
+Double_t statsafety, statsnext;
+TTree *stattree =0;
+TFile *statfile=0;
+#endif
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3()
@@ -618,6 +632,17 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
   // 
+   
+#ifdef STATISTICS
+   statfile = new TFile("stat.root","recreate");
+   stattree = new TTree("stat","stat tree");
+   stattree->Branch("statcode",&statcode,"statcode/I");
+   stattree->Branch("oldvect",oldvect,"oldvect[6]/F");
+   stattree->Branch("oldsafety",&oldsafety,"oldsafety/F");
+   stattree->Branch("oldstep",&oldstep,"oldstep/F");
+   stattree->Branch("snext",&statsnext,"statsnext/D");
+   stattree->Branch("safety",&statsafety,"statsafety/D");
+#endif
    
   geant3 = this;
   
@@ -2517,6 +2542,9 @@ void  TGeant3::Glast()
   printf("count_gtmedi= %8d\n",count_gtmedi);
   printf("count_ginvol= %8d\n",count_ginvol);
   printf("count_gtnext= %8d\n",count_gtnext);
+#ifdef STATISTICS
+   stattree->AutoSave();
+#endif
    
 } 
  
@@ -5865,7 +5893,13 @@ extern "C" type_of_call void ggperp(Float_t*, Float_t*, Int_t&);
 void ginvol(Float_t *x, Int_t &isame)
 {
  
-count_ginvol++;
+//count_ginvol++;
+#ifdef STATISTICS
+   statcode = 0;
+   for (int j=0;j<6;j++) if (j <3) oldvect[j] = x[j]; else oldvect[j]=0;
+   oldsafety = gctrak->safety;
+   oldstep   = gctrak->step;
+#endif
 #ifdef WITHBOTH
    g3invol(x,isame);
 
@@ -5900,13 +5934,25 @@ count_ginvol++;
    if (gGeoManager->IsSameLocation(x[0], x[1], x[2])) isame = 1;
    else isame = 0;
 #endif
+#ifdef STATISTICS
+   statsnext=gctrak->snext;
+   statsafety=gctrak->safety;
+   stattree->Fill();
+   count_ginvol++;
+#endif
 }
 
 
 //______________________________________________________________________
 void gtmedi(Float_t *x, Int_t &numed)
 {
-count_gtmedi++;
+//count_gtmedi++;
+#ifdef STATISTICS
+   statcode = 2;
+   for (int j=0;j<6;j++) if (j <3) oldvect[j] = x[j]; else oldvect[j]=0;
+   oldsafety = gctrak->safety;
+   oldstep   = gctrak->step;
+#endif
    // printf("GTMEDI %i:\n", count_gtmedi);
 #ifdef WITHBOTH
    static Int_t count_berr = 0;
@@ -6031,12 +6077,27 @@ count_gtmedi++;
    // printf("   imed=%i\n", numed);
 #endif
 #ifdef WITHROOT
+{
+   //TGeoNode *old = gCurrentNode;
+   gcchan->lsamvl = kTRUE;
    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-   if (!gCurrentNode) {numed=0; return;}
+   if (gGeoManager->IsOutside()) {
+//printf("found numed=0\n");
+      numed=0; 
+#ifdef STATISTICS
+      goto stats;
+#else
+      return;
+#endif
+   }
    gcvolu->nlevel = 1 + gGeoManager->GetLevel();
    gGeoManager->GetBranchNames(gcvolu->names);
    gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
    TGeoVolume *vol = gCurrentNode->GetVolume();
+   //if(gCurrentNode != old) gcchan->lsamvl = kFALSE;   
+   //if (gcchan->lsamvl != gGeoManager->IsSameLocation()) {
+   //   printf("lsamvl=%d, issameloc=%d\n",gcchan->lsamvl,gGeoManager->IsSameLocation());
+   //}
    gcchan->lsamvl = gGeoManager->IsSameLocation();   
    if (vol) {
       TGeoMedium *medium = vol->GetMedium();
@@ -6044,7 +6105,16 @@ count_gtmedi++;
    } else {
       printf("found case with vol=0 in gtmedi\n");
    }
+//printf("found3 numed=%d\n",numed);
    // printf("   imed=%i\n", numed);   
+}
+#endif
+#ifdef STATISTICS
+stats:
+   statsnext=gctrak->snext;
+   statsafety=gctrak->safety;
+   stattree->Fill();
+   count_gtmedi++;
 #endif
 }
 
@@ -6052,7 +6122,13 @@ count_gtmedi++;
 //______________________________________________________________________
 void gmedia(Float_t *x, Int_t &numed, Int_t &check)
 {
-count_gmedia++;
+//count_gmedia++;
+#ifdef STATISTICS
+   statcode = 1;
+   for (int j=0;j<6;j++) if (j <3) oldvect[j] = x[j]; else oldvect[j]=0;
+   oldsafety = gctrak->safety;
+   oldstep   = gctrak->step;
+#endif
    // printf("GMEDIA %i:\n", count_gmedia);
 #ifdef WITHBOTH
    g3media(x,numed,check);
@@ -6080,8 +6156,16 @@ count_gmedia++;
    // printf("   imed=%i\n", numed);
 #endif
 #ifdef WITHROOT
+{
    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-   if (!gCurrentNode) {numed=0; return;}
+   if (gGeoManager->IsOutside()) {
+      numed=0; 
+#ifdef STATISTICS
+      goto stats;
+#else
+      return;
+#endif
+   }
    gcvolu->nlevel = 1 + gGeoManager->GetLevel();
    gGeoManager->GetBranchNames(gcvolu->names);
    gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
@@ -6093,6 +6177,14 @@ count_gmedia++;
       printf("found case with vol=0 in gmedia\n");
    }
    // printf("   imed=%i\n", numed);
+}
+#endif
+#ifdef STATISTICS
+stats:
+   statsnext=gctrak->snext;
+   statsafety=gctrak->safety;
+   stattree->Fill();
+   count_gmedia++;
 #endif
 }
 
@@ -6161,7 +6253,13 @@ void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
 //______________________________________________________________________
 void gtnext()
 {
-   count_gtnext++;
+//   count_gtnext++;
+#ifdef STATISTICS
+   statcode = 3;
+   for (int j=0;j<6;j++) oldvect[j] = gctrak->vect[j];
+   oldsafety = gctrak->safety;
+   oldstep   = gctrak->step;
+#endif
 #ifdef WITHBOTH
    static Int_t count_virtual = 0;
    static Int_t count_errors = 0;
@@ -6207,20 +6305,33 @@ void gtnext()
 #endif
 #ifdef WITHG3
    g3tnext();
+#ifdef STATISTICS
+      goto stats;
+#else
+      return;
+#endif
 #endif
 #ifdef WITHROOT
+{
+   Float_t *x = gctrak->vect;   
    Double_t step = gctrak->step;
-   Float_t *x = gctrak->vect;
-   
    gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
-   gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
-
+//geant3->Gpcxyz();
    if (!gGeoManager->IsSameLocation(x[0],x[1],x[2])) {
+//static int acount=0;
+//acount++;
+//printf("acount=%5d, x=%g, %g, %g, sleng=%g\n",acount,x[0],x[1],x[2],gctrak->sleng);
+//geant3->Gpcxyz();
       gctrak->safety = 0.;
       gctrak->snext = 0.;
       gctrak->ignext = 1;
+#ifdef STATISTICS
+      goto stats;
+#else
       return;
+#endif
    }
+   gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
    gGeoManager->FindNextBoundary(step);
    gctrak->safety = gGeoManager->GetSafeDistance();
    Double_t snext  = gGeoManager->GetStep();
@@ -6229,10 +6340,22 @@ void gtnext()
    if (snext < step) {
       gctrak->snext  = snext;
       gctrak->ignext = 1;
+#ifdef STATISTICS
+      goto stats;
+#else
       return;
+#endif
    }
    gctrak->ignext = 0;
    gctrak->snext = gctrak->step;
+}
+#endif
+#ifdef STATISTICS
+stats:
+   statsnext=gctrak->snext;
+   statsafety=gctrak->safety;
+   stattree->Fill();
+   count_gtnext++;
 #endif
 }
 
