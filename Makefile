@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2003/11/28 11:23:55 brun Exp $
+# $Id: Makefile,v 1.9 2003/12/03 02:27:07 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -89,7 +89,7 @@ OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
 # C++ compilation flags
 
 CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) $(CLIBDEFS) -I. \
-			-I$(ROOTSYS)/include -ITGeant3 -DWITHROOT
+			-I$(ROOTSYS)/include -ITGeant3
 
 # C compilation flags
 
