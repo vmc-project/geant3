@@ -1,4 +1,4 @@
-# $Id: Makefile.Linux,v 1.2 2002/10/08 13:23:11 brun Exp $
+# $Id: Makefile.Linux,v 1.3 2002/12/02 16:37:44 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -8,7 +8,7 @@ F77	  = g77
 CC	  = gcc
 
 # Global optimisation
-OPT   = -O -g
+OPT   = -O2 -g
 
 # Shared library suffix
 SL	  = so
