@@ -1,4 +1,4 @@
-# $ Id: $
+# $Id: Makefile.Linux,v 1.4 2004/01/28 08:24:24 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -8,7 +8,7 @@ F77	  = g77
 CC	  = gcc
 
 # Global optimisation
-OPT   = -O -g
+OPT   = -O2 -g
 
 # Shared library suffix
 SL	  = so
@@ -25,12 +25,18 @@ CXXOPTS       = $(OPT) -Wall -fPIC -pipe
 COPT	      = $(OPT)
 FOPT	      = $(OPT) -fno-second-underscore
 
+GCC_MAJOR    := $(shell $(CXX) -v 2>&1 | \
+                  grep version | cut -d' ' -f3  | cut -d'.' -f1)
+ifneq ($(GCC_MAJOR),3)
+   FOPT      := $(filter-out -O%,$(FOPT))
+endif
+
 # CERNLIB defines
 
 CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ
-CLIBCXXOPTS   =
-CLIBCOPT      =
-CLIBFOPT      =
+CLIBCXXOPTS   = $(CLIBDEFS)
+CLIBCOPT      = $(CLIBDEFS)
+CLIBFOPT      = $(CLIBDEFS)
 
 LD            = g++
 LDFLAGS       = $(OPT)

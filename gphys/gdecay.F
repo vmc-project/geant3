@@ -1,7 +1,10 @@
 *
-* $Id: gdecay.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdecay.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdecay.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDECAY
+      SUBROUTINE G3DECAY
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *  MODE(I)        I'th decay mode of current particle            *
 C.    *  BRATIO(I)      branching ratio for I'th decay mode of         *
 C.    *                 current particle.                              *
 C.    *                                                                *
-C.    *    ==>Called by : GHSTOP,GTHADR,GTNEUT,GTMUON                  *
+C.    *    ==>Called by : G3HSTOP,G3THADR,G3TNEUT,G3TMUON              *
 C.    *       Author    G.Patrick *********                            *
 C.    *                                                                *
 C.    ******************************************************************
@@ -120,7 +123,7 @@ C--                 (M.Guckes)
             GO TO 99
  40         DMASS = RMASS
          END IF
-         CALL GDECA2(DMASS,XM(1),XM(2),PCM)
+         CALL G3DECA2(DMASS,XM(1),XM(2),PCM)
       ELSE
 C
 C             Three body decay.
@@ -145,7 +148,7 @@ C--  (via integral-transformation of Lorentz-distribution)
             GO TO 99
  41         DMASS = RMASS
          END IF
-         CALL GDECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+         CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
       ENDIF
 C
 C             LORENTZ boost into LAB system defined along parent vector
@@ -157,16 +160,16 @@ C
       BETA(2)  = 0.
       BETA(3)  = -P0/E0
       BETA(4)  = E0/DMASS
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
 C
       DO 60 K=1,NGKINE
          IF (P0.LE.0.) THEN
             DO 59 I = 1,3
    59       GKIN(I,K) = PCM(I,K)
          ELSE
-            CALL GLOREN (BETA, PCM(1,K), GKIN(1,K))
+            CALL G3LOREN (BETA, PCM(1,K), GKIN(1,K))
          ENDIF
-         IF(ROTATE) CALL GDROT  (GKIN(1,K),COSTH,SINTH,COSPH,SINPH)
+         IF(ROTATE) CALL G3DROT  (GKIN(1,K),COSTH,SINTH,COSPH,SINPH)
          GKIN(4,K)=SQRT(GKIN(1,K)**2+GKIN(2,K)**2+GKIN(3,K)**2+XM(K)**2)
          GKIN(5,K)=NTYPE(K)
          TOFD(K)=0.

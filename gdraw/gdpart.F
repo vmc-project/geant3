@@ -1,16 +1,5 @@
 *
-* $Id: gdpart.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdpart.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -76,7 +65,7 @@ C.
                CHTEXT=IPTAB(IPART)//IPTAB1(IPART)//IPTAB2(IPART)
                U=IU
                V=IV
-               CALL GDRAWT(U,V,CHTEXT,SIZE,0.,1,0)
+               CALL G3DRAWT(U,V,CHTEXT,SIZE,0.,1,0)
    10    CONTINUE
       ENDIF
 #endif
@@ -130,7 +119,7 @@ C
             WRITE (CHPART,'(I4,''$'')') I
             U=U0-0.5*SIZE
             V=V0-1.5*SIZE
-            CALL GDRAWT(U,V,CHPART,SIZE,0.,1,0)
+            CALL G3DRAWT(U,V,CHPART,SIZE,0.,1,0)
          ENDIF
 C
          IF (ISEL1.NE.0) THEN
@@ -140,7 +129,7 @@ C
             CHTEXT=IPTAB(IPART)//IPTAB1(IPART)//IPTAB2(IPART)
             U=U0-0.5*SIZE
             V=V0+0.5*SIZE
-            CALL GDRAWT(U,V,CHTEXT,SIZE,0.,1,0)
+            CALL G3DRAWT(U,V,CHTEXT,SIZE,0.,1,0)
          ENDIF
 C
    20 CONTINUE

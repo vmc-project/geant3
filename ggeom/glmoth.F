@@ -1,7 +1,10 @@
 *
-* $Id: glmoth.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: glmoth.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glmoth.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.29  by  S.Giani
 *-- Author :
-      SUBROUTINE GLMOTH (IUDET, IUNUM, NLEV, LVOLS, LINDX)
+      SUBROUTINE G3LMOTH (IUDET, IUNUM, NLEV, LVOLS, LINDX)
 C.
 C.    ******************************************************************
 C.    *                                                                *

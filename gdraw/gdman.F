@@ -1,27 +1,16 @@
 *
-* $Id: gdman.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdman.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDMAN(U0,V0)
+      SUBROUTINE G3DMAN(U0,V0)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Draw a 2D-man at position (U0,V0)                        *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC                     *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -70,7 +59,7 @@ C
             U(J)=U(J)*PLTRNX/20.
             V(J)=V(J)*PLTRNY/20.
    10    CONTINUE
-         CALL GDRAWV(U,V,JMAX)
+         CALL G3DRAWV(U,V,JMAX)
    20 CONTINUE
 C
       END

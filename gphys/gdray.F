@@ -1,7 +1,10 @@
 *
-* $Id: gdray.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdray.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdray.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 02/07/94  18.28.12  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAY
+      SUBROUTINE G3DRAY
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates Delta rays                                          *
 C.    *                                                                *
-C.    *    ==>Called by : GTELEC,GTHADR,GTMUON                         *
+C.    *    ==>Called by : G3TELEC,G3THADR,G3TMUON                      *
 C.    *       Authors    D.Ward, L.Urban  ********                     *
 C.    *                                                                *
 C.    ******************************************************************
@@ -144,10 +147,10 @@ C
       PELS(2)=-GKIN(2,1)
       PELS(3)=P-GKIN(3,1)
 C
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
       IF(ROTATE) THEN
-         CALL GDROT(PELS(1),COSTH,SINTH,COSPH,SINPH)
-         CALL GDROT(GKIN,COSTH,SINTH,COSPH,SINPH)
+         CALL G3DROT(PELS(1),COSTH,SINTH,COSPH,SINPH)
+         CALL G3DROT(GKIN,COSTH,SINTH,COSPH,SINPH)
       ENDIF
 C
 C             Correct track vector for lost energy and scattered angles
@@ -163,7 +166,7 @@ C
       VECT(7) = PEELS
       GEKIN=TELS
       GETOT=EELS
-      CALL GEKBIN
+      CALL G3EKBIN
       IF((IDRAY.NE.1).OR.(TEL.LE.CUTELE)) THEN
           NGKINE = 0
           DESTEP = DESTEP + TEL

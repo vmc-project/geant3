@@ -1,7 +1,10 @@
 *
-* $Id: gptmex.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gptmex.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gptmex.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GPTMEX (NUMB  )
+      SUBROUTINE G3PTMEX (NUMB  )
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Routine to print tracking media data structure JTMED     *
 C.    *       NUMB     medium number                                   *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, GPRINT                               *
+C.    *    ==>Called by : <USER>, G3PRINT                              *
 C.    *       Author    R.Brun S.Giani  *********                      *
 C.    *                                                                *
 C.    ******************************************************************

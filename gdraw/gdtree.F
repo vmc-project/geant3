@@ -1,21 +1,10 @@
 *
-* $Id: gdtree.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdtree.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDTREE(KNAME,LEVMAX,ISEL)
+      SUBROUTINE G3DTREE(KNAME,LEVMAX,ISEL)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -34,7 +23,7 @@ C.    *                                                                *
 C.    *       For very big trees, the attribute SEEN -3 can be applied *
 C.    *       to any node in the level that has too many different     *
 C.    *       nodes (each with a different volume name) : the routine  *
-C.    *       GDTREE will draw only the first, the last, and one       *
+C.    *       G3DTREE will draw only the first, the last, and one      *
 C.    *       dummy node in the middle that tells how many nodes       *
 C.    *       does it stand for.                                       *
 C.    *                                                                *
@@ -98,7 +87,7 @@ C
       ISEL0=ISEL/1
       ISEL0=ISEL0-ISEL0/2*2
 C
-C             Save GDRAW calling parameters
+C             Save G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
       IDRAW=0
@@ -286,8 +275,8 @@ C
          U(1)=U(2)
          V(2)=Q(JVLEV+1)-(SIZD2*2.*FACHV)
          V(1)=V(2)-(SIZE*2.*FACHV)
-         CALL GDRAWV(V,U,2)
-***         CALL GDRAWV(U,V,2)
+         CALL G3DRAWV(V,U,2)
+***         CALL G3DRAWV(U,V,2)
       ENDIF
 C
       IGREEN=1
@@ -311,7 +300,7 @@ C
             IF(NNPAR.EQ.3)THEN
                CALL IGPID(1,' ',J,' ')
             ENDIF
-            CALL GDRAWV(V,U,4)
+            CALL G3DRAWV(V,U,4)
 ***
            IF(INTFLA.EQ.-1)THEN
             ARROWS=(SIZD2*2.*FACHV)/10.
@@ -336,7 +325,7 @@ C
                ENDIF
                CALL IFA(3,SVVX,SVVY)
    90       CONTINUE
-***            CALL GDRAWV(U,V,2)
+***            CALL G3DRAWV(U,V,2)
             NPO=IQ(JMYLL+J)
             FRA=(V(4)-V(3))/NPO
             DO 100 KJI=1,NPO
@@ -373,7 +362,7 @@ C
             U(2)=U(1)
             V(1)=Q(JVLEV+J)+(SIZD2*2.*FACHV)
             V(2)=V(1)+(SIZE*2.*FACHV)
-            CALL GDRAWV(V,U,2)
+            CALL G3DRAWV(V,U,2)
             NPO=IQ(JTICK+J)
             FRA=(V(2)-V(1))/(NPO*2.)
             DO 130 KJI=1,NPO
@@ -395,12 +384,12 @@ C
                ENDIF
                CALL IFA(3,SVVX,SVVY)
   140       CONTINUE
-***            CALL GDRAWV(U,V,2)
+***            CALL G3DRAWV(U,V,2)
            ENDIF
          ENDIF
   150 CONTINUE
 C
-C             Restore GDRAW calling parameters
+C             Restore G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
   160 CONTINUE
@@ -434,6 +423,6 @@ C
 C
   180 WRITE(CHMAIL,10000)KNAME
       CALL GMAIL(0,0)
-10000 FORMAT(' GDTREE: VOLUME ',A4,' DOES NOT EXIST')
+10000 FORMAT(' G3DTREE: VOLUME ',A4,' DOES NOT EXIST')
 C
   999 END

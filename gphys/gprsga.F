@@ -1,7 +1,10 @@
 *
-* $Id: gprsga.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprsga.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprsga.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GPRSGA
+      SUBROUTINE G3PRSGA
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -26,7 +29,7 @@ C     *  semiempirical cross section formula of L.Urban is used        *
 C     *  to estimate the photon mean free path in a given material     *
 C     *            (see WRITEUP)                                       *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Authors    R.Brun, G.Patrick, L.Urban  *********         *
 C.    *                                                                *
 C.    ******************************************************************
@@ -56,7 +59,7 @@ C
 C
 C             simple material (element)
 C
-          SST=GPRSGG(Z,EGAM)/A
+          SST=G3PRSGG(Z,EGAM)/A
       ELSE
 C
 C             compound or mixture
@@ -68,7 +71,7 @@ C
             AA=Q(II-NLM)
             ZZ=Q(II)
             W=Q(II+NLM)
-            SST=SST+W*GPRSGG(ZZ,EGAM)/AA
+            SST=SST+W*G3PRSGG(ZZ,EGAM)/AA
   10     CONTINUE
       ENDIF
 C
@@ -92,7 +95,7 @@ C
 C
 C            Element
 C
-         SST=GPRSGM(Z,T,PPCUTM)
+         SST=G3PRSGM(Z,T,PPCUTM)
          SST=SST/A
       ELSE
 C
@@ -106,7 +109,7 @@ C
             AA   = Q(II-NLM)
             ZZ   = Q(II)
             WMAT = Q(II+NLM)
-            SST  = SST+WMAT*GPRSGM(ZZ,T,PPCUTM)/AA
+            SST  = SST+WMAT*G3PRSGM(ZZ,T,PPCUTM)/AA
  110     CONTINUE
       ENDIF
       SST=AVO*DENS*SST

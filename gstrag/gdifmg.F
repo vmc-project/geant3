@@ -1,7 +1,10 @@
 *
-* $Id: gdifmg.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gdifmg.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gdifmg.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +22,7 @@
 #if defined(CERNLIB_ASHO)
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GDIFMG(DEL)
+      SUBROUTINE G3DIFMG(DEL)
  
 #include "geant321/gccuts.inc"
 #include "geant321/gcasho.inc"

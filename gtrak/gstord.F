@@ -1,7 +1,10 @@
 *
-* $Id: gstord.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstord.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gstord.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTORD
+      SUBROUTINE G3STORD
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Orders the particles in the stack in ascending order by      *
 C.    *   the user word.                                               *
 C.    *                                                                *
-C.    *   Called by : GLTRAC                                           *
+C.    *   Called by : G3LTRAC                                          *
 C.    *   Authors   : F.Carminati                                      *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,7 +1,10 @@
 *
-* $Id: gsdet.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gsdet.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsdet.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -208,9 +211,9 @@ C
 C
 C             Now enter set,det into JVOLUM data structure
 C
-      CALL GSATT(IUDET,'SET ',ISET)
-      CALL GSATT(IUDET,'DET ',IDET)
-      CALL GSATT(IUDET,'DTYP',IDTYPE)
+      CALL G3SATT(IUDET,'SET ',ISET)
+      CALL G3SATT(IUDET,'DET ',IDET)
+      CALL G3SATT(IUDET,'DTYP',IDTYPE)
       GO TO 99
 C
 C              Errors

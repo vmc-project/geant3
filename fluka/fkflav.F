@@ -1,7 +1,10 @@
 *
-* $Id: fkflav.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: fkflav.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: fkflav.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -143,9 +146,9 @@ C     U/D/S FLAVOURS
          IF (RX .LE. 1.019D+00 ) GO TO 110
          X1=RX
          X2=UQUARM
-         PU=BETA(X1,X2,BET)
+         PU=BETA_G3(X1,X2,BET)
          X2=SQUARM
-         PS=BETA(X1,X2,BET)
+         PS=BETA_G3(X1,X2,BET)
          PTOT=2.D+00*PU+PS
          PU1=PU/PTOT
          PS =PS/PTOT
@@ -261,11 +264,11 @@ C     U/D/S/C FLAVOUR
          IF (RX .LE. GM) GO TO 200
          X1=RX
          X2=UQUARM
-         PU=BETA(X1,X2,BET)
+         PU=BETA_G3(X1,X2,BET)
          X2=SQUARM
-         PS=BETA(X1,X2,BET)
+         PS=BETA_G3(X1,X2,BET)
          X2=CQUARM
-         PC=BETA(X1,X2,BET)
+         PC=BETA_G3(X1,X2,BET)
          PTOT=2.D+00*PU+PS+PC
          PU1=PU/PTOT
          PS=PS/PTOT

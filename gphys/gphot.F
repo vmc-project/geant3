@@ -1,7 +1,10 @@
 *
-* $Id: gphot.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphot.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gphot.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHOT
+      SUBROUTINE G3PHOT
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -27,7 +30,7 @@ C.    *    2. Generation of shell decay mode                           *
 C.    *    3. Probability of interactioon with a shell = function      *
 C.    *       of photon energy                                         *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GTGAMA                                       *
+C.    *    ==>CALLED BY : G3TGAMA                                      *
 C.    *       AUTHOR    : J. Chwastowski                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -73,9 +76,9 @@ C gamma & return
          NZ = Q(JPHXS+1)
          IF(NZ.GT.1) THEN
             QS = 0.0
-            QS2 = GPHSG1(E)*RN01
+            QS2 = G3PHSG1(E)*RN01
             DO 10 I = 1,NZ-1
-               QS1 = GPHSGP(I,E)
+               QS1 = G3PHSGP(I,E)
                QS = QS+QS1
                IF(QS2.LE.QS) THEN
                   K = I
@@ -134,8 +137,8 @@ C range.
                   GAMAL2 = E2/EMASS+1.
                   BETAL2 = SQRT(E2*(E2+2.0*EMASS))/(E+EMASS)
                   EFRAC = EMASS/E
-                  PROBL3 = GAVRL3(GAMAL3,BETAL3,EFRAC)
-                  PROBL2 = GAVRL2(GAMAL2,BETAL2,EFRAC)
+                  PROBL3 = G3AVRL3(GAMAL3,BETAL3,EFRAC)
+                  PROBL2 = G3AVRL2(GAMAL2,BETAL2,EFRAC)
                   ANOR = 1./(PROBL3+PROBL2)
                   PROBL3 = PROBL3*ANOR
                   PROBL2 = PROBL2*ANOR
@@ -210,13 +213,13 @@ C
             ISTOP = 1
             NGKINE = 1
             IF(ISHELL.EQ.1) THEN
-               COST = GPHAK(BETA)
+               COST = G3PHAK(BETA)
             ELSEIF(ISHELL.EQ.2) THEN
-               COST = GPHAL1(BETA)
+               COST = G3PHAL1(BETA)
             ELSEIF(ISHELL.EQ.3) THEN
-               COST = GPHAL2(BETA)
+               COST = G3PHAL2(BETA)
             ELSEIF(ISHELL.EQ.4) THEN
-               COST = GPHAL3(BETA)
+               COST = G3PHAL3(BETA)
             ENDIF
             PHI = TWOPI*RN03
             COSPHI = COS(PHI)
@@ -234,7 +237,7 @@ C
 C
 C             ROTATE ELECTRON AND SCATTERED PHOTON INTO GEANT SYSTEM
 C
-            CALL GVROT(VECT(4),GKIN)
+            CALL G3VROT(VECT(4),GKIN)
          ENDIF
          IF(ISHELL.NE.0) THEN
             ISHELL = ABS(ISHELL)

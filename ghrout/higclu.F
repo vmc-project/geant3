@@ -1,7 +1,10 @@
 *
-* $Id: higclu.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: higclu.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: higclu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -295,7 +298,7 @@ C**
       IF(NTC.LE.1) GOTO 33
       NTC1=NTC
       IF(NTC1.GT.5) NTC1=5
-      RMC=-LOG(1.-RAN)
+      RMC=-LOG(RAN)
       GPAR=G1PAR(NTC1)
       CPAR=C1PAR(NTC1)
       DUMNVE=GPAR
@@ -307,7 +310,7 @@ C**
       IF(NTD1.GT.5) NTD1=5
       CALL GRNDM(RNDM,1)
       RAN=RNDM(1)
-      RMD=-LOG(1.-RAN)
+      RMD=-LOG(RAN)
       GPAR=G1PAR(NTD1)
       CPAR=C1PAR(NTD1)
       DUMNVE=GPAR
@@ -330,7 +333,7 @@ C**
       IF(NTE1.GT.5) NTE1=5
       CALL GRNDM(RNDM,1)
       RAN=RNDM(1)
-      RME=-LOG(1.-RAN)
+      RME=-LOG(RAN)
       GPAR=G1PAR(NTE1)
       CPAR=C1PAR(NTE1)
       DUMNVE=GPAR
@@ -373,7 +376,7 @@ C** SET |T| AND |TMIN|
 C**
       T=-1.0E10
       CALL GRNDM(RNDM,1)
-      IF (B .NE. 0.0) T=LOG(1.-RNDM(1))/B
+      IF (B .NE. 0.0) T=LOG(RNDM(1))/B
       CALL LENGTX(MX1,PIN)
       TACMIN=(PV(4,MX1) -PV(4,MX3))**2 -(PIN-PF)**2
 C**

@@ -1,7 +1,10 @@
 *
-* $Id: gpvolx.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gpvolx.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpvolx.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 13/12/94  15.26.36  by  S.Giani
 *-- Author :
-      SUBROUTINE GPVOLX(NUMB)
+      SUBROUTINE G3PVOLX(NUMB)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -79,7 +82,7 @@ C
          IS = Q(JVO+2)
          NMED = Q(JVO+4)
 C
-         CALL GFPARA(NAME,1,1,NPAR,NATT,PAR,ATT)
+         CALL G3FPARA(NAME,1,1,NPAR,NATT,PAR,ATT)
 *      IEND10=10
 *      IF(NPAR.LT.IEND10)IEND10=NPAR
 *      WRITE(CHMAIL,1002)I,NAME,NMED,ISHAP(IS),NPAR,(PAR(J),J=1,IEND10)

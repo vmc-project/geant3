@@ -1,7 +1,10 @@
 *
-* $Id: gcomp.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gcomp.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gcomp.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GCOMP
+      SUBROUTINE G3COMP
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -30,7 +33,7 @@ C.    *  (1) Effects due to binding of atomic electrons are            *
 C.    *      ignored(recoil electron energy assumed large compared     *
 C.    *      with binding energy).                                     *
 C.    *                                                                *
-C.    *    ==>Called by : GTGAMA                                       *
+C.    *    ==>Called by : G3TGAMA                                      *
 C.    *       Authors    G.Patrick, L.Urban  *********                 *
 C.    *                                                                *
 C.    ******************************************************************
@@ -133,10 +136,10 @@ C
 C
 C             Rotate electron and scattered photon into GEANT system
 C
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
       IF(ROTATE) THEN
-         CALL GDROT(PGAM(1),COSTH,SINTH,COSPH,SINPH)
-         CALL GDROT(GKIN,COSTH,SINTH,COSPH,SINPH)
+         CALL G3DROT(PGAM(1),COSTH,SINTH,COSPH,SINPH)
+         CALL G3DROT(GKIN,COSTH,SINTH,COSPH,SINPH)
       ENDIF
 C
 C             Correct photon for energy lost and scattered angle
@@ -146,7 +149,7 @@ C
       VECT(7) = EGAM2
       GETOT = EGAM2
       GEKIN = EGAM2
-      CALL GEKBIN
+      CALL G3EKBIN
 C
 C              Stop electron ?
 C

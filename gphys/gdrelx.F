@@ -1,7 +1,10 @@
 *
-* $Id: gdrelx.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gdrelx.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdrelx.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 06/10/94  18.22.43  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRELX(A,Z,DENS,T,HMASS,DEDX)
+      SUBROUTINE G3DRELX(A,Z,DENS,T,HMASS,DEDX)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -32,7 +35,7 @@ C.    *  For T .gt. T2L=2 MeV the corrected Bethe-Bloch stopping       *
 C.    *  power / restricted energy loss formula is used.               *
 C.    *                                                                *
 C.    *                                                                *
-C.    *    ==>Called by : GDRELA                                       *
+C.    *    ==>Called by : G3DRELA                                      *
 C.    *       Author    L.Urban    *********                           *
 C.    *                                                                *
 C.    ******************************************************************

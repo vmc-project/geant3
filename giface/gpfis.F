@@ -1,7 +1,10 @@
 *
-* $Id: gpfis.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gpfis.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gpfis.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.38  by  S.Giani
 *-- Author :
-      SUBROUTINE GPFIS
+      SUBROUTINE G3PFIS
 C
 C *** GENERATION OF PHOTO-FISSION AND PHOTO-ABSORBTION MECHANISMS ***
 C *** HMF 25-AUG-1989 RWTH AACHEN / NVE 11-MAY-1990 CERN GENEVA ***

@@ -1,7 +1,10 @@
 *
-* $Id: gtrak.doc,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtrak.doc,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtrak.doc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -132,14 +135,14 @@
 * Depending on the  value chosen by the user for  the tracking medium  *
 * parameter IFIELD the routine GUSWIM calls either                     *
 *                                                                      *
-* GRKUTA    for inhomogeneous fields, IFIELD=1                         *
-* GHELIX    for quasi-homogeneous fields tilted w.r.t. the reference   *
-*           frame, IFIELD=2, or                                        *
-* GHELX3    for one-component fields along the z axis, IFIELD=3        *
+* G3RKUTA    for inhomogeneous fields, IFIELD=1                         *
+* G3HELIX    for quasi-homogeneous fields tilted w.r.t. the reference   *
+*            frame, IFIELD=2, or                                        *
+* G3HELX3    for one-component fields along the z axis, IFIELD=3        *
 *                                                                      *
-*  GRKUTA and  GHELIX call the  default user subroutine  GUFLD where   *
+*  G3RKUTA and  G3HELIX call the  default user subroutine  GUFLD where   *
 * the  components of  the field  at  the given  point are  computed.   *
-* GHELX3  takes  the value  of  the  field  in the  tracking  medium   *
+* G3HELX3  takes  the value  of  the  field  in the  tracking  medium   *
 * parameter FIELDM.                                                    *
 *                                                                      *
 * INFORMATION AVAILABLE AT TRACKING TIME, AND THE SUBROUTINE GUSTEP    *

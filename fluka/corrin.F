@@ -1,7 +1,10 @@
 *
-* $Id: corrin.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: corrin.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: corrin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -371,7 +374,11 @@
 * ====
       AGREYT = AGREYP + AGREYN
       NGREYT = NGREYP + NGREYN
-      PPROCS = AGREYP / AGREYT
+      IF ( AGREYT .NE. 0 ) THEN
+         PPROCS = AGREYP / AGREYT
+      ELSE
+         PPROCS = AGREYP / ( AGREYT + 1.D-10 )
+      ENDIF
       NGREYP = 0
       NGREYN = 0
       EINCP  = 0.D+00

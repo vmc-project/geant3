@@ -1,16 +1,5 @@
 *
-* $Id: gd16v.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gd16v.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:19  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 #if defined(CERNLIB_CG)
@@ -80,7 +69,7 @@
          TESTY(IJ)=20.
    10 CONTINUE
       LINFIL=IBITS(LINATT,13,3)
-      IF(LINFIL.NE.0)CALL GDRAWV(TESTX,TESTY,-1)
+      IF(LINFIL.NE.0)CALL G3DRAWV(TESTX,TESTY,-1)
       IJKLMN=0
       IACTUN=0
       LPARZ=0
@@ -304,7 +293,7 @@
   110                      CONTINUE
                            IF(LINFIL.GT.1)THEN
                               LINCOL=IBITS(LINATT,16,8)
-                              CALL GDSHAD(LINCOL,APROSC)
+                              CALL G3DSHAD(LINCOL,APROSC)
                            ENDIF
                            DO 160 MZ=1,JFK,2
                               P1(1)=XPINT(MZ)
@@ -334,10 +323,10 @@
                                  IF(LINFIL.GT.1.AND.IDVIEW.NE.0)THEN
                                     LLLINA=LINATT
                                     CALL MVBITS(LINCOL,0,8,LINATT,16)
-                                    CALL GDRAWV(AX,AY,2)
+                                    CALL G3DRAWV(AX,AY,2)
                                     LINATT=LLLINA
                                  ELSE
-                                    CALL GDRAWV(AX,AY,2)
+                                    CALL G3DRAWV(AX,AY,2)
                                  ENDIF
   130                         CONTINUE
                               GOTO 150
@@ -350,10 +339,10 @@
                               IF(LINFIL.GT.1.AND.IDVIEW.NE.0)THEN
                                  LLLINA=LINATT
                                  CALL MVBITS(LINCOL,0,8,LINATT,16)
-                                 CALL GDRAWV(AX,AY,2)
+                                 CALL G3DRAWV(AX,AY,2)
                                  LINATT=LLLINA
                               ELSE
-                                 CALL GDRAWV(AX,AY,2)
+                                 CALL G3DRAWV(AX,AY,2)
                               ENDIF
   150                         CONTINUE
   160                      CONTINUE
@@ -434,11 +423,11 @@
                CALL MVBITS(6,0,3,LINATT,10)
 ***               IOLEP=LEP
 ***               LEP=11
-               CALL GDRAWV(AX,AY,2)
+               CALL G3DRAWV(AX,AY,2)
 ***               LEP=IOLEP
                CALL MVBITS(LTY,0,3,LINATT,10)
             ELSE
-               CALL GDRAWV(AX,AY,2)
+               CALL G3DRAWV(AX,AY,2)
             ENDIF
   210    CONTINUE
          LPARZ=LPARZ+1
@@ -454,11 +443,11 @@
             CALL MVBITS(6,0,3,LINATT,10)
 ***            IOLEP=LEP
 ***            LEP=11
-            CALL GDRAWV(AX,AY,2)
+            CALL G3DRAWV(AX,AY,2)
 ***            LEP=IOLEP
             CALL MVBITS(LTY,0,3,LINATT,10)
          ELSE
-            CALL GDRAWV(AX,AY,2)
+            CALL G3DRAWV(AX,AY,2)
          ENDIF
          LFULL=LFULL+1
   230 CONTINUE
@@ -648,7 +637,7 @@
   330          CONTINUE
                IF(LINFIL.GT.1)THEN
                   LINCOL=IBITS(LINATT,16,8)
-                  CALL GDSHAD(LINCOL,APROSC)
+                  CALL G3DSHAD(LINCOL,APROSC)
                ENDIF
                DO 380 MZ=1,JFK,2
                   P1(1)=XPINT(MZ)
@@ -678,10 +667,10 @@
                      IF(LINFIL.GT.1.AND.IDVIEW.NE.0)THEN
                         LLLINA=LINATT
                         CALL MVBITS(LINCOL,0,8,LINATT,16)
-                        CALL GDRAWV(AX,AY,2)
+                        CALL G3DRAWV(AX,AY,2)
                         LINATT=LLLINA
                      ELSE
-                        CALL GDRAWV(AX,AY,2)
+                        CALL G3DRAWV(AX,AY,2)
                      ENDIF
   350             CONTINUE
                   GOTO 370
@@ -694,10 +683,10 @@
                   IF(LINFIL.GT.1.AND.IDVIEW.NE.0)THEN
                      LLLINA=LINATT
                      CALL MVBITS(LINCOL,0,8,LINATT,16)
-                     CALL GDRAWV(AX,AY,2)
+                     CALL G3DRAWV(AX,AY,2)
                      LINATT=LLLINA
                   ELSE
-                     CALL GDRAWV(AX,AY,2)
+                     CALL G3DRAWV(AX,AY,2)
                   ENDIF
   370             CONTINUE
   380          CONTINUE
@@ -709,7 +698,7 @@
       IF(LINFIL.NE.0)THEN
          LTY=IBITS(LINATT,10,3)
          CALL MVBITS(6,0,3,LINATT,10)
-         CALL GDRAWV(TESTX,TESTY,0)
+         CALL G3DRAWV(TESTX,TESTY,0)
          CALL MVBITS(LTY,0,3,LINATT,10)
 ***      LEP=IOLEP
       ENDIF

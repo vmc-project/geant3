@@ -1,7 +1,10 @@
 *
-* $Id: q_shiftr.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id: q_shiftr.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: q_shiftr.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov
 * Separate distribution  of Geant3
 *
@@ -39,6 +42,7 @@ C       ISHFT(IZW,NZB)  = LSHIFT(IZW,NZB)
       ISHFTR (IZW,NZB) = SHFTR (IZW, NZB)
 
 #elif defined(CERNLIB_LINUX)
+      ISHFTR (IZW,NZB) = RSHIFT (IZW,NZB)
 
 #elif (defined(CERNLIB_SUN))&&(!defined(CERNLIB_BUGLRSHFT))
       ISHFTR (IZW,NZB) = lrshft (IZW, NZB)

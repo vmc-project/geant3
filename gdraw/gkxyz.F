@@ -1,16 +1,5 @@
 *
-* $Id: gkxyz.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gkxyz.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:04  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: gkxyz.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -81,7 +70,7 @@ C
  
 C
    20 CONTINUE
-      CALL GWORK(MAXWS)
+      CALL G3WORK(MAXWS)
       ANGEPS=ABS(EPSILO)
       EPSIL=1.
       EPS=MAX(PLTRNX,PLTRNY)*EPSIL/20.
@@ -255,7 +244,7 @@ C
          VP(4)=VP(3)
          UP(5)=UP(1)
          VP(5)=VP(1)
-         CALL GDRAWV(UP,VP,5)
+         CALL G3DRAWV(UP,VP,5)
 C
 C             Print kinematics of the picked track
 C

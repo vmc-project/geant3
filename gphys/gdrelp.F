@@ -1,7 +1,10 @@
 *
-* $Id: gdrelp.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdrelp.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdrelp.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRELP(A,Z,DENS,T,DEDX)
+      SUBROUTINE G3DRELP(A,Z,DENS,T,DEDX)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,13 +32,13 @@ C.    *   It calls GDRELP with the substitution EMMU -- > PMASS !      *
 C.    *    ( and put back the right value of PMASS after)       !      *
 C.    *   -----------------------------------------------------        *
 C.    *                                                                *
-C.    *    ==>Called by : GDRELA                                       *
+C.    *    ==>Called by : G3DRELA                                      *
 C.    *       Author    L.Urban    *********                           *
 C.    *                                                                *
 C.    ******************************************************************
 C.
 #include "geant321/gconsp.inc"
 *
-      CALL GDRELX(A,Z,DENS,T,REAL(PMASS),DEDX)
+      CALL G3DRELX(A,Z,DENS,T,REAL(PMASS),DEDX)
 *
       END

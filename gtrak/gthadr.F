@@ -1,14 +1,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 03/07/94  17.57.24  by  S.Giani
 *-- Author :
-      SUBROUTINE GTHADR
+      SUBROUTINE G3THADR
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Charged hadron type track. Computes step size and propagates *
 C.    *    particle through step.                                      *
 C.    *                                                                *
-C.    *   ==>Called by : GTRACK                                        *
+C.    *   ==>Called by : G3TRACK                                       *
 C.    *       Authors    R.Brun, F.Bruyant, M.Maire ********           *
 C.    *                                                                *
 C.    ******************************************************************
@@ -30,10 +30,6 @@ C.
 #include "geant321/gcjump.inc"
 #endif
  
-#if !defined(CERNLIB_OLD)
-#include "geant321/gcvolu.inc"
-#include "geant321/gcvdma.inc"
-#endif
 #if !defined(CERNLIB_SINGLE)
       PARAMETER (EPSMAC=1.E-6)
       DOUBLE PRECISION GKR,DEMEAN,STOPP,STOPMX,STOPRG,STOPC,EKIPR
@@ -247,7 +243,7 @@ C.    ------------------------------------------------------------------
 *  **   Step limitation due to Cerenkov production ?
 *
       IF (IMCKOV.GT.0) THEN
-         CALL GNCKOV
+         CALL G3NCKOV
          STCKOV = MXPHOT/MAX(3.*DNDL,1E-10)
          SMULS  = MAX(STMIN, STCKOV)
          IF (SMULS.LT.STEP) THEN
@@ -321,18 +317,9 @@ C.    ------------------------------------------------------------------
 *
 * ***   otherwise, swim particle in magnetic field
 *
-#if !defined(CERNLIB_OLD)
-         if(mycoun.gt.1.and.nfmany.gt.0.and.step.ge.safety)then
-           nlevel=manyle(nfmany)
-           do 99 i=1,nlevel
-             names(i)=manyna(nfmany,i)
-             number(i)=manynu(nfmany,i)
- 99        continue
-           call glvolu(nlevel,names,number,ier)
-           if(ier.ne.0)print *,'Fatal error in GLVOLU'
-           ingoto=0
-         endif
-#endif
+
+         call gtmany(0)
+
          NMEC = NMEC +1
          LMEC(NMEC) = 4
 *
@@ -395,7 +382,7 @@ C.    ------------------------------------------------------------------
 * *** Generate Cherenkov photons if required
 *
       IF(IMCKOV.EQ.1) THEN
-         CALL GGCKOV
+         CALL G3GCKOV
          IF(NGPHOT.NE.0) THEN
             NMEC=NMEC+1
             LMEC(NMEC)=105
@@ -427,7 +414,7 @@ C.    ------------------------------------------------------------------
             DESTEP = DEMEAN
          ELSE
             DEMS   = DEMEAN/CHARG2
-            CALL GFLUCT(DEMS,DESTEP)
+            CALL G3FLUCT(DEMS,DESTEP)
             DESTEP = DESTEP*CHARG2
          ENDIF
          DESTEP=MAX(DESTEP,0.)
@@ -437,7 +424,7 @@ C.    ------------------------------------------------------------------
          GEKIN  = GEKINT
          GETOT  = GEKIN +AMASS
          VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
-         CALL GEKBIN
+         CALL G3EKBIN
       ENDIF
 *
 * *** Apply multiple scattering.
@@ -445,7 +432,7 @@ C.    ------------------------------------------------------------------
       IF (IMULL.NE.0) THEN
          NMEC = NMEC +1
          LMEC(NMEC) = 2
-         CALL GMULTS
+         CALL G3MULTS
       ENDIF
 *
 * *** Update time of flight
@@ -491,7 +478,7 @@ C.    ------------------------------------------------------------------
                NMEC = NMEC + 1
                LMEC(NMEC) = 5
                ISTOP =1
-               CALL GDECAY
+               CALL G3DECAY
             ENDIF
          ENDIF
          GO TO 999
@@ -528,12 +515,12 @@ C.    ------------------------------------------------------------------
 *
       ELSE IF (IPROC.EQ.5) THEN
          ISTOP = 1
-         CALL GDECAY
+         CALL G3DECAY
 *
 *  **   Delta-ray ?
 *
       ELSE IF (IPROC.EQ.10) THEN
-         CALL GDRAY
+         CALL G3DRAY
       ENDIF
   999 IF(NGPHOT.GT.0) THEN
          IF(ITCKOV.EQ.2.AND.ISTOP.EQ.0) THEN

@@ -1,8 +1,10 @@
+# $Id: MakeMacros,v 1.8 2004/06/01 22:40:27 rdm Exp $
+
 ############################   MACROS   #######################################
 
 $(DICT):
 		@echo "Generating $@"
-		@rootcint -f $@ -c $(filter -I%,$(CXXFLAGS)) $^
+		@$(ROOT_BINDIR)/rootcint -f $@ -c $(filter -I%,$(CXXFLAGS)) $^
 
 $(SLIBRARY):
 		@echo "Generating $@"
@@ -14,7 +16,12 @@ $(SLIBRARY):
                 ifeq ($(PLATFORM),aix)
 		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
                 else
-		   @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;\:
+                   ifneq (,$(findstring macosx,$(PLATFORM)))
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+		      @cd tmp; $(SHLD) -bundle -undefined dynamic_lookup $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
+                   else
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+                   endif
                 endif
 		@chmod 555 $@
 		@-rm -rf tmp
@@ -25,6 +32,19 @@ $(ALIBRARY):
 		@rm -f $@
 		@ar rv $@ $^
 
+$(BINDIR)/$(TARGET):
+		@echo "Generating $@"
+		@[ -d $(dir $@) ] || mkdir $(dir $@)
+		@rm -f $@
+ifeq ($(CXXVERBOSE),)
+		@$(LD) $(LDFLAGS) $^ $(LDLIBS) -o $@
+else
+		$(LD) $(LDFLAGS) $^ $(LDLIBS) -o $@
+endif
+ 
+$(EXEDIR)/$(TARGET): 
+		@[ -d $(dir $@) ] || mkdir -p $(dir $@)
+		@cp $(BINDIR)/$(TARGET) $(EXEDIR)
 clean:
 	rm -rf $(TOCLEAN)
 
@@ -32,9 +52,18 @@ cleanall:
 	rm -rf $(TOCLEANALL)
 
 depend:
-		-@$(ROOTSYS)/bin/rmkdepend -ftgt_$(PLATFORM)/Make-depend -ptgt_$(PLATFORM)/ -- $(CXXFLAGS) $(DEPINC) -- $^ 2>/dev/null
+		-@$(ROOT_BINDIR)/rmkdepend -f$(BINDIR)/Make-depend -p$(BINDIR)/ -- $(CXXFLAGS) $(DEPINC) -- $^ 2>/dev/null
 
-tgt_$(PLATFORM)/Make-depend:
+$(BINDIR)/Make-depend:
 		@[ -d $(dir $@) ] || mkdir $(dir $@)
-		@cp config/Makedepend $@
+		@cp $(CONFDIR)/Makedepend $@
+
+dist:
+	@$(MAKEDIST)
+
+distclean:
+	rm -rf $(TOCLEANALL) tgt_* lib/tgt_*
+
+distsrc:
+	@$(MAKEDISTSRC)
 

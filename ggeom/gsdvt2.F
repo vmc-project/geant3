@@ -1,7 +1,10 @@
 *
-* $Id: gsdvt2.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsdvt2.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsdvt2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 06/10/94  18.33.17  by  S.Giani
 *-- Author :
-      SUBROUTINE GSDVT2(KNAME,MOTHER,STEP,IAXIS,C0,NUMED,NDVMX)
+      SUBROUTINE G3SDVT2(KNAME,MOTHER,STEP,IAXIS,C0,NUMED,NDVMX)
 C.
 C.    ******************************************************************
 C.    *                                                                *

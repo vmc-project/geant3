@@ -1,7 +1,10 @@
 *
-* $Id: flufin.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: flufin.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: flufin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -125,7 +128,7 @@
          GOTO 999
       ELSE IF (GEKIN.EQ.0..AND.
      +   (IPART.EQ.8.OR.IPART.EQ.12.OR.IPART.EQ.11.OR.IPART.EQ.23)) THEN
-         CALL GDECAY
+         CALL G3DECAY
          NMEC=NMEC+1
          LMEC(NMEC)=5
          ISTOP=1
