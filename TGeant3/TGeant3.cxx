@@ -16,6 +16,9 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.39  2004/12/21 15:34:48  brun
+Implement TGeant3TGeo::isRootGeometry returning kTRUE
+
 Revision 1.38  2004/12/17 11:55:47  brun
 A new class TGeant3TGeo (deriving from TGeant3) is introduced.
 TGeant3 uses by default the geant3 geometry. TGeant3TGeo uses the TGeo classes.
@@ -1442,7 +1445,7 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=-5122;        //65 = Lambda_b bar
 
-  Gspart(fNG3Particles++, "J/Psi",       3, 3.09688, 0., 0.);
+  Gspart(fNG3Particles++, "J/Psi",       3, 3.09688, 0., 7.6e-21);
   fPDGCode[fNPDGCodes++]=443;          // 66 = J/Psi
 
   Gspart(fNG3Particles++, "Psi Prime",   3, 3.686,   0., 0.);
