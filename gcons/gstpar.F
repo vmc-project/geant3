@@ -1,7 +1,10 @@
 *
-* $Id: gstpar.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gstpar.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gstpar.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -41,6 +44,7 @@
 #include "geant321/gccuts.inc"
 #include "geant321/gcunit.inc"
 #include "geant321/gcnum.inc"
+      COMMON / FIXIT / JTMN, JTM
       DIMENSION CUTS(10),MECA(5,13)
       EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
       CHARACTER*(*) CHPAR

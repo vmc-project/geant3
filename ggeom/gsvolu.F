@@ -1,7 +1,10 @@
 *
-* $Id: gsvolu.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsvolu.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsvolu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -48,6 +51,7 @@ C.
 #include "geant321/gcnum.inc"
 #include "geant321/gcdraw.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / JVO
       CHARACTER*4 KNAME,JSHAPE
       DIMENSION UPAR(100),PAR(100),ATT(20)
       SAVE ATT,NATT

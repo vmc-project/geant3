@@ -1,7 +1,10 @@
 /*
- * $Id: cfput.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: cfput.c,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
  *
  * $Log: cfput.c,v $
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -26,6 +29,7 @@
  */
 #include "kerngen/pilot.h"
 #include "kerngen/fortranc.h"
+#include "stdio.h"
 
 /*>    ROUTINE CFPUT
   CERN PROGLIB# Z310    CFPUT           .VERSION KERNFOR  4.29  910718

@@ -15,6 +15,75 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.13  2003/09/26 15:01:08  brun
+From Ivana;
+- implemented new functions from TVirtualMC
+  enabling user to define own particles and ions
+  + getter functions::
+    DefineParticle(..)
+    DefineIon(..)
+    ParticleName(..) const
+    ParticleMass(..) const
+    Double_t  ParticleCharge(..) const
+    Double_t  ParticleLifeTime(..) const
+    TMCParticleType ParticleMCType(..) const
+- corrected charge in AddParticlesToPdgDataBase
+
+Revision 1.12  2003/07/22 06:53:28  brun
+This version does not yet support TGeo geometry.
+TVirtualMC must be initialized with the 3rd argument set to kFALSE
+
+Revision 1.11  2003/07/18 10:22:50  brun
+Changes to reflect the equivalent changes in the abstract classes in vmc
+(thanks Peter Hristov)
+
+Revision 1.10  2003/07/16 07:40:09  brun
+From Andreas Morsch
+
+- default g3 specific initialisation moved to TGeant3::Init()
+  (This avoids the cast to TGeant3* in the Config.C)
+- "CKOV" added to SetProcess
+
+Revision 1.9  2003/06/03 21:26:46  brun
+New version of gustep by Andreas Morsch
+
+Revision 1.8  2003/02/28 10:41:49  brun
+From Andreas Morsch
+in DefineParticles: rho0 decay channel corrected
+
+Revision 1.7  2003/02/04 17:50:34  brun
+From Ivana
+ In Mixture(): pass abs(nlmat) to CreateFloatArray calls
+ as nlmat can be negative.
+
+Revision 1.6  2003/01/31 18:23:06  brun
+Ivana's suggested corrections.
+- corrected tau pdg code
+- Warning if external decayer needed but not defined.
+
+Revision 1.5  2003/01/23 11:34:04  brun
+In gustep, replace
+   gMC->TrackPosition(x,y,z);
+by
+   geant3->TrackPosition(x,y,z);
+
+Revision 1.4  2003/01/06 17:20:52  brun
+Add new functions TrackPosition and TrackMomentum as alternative to the original
+functions filling a TLorentzVector object.
+Use these new functions in gustep and gudcay.
+This makes a 25 per cent speed improvement in case of Alice.
+
+Revision 1.3  2002/12/10 07:58:36  brun
+Update by Federico for the calls to Grndm
+
+Revision 1.2  2002/12/06 16:50:30  brun
+>From Federico:
+the following modifications provide an >6% improvement in speed for
+AliRoot.
+
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 Revision 1.5  2002/07/10 09:33:19  hristov
 Array with variable size created by new
 
@@ -330,11 +399,8 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-    //gMC->GetRandom()->Rndm(r,n);
-    Double_t * rdouble = new Double_t[n];
-    gMC->GetRandom()->RndmArray(n,rdouble);
-    for (Int_t i=0; i<n; i++) r[i] = rdouble[i];
-    delete [] rdouble;
+    TRandom *rr=gMC->GetRandom();
+    for(Int_t i=0; i<n; r[i++]=rr->Rndm());
   }
 
   void type_of_call grndmq(Int_t &, Int_t &, const Int_t &,
@@ -499,6 +565,8 @@ ClassImp(TGeant3)
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3()
+ : fNG3Particles(0),
+   fNPDGCodes(0)
 { 
   //
   // Default constructor
@@ -507,7 +575,7 @@ TGeant3::TGeant3()
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3(const char *title, Int_t nwgeant) 
-       :TVirtualMC("TGeant3",title) 
+       :TVirtualMC("TGeant3",title,kFALSE) 
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
@@ -525,6 +593,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   LoadAddress(); 
   //
   // Zero number of particles
+  fNG3Particles = 0;
   fNPDGCodes=0;
 } 
 
@@ -677,13 +746,13 @@ void TGeant3::AddParticlesToPdgDataBase() const
 //
 
   pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
-                     0,1,"Ion",kion+10020);
+                     0,3,"Ion",kion+10020);
   pdgDB->AddParticle("Triton","Triton",3*kAu2Gev+14.931e-3,kFALSE,
-                     khShGev/(12.33*kYear2Sec),1,"Ion",kion+10030);
+                     khShGev/(12.33*kYear2Sec),3,"Ion",kion+10030);
   pdgDB->AddParticle("Alpha","Alpha",4*kAu2Gev+2.424e-3,kTRUE,
-                     khShGev/(12.33*kYear2Sec),2,"Ion",kion+20040);
+                     khShGev/(12.33*kYear2Sec),6,"Ion",kion+20040);
   pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
-                     0,2,"Ion",kion+20030);
+                     0,6,"Ion",kion+20030);
 
 // Special particles
 //
@@ -841,40 +910,44 @@ void TGeant3::DefineParticles()
   Int_t mode[6];
   Int_t kz, ipa;
   Float_t bratio[6];
+  
+  fNG3Particles = 33;
 
   /* --- Define additional particles */
-  Gspart(33, "OMEGA(782)", 3, 0.782, 0., 7.836e-23);
+  Gspart(fNG3Particles++, "OMEGA(782)", 3, 0.782, 0., 7.836e-23);  // 33 = OMEGA(782)
   fPDGCode[fNPDGCodes++]=223;   // 33 = Omega(782)
   
-  Gspart(34, "PHI(1020)", 3, 1.019, 0., 1.486e-22);
+  Gspart(fNG3Particles++, "PHI(1020)", 3, 1.019, 0., 1.486e-22); // 34 = PHI(1020)
   fPDGCode[fNPDGCodes++]=333;   // 34 = PHI (1020)
 
-  Gspart(35, "D +", 4, 1.87, 1., 1.066e-12);
+  Gspart(fNG3Particles++, "D +", 4, 1.87, 1., 1.066e-12);        // 35 = D+
   fPDGCode[fNPDGCodes++]=411;   // 35 = D+
 
-  Gspart(36, "D -", 4, 1.87, -1., 1.066e-12);
+  Gspart(fNG3Particles++, "D -", 4, 1.87, -1., 1.066e-12);       // 36 = D-
   fPDGCode[fNPDGCodes++]=-411;  // 36 = D-
 
-  Gspart(37, "D 0", 3, 1.865, 0., 4.2e-13);
+  Gspart(fNG3Particles++, "D 0", 3, 1.865, 0., 4.2e-13);         // 37 = D0
   fPDGCode[fNPDGCodes++]=421;   // 37 = D0
 
-  Gspart(38, "ANTI D 0", 3, 1.865, 0., 4.2e-13);
+  Gspart(fNG3Particles++, "ANTI D 0", 3, 1.865, 0., 4.2e-13);    // 38 = Anti D0
   fPDGCode[fNPDGCodes++]=-421;  // 38 = D0 bar
 
-
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 39 = unassigned
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 40 = unassigned
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=-99;  // 41 = unassigned
 
-  Gspart(42, "RHO +", 4, 0.768, 1., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO +", 4, 0.768, 1., 4.353e-24);  // 42 = Rho+
   fPDGCode[fNPDGCodes++]=213;   // 42 = RHO+
 
-  Gspart(43, "RHO -", 4, 0.768, -1., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO -", 4, 0.768, -1., 4.353e-24); // 43 = Rho-
   fPDGCode[fNPDGCodes++]=-213;   // 43 = RHO-
 
-  Gspart(44, "RHO 0", 3, 0.768, 0., 4.353e-24);
+  Gspart(fNG3Particles++, "RHO 0", 3, 0.768, 0., 4.353e-24);  // 44 = Rho0
   fPDGCode[fNPDGCodes++]=113;   //  44 = RHO0
 
   //
@@ -890,91 +963,98 @@ void TGeant3::DefineParticles()
 //
 // Ions 
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+10020;   // 45 = Deuteron
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+10030;   // 46 = Triton
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+20040;   // 47 = Alpha
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=0;            // 48 = geantino mapped to rootino
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kion+20030;   // 49 = HE3
 
+  fNG3Particles++;
   fPDGCode[fNPDGCodes++]=kspe+50;      // 50 = Cherenkov
+
 // special 
-  Gspart(51, "FeedbackPhoton", 7, 0., 0.,1.e20 );
+  Gspart(fNG3Particles++, "FeedbackPhoton", 7, 0., 0.,1.e20 );
   fPDGCode[fNPDGCodes++]=kspe+51;      // 51 = FeedbackPhoton
 //
-  Gspart(52, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
+  Gspart(fNG3Particles++, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
   fPDGCode[fNPDGCodes++]=4122;         //52 = Lambda_c+
 
-  Gspart(53, "Lambda_c-", 4, 2.2849, -1., 2.06e-13);
+  Gspart(fNG3Particles++, "Lambda_c-", 4, 2.2849, -1., 2.06e-13);
   fPDGCode[fNPDGCodes++]=-4122;        //53 = Lambda_c-  
 
-  Gspart(54, "D_s+", 4, 1.9685, +1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s+", 4, 1.9685, +1., 4.67e-13);
   fPDGCode[fNPDGCodes++]=431;          //54 = D_s+
 
-  Gspart(55, "D_s-", 4, 1.9685, -1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s-", 4, 1.9685, -1., 4.67e-13);
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
-  Gspart(56, "Tau+", 5, 1.77705, +1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=15;           //56 = Tau+
+  Gspart(fNG3Particles++, "Tau+", 5, 1.77705, +1., 2.9e-13);
+  fPDGCode[fNPDGCodes++] = -15;        //56 = Tau+
 
-  Gspart(57, "Tau-", 5, 1.77705, -1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=-15;          //57 = Tau-  
+  Gspart(fNG3Particles++, "Tau-", 5, 1.77705, -1., 2.9e-13);
+  fPDGCode[fNPDGCodes++] = 15;          //57 = Tau-  
 
-  Gspart(58, "B0",     3, 5.2792, +0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0",     3, 5.2792, +0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
 
-  Gspart(59, "B0 bar", 3, 5.2792, -0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0 bar", 3, 5.2792, -0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=-511;         //58 = B0bar
 
-  Gspart(60, "B+",     4, 5.2789, +1., 1.65e-12);
+  Gspart(fNG3Particles++, "B+",     4, 5.2789, +1., 1.65e-12);
   fPDGCode[fNPDGCodes++]=521;          //60 = B+
 
-  Gspart(61, "B-",     4, 5.2789, -1., 1.65e-12);
+  Gspart(fNG3Particles++, "B-",     4, 5.2789, -1., 1.65e-12);
   fPDGCode[fNPDGCodes++]=-521;         //61 = B-
 
-  Gspart(62, "Bs",     3, 5.3693, +0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs",     3, 5.3693, +0., 1.54e-12);
   fPDGCode[fNPDGCodes++]=531;          //62 = B_s
 
-  Gspart(63, "Bs bar", 3, 5.3693, -0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs bar", 3, 5.3693, -0., 1.54e-12);
   fPDGCode[fNPDGCodes++]=-531;         //63 = B_s bar
 
-  Gspart(64, "Lambda_b",     3, 5.624, +0., 1.24e-12);
+  Gspart(fNG3Particles++, "Lambda_b",     3, 5.624, +0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=5122;         //64 = Lambda_b
 
-  Gspart(65, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
+  Gspart(fNG3Particles++, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=-5122;        //65 = Lambda_b bar
 
-  Gspart(66, "J/Psi",       3, 3.09688, 0., 0.);
+  Gspart(fNG3Particles++, "J/Psi",       3, 3.09688, 0., 0.);
   fPDGCode[fNPDGCodes++]=443;          // 66 = J/Psi
 
-  Gspart(67, "Psi Prime",   3, 3.686,   0., 0.);
+  Gspart(fNG3Particles++, "Psi Prime",   3, 3.686,   0., 0.);
   fPDGCode[fNPDGCodes++]=20443;        // 67 = Psi prime
 
-  Gspart(68, "Upsilon(1S)", 3, 9.46037, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(1S)", 3, 9.46037, 0., 0.);
   fPDGCode[fNPDGCodes++]=553;          // 68 = Upsilon(1S)
 
-  Gspart(69, "Upsilon(2S)", 3, 10.0233, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(2S)", 3, 10.0233, 0., 0.);
   fPDGCode[fNPDGCodes++]=20553;        // 69 = Upsilon(2S)
 
-  Gspart(70, "Upsilon(3S)", 3, 10.3553, 0., 0.);
+  Gspart(fNG3Particles++, "Upsilon(3S)", 3, 10.3553, 0., 0.);
   fPDGCode[fNPDGCodes++]=30553;        // 70 = Upsilon(3S)
 
-  Gspart(71, "Anti Neutrino (e)",       3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (e)",       3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-12;          // 71 = anti electron neutrino 
 
-  Gspart(72, "Neutrino (mu)",           3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Neutrino (mu)",           3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=14;           // 72 = muon neutrino 
 
-  Gspart(73, "Anti Neutrino (mu)", 3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (mu)", 3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-14;          // 73 = anti muon neutrino
 
-  Gspart(74, "Neutrino (tau)",     3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Neutrino (tau)",     3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=16;           // 74 = tau neutrino 
 
-  Gspart(75, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
+  Gspart(fNG3Particles++, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-16;          // 75 = anti tau neutrino
 
 /* --- Define additional decay modes --- */
@@ -1097,7 +1177,7 @@ void TGeant3::DefineParticles()
     }
     ipa = 44;
     bratio[0] = 100.;
-    mode[0] = 707;
+    mode[0] = 809;
     Gsdk(ipa, bratio, mode);
     /*
 // --- jpsi ---
@@ -1238,7 +1318,148 @@ void    TGeant3::SetProcess(const char* flagName, Int_t flagValue)
     fGcphlt->istra=flagValue;
   else if(!strcmp(flagName,"SYNC")) 
     fGcphlt->isync=flagValue;
+  else if(!strcmp(flagName,"CKOV"))
+    fGctlit->itckov = flagValue;
   else  Warning("SetFlag","Flag %s not implemented\n",flagName);
+}
+
+//_____________________________________________________________________________
+void TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                    Double_t mass, Double_t charge, Double_t lifetime)
+{
+// 
+// Set a user defined particle
+// Function is ignored if particle with specified pdg
+// aready exists and error report is printed.  
+// ---
+
+  // Check if particle with specified pdg aready exists
+  // in TGeant3
+  if (IdFromPDG(pdg) > 0) {
+    Error("SetParticle", "Particle already exists.");
+    return;
+  }  
+
+  // Check if particle type is known to Geant3
+  Int_t itrtyp = TransportMethod(type);
+  if (itrtyp < 0) {
+    Error("SetParticle", "Unknown particle transport.");
+    return;
+  }
+
+  // Add particle to Geant3  
+  Gspart(fNG3Particles++, name, itrtyp, mass, charge, lifetime);
+ 
+  // Add particle to TDatabasePDG
+  // (if it does not yet exist here)
+  if (!TDatabasePDG::Instance()->GetParticle(pdg))
+    TDatabasePDG::Instance()
+      ->AddParticle(name, name, mass, kTRUE, 0, charge*3, 
+                    ParticleClass(type).Data(), pdg);
+  fPDGCode[fNPDGCodes++] = pdg;
+}
+
+//_____________________________________________________________________________
+void  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+                         Double_t excEnergy, Double_t mass)
+{
+//
+// Set a user defined ion.
+// ---
+
+  // Define pdgEncoding
+  //
+  Int_t pdg = 10000000 + 10000*Z + 10*A;
+  Int_t pdgMax = pdg + 9;
+  
+  // Find isomer number which is not yet used
+  while (TDatabasePDG::Instance()->GetParticle(pdg) &&
+         pdg < pdgMax) 
+      pdg++;
+  if (TDatabasePDG::Instance()->GetParticle(pdg))
+      Fatal("SetIon", "All isomer numbers are already used");
+
+  // Particle properties
+        // excitation energy not used by G3
+  if (mass < 1e-09) mass = 0.9382723 * A;
+     // approximative mass if not specified by user
+  Double_t charge = Q;
+  TMCParticleType partType = kPTIon;  
+  Double_t lifetime = 1.e20;
+  
+  // Call DefineParticle now
+  DefineParticle(pdg, name, partType, mass, charge, lifetime);
+}		       
+
+//_____________________________________________________________________________
+TString  TGeant3::ParticleName(Int_t pdg) const
+{
+//  Return G3 particle name
+// ---
+
+  char name[21];
+  Int_t itrtyp;
+  Float_t amass, charge, tlife;
+  Gfpart(pdg, name, itrtyp,amass, charge, tlife);
+  name[20] = '\0';
+  
+  return TString(name);  
+}
+	  
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleMass(Int_t pdg) const	  
+{
+//  Return G3 particle mass
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return mass;  
+}
+	  
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleCharge(Int_t pdg) const	  
+{
+// Return G3 particle charge (in e)
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return charge;  
+}
+
+//_____________________________________________________________________________
+Double_t  TGeant3::ParticleLifeTime(Int_t pdg) const	  
+{
+// Return G3 particle life time
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg, name, itrtyp, mass, charge, tlife);
+  
+  return tlife;  
+}
+
+//_____________________________________________________________________________
+TMCParticleType TGeant3::ParticleMCType(Int_t pdg) const
+{
+// Return MC particle type 
+// ---
+
+  char name[20];
+  Int_t itrtyp;
+  Float_t mass, charge, tlife;
+  Gfpart(pdg,name, itrtyp, mass, charge, tlife);
+  
+  return ParticleType(itrtyp);  
 }
 
 //_____________________________________________________________________________
@@ -1271,6 +1492,18 @@ void TGeant3::TrackPosition(TLorentzVector &xyz) const
 }
 
 //_____________________________________________________________________________
+void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
+{
+  //
+  // Return the current position in the master reference frame of the
+  // track being transported
+  //
+  x=fGctrak->vect[0];
+  y=fGctrak->vect[1];
+  z=fGctrak->vect[2];
+}
+
+//_____________________________________________________________________________
 Double_t TGeant3::TrackTime() const
 {
   //
@@ -1291,6 +1524,20 @@ void TGeant3::TrackMomentum(TLorentzVector &xyz) const
   xyz[1]=fGctrak->vect[4]*ptot;
   xyz[2]=fGctrak->vect[5]*ptot;
   xyz[3]=fGctrak->getot;
+}
+
+//_____________________________________________________________________________
+void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const
+{
+  //
+  // Return the direction and the momentum (GeV/c) of the track
+  // currently being transported
+  //
+  Double_t ptot=fGctrak->vect[6];
+  px  =fGctrak->vect[3]*ptot;
+  py  =fGctrak->vect[4]*ptot;
+  pz  =fGctrak->vect[5]*ptot;
+  etot=fGctrak->getot;
 }
 
 //_____________________________________________________________________________
@@ -1709,9 +1956,9 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   // weigths.
   //
 
-  Float_t* fa = CreateFloatArray(a, nlmat);  
-  Float_t* fz = CreateFloatArray(z, nlmat);  
-  Float_t* fwmat = CreateFloatArray(wmat, nlmat);  
+  Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));  
+  Float_t* fz = CreateFloatArray(z, TMath::Abs(nlmat));  
+  Float_t* fwmat = CreateFloatArray(wmat, TMath::Abs(nlmat));  
 
   Mixture(kmat, name, fa, fz, dens, nlmat, fwmat);
   for (Int_t i=0; i<nlmat; i++) {
@@ -2057,7 +2304,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
  
 //_____________________________________________________________________________
 void  TGeant3::Gfpart(Int_t ipart, char *name, Int_t &itrtyp,  
-		   Float_t &amass, Float_t &charge, Float_t &tlife) 
+		   Float_t &amass, Float_t &charge, Float_t &tlife) const 
 { 
   //
   // Return parameters for particle of type IPART
@@ -2559,17 +2806,13 @@ void  TGeant3::GtreveRoot()
 } 
 
 //_____________________________________________________________________________
-void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const
+void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const 
 {
   //
-  //   To generate a vector RVECV of LEN random numbers 
-  //   Copy of the CERN Library routine RANECU 
-
-  //GetRandom()->Rndm(rvec,len);
-  Double_t * rdouble = new Double_t[len];
-  GetRandom()->RndmArray(len,rdouble);
-  for (Int_t i=0; i<len; i++) rvec[i] = rdouble[i];
-  delete [] rdouble;
+  //  To set/retrieve the seed of the random number generator
+  //
+  TRandom* r=gMC->GetRandom();
+  for(Int_t i=0; i<len; rvec[i++]=r->Rndm());
 }
 
 //_____________________________________________________________________________
@@ -3589,6 +3832,7 @@ void TGeant3::SetABAN(Int_t par)
   //       0 particles are transported normally
   //
   fGcphys->dphys1 = par;
+  SetBit(kABAN);
 }
  
  
@@ -3614,6 +3858,7 @@ void TGeant3::SetAUTO(Int_t par)
   //       =1 automati calculation.
   //  
   fGctrak->igauto = par;
+  SetBit(kAUTO);
 }
  
  
@@ -3785,6 +4030,7 @@ void TGeant3::SetDEBU(Int_t emin, Int_t emax, Int_t emod)
   fGcflag->idemin = emin;
   fGcflag->idemax = emax;
   fGcflag->itest  = emod;
+  SetBit(kDEBU);
 }
  
  
@@ -3812,6 +4058,7 @@ void TGeant3::SetERAN(Float_t ekmin, Float_t ekmax, Int_t nekbin)
   fGcmulo->ekmin = ekmin;
   fGcmulo->ekmax = ekmax;
   fGcmulo->nekbin = nekbin;
+  SetBit(kERAN);
 }
  
 //_____________________________________________________________________________
@@ -3903,6 +4150,7 @@ void TGeant3::SetOPTI(Int_t par)
   //      2 all volumes are ordered along the best axis.
   //  
   fGcopti->ioptim = par;
+  SetBit(kOPTI);
 }
  
 //_____________________________________________________________________________
@@ -3976,6 +4224,7 @@ void TGeant3::SetSWIT(Int_t sw, Int_t val)
   //  
   if (sw <= 0 || sw > 10) return;
   fGcflag->iswit[sw-1] = val;
+  SetBit(kSWIT);
 }
  
  
@@ -3986,6 +4235,7 @@ void TGeant3::SetTRIG(Int_t nevents)
   // Set number of events to be run
   //
   fGcflag->nevent = nevents;
+  SetBit(kTRIG);
 }
  
 //_____________________________________________________________________________
@@ -4561,6 +4811,17 @@ void TGeant3::Init()
     //=================Create Materials and geometry
     //
 
+    //  Some default settings, if not changed by user
+    if (!TestBit(kTRIG)) SetTRIG(1);         // Number of events to be processed
+    if (!TestBit(kSWIT)) SetSWIT(4, 10);     //
+    if (!TestBit(kDEBU)) SetDEBU(0, 0, 1);   //
+    if (!TestBit(kAUTO)) SetAUTO(1);         // Select automatic STMIN etc... calc. (AUTO 1) or manual (AUTO 0)
+    if (!TestBit(kABAN)) SetABAN(0);         // Restore 3.16 behaviour for abandoned tracks
+    if (!TestBit(kOPTI)) SetOPTI(2);         // Select optimisation level for GEANT geometry searches (0,1,2)
+    if (!TestBit(kERAN)) SetERAN(5.e-7);     //
+
+    DefineParticles();   
+    fApplication->AddParticles();
     fApplication->ConstructGeometry();
     FinishGeometry();
     fApplication->InitGeometry();
@@ -4664,7 +4925,7 @@ void TGeant3::SetTrack(Int_t done, Int_t parent, Int_t pdg, Float_t *pmom,
 //	   mass,e,fNtrack,pdg,parent,done,vpos[0],vpos[1],vpos[2],pmom[0],pmom[1],pmom[2],kS);
   
 
-  GetStack()->SetTrack(done, parent, pdg, pmom[0], pmom[1], pmom[2], e,
+  GetStack()->PushTrack(done, parent, pdg, pmom[0], pmom[1], pmom[2], e,
                        vpos[0], vpos[1], vpos[2], tof, polar[0], polar[1], polar[2],
                        mech, ntr, weight, is);
 }
@@ -4688,6 +4949,67 @@ Float_t* TGeant3::CreateFloatArray(Double_t* array, Int_t size) const
   return floatArray;
 }
 
+//_____________________________________________________________________________
+Int_t  TGeant3::TransportMethod(TMCParticleType particleType) const
+{
+// 
+// Returns G3 transport method code for the specified MCParticleType
+// ---
+
+  switch (particleType) {
+    case kPTGamma:    return 1;    
+    case kPTElectron: return 2;      
+    case kPTNeutron:  return 3;
+    case kPTHadron:   return 4;
+    case kPTMuon:     return 5;
+    case kPTGeantino: return 6;
+    case kPTOpticalPhoton: return 7;
+    case kPTIon:      return 8;
+    default:          return -1; 
+  }
+}
+
+//_____________________________________________________________________________
+TMCParticleType  TGeant3::ParticleType(Int_t itrtyp) const
+{
+// 
+// Returns MCParticleType for the specified G3 transport method code
+// ---
+
+  switch (itrtyp) {
+    case 1:  return  kPTGamma;
+    case 2:  return  kPTElectron;
+    case 3:  return  kPTNeutron;
+    case 4:  return  kPTHadron;
+    case 5:  return  kPTMuon;
+    case 6:  return  kPTGeantino;
+    case 7:  return  kPTOpticalPhoton;
+    case 8:  return  kPTIon;
+    default: return  kPTUndefined; 
+  }
+}
+
+//_____________________________________________________________________________
+TString  TGeant3::ParticleClass(TMCParticleType particleType) const
+{
+// 
+// Returns particle class name (used in TDatabasePDG) for 
+// the specified MCParticleType
+// ---
+
+  // CHECK
+  switch (particleType) {
+    case kPTGamma:    return TString("Photon");    
+    case kPTElectron: return TString("Lepton");      
+    case kPTNeutron:  return TString("Hadron");
+    case kPTHadron:   return TString("Hadron");
+    case kPTMuon:     return TString("Lepton");
+    case kPTGeantino: return TString("Special");
+    case kPTIon:      return TString("Ion");
+    case kPTOpticalPhoton: return TString("Photon");
+    default:          return TString("Unknown");
+  }
+}
 
 //_____________________________________________________________________________
 void TGeant3::Streamer(TBuffer &R__b)
@@ -4737,7 +5059,7 @@ extern "C" void type_of_call  rxgtrak (Int_t &mtrack, Int_t &ipart, Float_t *pmo
   //      tof     Particle time of flight in seconds
   //
   
-  TParticle* track = gMC->GetStack()->GetNextTrack(mtrack);
+  TParticle* track = gMC->GetStack()->PopNextTrack(mtrack);
 
   if (track) {
     // fill G3 arrays
@@ -4959,14 +5281,22 @@ void gudcay()
 //
 //    ------------------------------------------------------------------
 //
-    
+//
+//  Check if external decayer available
+    TVirtualMCDecayer* decayer = gMC->GetDecayer();    
+    if (! decayer) {
+	Warning("gudcay","External decayer needed, but not defined !\n");
+	return;
+    }
     TGeant3* geant3=(TGeant3*) gMC;
+
     // set decay table
-    gMC->GetDecayer()->ForceDecay();
+    
+    decayer->ForceDecay();
 
 // Initialize 4-momentum vector    
     Int_t ipart = geant3->Gckine()->ipart;
-    TLorentzVector p;
+    static TLorentzVector p;
     
     p[0]=geant3->Gctrak()->vect[3];
     p[1]=geant3->Gctrak()->vect[4];
@@ -4979,10 +5309,10 @@ void gudcay()
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
 // Decay
-    gMC->GetDecayer()->Decay(iplund, &p);
+    decayer->Decay(iplund, &p);
     
 // Fetch Particles
-    Int_t np = geant3->GetDecayer()->ImportParticles(particles);
+    Int_t np = decayer->ImportParticles(particles);
     if (np <=1) return;
 
     TParticle *  iparticle = (TParticle *) particles->At(0);
@@ -5002,7 +5332,7 @@ void gudcay()
 	Int_t ks = iparticle->GetStatusCode();
 //
 // Deselect daughters of deselected particles
-// and jump skip the current particle
+// and skip the current particle
 	if (pFlag[i] == 1) {
 	    if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    continue;
@@ -5011,7 +5341,7 @@ void gudcay()
 // Decay products are deselected
 //	
 	if (ks != 1) { 
-	    Double_t lifeTime = gMC->GetDecayer()->GetLifetime(kf);
+	    Double_t lifeTime = decayer->GetLifetime(kf);
 	    if (lifeTime > (Double_t) 1.e-15) {
 		if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    } else{
@@ -5318,33 +5648,34 @@ void gustep()
 //
 
 
-  TLorentzVector x;
-  Float_t r;
   Int_t ipp, jk, nt;
   Float_t polar[3]={0,0,0};
   Float_t mom[3];
-  TMCProcess pProc;
-
+  static TMCProcess pProc;
   
+  TVirtualMCApplication *app = TVirtualMCApplication::Instance();
   TGeant3* geant3 = (TGeant3*) gMC;
   TVirtualMCStack* stack = gMC->GetStack();
+  Float_t wgt = stack->GetCurrentTrack()->GetWeight();
   //     Stop particle if outside user defined tracking region 
-  gMC->TrackPosition(x);
-  r=TMath::Sqrt(x[0]*x[0]+x[1]*x[1]);
-  if (r > TVirtualMCApplication::Instance()->TrackingRmax() ||
-      TMath::Abs(x[2]) > TVirtualMCApplication::Instance()->TrackingZmax()) {
+  Double_t x, y, z, rmax;
+  geant3->TrackPosition(x,y,z);
+  rmax = app->TrackingRmax();
+  if (x*x+y*y > rmax*rmax ||
+      TMath::Abs(z) > app->TrackingZmax()) {
 	gMC->StopTrack();
   }
 
   // --- Add new created particles 
   if (gMC->NSecondaries() > 0) {
+ 
     pProc=gMC->ProdProcess(0);
     for (jk = 0; jk < geant3->Gcking()->ngkine; ++jk) {
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
       // --- Skip neutrinos! 
       if (ipp != 4) {
-        geant3->SetTrack(1,stack->CurrentTrack(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
-			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, 1., 0);
+        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
+			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, wgt, 0);
       }
     }
   }
@@ -5354,16 +5685,16 @@ void gustep()
       mom[0]=geant3->Gckin2()->xphot[jk][3]*geant3->Gckin2()->xphot[jk][6];
       mom[1]=geant3->Gckin2()->xphot[jk][4]*geant3->Gckin2()->xphot[jk][6];
       mom[2]=geant3->Gckin2()->xphot[jk][5]*geant3->Gckin2()->xphot[jk][6];
-      geant3->SetTrack(1, stack->CurrentTrack(), gMC->PDGFromId(50),
+      geant3->SetTrack(1, stack->GetCurrentTrackNumber(), gMC->PDGFromId(50),
 		       mom,                             //momentum
 		       geant3->Gckin2()->xphot[jk],     //position
 		       &geant3->Gckin2()->xphot[jk][7], //polarisation
 		       geant3->Gckin2()->xphot[jk][10], //time of flight
-		       kPCerenkov, nt, 1., 0);
+		       kPCerenkov, nt, wgt, 0);
       }
   }
   // --- Particle leaving the setup ?
-  if (!gMC->IsTrackOut()) TVirtualMCApplication::Instance()->Stepping();
+  if (!gMC->IsTrackOut()) app->Stepping();
 
   // --- Standard GEANT debug routine 
   if(geant3->Gcflag()->idebug) geant3->Gdebug();

@@ -1,7 +1,10 @@
 *
-* $Id: gtjump.inc,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gtjump.inc,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtjump.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -19,12 +22,22 @@
 * gtjump.inc
 *
 #if !defined(CERNLIB_INCLUDE)
+#if defined(CERNLIB_LXIA64)
+      INTEGER*8     JUDCAY, JUDIGI, JUDTIM, JUFLD , JUHADR, JUIGET,
+     +              JUINME, JUINTI, JUKINE, JUNEAR, JUOUT , JUPHAD,
+     +              JUSKIP, JUSTEP, JUSWIM, JUTRAK, JUTREV, JUVIEW,
+     +              JUPARA
+      INTEGER*8     JMPADR
+*
+#else
       INTEGER       JUDCAY, JUDIGI, JUDTIM, JUFLD , JUHADR, JUIGET,
      +              JUINME, JUINTI, JUKINE, JUNEAR, JUOUT , JUPHAD,
      +              JUSKIP, JUSTEP, JUSWIM, JUTRAK, JUTREV, JUVIEW,
      +              JUPARA
-      INTEGER       JMPADR, MAXJMP
+      INTEGER       JMPADR
 *
+#endif
+      INTEGER       MAXJMP
 #endif
 
 #endif

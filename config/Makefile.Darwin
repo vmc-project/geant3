@@ -1,4 +1,4 @@
-# $Id: Makefile.Linux,v 1.2 2002/10/08 13:23:11 brun Exp $
+# $Id: Makefile.Linux,v 1.3 2002/12/02 16:37:44 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -8,10 +8,10 @@ F77	  = g77
 CC	  = gcc
 
 # Global optimisation
-OPT   = -O -g
+OPT   = -g -O
 
 # Shared library suffix
-SL	  = so
+SL	  = dylib
 
 # AWK
 AWK	  = awk
@@ -21,27 +21,21 @@ AWK	  = awk
 # starting from root.2.22 on Linux the flags -fno-rtti -fno-exceptions are
 # not necessary any more
 #
-CXXOPTS       = $(OPT) -Wall -fPIC -pipe
+CXXOPTS       = $(OPT) -Wall -pipe
 COPT	      = $(OPT)
 FOPT	      = $(OPT) -fno-second-underscore
 
-GCC_MAJOR    := $(shell $(CXX) -v 2>&1 | \
-                  grep version | cut -d' ' -f3  | cut -d'.' -f1)
-ifneq ($(GCC_MAJOR),3)
-   FOPT      := $(filter-out -O%,$(FOPT))
-endif
-
 # CERNLIB defines
 
-CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ
+CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ -DCERNLIB_PPC
 CLIBCXXOPTS   =
 CLIBCOPT      =
 CLIBFOPT      =
 
 LD            = g++
-LDFLAGS       = $(OPT)
+LDFLAGS       = $(OPT) -Xlinker -bind_at_load -flat_namespaces 
 
 SHLD	      = $(LD)
-SOFLAGS       = -Wl,-soname,$(notdir $@) -shared 
+SOFLAGS       = -dynamiclib -flat_namespace -undefined suppress -single_module
 SHLIB         = -lg2c
 

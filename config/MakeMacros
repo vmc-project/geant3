@@ -1,3 +1,5 @@
+# $Id: MakeMacros,v 1.3 2002/10/08 13:23:11 brun Exp $
+
 ############################   MACROS   #######################################
 
 $(DICT):
@@ -14,7 +16,12 @@ $(SLIBRARY):
                 ifeq ($(PLATFORM),aix)
 		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
                 else
-		   @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;\:
+                   ifneq ($(PLATFORM),Darwin)
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+                   else
+		      cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+		      cd tmp; $(SHLD) -bundle -flat_namespace -undefined suppress $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
+                    endif
                 endif
 		@chmod 555 $@
 		@-rm -rf tmp
@@ -37,4 +44,10 @@ depend:
 tgt_$(PLATFORM)/Make-depend:
 		@[ -d $(dir $@) ] || mkdir $(dir $@)
 		@cp config/Makedepend $@
+
+dist:
+	@$(MAKEDIST)
+
+distsrc:
+	@$(MAKEDISTSRC)
 
