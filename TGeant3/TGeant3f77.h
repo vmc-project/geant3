@@ -1,13 +1,10 @@
 #ifndef ROOT_TGeant3f77
 #define ROOT_TGeant3f77 
-/* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
- * See cxx source for full Copyright notice                               */
+/* $Id: TGeant3f77.h,v 1.1 2003/11/28 11:10:49 brun Exp $ */
 
-/* $Id: TGeant3f77.h,v 1.4 2002/12/10 07:58:36 brun Exp $ */
-
-//////////////////////////////////////////////// 
+//////////////////////////////////////////////////// 
 //  C++/f77 interface to Geant3 basic routines    // 
-//////////////////////////////////////////////// 
+////////////////////////////////////////////////////
 
 #include "TGeant3.h" 
 

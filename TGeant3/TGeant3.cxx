@@ -16,6 +16,17 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.37  2004/11/23 14:52:52  brun
+From Andreas Morsch:
+on request of ALICE/TPC I added a new method to TVirtualMC.h
+
+void TVirtualMC::ForceDecayTime(Float_t);
+
+
+This allows to force the decay time of the current particle.
+The use-case implemented in AliRoot is the decay of primary particles
+within a user defined radius range.
+
 Revision 1.36  2004/10/13 10:38:32  brun
 From Andrei Gheata:
 some modifications in the current TGeant3.cxx :
@@ -244,7 +255,6 @@ Cleanup of code
 #include <stdlib.h>
 
 #include "TROOT.h" 
-#include "TClonesArray.h"
 #include "TParticle.h"
 #include "TDatabasePDG.h"
 #include "TLorentzVector.h"
@@ -255,9 +265,6 @@ Cleanup of code
 #include "TCallf77.h" 
 #include "TVirtualMCDecayer.h" 
 #include "TPDGCode.h" 
-
-#include "TGeoManager.h" 
-#include "TGeoMCGeometry.h"
 
 #include "THIGZ.h"
 
@@ -743,10 +750,131 @@ extern "C"
     float type_of_call g3prelm(const Float_t &z, const Float_t& t, const Float_t& cut);
 }
 
+#ifndef WIN32
+#  define gudigi gudigi_
+#  define guhadr guhadr_
+#  define guout  guout_
+#  define guphad guphad_
+#  define gudcay gudcay_
+#  define guiget guiget_
+#  define guinme guinme_
+#  define guinti guinti_
+#  define gunear gunear_
+#  define guskip guskip_
+#  define guview guview_
+#  define gupara gupara_
+#  define gudtim gudtim_
+#  define guplsh guplsh_
+#  define gutrev gutrev_
+#  define gutrak gutrak_
+#  define guswim guswim_
+#  define gufld  gufld_
+#  define gustep gustep_
+#  define gukine gukine_
+
+#  define gheish gheish_
+#  define flufin flufin_
+#  define gfmfin gfmfin_
+#  define gpghei gpghei_
+#  define fldist fldist_
+#  define gfmdis gfmdis_
+#  define g3helx3 g3helx3_
+#  define g3helix g3helix_
+#  define g3rkuta g3rkuta_
+#  define g3track g3track_
+#  define gtreveroot gtreveroot_
+#  define g3last  g3last_
+#  define g3invol g3invol_
+#  define g3tmedi g3tmedi_
+#  define g3media g3media_
+#  define g3tmany g3tmany_
+#  define g3tnext g3tnext_
+#  define g3gperp g3gperp_
+#  define ginvol ginvol_
+#  define gtmedi gtmedi_
+#  define gtmany gtmany_
+#  define gtonly gtonly_
+#  define gmedia gmedia_
+#  define glvolu glvolu_
+#  define gtnext gtnext_
+#  define ggperp ggperp_
+
+#else
+#  define gudigi GUDIGI
+#  define guhadr GUHADR
+#  define guout  GUOUT
+#  define guphad GUPHAD
+#  define gudcay GUDCAY
+#  define guiget GUIGET
+#  define guinme GUINME
+#  define guinti GUINTI
+#  define gunear GUNEAR
+#  define guskip GUSKIP
+#  define guview GUVIEW
+#  define gupara GUPARA
+#  define gudtim GUDTIM
+#  define guplsh GUPLSH
+#  define gutrev GUTREV
+#  define gutrak GUTRAK
+#  define guswim GUSWIM
+#  define gufld  GUFLD
+#  define gustep GUSTEP
+#  define gukine GUKINE
+
+#  define gheish GHEISH
+#  define flufin FLUFIN
+#  define gfmfin GFMFIN
+#  define gpghei GPGHEI
+#  define fldist FLDIST
+#  define gfmdis GFMDIS
+#  define g3helx3 G3HELX3
+#  define g3helix G3HELIX
+#  define g3gperp G3GPERP
+#  define g3rkuta G3RKUTA
+#  define gtrack GTRACK
+#  define gtreveroot GTREVEROOT
+#  define glast  GLAST
+#  define ginvol GINVOL
+#  define gtmedi GTMEDI
+#  define gtmany GTMANY
+#  define gmedia GMEDIA
+#  define glvolu GLVOLU
+#  define gtnext GTNEXT 
+#  define ggperp GGPERP
+
+#endif
+
+extern "C" type_of_call void gheish();
+extern "C" type_of_call void flufin();
+extern "C" type_of_call void gfmfin();
+extern "C" type_of_call void gpghei();
+extern "C" type_of_call void fldist();
+extern "C" type_of_call void gfmdis();
+extern "C" type_of_call void g3helx3(Float_t&, Float_t&, Float_t*, Float_t*);
+extern "C" type_of_call void g3helix(Float_t&, Float_t&, Float_t*, Float_t*);
+extern "C" type_of_call void g3rkuta(Float_t&, Float_t&, Float_t*, Float_t*);
+extern "C" type_of_call void g3gperp(Float_t*, Float_t*, Int_t&);
+extern "C" type_of_call void g3track();
+extern "C" type_of_call void gtreveroot();
+extern "C" type_of_call void g3last();
+extern "C" type_of_call void g3invol(Float_t*, Int_t&);
+extern "C" type_of_call void g3tmedi(Float_t*, Int_t&);
+extern "C" type_of_call void g3tmany(Int_t&);
+extern "C" type_of_call void g3media(Float_t*, Int_t&, Int_t&);
+extern "C" type_of_call void g3tnext();
+extern "C" type_of_call void ginvol(Float_t*, Int_t&);
+extern "C" type_of_call void gtmedi(Float_t*, Int_t&);
+extern "C" type_of_call void gtmany(Int_t&);
+extern "C" type_of_call void gtonly(Int_t&);
+extern "C" type_of_call void gmedia(Float_t*, Int_t&, Int_t&);
+extern "C" type_of_call void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier);
+extern "C" type_of_call void gtnext();
+extern "C" type_of_call void ggperp(Float_t*, Float_t*, Int_t&);
+
+
 //
 // Geant3 global pointer
 //
-TGeoNode *gCurrentNode = 0;
 Gctrak_t *gctrak = 0;
 Gcvolu_t *gcvolu = 0;
 Gckine_t *gckine = 0;
@@ -757,6 +885,16 @@ Int_t count_gmedia = 0;
 Int_t count_gtmedi = 0;
 Int_t count_gtnext = 0;
 Gcchan_t *gcchan = 0;
+
+extern "C"  type_of_call void gtonlyg3(Int_t&);
+void (*fginvol)(Float_t*, Int_t&) = 0;
+void (*fgtmedi)(Float_t*, Int_t&) = 0;
+void (*fgtmany)(Int_t&) = 0;
+void (*fgtonly)(Int_t&) = 0;
+void (*fgmedia)(Float_t*, Int_t&, Int_t&) = 0;
+void (*fglvolu)(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier) = 0;
+void (*fgtnext)() = 0;
+void (*fggperp)(Float_t*, Float_t*, Int_t&) = 0;
 
 //#define STATISTICS
 #ifdef STATISTICS
@@ -787,11 +925,7 @@ TGeant3::TGeant3()
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3(const char *title, Int_t nwgeant) 
-#ifdef WITHROOT
-       : TVirtualMC("TGeant3",title, kTRUE),
-#else       
        : TVirtualMC("TGeant3",title, kFALSE),
-#endif
          fImportRootGeometry(kFALSE),
          fStopRun(kFALSE)
 {
@@ -814,10 +948,6 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
    
   geant3 = this;
   
-#ifdef WITHROOT
-  fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
-#endif
-  
   if(nwgeant) {
     g3zebra(nwgeant); 
     g3init(); 
@@ -832,6 +962,16 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   // Zero number of particles
   fNG3Particles = 0;
   fNPDGCodes=0;
+  
+  //set pointers to tracker functions
+  fginvol = g3invol;
+  fgtmedi = g3tmedi;
+  fgtmany = g3tmany;
+  fgtonly = gtonlyg3;
+  fgmedia = g3media;
+  fglvolu = g3lvolu;
+  fgtnext = g3tnext;
+  fggperp = g3gperp;  
 } 
  
 //____________________________________________________________________________ 
@@ -939,12 +1079,7 @@ void TGeant3::GeomIter()
   // Geometry iterator for moving upward in the geometry tree
   // Initialise the iterator
   //
-#ifdef WITHG3
   fNextVol=fGcvolu->nlevel;
-#endif
-#ifdef WITHROOT
-  fNextVol=gGeoManager->GetLevel();
-#endif
 }
 
 //____________________________________________________________________________ 
@@ -955,7 +1090,6 @@ Int_t TGeant3::NextVolUp(Text_t *name, Int_t &copy)
   // Return next volume up
   //
   fNextVol--;
-#ifdef WITHG3
   Int_t i, gname;
   if(fNextVol>=0) {
     gname=fGcvolu->names[fNextVol];
@@ -966,19 +1100,6 @@ Int_t TGeant3::NextVolUp(Text_t *name, Int_t &copy)
     else printf("GeomTree: Volume %s not found in bank\n",name);
   }
   return 0;
-#endif
-#ifdef WITHROOT
-  if (fNextVol>=0) {
-     Int_t level = gGeoManager->GetLevel();
-     if (level<=fNextVol) return 0;
-     TGeoNode *mother = gGeoManager->GetMother(level-fNextVol);
-     if (!mother) return 0;
-     sprintf(name, "%s", mother->GetVolume()->GetName());
-     copy = mother->GetNumber();
-     return mother->GetVolume()->GetNumber();
-  }     
-  return 0;
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1039,7 +1160,6 @@ Int_t TGeant3::CurrentVolID(Int_t &copy) const
   //
   // Returns the current volume ID and copy number
   //
-#ifdef WITHG3
   Int_t i, gname;
   if( (i=fGcvolu->nlevel-1) < 0 ) {
     Warning("CurrentVolID","Stack depth only %d\n",fGcvolu->nlevel);
@@ -1051,14 +1171,6 @@ Int_t TGeant3::CurrentVolID(Int_t &copy) const
     else Warning("CurrentVolID","Volume %4s not found\n",(char*)&gname);
   }
   return 0;
-#endif
-#ifdef WITHROOT
-  if (gGeoManager->IsOutside()) return 0;
-  TGeoNode *node = gGeoManager->GetCurrentNode();
-  copy = node->GetNumber();
-  Int_t id = node->GetVolume()->GetNumber();
-  return id;
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1068,7 +1180,6 @@ Int_t TGeant3::CurrentVolOffID(Int_t off, Int_t &copy) const
   // Return the current volume "off" upward in the geometrical tree 
   // ID and copy number
   //
-#ifdef WITHG3
   Int_t i, gname;
   if( (i=fGcvolu->nlevel-off-1) < 0 ) {
     Warning("CurrentVolOffID","Offset requested %d but stack depth %d\n",
@@ -1081,15 +1192,6 @@ Int_t TGeant3::CurrentVolOffID(Int_t off, Int_t &copy) const
     else Warning("CurrentVolOffID","Volume %4s not found\n",(char*)&gname);
   }
   return 0;
-#endif
-#ifdef WITHROOT
-  if (off<0 || off>gGeoManager->GetLevel()) return 0;
-  if (off==0) return CurrentVolID(copy);
-  TGeoNode *node = gGeoManager->GetMother(off);
-  if (!node) return 0;
-  copy = node->GetNumber();
-  return node->GetVolume()->GetNumber();
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1098,7 +1200,6 @@ const char* TGeant3::CurrentVolName() const
   //
   // Returns the current volume name
   //
-#ifdef WITHG3
   Int_t i;
   if( (i=fGcvolu->nlevel-1) < 0 ) {
     Warning("CurrentVolName","Stack depth %d\n",fGcvolu->nlevel);
@@ -1109,11 +1210,6 @@ const char* TGeant3::CurrentVolName() const
   if(gname == fZiq[fGclink->jvolum+i]) return fVolNames[i-1];
   else Warning("CurrentVolName","Volume %4s not found\n",(char*) &gname);
   return 0;
-#endif
-#ifdef WITHROOT
-  if (gGeoManager->IsOutside()) return 0;
-  return gGeoManager->GetCurrentVolume()->GetName();
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1130,20 +1226,11 @@ const char* TGeant3::CurrentVolOffName(Int_t off) const
 	    "Offset requested %d but stack depth %d\n",off,fGcvolu->nlevel);
     return 0;
   }
-#ifdef WITHG3
   Int_t gname=fGcvolu->names[i];
   i=fGcvolu->lvolum[i];    
   if(gname == fZiq[fGclink->jvolum+i]) return fVolNames[i-1];
   else Warning("CurrentVolOffName","Volume %4s not found\n",(char*)&gname);
   return 0;
-#endif
-#ifdef WITHROOT
-  if (off<0 || off>gGeoManager->GetLevel()) return 0;
-  if (off==0) return CurrentVolName();
-  TGeoNode *node = gGeoManager->GetMother(off);
-  if (!node) return 0;
-  return node->GetVolume()->GetName();
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1520,22 +1607,12 @@ Int_t TGeant3::VolId(const Text_t *name) const
   //
   // Return the unique numeric identifier for volume name
   //
-#ifdef WITHG3
   Int_t gname,i;
   strncpy((char *) &gname, name, 4);
   for(i=1; i<=fGcnum->nvolum; i++)
     if(gname == fZiq[fGclink->jvolum+i]) return i;
   printf("VolId: Volume %s not found\n",name);
   return 0;
-#endif
-#ifdef WITHROOT
-  char sname[20];
-  Int_t len = strlen(name)-1;
-  if (name[len] != ' ') return fMCGeo->VolId(name);
-  strncpy(sname, name, len);
-  sname[len] = 0;
-  return fMCGeo->VolId(sname);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1544,12 +1621,7 @@ Int_t TGeant3::NofVolumes() const
   //
   // Return total number of volumes in the geometry
   //
-#ifdef WITHG3
   return fGcnum->nvolum;
-#endif
-#ifdef WITHROOT
-  return fMCGeo->NofVolumes();
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1559,17 +1631,11 @@ Int_t TGeant3::NofVolDaughters(const char* volName) const
 // According to A. Morsch' G3toRoot class
 // ---
 
-#ifdef WITHG3
   Int_t idvol = VolId(volName);
 
   Int_t jvo = fZlq[fGclink->jvolum-idvol];
   Int_t nin = Int_t(fZq[jvo+3]);
   return nin;
-#endif
-
-#ifdef WITHROOT
-  return fMCGeo->NofVolDaughters(volName);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1579,7 +1645,6 @@ const char*  TGeant3::VolDaughterName(const char* volName, Int_t i) const
 // According to A. Morsch' G3toRoot class
 // ---
 
-#ifdef WITHG3
   Int_t idvol = VolId(volName);
 
   Int_t jvo = fZlq[fGclink->jvolum-idvol];
@@ -1588,11 +1653,6 @@ const char*  TGeant3::VolDaughterName(const char* volName, Int_t i) const
   Int_t idvold = Int_t(fZq[jin+2]);;
 
   return VolName(idvold);
-#endif
-
-#ifdef WITHROOT
-  return fMCGeo->VolDaughterName(volName, i);
-#endif
 }
 
 
@@ -1603,7 +1663,6 @@ Int_t TGeant3::VolDaughterCopyNo(const char* volName, Int_t i) const
 // According to A. Morsch' G3toRoot class
 // ---
 
-#ifdef WITHG3
   Int_t idvol = VolId(volName);
 
   Int_t jvo = fZlq[fGclink->jvolum-idvol];
@@ -1611,11 +1670,6 @@ Int_t TGeant3::VolDaughterCopyNo(const char* volName, Int_t i) const
   Int_t jin = fZlq[jvo-nin];
 
   return  Int_t(fZq[jin +3]);
-#endif
-
-#ifdef WITHROOT
-  return fMCGeo->VolDaughterCopyNo(volName, i);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1624,17 +1678,12 @@ Int_t TGeant3::VolId2Mate(Int_t id) const
   //
   // Return material number for a given volume id
   //
-#ifdef WITHG3
   if(id<1 || id > fGcnum->nvolum || fGclink->jvolum<=0) 
     return 0;
   else {
     Int_t jvo = fZlq[fGclink->jvolum-id];
     return Int_t(fZq[jvo+4]);
   }
-#endif
-#ifdef WITHROOT
-  return fMCGeo->VolId2Mate(id);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1643,15 +1692,10 @@ const char* TGeant3::VolName(Int_t id) const
   //
   // Return the volume name given the volume identifier
   //
-#ifdef WITHG3
   if(id<1 || id > fGcnum->nvolum || fGclink->jvolum<=0) 
     return fVolNames[fGcnum->nvolum];
   else
     return fVolNames[id-1];
-#endif
-#ifdef WITHROOT
-  return fMCGeo->VolName(id);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2346,10 +2390,6 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   //
 
   G3Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
-  
-#ifdef WITHROOT
-  fMCGeo->Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2379,10 +2419,6 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   Float_t* fbuf = CreateFloatArray(buf, nwbuf);  
   G3Material(kmat, name, a, z, dens, radl, absl, fbuf, nwbuf);
   delete [] fbuf;
-
-#ifdef WITHROOT
-  fMCGeo->Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2447,10 +2483,6 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   //
 
   G3Mixture(kmat, name, a, z, dens, nlmat, wmat);
-  
-#ifdef WITHROOT
-  fMCGeo->Mixture(kmat, name, a, z, dens, TMath::Abs(nlmat), wmat);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2483,10 +2515,6 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   delete [] fa;
   delete [] fz;
   delete [] fwmat;
-
-#ifdef WITHROOT
-  fMCGeo->Mixture(kmat, name, a, z, dens, TMath::Abs(nlmat), wmat);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2562,10 +2590,6 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   G3Medium(kmed, name, nmat, isvol, ifield, fieldm, tmaxfd, stemax, deemax, epsil,
            stmin, ubuf, nbuf);
 
-#ifdef WITHROOT
-  fMCGeo->Medium(kmed, name, nmat, isvol, ifield, fieldm, tmaxfd, stemax, deemax, 
-                 epsil, stmin, ubuf, nbuf);
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2597,10 +2621,6 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
            stmin, fubuf, nbuf);
   delete [] fubuf;	 
 
-#ifdef WITHROOT 
-  fMCGeo->Medium(kmed, name, nmat, isvol, ifield, fieldm, tmaxfd, stemax, deemax, 
-                 epsil, stmin, ubuf, nbuf);
-#endif		 
 }
 
 //_____________________________________________________________________________
@@ -2619,7 +2639,6 @@ void TGeant3::Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
   //  it defines the rotation matrix number irot.
   //  
   krot = -1;
-#ifdef WITHG3
   Int_t jrotm=fGclink->jrotm;
   krot=1;
   Int_t ns, i;
@@ -2634,10 +2653,6 @@ void TGeant3::Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
     }
   }
   g3srotm(krot, thex, phix, they, phiy, thez, phiz);
-#endif
-#ifdef WITHROOT
-  fMCGeo->Matrix(krot, thex, phix, they, phiy, thez, phiz);  
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2663,10 +2678,8 @@ void  TGeant3::SetRootGeometry()
 // The materials and tracking medias will be imported from
 // TGeo at FinishGeometry().
 
-#ifdef WITHG3
   Fatal("SetRootGeometry", 
         "TGeant3 was not compiled with WITHROOT option");
-#endif
 
   fImportRootGeometry = kTRUE;
 }  			
@@ -2675,7 +2688,6 @@ void  TGeant3::SetRootGeometry()
 const char *TGeant3::GetPath()
 {
 // Get current path inside G3 geometry
-#ifdef WITHG3
    Int_t i,j;
    if ((i=fGcvolu->nlevel-1)<0) {
       Warning("GetPath", "level null");
@@ -2697,17 +2709,12 @@ const char *TGeant3::GetPath()
    }
    fPath[nch-1]=0;
    return fPath;
-#endif
-#ifdef WITHROOT
-   return gGeoManager->GetPath();
-#endif
 }      
 
 //_____________________________________________________________________________
 const char *TGeant3::GetNodeName()
 {
 // Get name of current G3 node
-#ifdef WITHG3
    Int_t i=fGcvolu->nlevel-1;
    if (i<0) return "";
    Int_t gname = fGcvolu->names[i];
@@ -2717,11 +2724,6 @@ const char *TGeant3::GetNodeName()
    name[4] = 0;
    sprintf(fPath, "%s_%d", name, copy);
    return fPath;
-#endif
-#ifdef WITHROOT
-   if (gGeoManager->IsOutside()) return "";
-   return gGeoManager->GetCurrentNode()->GetName();
-#endif
 }
 
 //_____________________________________________________________________________
@@ -2809,7 +2811,6 @@ void  TGeant3::Ggclos()
   //   numbers, and the generic path(s) in the JVOLUM tree, 
   //   through the routine GHCLOS. 
   //
-#ifdef WITHG3
   g3gclos(); 
   // Create internal list of volumes
   fVolNames = new char[fGcnum->nvolum+1][5];
@@ -2819,10 +2820,6 @@ void  TGeant3::Ggclos()
     fVolNames[i][4]='\0';
   }
   strcpy(fVolNames[fGcnum->nvolum],"NULL");
-#endif
-#ifdef WITHROOT
-  fVolNames = 0;
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -2841,11 +2838,9 @@ void  TGeant3::Gprint(const char *name)
   // Routine to print data structures
   // CHNAME   name of a data structure
   // 
-#ifdef WITHG3
   char vname[5];
   Vname(name,vname);
   g3print(PASSCHARD(vname),0 PASSCHARL(vname)); 
-#endif
 } 
 
 //_____________________________________________________________________________
@@ -3068,10 +3063,6 @@ void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
   }
   g3smate(imat,PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf
 	 PASSCHARL(name)); 
-  
-#ifdef WITHROOT
- gGeoManager->Material(name,a,z,dens,imat);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3091,21 +3082,6 @@ void  TGeant3::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
   //       weigths.
   //
   g3smixt(imat,PASSCHARD(name), a, z,dens, nlmat,wmat PASSCHARL(name)); 
-  
-#ifdef WITHROOT
-  Int_t i;
-  if (nlmat < 0) {
-     nlmat = - nlmat;
-     Double_t amol = 0;
-     for (i=0;i<nlmat;i++) {
-        amol += a[i]*wmat[i];
-     }
-     for (i=0;i<nlmat;i++) {
-        wmat[i] *= a[i]/amol;
-     }
-  }
-  gGeoManager->Mixture(name, a, z, dens, nlmat, wmat, imat);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3159,10 +3135,6 @@ void  TGeant3::Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,
   Int_t   nbuf=0; 
   g3stmed(numed,PASSCHARD(name), nmat, isvol, ifield, fieldm, tmaxfd, stemax,
 	 deemax, epsil, stmin, ubuf, nbuf PASSCHARL(name)); 
-  
-#ifdef WITHROOT
-  gGeoManager->Medium(name,numed,nmat, isvol, ifield, fieldm, tmaxfd, stemax,deemax, epsil, stmin);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3547,17 +3519,7 @@ void  TGeant3::Gdtom(Float_t *xd, Float_t *xm, Int_t iflag)
   //   If IFLAG=1  convert coordinates
   //      IFLAG=2  convert direction cosinus
   //
-#ifdef WITHG3
   g3dtom(xd, xm, iflag);
-#endif 
-#ifdef WITHROOT
-   Double_t XM[3], XD[3];
-   Int_t i;
-   for (i=0;i<3;i++) XD[i] = xd[i];
-   if (iflag == 1) gGeoManager->LocalToMaster(XD,XM);
-   else            gGeoManager->LocalToMasterVect(XD,XM);
-   for (i=0;i<3;i++) xm[i]=XM[i];
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3575,7 +3537,6 @@ void  TGeant3::Gdtom(Double_t *xd, Double_t *xm, Int_t iflag)
   //      IFLAG=2  convert direction cosinus
   //
   
-#ifdef WITHG3
   Float_t* fxd = CreateFloatArray(xd, 3);
   Float_t* fxm = CreateFloatArray(xm, 3);
   
@@ -3587,11 +3548,6 @@ void  TGeant3::Gdtom(Double_t *xd, Double_t *xm, Int_t iflag)
 
   delete [] fxd;
   delete [] fxm;
-#endif
-#ifdef WITHROOT
-   if (iflag == 1) gGeoManager->LocalToMaster(xd,xm);
-   else            gGeoManager->LocalToMasterVect(xd,xm);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3621,28 +3577,8 @@ void  TGeant3::Gmedia(Float_t *x, Int_t &numed)
   //         outside the experimental setup.
   //
 
-#ifdef WITHG3
   static Int_t check = 0;
   g3media(x,numed,check); 
-#endif
-    
-#ifdef WITHROOT
-   gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-   if (gGeoManager->IsOutside()) {
-      numed=0; 
-   } else {
-      gcvolu->nlevel = 1 + gGeoManager->GetLevel();
-      gGeoManager->GetBranchNames(gcvolu->names);
-      gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
-      TGeoVolume *vol = gCurrentNode->GetVolume();
-      if (vol) {
-         TGeoMedium *medium = vol->GetMedium();
-         if (medium) numed = medium->GetId();
-      } else {
-         printf("ERROR: gmedia: NULL volume\n");
-      }
-   }   
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3660,17 +3596,7 @@ void  TGeant3::Gmtod(Float_t *xm, Float_t *xd, Int_t iflag)
   //        If IFLAG=1  convert coordinates 
   //           IFLAG=2  convert direction cosinus
   //
-#ifdef WITHG3
   g3mtod(xm, xd, iflag); 
-#endif
-#ifdef WITHROOT
-   Double_t XM[3], XD[3];
-   Int_t i;
-   for (i=0;i<3;i++) XM[i]=xm[i];
-   if (iflag == 1) gGeoManager->MasterToLocal(XM,XD);
-   else            gGeoManager->MasterToLocalVect(XM,XD);
-   for (i=0;i<3;i++) xd[i] = XD[i];
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3690,7 +3616,6 @@ void  TGeant3::Gmtod(Double_t *xm, Double_t *xd, Int_t iflag)
   //
 
   
-#ifdef WITHG3
   Float_t* fxm = CreateFloatArray(xm, 3);
   Float_t* fxd = CreateFloatArray(xd, 3);
   
@@ -3702,11 +3627,6 @@ void  TGeant3::Gmtod(Double_t *xm, Double_t *xd, Int_t iflag)
 
   delete [] fxm;
   delete [] fxd;
-#endif
-#ifdef WITHROOT
-   if (iflag == 1) gGeoManager->MasterToLocal(xm,xd);
-   else            gGeoManager->MasterToLocalVect(xm,xd);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3729,14 +3649,8 @@ void  TGeant3::Gsdvn(const char *name, const char *mother, Int_t ndiv,
   char vmother[5];
   Vname(mother,vmother);
  
-#ifdef WITHG3
   g3sdvn(PASSCHARD(vname), PASSCHARD(vmother), ndiv, iaxis PASSCHARL(vname)
 	PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gsdvn(name, mother, ndiv, iaxis);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3755,15 +3669,9 @@ void  TGeant3::Gsdvn2(const char *name, const char *mother, Int_t ndiv,
   char vmother[5];
   Vname(mother,vmother);
   
-#ifdef WITHG3
   Float_t fc0i = c0i;
   g3sdvn2(PASSCHARD(vname), PASSCHARD(vmother), ndiv, iaxis, fc0i, numed
 	 PASSCHARL(vname) PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gsdvn2(name, mother, ndiv, iaxis, c0i, numed);
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3778,14 +3686,8 @@ void  TGeant3::Gsdvs(const char *name, const char *mother, Float_t step,
   char vmother[5];
   Vname(mother,vmother);
 
-#ifdef WITHG3
   g3sdvs(PASSCHARD(vname), PASSCHARD(vmother), step, iaxis, numed
 	PASSCHARL(vname) PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  gGeoManager->Division(vname,vmother,iaxis,0,0,step,numed,"s");
-#endif  
 } 
  
 //_____________________________________________________________________________
@@ -3800,14 +3702,8 @@ void  TGeant3::Gsdvs2(const char *name, const char *mother, Float_t step,
   char vmother[5];
   Vname(mother,vmother);
 
-#ifdef WITHG3
   g3sdvs2(PASSCHARD(vname), PASSCHARD(vmother), step, iaxis, c0, numed
 	 PASSCHARL(vname) PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  gGeoManager->Division(vname,vmother,iaxis,0,c0,step,numed,"sx");
-#endif  
 } 
  
 //_____________________________________________________________________________
@@ -3830,15 +3726,9 @@ void  TGeant3::Gsdvt(const char *name, const char *mother, Double_t step,
   char vmother[5];
   Vname(mother,vmother);
   
-#ifdef WITHG3
   Float_t fstep = step;
   g3sdvt(PASSCHARD(vname), PASSCHARD(vmother), fstep, iaxis, numed, ndvmx
 	PASSCHARL(vname) PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gsdvt(name, mother, step, iaxis, numed, ndvmx);
-#endif  
 } 
 
 //_____________________________________________________________________________
@@ -3861,16 +3751,10 @@ void  TGeant3::Gsdvt2(const char *name, const char *mother, Double_t step,
   char vmother[5];
   Vname(mother,vmother);
   
-#ifdef WITHG3
   Float_t fstep = step;
   Float_t fc0 = c0;
   g3sdvt2(PASSCHARD(vname), PASSCHARD(vmother), fstep, iaxis, fc0,
 	 numed, ndvmx PASSCHARL(vname) PASSCHARL(vmother)); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gsdvt2(name, mother, step, iaxis, c0, numed, ndvmx);
-#endif  
 } 
 
 //_____________________________________________________________________________
@@ -3890,11 +3774,9 @@ void  TGeant3::Gsord(const char *name, Int_t iax)
   //           IAX = 7    THETA (THETA=0 => Z axis)
   //
 
-#ifdef WITHG3
   char vname[5];
   Vname(name,vname);
   g3sord(PASSCHARD(vname), iax PASSCHARL(vname)); 
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -3925,18 +3807,12 @@ void  TGeant3::Gspos(const char *name, Int_t nr, const char *mother, Double_t x,
   char vmother[5];
   Vname(mother,vmother);
   
-#ifdef WITHG3
   Float_t fx = x;
   Float_t fy = y;
   Float_t fz = z;  
   g3spos(PASSCHARD(vname), nr, PASSCHARD(vmother), fx, fy, fz, irot,
 	PASSCHARD(konly) PASSCHARL(vname) PASSCHARL(vmother)
 	PASSCHARL(konly)); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gspos(name, nr, mother, x, y, z, irot, konly);
-#endif  
 } 
  
 //_____________________________________________________________________________
@@ -3975,13 +3851,7 @@ void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
   //      NR inside MOTHER, with its parameters UPAR(1..NP)
   //
 
-#ifdef WITHG3
   G3Gsposp(name, nr, mother, x, y, z, irot, konly, upar, np); 
-#endif
-    
-#ifdef WITHROOT
-  fMCGeo->Gsposp(name, nr, mother, x, y, z, irot, konly, upar, np);
-#endif  
 } 
  
 //_____________________________________________________________________________
@@ -3994,16 +3864,9 @@ void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
   //      NR inside MOTHER, with its parameters UPAR(1..NP)
   //
 
-#ifdef WITHG3
   Float_t* fupar = CreateFloatArray(upar, np);
   G3Gsposp(name, nr, mother, x, y, z, irot, konly, fupar, np); 
   delete [] fupar;
-#endif
-
-#ifdef WITHROOT
-  fMCGeo->Gsposp(name, nr, mother, x, y, z, irot, konly, upar, np);
-#endif  
-
 } 
  
 //_____________________________________________________________________________
@@ -4022,13 +3885,7 @@ void  TGeant3::Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2,
   //  It defines the rotation matrix number IROT.
   //  
 
-#ifdef WITHG3
   g3srotm(nmat, theta1, phi1, theta2, phi2, theta3, phi3); 
-#endif
-  
-#ifdef WITHROOT
-  gGeoManager->Matrix(nmat, theta1, phi1, theta2, phi2, theta3, phi3);
-#endif  
 } 
  
 //_____________________________________________________________________________
@@ -4038,20 +3895,7 @@ void  TGeant3::Gprotm(Int_t nmat)
   //    To print rotation matrices structure JROTM
   //     nmat     Rotation matrix number
   //
-#ifdef WITHG3
   g3protm(nmat); 
-#endif
-#ifdef WITHROOT
-  TIter next(gGeoManager->GetListOfMatrices());
-  TGeoMatrix *matrix;
-  while ((matrix = (TGeoMatrix*)next())) {
-     if (UInt_t(nmat) == matrix->GetUniqueID()) {
-        matrix->Print();
-	return;
-     }
-  }     	
-  Error("Gprotm","Rotation with id=%i not found", nmat);
-#endif
  } 
  
 //_____________________________________________________________________________
@@ -4094,13 +3938,7 @@ Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
   //  
 
   Int_t ivolu = 0; 
-#ifdef WITHG3
   ivolu = G3Gsvolu(name, shape, nmed, upar, npar);
-#endif  
-  
-#ifdef WITHROOT
-  ivolu = fMCGeo->Gsvolu(name, shape, nmed, upar, npar);
-#endif  
   return ivolu; 
 
 } 
@@ -4121,15 +3959,9 @@ Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
 
 
   Int_t ivolu = 0; 
-#ifdef WITHG3
   Float_t* fupar = CreateFloatArray(upar, npar);
   ivolu = G3Gsvolu(name, shape, nmed, fupar, npar);
   delete [] fupar;  
-#endif  
-
-#ifdef WITHROOT
-  ivolu = fMCGeo->Gsvolu(name, shape, nmed, upar, npar);
-#endif  
   return ivolu; 
 } 
  
@@ -4275,14 +4107,8 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
   Vname(name,vname);
   char vatt[5];
   Vname(att,vatt);
-#ifdef WITHG3
   g3satt(PASSCHARD(vname), PASSCHARD(vatt), val PASSCHARL(vname)
 	PASSCHARL(vatt)); 
-#endif
-  
-#ifdef WITHROOT
-  gGeoManager->SetVolumeAttribute(vname, vatt, val);
-#endif
 } 
 
 //_____________________________________________________________________________
@@ -4334,14 +4160,9 @@ Int_t TGeant3::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
   //  to zero NLEVEL in the common GCVOLU. It return 0 if there were no
   //  problems in make the call.
   //
-#ifdef WITHG3
   Int_t ier;
   g3lvolu(nlev, lnam, lnum, ier); 
   return ier;
-#endif
-#ifdef WITHROOT
-  return 0;
-#endif
 }
 
 //_____________________________________________________________________________
@@ -4428,9 +4249,6 @@ void TGeant3::Gdopt(const char *name,const char *value)
   //     USER    ON       User graphics options in the raytracing.
   //             OFF (D)  Automatic graphics options.
   //  
-  #ifdef WITHROOT
-  return;
-  #endif
   InitHIGZ();
   char vname[5];
   Vname(name,vname);
@@ -4478,9 +4296,6 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
   //  Finally, some examples are given for the ray-tracing. (A possible
   //  string for the NAME of the volume can be found using the command DTREE).
   //
-  #ifdef WITHROOT
-  return;
-  #endif
   
   InitHIGZ();
   gHigz->Clear();
@@ -4520,9 +4335,6 @@ void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
   //  When HIDE Mode is ON, it is possible to get the same effect with
   //  the CVOL/BOX function.
   //  
-  #ifdef WITHROOT
-  return;
-  #endif
 
   InitHIGZ();
   gHigz->Clear();
@@ -4553,9 +4365,6 @@ void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
   //  cutthe and cutphi and placed at the distance cutval from the origin.
   //  The resulting picture is seen from the viewing angles theta,phi.
   //
-  #ifdef WITHROOT
-  return;
-  #endif
 
   InitHIGZ();
   gHigz->Clear();
@@ -4633,9 +4442,6 @@ void TGeant3::Gdspec(const char *name)
   //  SHAD and according the current SetClipBox clipping parameters for that
   //  volume.
   //  
-  #ifdef WITHROOT
-  return;
-  #endif
 
   InitHIGZ();
   gHigz->Clear();
@@ -4651,9 +4457,6 @@ void TGeant3::DrawOneSpec(const char *name)
   //  Function called when one double-clicks on a volume name
   //  in a TPavelabel drawn by Gdtree.
   //
-  #ifdef WITHROOT
-  return;
-  #endif
   THIGZ *higzSave = gHigz;
   higzSave->SetName("higzSave");
   THIGZ *higzSpec = (THIGZ*)gROOT->FindObject("higzSpec");
@@ -4688,9 +4491,6 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
   //    - drawing tree
   //    - drawing tree of parent
   //  
-  #ifdef WITHROOT
-  return;
-  #endif
 
   InitHIGZ();
   gHigz->Clear();
@@ -4710,7 +4510,6 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
   //
   //  This function draws the logical tree of the parent of name.
   //  
-#ifdef WITHG3
   InitHIGZ();
   gHigz->Clear();
   // Scan list of volumes in JVOLUM
@@ -4733,7 +4532,6 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
       }
     }
   }
-#endif
 } 
  
 //_____________________________________________________________________________
@@ -4857,9 +4655,6 @@ void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
   //  coordinates.
   
 //  InitHIGZ();
-  #ifdef WITHROOT
-  return;
-  #endif
 
   char vname[5];
   Vname(name,vname);
@@ -5771,34 +5566,6 @@ TString  TGeant3::ParticleClass(TMCParticleType particleType) const
 }
 
 //____________________________________________________________________________
-Int_t  TGeant3::ImportMaterial(const TGeoMaterial* mat)
-{
-// Imports the Root material in Geant3 and returns its Geant3 index
-// ---
-      
-  Int_t kmat;
-  const TGeoMixture* mixt = dynamic_cast<const TGeoMixture*>(mat);
-  if (mixt) {
-    Int_t nlmat = mixt->GetNelements(); 
-    Float_t* fa = CreateFloatArray(mixt->GetAmixt(), TMath::Abs(nlmat));  
-    Float_t* fz = CreateFloatArray(mixt->GetZmixt(), TMath::Abs(nlmat));  
-    Float_t* fwmat = CreateFloatArray(mixt->GetWmixt(), TMath::Abs(nlmat));  
-    G3Mixture(kmat, mixt->GetName(), fa, fz, mixt->GetDensity(), nlmat, fwmat); 
-    delete [] fa;
-    delete [] fz;
-    delete [] fwmat;
-  } 
-  else {
-    Float_t* buf = 0;
-    G3Material(kmat, mat->GetName(), mat->GetA(), mat->GetZ(),
-               mat->GetDensity(), mat->GetRadLen(), mat->GetIntLen(), buf, 0);
-                                    // Is fIntLen == absl ??
-  }
-  return kmat;
-}  
-
-
-//____________________________________________________________________________
 void TGeant3::FinishGeometry()
 {
   //
@@ -5809,65 +5576,6 @@ void TGeant3::FinishGeometry()
   if (gDebug > 0) printf("FinishGeometry, calling ggclos\n");
   Ggclos();
 
-#ifdef WITHROOT
-  if (fImportRootGeometry) {
-  
-    // Import materials
-    // 
-    TIter next1(gGeoManager->GetListOfMaterials());
-    TGeoMaterial* mat;
-    Int_t nofMaterials = 0;
-    while ((mat=(TGeoMaterial*)next1())) {
-      Int_t kmat = ImportMaterial(mat);
-      mat->SetUniqueID(kmat);
-      nofMaterials++;
-    }  	         	        
-
-    // Number of media
-    Int_t nofMedia = 0;
-    TIter next2(gGeoManager->GetListOfMedia());
-    TGeoMedium* medx;
-    while ((medx=(TGeoMedium*)next2())) nofMedia++;
-    
-    // Import media
-    //
-    Int_t  maxNofMaterials = nofMaterials + nofMedia;  
-    TArrayI usedMaterials(maxNofMaterials);
-    for (Int_t i=0; i<maxNofMaterials; i++) 
-      usedMaterials[i] = -1; 
-    
-    TIter next3(gGeoManager->GetListOfMedia());
-    TGeoMedium* med;
-    while ((med=(TGeoMedium*)next3())) {
-      Int_t kmed;
-      Int_t nmat = med->GetMaterial()->GetUniqueID();
-      
-      // if material is already used define a new Geant3 material
-      // (do not reset TGeoMaterial index)
-      if (usedMaterials[nmat] >0 )
-        nmat = ImportMaterial(med->GetMaterial());
-      usedMaterials[nmat] = 1;        	        
-      
-      Int_t isvol  = (Int_t) med->GetParam(0);
-      Int_t ifield = (Int_t) med->GetParam(1);
-      Double_t fieldm = med->GetParam(2);
-      Double_t tmaxfd = med->GetParam(3);
-      Double_t stemax = med->GetParam(4);
-      Double_t deemax = med->GetParam(5);
-      Double_t epsil  = med->GetParam(6);
-      Double_t stmin  = med->GetParam(7);
-      G3Medium(kmed, med->GetName(), nmat, isvol, ifield, fieldm, tmaxfd,
-               stemax,deemax, epsil, stmin);
-      med->SetId(kmed);	 
-    }
-    if (gDebug > 0) printf("FinishGeometry, geometry retreived from file, materials/media mapped to G3\n");
-  } else {
-    TGeoVolume *top = (TGeoVolume*)gGeoManager->GetListOfVolumes()->First();
-    gGeoManager->SetTopVolume(top);
-    if (gDebug > 0) printf("FinishGeometry, calling CloseGeometry\n");
-    gGeoManager->CloseGeometry();  
-  }  
-#endif
 
   //  gROOT->GetListOfBrowsables()->Add(gGeoManager);
   if (gDebug > 0) printf("FinishGeometry, calling SetColors\n");
@@ -5956,7 +5664,7 @@ void TGeant3::SetColors()
   // this is done sequentially for all volumes
   // based on the number of their medium
   //
-#ifdef WITHG3
+
   Int_t kv, icol;
   Int_t jvolum=fGclink->jvolum;
   //Int_t jtmed=fGclink->jtmed;
@@ -5981,16 +5689,6 @@ void TGeant3::SetColors()
     name[4]='\0';
     Gsatt(name,"COLO",icol);
   }
-#endif
-#ifdef WITHROOT
-  TIter next(gGeoManager->GetListOfVolumes());
-  TGeoVolume *volume;
-  while ((volume = (TGeoVolume*)next())) {
-     TGeoMedium *medium = (TGeoMedium*)volume->GetMedium();
-     Int_t icol = medium->GetId()%6+2;
-     volume->SetLineColor(icol);
-  }
-#endif
 }
 
 //_____________________________________________________________________________
@@ -6146,180 +5844,17 @@ extern "C" void type_of_call  rxinh ()
   TVirtualMCApplication::Instance()->BeginPrimary();
 }
 
-#ifndef WIN32
-#  define gudigi gudigi_
-#  define guhadr guhadr_
-#  define guout  guout_
-#  define guphad guphad_
-#  define gudcay gudcay_
-#  define guiget guiget_
-#  define guinme guinme_
-#  define guinti guinti_
-#  define gunear gunear_
-#  define guskip guskip_
-#  define guview guview_
-#  define gupara gupara_
-#  define gudtim gudtim_
-#  define guplsh guplsh_
-#  define gutrev gutrev_
-#  define gutrak gutrak_
-#  define guswim guswim_
-#  define gufld  gufld_
-#  define gustep gustep_
-#  define gukine gukine_
-
-#  define gheish gheish_
-#  define flufin flufin_
-#  define gfmfin gfmfin_
-#  define gpghei gpghei_
-#  define fldist fldist_
-#  define gfmdis gfmdis_
-#  define g3helx3 g3helx3_
-#  define g3helix g3helix_
-#  define g3rkuta g3rkuta_
-#  define g3track g3track_
-#  define gtreveroot gtreveroot_
-#  define g3last  g3last_
-#  define g3invol g3invol_
-#  define g3tmedi g3tmedi_
-#  define g3media g3media_
-#  define g3tmany g3tmany_
-#  define g3tnext g3tnext_
-#  define g3gperp g3gperp_
-#  define ginvol ginvol_
-#  define gtmedi gtmedi_
-#  define gtmany gtmany_
-#  define gtonly gtonly_
-#  define gmedia gmedia_
-#  define glvolu glvolu_
-#  define gtnext gtnext_
-#  define ggperp ggperp_
-
-#else
-#  define gudigi GUDIGI
-#  define guhadr GUHADR
-#  define guout  GUOUT
-#  define guphad GUPHAD
-#  define gudcay GUDCAY
-#  define guiget GUIGET
-#  define guinme GUINME
-#  define guinti GUINTI
-#  define gunear GUNEAR
-#  define guskip GUSKIP
-#  define guview GUVIEW
-#  define gupara GUPARA
-#  define gudtim GUDTIM
-#  define guplsh GUPLSH
-#  define gutrev GUTREV
-#  define gutrak GUTRAK
-#  define guswim GUSWIM
-#  define gufld  GUFLD
-#  define gustep GUSTEP
-#  define gukine GUKINE
-
-#  define gheish GHEISH
-#  define flufin FLUFIN
-#  define gfmfin GFMFIN
-#  define gpghei GPGHEI
-#  define fldist FLDIST
-#  define gfmdis GFMDIS
-#  define g3helx3 G3HELX3
-#  define g3helix G3HELIX
-#  define g3gperp G3GPERP
-#  define g3rkuta G3RKUTA
-#  define gtrack GTRACK
-#  define gtreveroot GTREVEROOT
-#  define glast  GLAST
-#  define ginvol GINVOL
-#  define gtmedi GTMEDI
-#  define gtmany GTMANY
-#  define gmedia GMEDIA
-#  define glvolu GLVOLU
-#  define gtnext GTNEXT 
-#  define ggperp GGPERP
-
-#endif
-
-extern "C" type_of_call void gheish();
-extern "C" type_of_call void flufin();
-extern "C" type_of_call void gfmfin();
-extern "C" type_of_call void gpghei();
-extern "C" type_of_call void fldist();
-extern "C" type_of_call void gfmdis();
-extern "C" type_of_call void g3helx3(Float_t&, Float_t&, Float_t*, Float_t*);
-extern "C" type_of_call void g3helix(Float_t&, Float_t&, Float_t*, Float_t*);
-extern "C" type_of_call void g3rkuta(Float_t&, Float_t&, Float_t*, Float_t*);
-extern "C" type_of_call void g3gperp(Float_t*, Float_t*, Int_t&);
-extern "C" type_of_call void g3track();
-extern "C" type_of_call void gtreveroot();
-extern "C" type_of_call void g3last();
-extern "C" type_of_call void g3invol(Float_t*, Int_t&);
-extern "C" type_of_call void g3tmedi(Float_t*, Int_t&);
-extern "C" type_of_call void g3tmany(Int_t&);
-extern "C" type_of_call void g3media(Float_t*, Int_t&, Int_t&);
-extern "C" type_of_call void g3tnext();
-extern "C" type_of_call void ginvol(Float_t*, Int_t&);
-extern "C" type_of_call void gtmedi(Float_t*, Int_t&);
-extern "C" type_of_call void gtmany(Int_t&);
-extern "C" type_of_call void gtonly(Int_t&);
-extern "C" type_of_call void gmedia(Float_t*, Int_t&, Int_t&);
-extern "C" type_of_call void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier);
-extern "C" type_of_call void gtnext();
-extern "C" type_of_call void ggperp(Float_t*, Float_t*, Int_t&);
-
-
 //______________________________________________________________________
 void ginvol(Float_t *x, Int_t &isame)
 {
-#ifdef WITHG3
-   g3invol(x,isame);
-#endif
-#ifdef WITHROOT
-   if (gGeoManager->IsSameLocation(x[0], x[1], x[2])) isame = 1;
-   else isame = 0;
-#endif
-#ifdef STATISTICS
-   statcode = 0;
-   statsame = isame;
-   statsnext=gctrak->snext;
-   statsafety=gctrak->safety;
-   for (int j=0;j<6;j++) if (j <3) oldvect[j] = x[j]; else oldvect[j]=0;
-   oldsafety = gctrak->safety;
-   oldstep   = gctrak->step;
-   sprintf(statpath,"%s",geant3->GetPath());
-   stattree->Fill();
-   count_ginvol++;
-#endif
+   fginvol(x,isame);
 }
 
 
 //______________________________________________________________________
 void gtmedi(Float_t *x, Int_t &numed)
 {
-#ifdef WITHG3
-   g3tmedi(x,numed);
-#endif
-#ifdef WITHROOT
-{
-   gcchan->lsamvl = kTRUE;
-   gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-   if (gGeoManager->IsOutside()) {
-      numed=0; 
-   } else {
-      gcvolu->nlevel = 1 + gGeoManager->GetLevel();
-      gGeoManager->GetBranchNames(gcvolu->names);
-      gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
-      TGeoVolume *vol = gCurrentNode->GetVolume();
-      gcchan->lsamvl = gGeoManager->IsSameLocation();   
-      if (vol) {
-         TGeoMedium *medium = vol->GetMedium();
-         if (medium) numed = medium->GetId();
-      } else {
-         printf("ERROR: gtmedi: NULL volume\n");
-      }
-   }
-}   
-#endif
+   fgtmedi(x,numed);
 #ifdef STATISTICS
    statcode = 2;
    statsame = gcchan->lsamvl;
@@ -6338,28 +5873,7 @@ void gtmedi(Float_t *x, Int_t &numed)
 //______________________________________________________________________
 void gmedia(Float_t *x, Int_t &numed, Int_t &check)
 {
-#ifdef WITHG3
-   g3media(x,numed,check);
-#endif
-#ifdef WITHROOT
-{
-   gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-   if (gGeoManager->IsOutside()) {
-      numed=0; 
-   } else {
-      gcvolu->nlevel = 1 + gGeoManager->GetLevel();
-      gGeoManager->GetBranchNames(gcvolu->names);
-      gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
-      TGeoVolume *vol = gCurrentNode->GetVolume();
-      if (vol) {
-         TGeoMedium *medium = vol->GetMedium();
-         if (medium) numed = medium->GetId();
-      } else {
-         printf("ERROR: gmedia: NULL volume\n");
-      }
-   }   
-}
-#endif
+   fgmedia(x,numed,check);
 #ifdef STATISTICS
   statcode = 1;
   statsame = 0;
@@ -6377,24 +5891,21 @@ void gmedia(Float_t *x, Int_t &numed, Int_t &check)
 //______________________________________________________________________
 void gtmany(Int_t &level1)
 {
-#ifdef WITHG3
-   g3tmany(level1);
-#endif
+   fgtmany(level1);
+}
+
+//______________________________________________________________________
+void gtonlyg3(Int_t &isOnly)
+{
+   //with Geant3, return gonly(nlevel);
+   isOnly = (Int_t)gcvolu->gonly[gcvolu->nlevel-1];
 }
 
 //______________________________________________________________________
 void gtonly(Int_t &isOnly)
 {
    //with Geant3, return gonly(nlevel);
-#ifdef WITHG3
-   isOnly = (Int_t)gcvolu->gonly[gcvolu->nlevel-1];
-#endif
-#ifdef WITHROOT
-//   if (gGeoManager->IsCurrentOverlapping()) isOnly = 0;
-//   else isOnly = 1;
-   // With TGeo, G3 is seeing a ONLY geometry
-   isOnly = 1;
-#endif
+   fgtonly(isOnly);
 }
 
 //_____________________________________________________________________________
@@ -6418,9 +5929,8 @@ void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
   //  problems in make the call.
   //
 // printf("glvolu called\n");
-#ifdef WITHG3
-  g3lvolu(nlev, lnam, lnum, ier); 
-#endif
+
+  fglvolu(nlev, lnam, lnum, ier); 
 }
 
 
@@ -6437,53 +5947,7 @@ void gtnext()
    sprintf(statpath,"%s",geant3->GetPath());  
 #endif
 
-#ifdef WITHG3
-   g3tnext();
-#endif
-
-#ifdef WITHROOT
-{
-   Float_t *x = gctrak->vect;   
-   Double_t step = gctrak->step;
-   Int_t itrtyp = gckine->itrtyp;
-   gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
-   gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
-   gGeoManager->SetLastPoint(x[0],x[1],x[2]);
-   if (step<=0) {
-      gctrak->safety = 0.;
-      gctrak->snext = 0.;
-      gctrak->ignext = 0;
-#ifdef STATISTICS
-      statsnext = statsafety = 0.;
-      stattree->Fill();
-#endif      
-      return;
-   } 
-   // Find distance to next boundary. Global matrix computed only if
-   // gtnext is called by gtckov.  
-   if (itrtyp==7) gGeoManager->FindNextBoundary(-step);
-   else           gGeoManager->FindNextBoundary(step);
-   gctrak->safety = gGeoManager->GetSafeDistance();
-   Double_t snext  = gGeoManager->GetStep();
-   if (snext<=0) {
-      gctrak->safety = 0.;
-      gctrak->snext = 0.;
-      gctrak->ignext = 1;
-#ifdef STATISTICS
-      statsnext = statsafety = 0.;
-      stattree->Fill();
-#endif      
-      return;
-   }      
-   if (snext < step) {
-      gctrak->snext  = snext;
-      gctrak->ignext = 1;
-   } else {
-      gctrak->ignext = 0;
-      gctrak->snext = gctrak->step;
-   }   
-}
-#endif
+   fgtnext();
 
 #ifdef STATISTICS
   statsnext=gctrak->snext;
@@ -6498,19 +5962,6 @@ void ggperp(Float_t *x, Float_t *norm, Int_t &ierr)
 {
 // Computes the normal to the next crossed surface, assuming that 
 // FindNextBoundary() was already called.
-#ifdef WITHG3
-   g3gperp(x,norm,ierr);
-#endif
 
-#ifdef WITHROOT
-   ierr = 0;
-   Double_t *dblnorm = gGeoManager->FindNormalFast();
-   if (!dblnorm) {
-      ierr = 1;
-      return;
-   }   
-   norm[0] = -dblnorm[0];
-   norm[1] = -dblnorm[1];
-   norm[2] = -dblnorm[2];
-#endif
+   fggperp(x,norm,ierr);
 }

@@ -1,13 +1,16 @@
-// $Id: g3Config.C,v 1.2 2002/10/05 07:28:54 brun Exp $
+// $Id: E02_g3Config.C,v 1.1 2003/11/28 12:00:25 brun Exp $
 //
 // Configuration macro for Geant3 VirtualMC for Example01 
 
 void Config()
 {
-  TGeant3* geant3
-    = new  TGeant3("C++ Interface to Geant3"); 
-  
-  cout << "Geant3 has been created." << endl;
+  if (strstr(gEnv->GetValue("TVirtualMC",""),"TGeant3TGeo")) {
+     TGeant3TGeo* geant3 = new  TGeant3TGeo("C++ Interface to Geant3 using TGeo");
+     cout << "TGeant3TGeo has been created." << endl;
+  } else {
+     TGeant3* geant3 = new  TGeant3("C++ Interface to Geant3");
+     cout << "TGeant3 has been created." << endl;
+  }
 
   geant3->SetHADR(0);
 }

@@ -1,4 +1,4 @@
-// $Id: E03.C,v 1.3 2003/12/08 14:20:11 brun Exp $
+// $Id: E03.C,v 1.4 2004/08/05 12:22:37 brun Exp $
 //
 // Macro for running Example03 with Geant3 
 // Before running this macro, the libexampl03.so library
@@ -37,5 +37,5 @@
   gMC->Gsatt("ABSO", "seen", 5);
   gMC->Gsatt("GAPX", "seen", 6);
 
-  appl->RunMC(5);
+  appl->RunMC(50);
 }  
