@@ -1,7 +1,10 @@
 *
-* $Id: beta.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: beta.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: beta.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -20,7 +23,7 @@
 *
 *=== beta =============================================================*
 *
-      FUNCTION BETA(X1,X2,BET)
+      FUNCTION BETA_G3(X1,X2,BET)
  
 #include "geant321/dblprc.inc"
 #include "geant321/dimpar.inc"
