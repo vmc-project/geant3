@@ -1,0 +1,31 @@
+// $Id: run_g3.C,v 1.1.1.1 2002/09/27 10:00:02 brun Exp $
+//
+// Macro for running Example02 with Geant3 
+
+{
+  // Load basic libraries
+  gSystem->Load("libGeom");
+  gSystem->Load("libVMC");
+  gSystem->Load("libPhysics");
+  gSystem->Load("libEG"); 
+  gSystem->Load("libEGPythia6");
+  gSystem->Load("libPythia6");  
+  new TGeoManager("E02","test"); 
+  
+  // Load Geant3 libraries
+  gROOT->ProcessLine(".L dummies.C+");
+  gSystem->Load("../lib/tgt_Linux/libgeant321.so");
+  
+  // Load this example library
+  gSystem->Load("~/geant4_vmc/lib/tgt_Linux/libexample02");
+
+  // MC application
+  Ex02MCApplication* appl 
+    = new Ex02MCApplication("Example02", "The example02 VMC application");
+
+  appl->InitMC("E02_g3Config.C");
+  TGeant3 *geant3 = (TGeant3*)gMC;
+  geant3->SetDEBU(1,2,1);
+  geant3->SetSWIT(2,2);
+  appl->RunMC(5);
+}  

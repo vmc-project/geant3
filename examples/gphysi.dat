@@ -1,0 +1,29 @@
+1***************************************************************************************************
+ *                                                                                                 *
+ *    G E A N T  Version 3.2111      DATE/TIME  31128/1257          R U N      1                   *
+ *                                                                                                 *
+ *      Data structure   Date   Time    GVERSN    ZVERSN                                           *
+ *                                                                                                 *
+ *           INIT        31128  1257    3.2111     3.77                                            *
+ *           KINE        31128  1257    3.2111     3.77                                            *
+ *           HITS        31128  1257    3.2111     3.77                                            *
+ *           DIGI        31128  1257    3.2111     3.77                                            *
+ *                                                                                                 *
+ *                                                                                                 *
+ *              Standard TPAR for this run are                                                     *
+ *                                                                                                 *
+ *  CUTGAM=100.00 keV  CUTELE=100.00 keV  CUTNEU=100.00 keV  CUTHAD=100.00 keV  CUTMUO=  1.00 MeV  *
+ *  BCUTE =100.00 keV  BCUTM =100.00 keV  DCUTE =100.00 keV  DCUTM =100.00 keV  PPCUTM= 10.00 MeV  *
+ *  IPAIR=  1.  ICOMP=  1.  IPHOT=  1.  IPFIS=  1.  IDRAY=  1.  IANNI=  1.  IBREM=  1.  IHADR=  4. *
+ *  IMUNU=  1.  IDCAY=  1.  ILOSS=  3.  IMULS=  1.  IRAYL=  0.  ILABS=  0.  ISYNC=  0.  ISTRA=  0. *
+ *                                                                                                 *
+ *                                                                                                 *
+ *     Special TPAR for TMED   5   GAS                                                             *
+ *  CUTGAM=100.00 keV  CUTELE=100.00 keV  CUTNEU=100.00 keV  CUTHAD=100.00 keV  CUTMUO=  1.00 MeV  *
+ *  BCUTE =100.00 keV  BCUTM =100.00 keV  DCUTE = 50.00 keV  DCUTM =100.00 keV  PPCUTM= 10.00 MeV  *
+ *  IPAIR=  1.  ICOMP=  1.  IPHOT=  1.  IPFIS=  1.  IDRAY=  1.  IANNI=  1.  IBREM=  1.  IHADR=  4. *
+ *  IMUNU=  1.  IDCAY=  1.  ILOSS=  3.  IMULS=  1.  IRAYL=  0.  ILABS=  0.  ISYNC=  0.  ISTRA=  1. *
+ *                                                                                                 *
+ ***************************************************************************************************
+
+

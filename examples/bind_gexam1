@@ -1,0 +1,6 @@
+#!/bin/sh
+g77 -O -g -c gexam1.F
+g++ -c -g -I../TGeant3 -I$ROOTSYS/include gmain.C
+g++ -o gexam1 gmain.o gexam1.o `root-config --glibs` \
+-lVMC -lPhysics -lEG -lEGPythia6 -lGeom $PYTHIA6/libPythia6.so \
+-L../lib/tgt_Linux/ -lgeant321 -L$CERNLIB -lpacklib -lg2c
