@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2003/12/03 02:29:35 brun Exp $
+# $Id: Makefile,v 1.11 2003/12/08 12:20:21 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -28,7 +28,7 @@ include $(CONFDIR)/Makefile.$(PLATFORM)
 GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	giface giopa gkine gparal gphys gscan gstrag gtrak matx55 miface \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
-        minicern
+        minicern gdraw
 
 include $(CONFDIR)/MakeRules
 
