@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3TGeo.h,v 1.1 2004/12/17 11:55:47 brun Exp $ */
+/* $Id: TGeant3TGeo.h,v 1.2 2004/12/21 15:34:48 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //

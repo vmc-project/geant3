@@ -16,6 +16,9 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.2  2004/12/21 15:34:48  brun
+Implement TGeant3TGeo::isRootGeometry returning kTRUE
+
 Revision 1.1  2004/12/17 11:55:47  brun
 A new class TGeant3TGeo (deriving from TGeant3) is introduced.
 TGeant3 uses by default the geant3 geometry. TGeant3TGeo uses the TGeo classes.

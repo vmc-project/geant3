@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.40  2005/01/07 11:34:43  brun
+Change the J/Psi lifetime from 0 to 7.6e-21
+(thanks Yuri Kharlov)
+
 Revision 1.39  2004/12/21 15:34:48  brun
 Implement TGeant3TGeo::isRootGeometry returning kTRUE
 
@@ -2698,7 +2702,7 @@ void  TGeant3::SetRootGeometry()
 // TGeo at FinishGeometry().
 
   Fatal("SetRootGeometry",
-        "TGeant3 was not compiled with WITHROOT option");
+        "TGeant3 does not support Root geometry");
 
   fImportRootGeometry = kTRUE;
 }  
