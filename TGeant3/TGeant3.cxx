@@ -16,6 +16,15 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.41  2005/02/08 11:22:03  brun
+From Ivana:
+For TGeant3.h:
+Added IsRootGeometrySupported() function
+(now required by TVirtualMC)
+
+For TGeant3.cxx:
+Updated text in Fatal in SetRootGeometry.
+
 Revision 1.40  2005/01/07 11:34:43  brun
 Change the J/Psi lifetime from 0 to 7.6e-21
 (thanks Yuri Kharlov)
@@ -623,7 +632,7 @@ extern "C"
 
   void type_of_call grndmq(Int_t &is1, Int_t &is2, const Int_t &,
 			   DEFCHARD DEFCHARL)
-  {is1=0; is2=0; /*printf("Dummy grndmq called\n");*/}
+  {is1=gRandom->GetSeed(); is2=0; /*only valid with TRandom;*/}
 
   void type_of_call g3dtom(Float_t *, Float_t *, Int_t &);
 
@@ -3489,13 +3498,15 @@ void  TGeant3::Grndm(Float_t *rvec, Int_t len) const
 }
 
 //_____________________________________________________________________________
-void  TGeant3::Grndmq(Int_t &/*is1*/, Int_t &/*is2*/, Int_t /*iseq*/,
+void  TGeant3::Grndmq(Int_t &is1, Int_t &is2, Int_t /*iseq*/,
 		      const Text_t */*chopt*/)
 {
   //
   //  To set/retrieve the seed of the random number generator
   //
   /*printf("Dummy grndmq called\n");*/
+   is1 = gRandom->GetSeed();
+   is2 = 0;
 }
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
