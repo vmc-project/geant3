@@ -16,6 +16,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.32  2004/08/05 12:20:39  brun
+From Andrei Gheata:
+I have found/fixed a bug in TGeoManager::IsSameLocation(x,y,z). Also I
+have eliminated the penalizing check of IsSameLocation() in gtnext().
+
 Revision 1.31  2004/07/09 12:15:12  brun
 >From Ivana:
 in case a user defines geometry via TGeo and associates more tracking
@@ -1241,10 +1246,10 @@ void TGeant3::DefineParticles()
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
   Gspart(fNG3Particles++, "Tau+", 5, 1.77705, +1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=15;           //56 = Tau+
+  fPDGCode[fNPDGCodes++]=-15;          //56 = Tau+
 
   Gspart(fNG3Particles++, "Tau-", 5, 1.77705, -1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=-15;          //57 = Tau-  
+  fPDGCode[fNPDGCodes++]= 15;          //57 = Tau-  
 
   Gspart(fNG3Particles++, "B0",     3, 5.2792, +0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
