@@ -16,6 +16,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.17  2003/12/10 10:32:09  brun
+Add a protection in TGeant3::Gsmate in case the material density is null
+
 Revision 1.16  2003/12/01 23:51:22  brun
 From Andrei and Peter:
 add a few missing cases when compiling with the WITHROOT option.
@@ -6249,7 +6252,7 @@ void ggperp(Float_t *x, Float_t *norm, Int_t &ierr)
 //   Double_t *dir = gGeoManager->GetCurrentDirection();
 //   gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
 //   Double_t *pt = gGeoManager->GetCurrentPoint();
-   Double_t *dblnorm = gGeoManager->FindNormal(kFALSE);
+   Double_t *dblnorm = gGeoManager->FindNormalFast();
    if (!dblnorm) {
       ierr = 1;
       return;
