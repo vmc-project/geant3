@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Volume.h,v 1.3 2004/01/28 08:17:52 brun Exp $ */
+/* $Id: G3Volume.h,v 1.4 2004/06/17 13:55:34 rdm Exp $ */
 
 #include <TGListTree.h>
 #include "TROOT.h"
@@ -122,7 +122,7 @@ private:
     Int_t    fIdCopy;      // copy flag
     TObject* fItem;        //!current item
     G3Volume & operator=(const G3Volume&) {return *this;}
-    void     Copy(TObject &object) const;  // not implemented
+    void     Copy(TObject &object) const {;}  // not implemented
 
     ClassDef(G3Volume,1) // G3 Volume for G3 GUI
 };
