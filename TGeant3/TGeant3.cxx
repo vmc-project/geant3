@@ -16,6 +16,10 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.16  2003/12/01 23:51:22  brun
+From Andrei and Peter:
+add a few missing cases when compiling with the WITHROOT option.
+
 Revision 1.15  2003/11/28 09:44:15  brun
 New version of TGeant3 supporting the options WITHG3 and WITHROOT
 
@@ -2740,6 +2744,10 @@ void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
   //
   Float_t *ubuf=0; 
   Int_t   nbuf=0; 
+  if (dens <= 0 && a != 0 && z != 0) {
+     Warning("Gsmate","Density was o, set to 0.01 for imat=%d, name=%s",imat,name);
+     dens = 0.01;
+  }
   g3smate(imat,PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf
 	 PASSCHARL(name)); 
   
