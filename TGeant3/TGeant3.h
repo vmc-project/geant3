@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.1 2002/07/09 16:30:01 alibrary Exp $ */
+/* $Id: TGeant3.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -837,7 +837,6 @@ public:
    virtual  void  Vname(const char *name, char *vname);
 
    virtual  void  InitLego();
-   virtual  TMCGeomType GetMCGeomType() const { return kGeant3; }
 
   // Routines from GEANE
 
