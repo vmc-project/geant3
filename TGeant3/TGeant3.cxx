@@ -15,6 +15,13 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.10  2003/07/16 07:40:09  brun
+From Andreas Morsch
+
+- default g3 specific initialisation moved to TGeant3::Init()
+  (This avoids the cast to TGeant3* in the Config.C)
+- "CKOV" added to SetProcess
+
 Revision 1.9  2003/06/03 21:26:46  brun
 New version of gustep by Andreas Morsch
 
@@ -544,7 +551,7 @@ TGeant3::TGeant3()
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3(const char *title, Int_t nwgeant) 
-       :TVirtualMC("TGeant3",title) 
+       :TVirtualMC("TGeant3",title,kTRUE) 
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
@@ -4741,7 +4748,7 @@ void TGeant3::SetTrack(Int_t done, Int_t parent, Int_t pdg, Float_t *pmom,
 //	   mass,e,fNtrack,pdg,parent,done,vpos[0],vpos[1],vpos[2],pmom[0],pmom[1],pmom[2],kS);
   
 
-  GetStack()->SetTrack(done, parent, pdg, pmom[0], pmom[1], pmom[2], e,
+  GetStack()->PushTrack(done, parent, pdg, pmom[0], pmom[1], pmom[2], e,
                        vpos[0], vpos[1], vpos[2], tof, polar[0], polar[1], polar[2],
                        mech, ntr, weight, is);
 }
@@ -4814,7 +4821,7 @@ extern "C" void type_of_call  rxgtrak (Int_t &mtrack, Int_t &ipart, Float_t *pmo
   //      tof     Particle time of flight in seconds
   //
   
-  TParticle* track = gMC->GetStack()->GetNextTrack(mtrack);
+  TParticle* track = gMC->GetStack()->PopNextTrack(mtrack);
 
   if (track) {
     // fill G3 arrays
@@ -5429,7 +5436,7 @@ void gustep()
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
       // --- Skip neutrinos! 
       if (ipp != 4) {
-        geant3->SetTrack(1,stack->CurrentTrack(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
+        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
 			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, wgt, 0);
       }
     }
@@ -5440,7 +5447,7 @@ void gustep()
       mom[0]=geant3->Gckin2()->xphot[jk][3]*geant3->Gckin2()->xphot[jk][6];
       mom[1]=geant3->Gckin2()->xphot[jk][4]*geant3->Gckin2()->xphot[jk][6];
       mom[2]=geant3->Gckin2()->xphot[jk][5]*geant3->Gckin2()->xphot[jk][6];
-      geant3->SetTrack(1, stack->CurrentTrack(), gMC->PDGFromId(50),
+      geant3->SetTrack(1, stack->GetCurrentTrackNumber(), gMC->PDGFromId(50),
 		       mom,                             //momentum
 		       geant3->Gckin2()->xphot[jk],     //position
 		       &geant3->Gckin2()->xphot[jk][7], //polarisation

@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.6 2003/06/30 07:42:34 brun Exp $ */
+/* $Id: TGeant3.h,v 1.7 2003/07/16 07:40:10 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -533,6 +533,7 @@ public:
   } 
 
   virtual void LoadAddress(); 
+  virtual void  SetRootGeometry(){} 
  
 ///////////////////////////////////////////////////////////////////////
 //                                                                   //
