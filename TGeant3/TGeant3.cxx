@@ -15,6 +15,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 Revision 1.5  2002/07/10 09:33:19  hristov
 Array with variable size created by new
 
@@ -330,11 +333,7 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {  
-    //gMC->GetRandom()->Rndm(r,n);
-    Double_t * rdouble = new Double_t[n];
-    gMC->GetRandom()->RndmArray(n,rdouble);
-    for (Int_t i=0; i<n; i++) r[i] = rdouble[i];
-    delete [] rdouble;
+    for(Int_t i=0; i<n; r[i++]=gMC->GetRandom()->Rndm());
   }
 
   void type_of_call grndmq(Int_t &, Int_t &, const Int_t &,
@@ -2557,20 +2556,6 @@ void  TGeant3::GtreveRoot()
   //
   gtreveroot(); 
 } 
-
-//_____________________________________________________________________________
-void  TGeant3::Grndm(Float_t *rvec, const Int_t len) const
-{
-  //
-  //   To generate a vector RVECV of LEN random numbers 
-  //   Copy of the CERN Library routine RANECU 
-
-  //GetRandom()->Rndm(rvec,len);
-  Double_t * rdouble = new Double_t[len];
-  GetRandom()->RndmArray(len,rdouble);
-  for (Int_t i=0; i<len; i++) rvec[i] = rdouble[i];
-  delete [] rdouble;
-}
 
 //_____________________________________________________________________________
 void  TGeant3::Grndmq(Int_t &/*is1*/, Int_t &/*is2*/, const Int_t /*iseq*/,
