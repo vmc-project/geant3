@@ -1,4 +1,4 @@
-# $Id: MakeMacros,v 1.6 2004/05/13 09:12:40 brun Exp $
+# $Id: MakeMacros,v 1.7 2004/05/13 19:12:47 brun Exp $
 
 ############################   MACROS   #######################################
 
@@ -62,7 +62,7 @@ dist:
 	@$(MAKEDIST)
 
 distclean:
-	rm -rf $(TOCLEANALL)
+	rm -rf $(TOCLEANALL) tgt_* lib/tgt_*
 
 distsrc:
 	@$(MAKEDISTSRC)
