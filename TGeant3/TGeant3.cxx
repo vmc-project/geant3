@@ -15,6 +15,10 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.11  2003/07/18 10:22:50  brun
+Changes to reflect the equivalent changes in the abstract classes in vmc
+(thanks Peter Hristov)
+
 Revision 1.10  2003/07/16 07:40:09  brun
 From Andreas Morsch
 
@@ -551,7 +555,7 @@ TGeant3::TGeant3()
  
 //____________________________________________________________________________ 
 TGeant3::TGeant3(const char *title, Int_t nwgeant) 
-       :TVirtualMC("TGeant3",title,kTRUE) 
+       :TVirtualMC("TGeant3",title,kFALSE) 
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
