@@ -1,4 +1,4 @@
-# $Id: $
+# $Id: MakeExe,v 1.1 2003/12/08 12:20:21 brun Exp $
 # 
 # Makefile for building Geant3 example
 # The example name has to be provided in TARGET variable
@@ -7,7 +7,7 @@
 ############################### geant321 Makefile #############################
 
 ifeq ($(PLATFORM),)
-PLATFORM = $(shell uname)
+PLATFORM = $(shell root-config --arch)
 endif
 
 EXEDIR  = $(shell pwd)
@@ -69,7 +69,7 @@ LDLIBS1 += -L$(CERNLIB) -lpacklib -lg2c
 
 # geant3_+vmc
 #
-LDLIBS2 += -L../lib/tgt_Linux/ -lgeant321
+LDLIBS2 += -L../lib/tgt_$(PLATFORM)/ -lgeant321
 
 # Pythia6
 #
