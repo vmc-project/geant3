@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2004/05/17 15:04:32 brun Exp $
+# $Id: Makefile,v 1.15 2004/05/27 19:28:15 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -55,7 +55,7 @@ FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
 ifeq ($(PLATFORM),linux)
 	  FSRC += minicern/lnxgs/rdmin.F
 endif
-ifneq ($(PLATFORM),SunOS)
+ifneq ($(PLATFORM),solarisCC5)
 	  FSRC := $(filter-out minicern/uset.F,$(FSRC))
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
@@ -65,19 +65,19 @@ endif
 ifeq ($(PLATFORM),macosx)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),icc)
+ifeq ($(PLATFORM),linuxicc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),linux-ia64-ecc)
+ifeq ($(PLATFORM),linuxia64ecc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),linux-ia64-gcc)
+ifeq ($(PLATFORM),linuxia64gcc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),HP-UX)
+ifeq ($(PLATFORM),hpuxacc)
 	  CSRC += minicern/hpxgs/traceqc.c
 endif
-ifneq ($(PLATFORM),HP-UX)
+ifneq ($(PLATFORM),hpuxacc)
 	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
 endif
 CSRC	:= $(filter-out added/dummies2.c,$(CSRC))

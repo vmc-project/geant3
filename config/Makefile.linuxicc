@@ -1,4 +1,4 @@
-# $Id: Makefile.linuxicc,v 1.2 2004/05/13 21:44:09 brun Exp $
+# $Id: Makefile.linuxicc,v 1.3 2004/05/27 13:15:33 rdm Exp $
 
 # Linux (with icc) platform dependent definitions for GEANT321 Makefile
 
@@ -18,7 +18,7 @@ F77           = ifc
 endif
 
 # Global optimisation
-OPT           = -O
+OPT           = -O -ip
 
 # Shared library suffix
 SL            = so

@@ -1,7 +1,11 @@
 *
-* $Id: gtnext.F,v 1.2 2003/11/28 11:23:56 brun Exp $
+* $Id: gtnext.F,v 1.3 2004/01/28 08:20:11 brun Exp $
 *
 * $Log: gtnext.F,v $
+* Revision 1.3  2004/01/28 08:20:11  brun
+* Some bug fixes by Peter Hristov
+* Reintroduce gstrac
+*
 * Revision 1.2  2003/11/28 11:23:56  brun
 * New version of geant321 with all geant3 routines renamed from G to G3
 *
@@ -392,8 +396,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          INGOTO = IN
@@ -458,8 +466,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
                ENDIF
 *
                safe=max(safe,0.)
-               if(snxt.le.-prec)snxt=big1
-               snxt=max(snxt,0.)
+               if(snxt.le.-prec) then
+                  snxt=big1
+                  goto 900
+               else
+                  snxt=max(snxt,0.)
+               endif
                IF (SAFE.LT.SAFETY) SAFETY = SAFE
                IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
                   SNEXT  = SNXT
@@ -823,8 +835,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          SNEXT  = SNXT
@@ -889,8 +905,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          SNEXT  = SNXT
