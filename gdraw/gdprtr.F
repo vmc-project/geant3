@@ -1,22 +1,5 @@
 *
-* $Id: gdprtr.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
-*
-* $Log: gdprtr.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.2  2001/03/20 06:36:25  alibrary
-* 100 parameters now allowed for geant shapes
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 10/01/95  16.43.07  by  S.Giani
@@ -32,14 +15,14 @@ C.    *       on the bottom half draw IDUP preceded by a symbol        *
 C.    *       (IDUP<0 means division, IDUP>1 means multiple position,  *
 C.    *       IDUP=1 means single position).                           *
 C.    *       If IDRAW=1 then over the box draws a normal-view of      *
-C.    *       volume NAME (with same seen attributes set by GDSPEC).   *
+C.    *       volume NAME (with same seen attributes set by G3DSPEC)   *
 C.    *       If IONL<>1 then draw two other boxes, slightly shifted,  *
 C.    *       behind the original one.                                 *
 C.    *       If IDET=1 then draw another box, slightly larger,        *
 C.    *       around the original one.                                 *
 C.    *       If ISEEN=0 then draw the box(es) with dashed lines.      *
 C.    *                                                                *
-C.    *    ==>Called by : GDTREE                                       *
+C.    *    ==>Called by : G3DTREE                                      *
 C.    *       Author : P.Zanarini ; S.Giani  *********                 *
 C.    *                                                                *
 C.    ******************************************************************
@@ -96,7 +79,7 @@ C
       IF(IWTY.GT.10.OR.IWTY.LT.1.OR.R.EQ.2.)THEN
          LINCOL=1
          CALL MVBITS(LINCOL,0,8,LINATT,16)
-         CALL GDRAWV(X,Y,5)
+         CALL G3DRAWV(X,Y,5)
       ELSE
          CALL IGSET('LWID',1.)
          CALL UCTOH(NAME,IIIN,4,4)
@@ -119,7 +102,7 @@ C
          Y(5)=Y(5)+SIZ8
          LINCOL=1
          CALL MVBITS(LINCOL,0,8,LINATT,16)
-         CALL GDRAWV(X,Y,5)
+         CALL G3DRAWV(X,Y,5)
       ENDIF
 C
 C            If volume is not 'ONLY' draw two other boxes behind
@@ -137,12 +120,12 @@ C
          Y(5)=Y(4)
          LINCOL=1
          CALL MVBITS(LINCOL,0,8,LINATT,16)
-         CALL GDRAWV(X,Y,5)
+         CALL G3DRAWV(X,Y,5)
          DO 10 I=1,5
             X(I)=X(I)-SIZ8
             Y(I)=Y(I)+SIZ8
    10    CONTINUE
-         CALL GDRAWV(X,Y,5)
+         CALL G3DRAWV(X,Y,5)
       ENDIF
 C
       LINSTY=1
@@ -164,7 +147,7 @@ C
       IWTY=IGIWTY(1)
       IF(IWTY.GT.10.OR.IWTY.LT.1)CALL IGSET('TXFP',-61.)
 ***      CALL IGPID(1,'Tree',NPILE,' ')
-      CALL GDRAWT(XL,YL,NAME,SZ,0.,4,0)
+      CALL G3DRAWT(XL,YL,NAME,SZ,0.,4,0)
       CALL IGSET('TXFP',2.)
       CALL IGSET('TXCI',1.)
 C
@@ -191,7 +174,7 @@ C
       CALL IGSET('TXCI',AITXCO)
       CALL IGSET('TXFP',2.)
 ***      CALL IGPID(1,'Tree',NPILE,' ')
-      CALL GDRAWT(XL,YL,CHNAM0,SZ,0.,10,-1)
+      CALL G3DRAWT(XL,YL,CHNAM0,SZ,0.,10,-1)
       CALL IGSET('TXCI',1.)
 C
    20 CONTINUE
@@ -260,7 +243,7 @@ C
          ISEEN=KSEEN
          CALL G3SATT(ISON,'SEEN',ISEEN)
    60 CONTINUE
-      CALL GDRAW(NAME,45.,135.,0.,XPOS,YPOS,XSCALE,YSCALE)
+      CALL G3DRAW(NAME,45.,135.,0.,XPOS,YPOS,XSCALE,YSCALE)
 C
 C             Reset global SEEN values
 C

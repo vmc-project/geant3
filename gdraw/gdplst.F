@@ -1,19 +1,5 @@
 *
-* $Id: gdplst.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
-*
-* $Log: gdplst.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -182,7 +168,7 @@
                CALL IACWK(JVSIM)
                CALL IGRNG(SAVPLX,SAVPLY)
                CALL ICLRWK(0,0)
-               CALL GDSPEC(NAME)
+               CALL G3DSPEC(NAME)
                CALL IDAWK(JVSIM)
                CALL IACWK(1)
                IF(IDINAM.EQ.2.AND.JVSIM.EQ.1)THEN
@@ -190,9 +176,9 @@
                      CALL ICLRWK(0,0)
                      CALL ISELNT(1)
                      INTFLA=1
-                     CALL GDTREE(SAVSAN,0,110)
+                     CALL G3DTREE(SAVSAN,0,110)
                      INTFLA=-1
-                     CALL GDTREE(SAVSAN,LSAVSA,111)
+                     CALL G3DTREE(SAVSAN,LSAVSA,111)
                ENDIF
             ELSEIF(KACKT.EQ.1)THEN
                IF(KXXX.EQ.1)KXXX=0
@@ -218,12 +204,12 @@
                NUMND1=NUMNDA
                NAME=NNNN
                INTFLA=1
-               CALL GDTREE(NAME,0,110)
+               CALL G3DTREE(NAME,0,110)
                INTFLA=-1
                IF(NNPAR.NE.3)THEN
-                CALL GDTREE(NAME,IPLAC,111)
+                CALL G3DTREE(NAME,IPLAC,111)
                ELSE
-                CALL GDTREE(NAME,IPLAC,IISELT)
+                CALL G3DTREE(NAME,IPLAC,IISELT)
                 GOTO 110
                ENDIF
                IF(IDINAM.EQ.2.OR.KCHAR.EQ.2)THEN
@@ -257,9 +243,9 @@
                NAME=NNNN
                NUMND1=NUMNDA
                INTFLA=1
-               CALL GDTREE(NAME,0,110)
+               CALL G3DTREE(NAME,0,110)
                INTFLA=-1
-               CALL GDTREE(NAME,IPLAC,111)
+               CALL G3DTREE(NAME,IPLAC,111)
                IF(IDINAM.EQ.2.OR.KCHAR.EQ.2)THEN
                      SAVSAN=NAME
                      LSAVSA=IPLAC

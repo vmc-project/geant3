@@ -1,24 +1,10 @@
 *
-* $Id: gdrawc.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
-*
-* $Log: gdrawc.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:24  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAWC(NAME,IAX,CUTVAL,U0,V0,SU,SV)
+      SUBROUTINE G3DRAWC(NAME,IAX,CUTVAL,U0,V0,SU,SV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,7 +15,7 @@ C.    *       and placed at the distance CUTVAL from the origin.       *
 C.    *                                                                *
 C.    *       The resulting picture is seen from the axis choosen      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC                     *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -54,13 +40,13 @@ C
       NSURF=0
       ISURF=1
 C
-C             ICUTFL=1 informs GDRAW to call GDRWSC instead of GDRAWS
+C             ICUTFL=1 informs G3DRAW to call GDRWSC instead of G3DRAWS
 C             (so that we'll have stored surfaces instead of drawn lines)
-C             and to use the line buffer logic of GDRAWV
+C             and to use the line buffer logic of G3DRAWV
 C
 C             PSI is fixed to 0.
 C
       ICUTFL=1
-      CALL GDRAW(NAME,THE(ICUT),PHI(ICUT),0.,U0,V0,SU,SV)
+      CALL G3DRAW(NAME,THE(ICUT),PHI(ICUT),0.,U0,V0,SU,SV)
       ICUTFL=0
       END

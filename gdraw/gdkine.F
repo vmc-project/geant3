@@ -1,24 +1,10 @@
 *
-* $Id: gdkine.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
-*
-* $Log: gdkine.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GDKINE
+      SUBROUTINE G3DKINE
 *
 ************************************************************************
 *                                                                      *

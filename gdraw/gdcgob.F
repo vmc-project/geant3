@@ -1,22 +1,5 @@
 *
-* $Id: gdcgob.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcgob.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.2  2001/03/20 06:36:25  alibrary
-* 100 parameters now allowed for geant shapes
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.2  1996/02/27 10:02:05  ravndal
-* Drawing of PCON's optimized for 'HIDE ON'
-*
-* Revision 1.1.1.1  1995/10/24 10:20:20  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 13/12/94  17.13.38  by  S.Giani
@@ -28,7 +11,7 @@ C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Make the CG-Object with shape ISHAPE of parameters PAR   *
-C.    *       with the same logic as GDRAWS. 1992                      *
+C.    *       with the same logic as G3DRAWS. 1992                      *
 C.    *                                                                *
 C.    *     Input Parameters :                                         *
 C.    *                                                                *
@@ -69,7 +52,7 @@ C.    * NWWS = Size of Wire structure                                  *
 C.    * IVOLNA = Name of volume                                        *
 C.    * LSTEP = Number of CG objects forming each volume                *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAW                                        *
+C.    *    ==>Called by : G3DRAW                                        *
 C.    *       Author : P.Zanarini, J.Salt, S.Giani *********           *
 C.    *                                                                *
 C.    ******************************************************************

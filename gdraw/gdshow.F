@@ -1,24 +1,10 @@
 *
-* $Id: gdshow.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
-*
-* $Log: gdshow.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:28  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDSHOW(IVIEW)
+      SUBROUTINE G3DSHOW(IVIEW)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -106,7 +92,7 @@ C
 C
          MEMIDV=IDVIEW
          IF (IDVIEW.EQ.0) IDVIEW=-175
-         CALL GDRAWV(WS(1),WS(ILEN+1),ILEN)
+         CALL G3DRAWV(WS(1),WS(ILEN+1),ILEN)
          IDVIEW=MEMIDV
          JV=LQ(JDRAW-IVIEW)
 C
@@ -144,7 +130,7 @@ C
          CALL UHTOC(IQ(JVAD+7),4,CHTEXT,NCHAR)
          MEMIDV=IDVIEW
          IF (IDVIEW.EQ.0) IDVIEW=-175
-         CALL GDRAWT(X,Y,CHTEXT,SIZE,ANGLE,LWIDTH,IOPT)
+         CALL G3DRAWT(X,Y,CHTEXT,SIZE,ANGLE,LWIDTH,IOPT)
          IDVIEW=MEMIDV
          JV=LQ(JDRAW-IVIEW)
 C
@@ -155,7 +141,7 @@ C
    70 WRITE (CHMAIL,10000) IVIEW
       CALL GMAIL(0,0)
 C
-   80 CALL GDCOL(0)
+   80 CALL G3DCOL(0)
       RETURN
-10000 FORMAT(' *** GDSHOW ***: View ',I6,' does not exist')
+10000 FORMAT(' *** G3DSHOW ***: View ',I6,' does not exist')
       END

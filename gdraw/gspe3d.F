@@ -1,22 +1,5 @@
 *
-* $Id: gspe3d.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
-*
-* $Log: gspe3d.F,v $
-* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
-* initial import into CVS
-*
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.2  2001/03/20 06:36:25  alibrary
-* 100 parameters now allowed for geant shapes
-*
-* Revision 1.1.1.1  1999/05/18 15:55:04  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -78,7 +61,7 @@ C
       XMAN=XMAN1*PLTRNX/20.
       YMAN=YMAN1*PLTRNY/20.
 C
-C             Save GDRAW calling parameters
+C             Save G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
       GTHETA=TETA3
@@ -136,7 +119,7 @@ C
 C
 C             Draw header
 C
-      CALL GDHEAD(-1,NAME,0.)
+      CALL G3DHEAD(-1,NAME,0.)
 C
 C             Draw parameters list
 C
@@ -172,21 +155,21 @@ C
    50 CONTINUE
 C
       ISPFLA=1
-      CALL GDRAW(NAME,TETA3,PHI3,PSI3,U03,V03,GSCU,GSCV)
-      CALL GDCOL(3)
+      CALL G3DRAW(NAME,TETA3,PHI3,PSI3,U03,V03,GSCU,GSCV)
+      CALL G3DCOL(3)
 *      XSCAL=PLTRNX/4.
 *      YSCAL=PLTRNY/2.
       XSCAL=17.
       YSCAL=3.
       CALL GDSCAL(XSCAL,YSCAL)
-**    IF (GSCU.LE.0.05) CALL GDMAN(XMAN,YMAN)
-      IF (GSCU.LE.0.05) CALL GDWMN1(XMAN,YMAN)
+**    IF (GSCU.LE.0.05) CALL G3DMAN(XMAN,YMAN)
+      IF (GSCU.LE.0.05) CALL G3DWMN1(XMAN,YMAN)
       CALL GDAXIS(0.,0.,0.,AXSIZ)
       ISPFLA=0
 C
-      CALL GPVOLX(IVO)
+      CALL G3PVOLX(IVO)
 *
-      CALL GDCOL(0)
+      CALL G3DCOL(0)
 C
 C             Reset global SEEN values
 C
@@ -201,7 +184,7 @@ C
 C
    70 CONTINUE
 C
-C             Restore GDRAW calling parameters
+C             Restore G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
       GTHETA=SAVTHE

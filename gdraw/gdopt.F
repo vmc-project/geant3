@@ -1,7 +1,10 @@
 *
-* $Id: gdopt.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: gdopt.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: gdopt.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDOPT(IOPTC,IVALC)
+      SUBROUTINE G3DOPT(IOPTC,IVALC)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -148,13 +151,13 @@ C.
          CALL GMAIL(0,0)
       ENDIF
 C
-10000 FORMAT(' GDOPT: ',A4,' is not a valid option')
+10000 FORMAT(' G3DOPT: ',A4,' is not a valid option')
 *JS
 10100 FORMAT('    Valid options : THRZ , PROJ , TRAK , HIDE , SHAD')
 *JS
-10200 FORMAT(' GDOPT: Option ',A4,' is ',A4)
+10200 FORMAT(' G3DOPT: Option ',A4,' is ',A4)
 *SG
-10300 FORMAT(' GDOPT: Option ',A4,' is ',A4)
+10300 FORMAT(' G3DOPT: Option ',A4,' is ',A4)
 10400 FORMAT(' Please, compute and set the right size of Zebra',
      +       ' store, needed for your drawing, with LHC option',
      +       ' OFF. If it is done, good luck !!!')

@@ -1,16 +1,5 @@
 *
-* $Id: gdlw1.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdlw1.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -21,7 +10,7 @@ C.    ******************************************************************
 C.    *                                                                *
 C.    *       Change phisically the line width to LW                   *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAWP, GDRAWT                               *
+C.    *    ==>Called by : G3DRAWP, G3DRAWT                             *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

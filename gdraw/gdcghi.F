@@ -1,16 +1,5 @@
 *
-* $Id: gdcghi.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcghi.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:20  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -94,7 +83,7 @@ C.
       IF(IMOD.EQ.4.OR.IMOD.EQ.5)ICPOIN=IZPOIN
 *
 *   Evaluate size of Hide Structure after all volumes
-*   If it's too big, go back to GDRAW
+*   If it's too big, go back to G3DRAW
 *   If it's ok, build the Wire Structure
 *
       CALL CGHINS(Q(ICPOIN),Q(IHPOIN),ISHAPE)
@@ -149,7 +138,7 @@ C.
       IF(IMOD.EQ.4.OR.IMOD.EQ.5) ICPOIN=JCGOBJ+20000
 *
 *    Evaluate size of Wire structure after all volumes
-*    If it's too big, go back to GDRAW
+*    If it's too big, go back to G3DRAW
 *    If it's ok, go on.
 *
       IF(LLEP.NE.1)THEN
