@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.14 2004/06/17 13:56:53 rdm Exp $ */
+/* $Id: TGeant3.h,v 1.15 2004/07/09 12:15:12 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -597,6 +597,7 @@ public:
   Int_t  StepProcesses(TArrayI &proc) const;
   void   GetSecondary(Int_t isec, Int_t& ipart, TLorentzVector &x, 
 		      TLorentzVector &p);
+  Bool_t SecondariesAreOrdered() const {return kTRUE;}
   void   StopTrack();
   void   StopEvent();
   void   StopRun();
