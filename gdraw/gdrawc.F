@@ -1,7 +1,10 @@
 *
-* $Id: gdrawc.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gdrawc.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdrawc.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -43,7 +46,7 @@ C.    ------------------------------------------------------------------
 C.
 C             Allocate working space
 C
-      CALL GWORK(NWCUT)
+      CALL G3WORK(NWCUT)
 C
       ICUT=IAX
       DCUT=CUTVAL

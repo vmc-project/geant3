@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 2002/12/02 16:37:44 brun Exp $
+# $Id: Makefile,v 1.7 2003/06/30 07:42:33 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -15,30 +15,22 @@ include config/Makefile.$(PLATFORM)
 
 ############################### Sources #######################################
 
-GDIRS:=	added gbase gcons gdraw geocad ggeom gheisha ghits ghrout ghutils \
+GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	giface giopa gkine gparal gphys gscan gstrag gtrak matx55 miface \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
         minicern
 
 include config/MakeRules
 
-# Dummy library (should be avoidable!)
-
-DSRCS          = TGeant3/TGeant3Dummy.cxx
 
 # C++ Headers
 
-DHDRS          = TGeant3/TGeant3.h TGeant3/geant3DummyLinkDef.h
+DHDRS          = TGeant3/TGeant3.h 
 
-# Dummy library dictionary
-
-DDICT          = $(BINDIR)/TGeant3/geant3DummyCint.cxx
-DDICTH         = $(DDICT:.cxx=.h)
-DDICTO         = $(patsubst %.cxx,%.o,$(DDICT))
 
 # Dummy Geant Objects
 
-DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS)) $(DDICTO)
+DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS))
 
 # Library dictionary
 
@@ -48,7 +40,7 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 # Sources
 
-FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F
+FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F TGeant3/rdummies.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
 ifeq ($(PLATFORM),Linux)
 	  FSRC += minicern/lnxgs/rdmin.F
@@ -79,7 +71,7 @@ ifneq ($(PLATFORM),HP-UX)
 	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
 endif
 CXXSRC	:= $(wildcard $(patsubst %,%/*.cxx,$(GDIRS))) \
-           $(filter-out TGeant3/TGeant3Dummy.cxx,$(wildcard TGeant3/*.cxx))
+           $(wildcard TGeant3/*.cxx)
 SRCS	:= $(FSRC) $(CSRC) $(CXXSRC)
 
 # C++ Headers
@@ -115,7 +107,7 @@ DEPINC 		+= -I. -I$(ROOTSYS)/include
 ############################### Targets #######################################
 
 
-SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/libG3mcDummy.$(SL) 
+SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL)
 ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a
 
 ifeq ($(PLATFORM),OSF1)
@@ -126,9 +118,6 @@ endif
 
 $(LIBDIR)/lib$(PACKAGE).$(SL):  $(OBJS)
 $(LIBDIR)/lib$(PACKAGE).a:  $(OBJS)
-
-$(LIBDIR)/libG3mcDummy.$(SL):	$(DOBJS)
-$(LIBDIR)/libG3mcDummy.a:	$(DOBJS)
 
 DICT:= $(GDICT) $(DDICT)
 

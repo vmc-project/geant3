@@ -1,7 +1,10 @@
 *
-* $Id: gpvert.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gpvert.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpvert.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GPVERT(IV)
+      SUBROUTINE G3PVERT(IV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Prints vertex bank JVERTX for vertex number IV           *
 C.    *       If IV=0 Prints all vertex banks                          *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, GPRINT                               *
+C.    *    ==>Called by : <USER>, G3PRINT                              *
 C.    *       Author    R.Brun  *********                              *
 C.    *                                                                *
 C.    ******************************************************************

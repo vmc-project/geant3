@@ -1,7 +1,10 @@
 *
-* $Id: gdshow.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gdshow.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdshow.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -81,7 +84,7 @@ C
          ELSE
             ILEN=IBITS(ISUM,0,10)
          ENDIF
-         CALL GWORK(2*ILEN)
+         CALL G3WORK(2*ILEN)
          LINATT=IBITS(ISUM,0,24)
          IF(IFIL.EQ.0)THEN
             CALL MVBITS(0,0,7,LINATT,0)

@@ -1,7 +1,10 @@
 *
-* $Id: gdopt.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdopt.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdopt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -128,14 +131,14 @@ C.
       ELSE IF (IOPTC.EQ.'USER') THEN
          IF (IVALC.EQ.'ON  ') THEN
              IMYSE=1
-             CALL GSATT('*   ','SEEN',-10)
-             CALL GSATT('*   ','COLO',-10)
-             CALL GSATT('*   ','LSTY',-10)
+             CALL G3SATT('*   ','SEEN',-10)
+             CALL G3SATT('*   ','COLO',-10)
+             CALL G3SATT('*   ','LSTY',-10)
          ELSE IF (IVALC.EQ.'OFF ') THEN
              IMYSE=0
-             CALL GSATT('*   ','SEEN',1)
-             CALL GSATT('*   ','COLO',1)
-             CALL GSATT('*   ','LSTY',1)
+             CALL G3SATT('*   ','SEEN',1)
+             CALL G3SATT('*   ','COLO',1)
+             CALL G3SATT('*   ','LSTY',1)
          ENDIF
 **SG
       ELSE

@@ -1,7 +1,10 @@
 *
-* $Id: gcoeff.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gcoeff.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gcoeff.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GCOEFF
+      SUBROUTINE G3COEFF
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -23,7 +26,7 @@ C.    *  Calculates the coefficients for the energy loss               *
 C.    *     interpolation                                              *
 C.    *     There are 4 tables : electron,positron,muon,proton         *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author      F.Carminati *********                        *
 C.    *                                                                *
 C.    ******************************************************************

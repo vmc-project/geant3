@@ -1,7 +1,10 @@
 *
-* $Id: gphxin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphxin.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphxin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHXIN
+      SUBROUTINE G3PHXIN
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *                                                                *
 C.    *       The constants are from SANDIA REPORT SAND87-0070 UC-34   *
 C.    *       by F. Biggs and R. Lighthill                             *
 C.    *                                                                *
-C.    *    ==>Called by : GPHINI                                       *
+C.    *    ==>Called by : G3PHINI                                      *
 C.    *       Author    J. Chwastowski                                 *
 C.    *                                                                *
 C.    ******************************************************************

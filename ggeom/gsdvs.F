@@ -1,7 +1,10 @@
 *
-* $Id: gsdvs.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsdvs.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsdvs.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.30  by  S.Giani
 *-- Author :
-      SUBROUTINE GSDVS(CHNAME,CHMOTH,STEP,IAXIS,NUMED)
+      SUBROUTINE G3SDVS(CHNAME,CHMOTH,STEP,IAXIS,NUMED)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -31,5 +34,5 @@ C.
       WRITE(CHMAIL,
      +'(''            This code will be removed from next version'')')
       CALL GMAIL(0,1)
-      CALL GSDVT(CHNAME,CHMOTH,STEP,IAXIS,NUMED,0)
+      CALL G3SDVT(CHNAME,CHMOTH,STEP,IAXIS,NUMED,0)
       END

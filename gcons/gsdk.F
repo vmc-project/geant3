@@ -1,7 +1,12 @@
 *
-* $Id: gsdk.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: gsdk.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: gsdk.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -18,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 02/08/94  18.13.20  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GSDK(IPART,BRATIO,MODE)
+      SUBROUTINE G3SDK(IPART,BRATIO,MODE)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -55,7 +60,7 @@ C
       IF(JDK1+JDK2.NE.0) THEN
          WRITE(CHMAIL, 10000)
          CALL GMAIL(1,0)
-         CALL GPPART(IPART)
+         CALL G3PPART(IPART)
          CALL MZDROP(IXCONS,LQ(JPA-1),' ')
          CALL MZDROP(IXCONS,LQ(JPA-2),' ')
       ENDIF

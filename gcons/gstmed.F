@@ -1,7 +1,12 @@
 *
-* $Id: gstmed.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: gstmed.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: gstmed.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -18,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTMED(KTMED,NATMED,NMAT,ISVOL,IFIELD,FIELDM,TMAXFD,
+      SUBROUTINE G3STMED(KTMED,NATMED,NMAT,ISVOL,IFIELD,FIELDM,TMAXFD,
      +        STEMAX,DEEMAX,EPSIL,STMIN,UBUF,NWBUF)
 *
 ***********************************************************************
@@ -34,9 +39,9 @@
 *  ISVOL     =0 if not a sensitive volume                             *
 *  IFIELD    = 0  if no magnetic field                                *
 *            = -1  reserved for user decision in GUSWIM               *
-*            = 1  tracking performed with GRKUTA                      *
-*            = 2  tracking performed with GHELIX                      *
-*            = 3  tracking performed with GHELX3                      *
+*            = 1  tracking performed with G3RKUTA                      *
+*            = 2  tracking performed with G3HELIX                      *
+*            = 3  tracking performed with G3HELX3                      *
 *  FIELDM    maximum field value (in Kilogauss)                       *
 *  TMAXFD    maximum  angle due  to field  permitted in  one step  (in*
 *            degrees)                                                 *
@@ -137,7 +142,7 @@ C.
          IF(JTM1.GT.0) THEN
             WRITE(CHMAIL,10100)
             CALL GMAIL(1,0)
-            CALL GPTMED(ITMED)
+            CALL G3PTMED(ITMED)
             CALL MZDROP(IXCONS,LQ(JTMED-ITMED),' ')
          ENDIF
       ENDIF
@@ -182,7 +187,7 @@ C
       IF(NWBUF.GT.0)CALL UCOPY(UBUF,Q(JTM+15),NWBUF)
 C
       IF(JTM1.GT.0) THEN
-         CALL GPTMED(-ITMED)
+         CALL G3PTMED(-ITMED)
       ENDIF
 C
 10000 FORMAT('0*** GSTMED *** Warning, medium = ',I5,

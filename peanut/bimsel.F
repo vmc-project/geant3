@@ -1,7 +1,10 @@
 *
-* $Id: bimsel.F,v 1.6 2002/07/15 13:53:23 hristov Exp $
+* $Id: bimsel.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: bimsel.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.6  2002/07/15 13:53:23  hristov
 * Use double precision constants
 *
@@ -69,6 +72,7 @@
 #endif
       DATA IBTOLD, ICTOLD / 2*0 /
 *
+      LLMDBR = .FALSE.
       KPROJ  = JPROJ
       AUSFL  = IBTAR
       ZUSFL  = ICHTAR
@@ -249,6 +253,7 @@
       END IF
       GO TO 4500
       ENTRY BIMNXT ( LBCHCK )
+         LLMDBR = .FALSE.
          IF ( EKECON .LT. 2.D+00 * GAMMIN ) THEN
             LABRST = .TRUE.
             CALL RSTNXT

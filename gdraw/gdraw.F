@@ -1,7 +1,10 @@
 *
-* $Id: gdraw.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gdraw.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdraw.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -434,7 +437,7 @@ C
 C             Initialize for new geometry structure
 C
       IF (JGPAR.EQ.0) CALL GMEDIN
-      CALL GLMOTH(NAME,1,NLEV,LVOLS,LINDX)
+      CALL G3LMOTH(NAME,1,NLEV,LVOLS,LINDX)
       DO 50 J=1, NLEV
          LNAMES(J)=IQ(JVOLUM+LVOLS(J))
    50 CONTINUE
@@ -463,7 +466,7 @@ C
 C
       IF (IDRNUM.NE.0) GO TO 110
 C
-      CALL GFPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
+      CALL G3FPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
 C
       IF (NPAR.LE.0) GO TO 290
 C
@@ -502,7 +505,7 @@ C
 C
       IF (IDRNUM.NE.0.AND.JIN.EQ.0) THEN
          CALL UHTOC(NAMES(NLEVEL),4,NAMEE2,4)
-         CALL GFPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
+         CALL G3FPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
      +            NATT,GPAR(1,NLEVEL),ATT)
       ELSE
          NPAR=Q(JVO+5)

@@ -1,7 +1,10 @@
 *
-* $Id: gcbrem.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gcbrem.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gcbrem.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      FUNCTION GCBREM(T)
+      FUNCTION G3CBREM(T)
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  It calculates the ratio of positron to electron               *
@@ -48,6 +51,6 @@ C.
          CFAC=0.5+ATAN(W)/PI
       ENDIF
 *
-   10 GCBREM = CFAC
+   10 G3CBREM = CFAC
 *
       END

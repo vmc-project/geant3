@@ -1,7 +1,10 @@
 *
-* $Id: gplmat.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gplmat.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gplmat.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 10/01/95  17.36.36  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GPLMAT(IMATES,IPART,MECAN,KDIN,TKIN,IDM)
+      SUBROUTINE G3PLMAT(IMATES,IPART,MECAN,KDIN,TKIN,IDM)
 C.
 C     ******************************************************************
 C.    *                                                                *
@@ -122,7 +125,7 @@ C.
                IKB = IR + (IC-1)*NROW
                IF (IKB.GT.KDIM) IKB=KDIM
                KI(IC) = IKB
-               CALL GEVKEV(TKIN(IKB),EK(IC),KU(IC))
+               CALL G3EVKEV(TKIN(IKB),EK(IC),KU(IC))
    10       CONTINUE
             WRITE(CHMAIL,10200) (KI(IC),EK(IC),KU(IC),IC=1,NCOL)
             CALL GMAIL(0,0)
@@ -160,7 +163,7 @@ C
 C
          IF(CHNMEC(IMEC).NE.'NULL') THEN
             MECA = CHNMEC(IMEC)
-            CALL GFTMAT(IMATE,IPART,MECA,KDIM,TKIN,VALUE,PCUT,IXST)
+            CALL G3FTMAT(IMATE,IPART,MECA,KDIM,TKIN,VALUE,PCUT,IXST)
             IF(IXST.EQ.0) GO TO 60
 *
 * ***    Book histogram

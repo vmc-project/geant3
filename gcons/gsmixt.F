@@ -1,7 +1,12 @@
 *
-* $Id: gsmixt.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: gsmixt.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: gsmixt.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -18,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GSMIXT(IMAT,NAMATE,A,Z,DENS,NLMAT,WMAT)
+      SUBROUTINE G3SMIXT(IMAT,NAMATE,A,Z,DENS,NLMAT,WMAT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -68,7 +73,7 @@ C.
          IF(JMA1.GT.0) THEN
             WRITE(CHMAIL,10000)
             CALL GMAIL(1,0)
-            CALL GPMATE(IMAT)
+            CALL G3PMATE(IMAT)
             CALL MZDROP(IXCONS,LQ(JMATE-IMAT),' ')
          ENDIF
       ENDIF
@@ -117,7 +122,7 @@ C
          ZEFF   = ZEFF + WMAT(I)*Z(I)
          ZC     = Z(I)
          ALZ    = LOG(ZC)/3.
-         XINV   = ZC*(ZC+GXSI(ZC))*(AL183-ALZ-GFCOUL(ZC))/A(I)
+         XINV   = ZC*(ZC+G3XSI(ZC))*(AL183-ALZ-G3FCOUL(ZC))/A(I)
          RADINV = RADINV + WMAT(I)*XINV
          Q(JMIXT+3*NLM+I)=XINV
          Q(JMIXT + 2* NLM + I) = WMAT(I)
@@ -126,8 +131,8 @@ C
    40 CONTINUE
       RADINV = ALR2AV * DENS * RADINV
       RADEFF = 1. / RADINV
-      CALL GHMIX(A,WMAT,NLM,AHEFF)
-      ABSEFF=10000.*AHEFF/(6.022*DENS*GHSIGM(5.,8,AHEFF))
+      CALL G3HMIX(A,WMAT,NLM,AHEFF)
+      ABSEFF=10000.*AHEFF/(6.022*DENS*G3HSIGM(5.,8,AHEFF))
 C
       Q(JMA + 6) = AEFF
       Q(JMA + 7) = ZEFF
@@ -145,7 +150,7 @@ C
       ENDIF
 C
       IF(JMA1.GT.0) THEN
-         CALL GPMATE(-IMAT)
+         CALL G3PMATE(-IMAT)
       ENDIF
 C
       GO TO 99

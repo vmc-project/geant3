@@ -1,7 +1,10 @@
 *
-* $Id: gtreveroot.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtreveroot.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtreveroot.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -37,7 +40,7 @@ C.    *                                                                *
 C.    *   Controls tracking of all particles belonging to the current  *
 C.    *    event.                                                      *
 C.    *                                                                *
-C.    *   Called by : GUTREV, called by GTRIG                          *
+C.    *   Called by : GUTREV, called by G3TRIG                         *
 C.    *   Authors   : R.Brun, F.Bruyant                                *
 C.    *                                                                *
 C.    ******************************************************************
@@ -69,8 +72,8 @@ C.    ------------------------------------------------------------------
       PMOM(2)=0
       PMOM(3)=0
       IPART=1
-      CALL GSVERT(VPOS,0,0,UBUF,0,NVTX)
-      CALL GSKINE(PMOM,IPART,NVTX,UBUF,0,NT)
+      CALL G3SVERT(VPOS,0,0,UBUF,0,NVTX)
+      CALL G3SKINE(PMOM,IPART,NVTX,UBUF,0,NT)
 *
       MTRACK=-999
  10   MTROLD=MTRACK
@@ -105,7 +108,7 @@ C --- Output root hits tree only for each primary MTRACK
             XPHOT(KK+7,1) = VPOLA(KK)
          ENDDO
          XPHOT(11,1) = TTOF
-         CALL GSKPHO(1)
+         CALL G3SKPHO(1)
 * Just make sure that the track, whatever that is, is NOT transported
          IQ(LQ(JKINE-1)) = IBSET(IQ(LQ(JKINE-1)),0)
       ELSE
@@ -129,8 +132,8 @@ C --- Output root hits tree only for each primary MTRACK
          IQ(LQ(JKINE-1)) = IBCLR(IQ(LQ(JKINE-1)),0)
       ENDIF
 * Now transport
-C      CALL GPVERT(0)
-C      CALL GPKINE(0)
+C      CALL G3PVERT(0)
+C      CALL G3PKINE(0)
 * Normal Gtreve_root code
       NV = NVERTX
       DO 40  IV = 1,NV
@@ -140,35 +143,26 @@ C      CALL GPKINE(0)
          IF (NT.LE.0) GO TO 40
          TOFG   = Q(JV+4)
          SAFETY = 0.
-         IF (NJTMAX.GT.0) THEN
-            CALL GMEDIA (Q(JV+1), NUMED)
-            IF (NUMED.EQ.0) THEN
-               WRITE (CHMAIL, 10000) (Q(JV+I), I=1,3)
-               CALL GMAIL (0, 0)
-               GO TO 40
-            ENDIF
-            CALL GLSKLT
-         ENDIF
 *  **   Loop over tracks attached to current vertex
          DO 20  IT = 1,NT
             JV   = LQ(JVERTX-IV)
             ITRA = Q(JV+7+IT)
             IF (BTEST(IQ(LQ(JKINE-ITRA)),0)) GO TO 20
-            CALL GFKINE (ITRA, VERT, PVERT, IPART, IVERT, UBUF, NWBUF)
+            CALL G3FKINE (ITRA, VERT, PVERT, IPART, IVERT, UBUF, NWBUF)
             IF (IVERT.NE.IV) THEN
                WRITE (CHMAIL, 10100) IV, IVERT
                CALL GMAIL (0, 0)
                GO TO 999
             ENDIF
 *   *      Store current track parameters in stack JSTAK
-            CALL GSSTAK (2)
+            CALL G3SSTAK (2)
    20    CONTINUE
 *  **   Start tracking phase
    30    IF (NALIVE.NE.0) THEN
             NALIVE = NALIVE -1
 *   *      Pick-up next track in stack JSTAK, if any
 *   *         Initialize tracking parameters
-            CALL GLTRAC
+            CALL G3LTRAC
             IF (NUMED.EQ.0) GO TO 30
 *   *       Resume tracking
             CALL GUTRAK

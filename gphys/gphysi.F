@@ -29,7 +29,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 06/10/94  16.31.40  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GPHYSI
+      SUBROUTINE G3PHYSI
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -215,7 +215,7 @@ C
       IF(Q(JTMED+10).LT.4.*EMASS)Q(JTMED+10)=4.*EMASS
 C
       DO 20 K=1,10
-   20 CALL GEVKEV(Q(JTMED+K),UCUT(K),KCUT(K))
+   20 CALL G3EVKEV(Q(JTMED+K),UCUT(K),KCUT(K))
 *      WRITE(CHMAIL,10800)
 *      CALL GMAIL(0,0)
       WRITE(CHMAIL,10100)
@@ -278,7 +278,7 @@ C
    40 CONTINUE
 *
 * *** Call initialisation of the phtotelectric effect constants
-      CALL GPHINI
+      CALL G3PHINI
       DO 180 ITM=1,NTMED
          JTM=LQ(JTMED-ITM)
          IF(JTM.LE.0) GO TO 180
@@ -396,7 +396,7 @@ C
             ENDIF
 *
             DO 70 K=1,10
-   70       CALL GEVKEV(Q(JTP+K),UCUT(K),KCUT(K))
+   70       CALL G3EVKEV(Q(JTP+K),UCUT(K),KCUT(K))
             WRITE(CHMAIL,10100)
             CALL GMAIL(0,0)
             WRITE(CHMAIL,12300)ITM,CHTITL
@@ -567,14 +567,14 @@ C
          CALL MZBOOK(IXCONS,LBANK,JMA,-16,'MASM',0,0,2*NEK1,3,0)
 *
 * *** Special for photeffect
-         CALL GPHXSI
+         CALL G3PHXSI
 *
 * *** coefficients for energy loss
          CALL MZBOOK(IXCONS,LBANK,JMA,-17,'MACE',0,0,6*NEK1,3,0)
          CALL MZBOOK(IXCONS,LBANK,JMA,-18,'MACM',0,0,6*NEK1,3,0)
 *
 * *** auxiliary tables for integration of dE/dx
-         CALL GWORK(NEKBIN*4)
+         CALL G3WORK(NEKBIN*4)
 *
          DO 130 JWORK=1, NEKBIN*4
             WS(JWORK) = 0.
@@ -601,40 +601,40 @@ C
 *
 * *** Fill above tables (energy losses,cross-sections,stopping ranges)
 *
-         CALL GPROBI
+         CALL G3PROBI
 C
          DO 150 IEKBIN=1,NEK1
 C
-            CALL GDRELA
-            CALL GBRELA
-            CALL GPRELA
+            CALL G3DRELA
+            CALL G3BRELA
+            CALL G3PRELA
 C
-            CALL GPHOTI
-            CALL GRAYLI
-            CALL GANNII
-            CALL GCOMPI
-            CALL GBRSGA
-            CALL GPRSGA
-            CALL GDRSGA
-            CALL GMUNUI
-            CALL GPFISI
+            CALL G3PHOTI
+            CALL G3RAYLI
+            CALL G3ANNII
+            CALL G3COMPI
+            CALL G3BRSGA
+            CALL G3PRSGA
+            CALL G3DRSGA
+            CALL G3MUNUI
+            CALL G3PFISI
   150    CONTINUE
 *
 *           Stopping ranges
 *
-         CALL GRANGI
+         CALL G3RANGI
 *
 *           Energy loss coefficients
 *
-         CALL GCOEFF
+         CALL G3COEFF
 * *** The table for the energy loss in thin gas layers if the tracking
 *     media is defined as such
 *
          IF(ISTRA.GT.0) THEN
-            CALL GSTINI
+            CALL G3STINI
 #if defined(CERNLIB_ASHO)
             IF (ISTRA.EQ.2) THEN
-               CALL GIASHO
+               CALL G3IASHO
             ENDIF
 #endif
          ENDIF
@@ -649,7 +649,7 @@ C
          IQ(LBANK-5)=ITM
          CALL MZBOOK(IXCONS,LBANK,JTM, -2,'MUMU',0,0,NEK1+2,3,0)
          IQ(LBANK-5)=ITM
-         CALL GMULOF
+         CALL G3MULOF
 C
   180 CONTINUE
 *

@@ -1,7 +1,10 @@
 *
-* $Id: gtrigi.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gtrigi.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gtrigi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GTRIGI
+      SUBROUTINE G3TRIGI
 C.
 C.    ******************************************************************
 C.    *                                                                *

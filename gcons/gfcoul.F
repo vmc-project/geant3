@@ -1,7 +1,10 @@
 *
-* $Id: gfcoul.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gfcoul.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gfcoul.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      FUNCTION GFCOUL(Z)
+      FUNCTION G3FCOUL(Z)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -34,5 +37,5 @@ C
       AZ4   =   AZ2 * AZ2
       FP    = ( 0.0083*AZ4 + 0.20206 + 1./(1.+AZ2) ) * AZ2
       FM    = ( 0.0020*AZ4 + 0.0369  ) * AZ4
-      GFCOUL = FP - FM
+      G3FCOUL = FP - FM
       END

@@ -1,7 +1,10 @@
 *
-* $Id: gfpara.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gfpara.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfpara.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GFPARA (NAME, NUMBER, INTEXT, NPAR, NATT, PAR, ATT)
+      SUBROUTINE G3FPARA (NAME, NUMBER, INTEXT, NPAR, NATT, PAR, ATT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -81,7 +84,7 @@ C.
 *
 *  **    From development structure
 *
-         CALL GLMOTH (NAME, NUMBER, NLDM, LVOLS, LINDX)
+         CALL G3LMOTH (NAME, NUMBER, NLDM, LVOLS, LINDX)
          IF (NLDM.LE.0) GO TO 991
          JVOM = LQ(JVOLUM-LVOLS(NLDM))
          NINM = Q(JVOM+3)

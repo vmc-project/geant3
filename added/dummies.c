@@ -13,9 +13,11 @@ void igmess_() {}
 void igloc2_() {}
 void igpxmp_() {}
 void izitoc_() {}
+/*
 void ffinit_() {}
 void ffkey_() {}
 void ffgo_() {}
+*/
 void kuproi_() {}
 void kuproc_() {}
 void kupror_() {}
@@ -34,6 +36,8 @@ void hidopt_() {}
 /*
  * From gbhsta */
 void hbook1_() {}
+void hbookn_() {}
+void hcopy_() {}
 /*
  * From AliRun */
 void hlimit_() {}

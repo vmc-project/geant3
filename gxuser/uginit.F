@@ -1,7 +1,10 @@
 *
-* $Id: uginit.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: uginit.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: uginit.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -31,7 +34,7 @@
 *
 *             Initialize GEANT
 C..geant..
-      CALL GINIT
+      CALL G3INIT
 *
 *             Prints version number
 *
@@ -54,7 +57,7 @@ C..geant..
 *             Initialize GEANT/ZBOOK data structures
 *
 C..geant..
-      CALL GZINIT
+      CALL G3ZINIT
 *
 *             Initialize graphics package
 *

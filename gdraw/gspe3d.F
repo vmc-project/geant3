@@ -1,7 +1,10 @@
 *
-* $Id: gspe3d.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gspe3d.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gspe3d.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -146,9 +149,9 @@ C             Add local value SEEN 1 to starting node of tree
 C
       KSEEN=KSEEN+110
       ISEEN=KSEEN
-      CALL GSATT(NAME,'SEEN',ISEEN)
+      CALL G3SATT(NAME,'SEEN',ISEEN)
 C
-      CALL GSATT(NAME,'COLO',2)
+      CALL G3SATT(NAME,'COLO',2)
       CALL GDNSON(NAME,NSON,IDIV)
       DO 50  N=1,NSON
          CALL GDSON(N,NAME,ISON)
@@ -163,9 +166,9 @@ C             Add local value SEEN -2 to each one-level-down node
 C
          KSEEN=KSEEN+80
          ISEEN=KSEEN
-         CALL GSATT(ISON,'SEEN',ISEEN)
+         CALL G3SATT(ISON,'SEEN',ISEEN)
 C
-         CALL GSATT(ISON,'COLO',4)
+         CALL G3SATT(ISON,'COLO',4)
    50 CONTINUE
 C
       ISPFLA=1
@@ -193,7 +196,7 @@ C
          IF (KSEEN.LT.50) GO TO 60
          ISEENL=KSEEN/10.+0.5
          ISEENG=KSEEN-ISEENL*10.
-         CALL GSATT(NAMSEE,'SEEN',ISEENG)
+         CALL G3SATT(NAMSEE,'SEEN',ISEENG)
    60 CONTINUE
 C
    70 CONTINUE

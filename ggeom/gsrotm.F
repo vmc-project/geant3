@@ -1,7 +1,12 @@
 *
-* $Id: gsrotm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: gsrotm.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gsrotm.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -18,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 02/07/94  18.24.47  by  S.Giani
 *-- Author :
-      SUBROUTINE GSROTM(NMAT,THETA1,PHI1,THETA2,PHI2,THETA3,PHI3)
+      SUBROUTINE G3SROTM(NMAT,THETA1,PHI1,THETA2,PHI2,THETA3,PHI3)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -63,7 +68,7 @@ C.
          IF(JR1.GT.0)THEN
             WRITE(CHMAIL,1000)
             CALL GMAIL(1,0)
-            CALL GPROTM(NMAT)
+            CALL G3PROTM(NMAT)
             CALL MZDROP(IXCONS,LQ(JROTM-NMAT),' ')
          ENDIF
       ENDIF
@@ -194,7 +199,7 @@ C
       Q(JR + 10) = IP(1) + 10* IP(2) + 100* IP(3)
 C
       IF(JR1.GT.0) THEN
-         CALL GPROTM(-NMAT)
+         CALL G3PROTM(-NMAT)
       ENDIF
 C
 1000  FORMAT(' *** GSROTM ***: Warning, rotation matrix redefinition:')

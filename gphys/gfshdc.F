@@ -1,7 +1,12 @@
 *
-* $Id: gfshdc.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: gfshdc.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gfshdc.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -18,13 +23,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GFSHDC(IELEM,Z)
+      SUBROUTINE G3FSHDC(IELEM,Z)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Fetch Shell Decay Constants                                   *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GPHXSI                                       *
+C.    *    ==>CALLED BY : G3PHXSI                                      *
 C.    *       AUTHOR    : J. Chwastowski                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -60,9 +65,9 @@ C
          ENR(I) = 0.0
          ER(I) = 0.0
    30 CONTINUE
-      CALL GFSHLS(Z,ESHL,NSHLL)
-      CALL GFRDT(Z,ESHL,NSHELL,NWR,NRAD,PRBR,ER)
-      CALL GFNRDT(Z,ESHL,NSHELL,NWNR,NONRAD,PRBNR,ENR)
+      CALL G3FSHLS(Z,ESHL,NSHLL)
+      CALL G3FRDT(Z,ESHL,NSHELL,NWR,NRAD,PRBR,ER)
+      CALL G3FNRDT(Z,ESHL,NSHELL,NWNR,NONRAD,PRBNR,ENR)
 C Calculate how many words are needed for the final state bank JPHFN
       NWORD = 0
       DO 40 J = 1,NSHELL
@@ -77,7 +82,7 @@ C Push bank to store final state parameters
       JPHFN = JPHFN+NUSED
       Q(JPHFN+1) = NSHELL
 C Get probability of the shell radiative decay
-      CALL GFSDPR(Z,NSHELL,PRB)
+      CALL G3FSDPR(Z,NSHELL,PRB)
 C
 C Copy potentials and radiative decay probabilities
 C

@@ -1,7 +1,10 @@
 *
-* $Id: gfang.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfang.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfang.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 06/07/94  18.28.55  by  S.Giani
 *-- Author :
-      SUBROUTINE GFANG(P,COSTH,SINTH,COSPH,SINPH,ROTATE)
+      SUBROUTINE G3FANG(P,COSTH,SINTH,COSPH,SINPH,ROTATE)
 C.
 C.    ******************************************************************
 C.    *                                                                *

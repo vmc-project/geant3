@@ -1,7 +1,10 @@
 *
-* $Id: ghclos.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: ghclos.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: ghclos.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,11 +18,11 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GHCLOS
+      SUBROUTINE G3HCLOS
 C.
 C.    ******************************************************************
 C.    *                                                                *
-C.    *        SUBR. GHCLOS                                            *
+C.    *        SUBR. G3HCLOS                                           *
 C.    *                                                                *
 C.    *   For every sensitive detector, calls GGDETV in order to       *
 C.    *   complete the JD bank with the list of volume names which     *
@@ -27,7 +30,7 @@ C.    *   permit to identify uniquely a given physical detector, the   *
 C.    *   list of bit numbers to pack the corresponding volume copy    *
 C.    *   numbers,  and the generic path(s) through the JVOLUM tree.   *
 C.    *                                                                *
-C.    *   Called by : GGCLOS, <USER>                                   *
+C.    *   Called by : G3GCLOS, <USER>                                  *
 C.    *   Author    : F.Bruyant                                        *
 C.    *                                                                *
 C.    ******************************************************************

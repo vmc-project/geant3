@@ -1,7 +1,10 @@
 *
-* $Id: gtnext.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtnext.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtnext.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +19,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/04 21/03/95  16.13.08  by  S.Giani
 *-- Author :
-      SUBROUTINE GTNEXT
+      SUBROUTINE G3TNEXT
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -962,7 +965,7 @@ C*****  End of Code Expanded From Routine:  GRMTD
 CCC debug
          IF (ISWIT(9).EQ.123456789) THEN
             PRINT *,' GTNEXT : SNEXT,SAFETY,INGOTO=',SNEXT,SAFETY,INGOTO
-            CALL GPCXYZ
+            CALL G3PCXYZ
          ENDIF
 CCC
          SAFETY = 0.

@@ -1,7 +1,10 @@
 *
-* $Id: gbrela.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrela.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrela.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GBRELA
+      SUBROUTINE G3BRELA
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Initialize the bremsstrahlung energy loss tables              *
 C.    *            ( See L.Urban report)                               *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author    G.Patrick, L.Urban  *********                  *
 C.    *                                                                *
 C.    ******************************************************************
@@ -61,12 +64,12 @@ C
 C
 C             simple material (element)
 C
-         DEDX=GBRELE(Z,XE,BCUTE)
+         DEDX=G3BRELE(Z,XE,BCUTE)
          DEDX=AVO*DENS*DEDX/A
 *
 * *** auxiliary integration point for Range tables
          IF(ICHAN.NE.NEK1) THEN
-            DEDX1=GBRELE(Z,XE1,BCUTE)
+            DEDX1=G3BRELE(Z,XE1,BCUTE)
             DEDX1=AVO*DENS*DEDX1/A
          ENDIF
       ELSE
@@ -80,13 +83,13 @@ C
             AA = Q(J-NLM)
             ZZ = Q(J)
             WMAT= Q(J+NLM)
-            S = GBRELE(ZZ,XE,BCUTE)
+            S = G3BRELE(ZZ,XE,BCUTE)
             S = WMAT*S/AA
             DEDX= DEDX+AVO*DENS*S
 *
 * *** auxiliary integration point for Range tables
             IF(ICHAN.NE.NEK1) THEN
-               S = GBRELE(ZZ,XE1,BCUTE)
+               S = G3BRELE(ZZ,XE1,BCUTE)
                S = WMAT*S/AA
                DEDX1= DEDX1+AVO*DENS*S
             ENDIF
@@ -95,7 +98,7 @@ C
 C
       IF(DEDX.LT.0.)DEDX=0.
       Q(JEL1+ICHAN)=Q(JEL1+ICHAN)+DEDX
-      FACT = GBFLOS(XE,BCUTE)
+      FACT = G3BFLOS(XE,BCUTE)
       Q(JEL1+ICHAN+NEK1)=Q(JEL1+ICHAN+NEK1)+FACT*DEDX
 *
       IF(ISTRA.NE.0) Q(JEL1+ICHAN+2*NEK1) = DEDX
@@ -104,7 +107,7 @@ C
       IF(ICHAN.NE.NEK1) THEN
          IF(DEDX1.LT.0.)DEDX1=0.
          WS(ICHAN)=WS(ICHAN)+DEDX1
-         FACT = GBFLOS(XE1,BCUTE)
+         FACT = G3BFLOS(XE1,BCUTE)
          WS(NEKBIN+ICHAN)=WS(NEKBIN+ICHAN)+FACT*DEDX1
       ENDIF
 C
@@ -139,12 +142,12 @@ C
 C
 C             simple material (element)
 C
-         DEDX=GBRELM(Z,XE,BCUTM)
+         DEDX=G3BRELM(Z,XE,BCUTM)
          DEDX=AVO*DENS*DEDX/A
 *
 * *** auxiliary integration point for Range tables
          IF(ICHAN.NE.NEK1) THEN
-            DEDX1=GBRELM(Z,XE1,BCUTM)
+            DEDX1=G3BRELM(Z,XE1,BCUTM)
             DEDX1=AVO*DENS*DEDX1/A
          ENDIF
       ELSE
@@ -158,13 +161,13 @@ C
             AA = Q(J-NLM)
             ZZ = Q(J)
             WMAT= Q(J+NLM)
-            S = GBRELM(ZZ,XE,BCUTM)
+            S = G3BRELM(ZZ,XE,BCUTM)
             S = WMAT*S/AA
             DEDX= DEDX+AVO*DENS*S
 *
 * *** auxiliary integration point for Range tables
             IF(ICHAN.NE.NEK1) THEN
-               S = GBRELM(ZZ,XE1,BCUTM)
+               S = G3BRELM(ZZ,XE1,BCUTM)
                S = WMAT*S/AA
                DEDX1= DEDX1+AVO*DENS*S
             ENDIF

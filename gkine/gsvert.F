@@ -1,7 +1,12 @@
 *
-* $Id: gsvert.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: gsvert.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gsvert.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -21,7 +26,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GSVERT(V,NTBEAM,NTTARG,UBUF,NWBUF,NVTX)
+      SUBROUTINE G3SVERT(V,NTBEAM,NTTARG,UBUF,NWBUF,NVTX)
 C.
 C.    ******************************************************************
 C.    *                                                                *
