@@ -1,28 +1,17 @@
 *
-* $Id: gdcgrs.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcgrs.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:21  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDCGRS
+      SUBROUTINE G3DCGRS
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *     Reset the pointers and counters for the Zebra Bank         *
 C.    *     of CG, HS and Wire Objects.                                *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAW,GDCGHI                                 *
+C.    *    ==>Called by : G3DRAW,GDCGHI                                *
 C.    *                                                                *
 C.    *                                                                *
 C.    *       Author : J. Salt ; S. Giani  **********                  *

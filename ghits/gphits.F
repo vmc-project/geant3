@@ -1,7 +1,10 @@
 *
-* $Id: gphits.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gphits.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gphits.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.20  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHITS(IUSET,IUDET)
+      SUBROUTINE G3PHITS(IUSET,IUDET)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -32,7 +35,7 @@ C.    *        --Track number ITRA not packed                          *
 C.    *        --Volume numbers packed                                 *
 C.    *        --Hits transformed and packed                           *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, GPRINT ,<GXINT>, GINC4, GKHITS       *
+C.    *    ==>Called by : <USER>, G3PRINT ,<GXINT>, G3INC4, G3KHITS    *
 C.    *       Authors : R.Brun      **********                         *
 C.    *                 P.Zanarini  *                                  *
 C.    *                                                                *

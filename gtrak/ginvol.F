@@ -1,7 +1,10 @@
 *
-* $Id: ginvol.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: ginvol.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ginvol.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +19,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/02 03/07/94  17.14.15  by  S.Giani
 *-- Author :
-      SUBROUTINE GINVOL (X, ISAME)
+      SUBROUTINE G3INVOL (X, ISAME)
 C.
 C.    ******************************************************************
 C.    *                                                                *

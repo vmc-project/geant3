@@ -1,16 +1,5 @@
 *
-* $Id: gdarr.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdarr.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:20  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
@@ -47,7 +36,7 @@ C
 C
 C             Draw the segment
 C
-      CALL GDRAWV(U,V,2)
+      CALL G3DRAWV(U,V,2)
 C
       FSIN=(Y2-Y1)/XL
       FCOS=(X2-X1)/XL
@@ -60,7 +49,7 @@ C
 C
 C             Draw the arrow
 C
-      CALL GDRAWV(U,V,3)
+      CALL G3DRAWV(U,V,3)
 C
       X0=X1+(XL+2*SIZE)*FCOS
       Y0=Y1+(XL+2*SIZE)*FSIN
@@ -70,7 +59,7 @@ C
 C
 C             Draw the text
 C
-      CALL GDRAWT(X0,Y0,ITEXT,SIZE,ANGLE,LWIDTH,IOPT)
+      CALL G3DRAWT(X0,Y0,ITEXT,SIZE,ANGLE,LWIDTH,IOPT)
 C
   999 RETURN
       END

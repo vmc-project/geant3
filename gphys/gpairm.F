@@ -1,7 +1,10 @@
 *
-* $Id: gpairm.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpairm.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gpairm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPAIRM
+      SUBROUTINE G3PAIRM
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Simulates direct pair production by muons                     *
 C.    *                                                                *
-C.    *    ==>Called by : GTMUON                                       *
+C.    *    ==>Called by : G3TMUON                                      *
 C.    *       Author    L.Urban  *********                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -101,7 +104,7 @@ C
       COSPHI= COS(PHI)
       SINPHI= SIN(PHI)
 C
-      CALL GFANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
+      CALL G3FANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
 C
 C           Positron
 C
@@ -120,10 +123,10 @@ C
          GPOS(2,NGKINE) = VECT(2)
          GPOS(3,NGKINE) = VECT(3)
          IF(ROTATE)
-     +   CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +   CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
       ELSE
          DESTEP=DESTEP+TPOS
-         CALL GANNI2
+         CALL G3ANNI2
       ENDIF
 C
 C           Electron
@@ -142,7 +145,7 @@ C
          GPOS(2,NGKINE) = VECT(2)
          GPOS(3,NGKINE) = VECT(3)
          IF(ROTATE)
-     +   CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +   CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
       ELSE
          DESTEP=DESTEP+TMIN
       ENDIF
@@ -152,7 +155,7 @@ C
   60  GEKIN  = GEKIN-EPP
       GETOT  = GEKIN+AMASS
       VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
-      CALL GEKBIN
+      CALL G3EKBIN
 C
 C           Update probabilities
 C

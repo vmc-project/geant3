@@ -1,7 +1,10 @@
 *
-* $Id: gstini.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstini.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstini.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTINI
+      SUBROUTINE G3STINI
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Initialization of tables for energy loss straggling in       *
 C.    *   thin gas layers                                              *
 C.    *                                                                *
-C.    *   ==> Called by : GPHYSI                                       *
+C.    *   ==> Called by : G3PHYSI                                      *
 C.    *       Authors   : K. Lassila-Perini, I. Gavrilenko, P. Nevski  *
 C.    *                                                                *
 C.    ******************************************************************
@@ -74,7 +77,7 @@ C...
    30 CONTINUE
    40 EPS   = .001
 *
-      CALL GSTXIN
+      CALL G3STXIN
 *
 *
 * Create and fill the banks. The number of intervals is decreased
@@ -83,7 +86,7 @@ C...
 *
       DO 80 I = 1,21
          GAM = GAMTT(I)
-         CALL GSTTAB(GAM,NT,EN,FN)
+         CALL G3STTAB(GAM,NT,EN,FN)
          IF (I.EQ.1) THEN
             CALL MZBOOK(IXCONS,JTSTCO,JTSTRA,-1,'STCO',0,0,NT*21,3,-1)
             CALL MZBOOK(IXCONS,JTSTEN,JTSTRA,-2,'STEN',0,0,NT,3,-1)

@@ -1,7 +1,10 @@
 *
-* $Id: twoclu.F,v 1.2 2002/07/10 09:45:00 morsch Exp $
+* $Id: twoclu.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: twoclu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.2  2002/07/10 09:45:00  morsch
 * Gheisha corrections suggested by Gary Bower (FNAL).
 *
@@ -264,7 +267,7 @@ C**
       IF(NTC.LE.1) GOTO 33
       NTC1=NTC
       IF(NTC1.GT.5) NTC1=5
-      RMC=-LOG(1.-RAN)
+      RMC=-LOG(RAN)
       GPAR=G1PAR(NTC1)
       CPAR=C1PAR(NTC1)
       DUMNVE=GPAR
@@ -276,7 +279,7 @@ C**
       IF(NTD1.GT.5) NTD1=5
       CALL GRNDM(RNDM,1)
       RAN=RNDM(1)
-      RMD=-LOG(1.-RAN)
+      RMD=-LOG(RAN)
       GPAR=G1PAR(NTD1)
       CPAR=C1PAR(NTD1)
       DUMNVE=GPAR
@@ -299,7 +302,7 @@ C**
       IF(NTE1.GT.5) NTE1=5
       CALL GRNDM(RNDM,1)
       RAN=RNDM(1)
-      RME=-LOG(1.-RAN)
+      RME=-LOG(RAN)
       GPAR=G1PAR(NTE1)
       CPAR=C1PAR(NTE1)
       DUMNVE=GPAR

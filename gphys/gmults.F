@@ -1,7 +1,10 @@
 *
-* $Id: gmults.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmults.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmults.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMULTS
+      SUBROUTINE G3MULTS
 C
 C     ******************************************************************
 C     *                                                                *
@@ -24,7 +27,7 @@ C     *       select Moliere theory , Gaussian approximation           *
 C     *       or single Coulomb scattering depending of their range    *
 C     *       of validity.                                             *
 C     *                                                                *
-C     *    ==>Called by : GTELEC , GTHADR , GTMUON                     *
+C     *    ==>Called by : G3TELEC , G3THADR , G3TMUON                  *
 C.    *       Author     M.Maire  *********                            *
 C     *                                                                *
 C     ******************************************************************
@@ -42,7 +45,7 @@ C     ******************************************************************
       BETA2 = (VECT(7)/GETOT)**2
       IF(BETA2.LE.0.) RETURN
       IF(IMULS.EQ.3) THEN
-         CALL GMGAUS(BETA2,DIN)
+         CALL G3MGAUS(BETA2,DIN)
 *
       ELSE
          CHARG2=CHARGE**2
@@ -66,10 +69,10 @@ C     ******************************************************************
             NLM=Q(JMA+11)
 *
             IF(NLM.EQ.1)THEN
-               CALL GMOLIO(A,Z,1.,1,DENS,BETA2,CHARG2,OMCMOL)
+               CALL G3MOLIO(A,Z,1.,1,DENS,BETA2,CHARG2,OMCMOL)
 *
             ELSE
-               CALL GMOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
+               CALL G3MOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
      +         NLM,DENS,BETA2,CHARG2,OMCMOL)
 *
             ENDIF
@@ -82,10 +85,10 @@ C     ******************************************************************
          OMEGA = OMCMOL*STMULS/BETA2
 *
          IF (OMEGA.LE.20.) THEN
-            CALL GMCOUL(OMEGA,DIN)
+            CALL G3MCOUL(OMEGA,DIN)
 *
          ELSE
-            CALL GMOLIE(OMEGA,BETA2,DIN)
+            CALL G3MOLIE(OMEGA,BETA2,DIN)
 *
          ENDIF
       ENDIF

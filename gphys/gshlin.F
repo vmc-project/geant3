@@ -1,7 +1,10 @@
 *
-* $Id: gshlin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gshlin.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gshlin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSHLIN
+      SUBROUTINE G3SHLIN
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -24,7 +27,7 @@ C.    *                                                                *
 C.    * Potentials according to Rev.Mod.Phys. vol. 39 nr. 1 125 (1967) *
 C.    * Xe upadetd according to Grishin et al. NIM A309, 476 (1991)    *
 C.    *                                                                *
-C.    *    ==>Called by : GPHINI                                       *
+C.    *    ==>Called by : G3PHINI                                      *
 C.    *       Author    J. Chwastowski                                 *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,7 +1,10 @@
 *
-* $Id: gphsgp.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphsgp.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphsgp.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GPHSGP(IELEM,E)
+      FUNCTION G3PHSGP(IELEM,E)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *                                                                *
 C.    *    ==>CALLED BY : special dE/dx                                *
 C.    *                                                                *
 C.    *    (1) Sandia parametrizsation is used;                        *
-C.    *    (2) GPHSGP in cm**/g                                        *
+C.    *    (2) G3PHSGP in cm**/g                                       *
 C.    *    (3) E in GeV                                                *
 C.    *                                                                *
 C.    *     J. Chwastowski 31.03.93                                    *
@@ -49,7 +52,7 @@ C Use Sandia data
       JPHXS  = LQ(JPHOT-1)
       IF(IELEM.GT.IQ(JPHXS-2)) THEN
          WRITE(CHMAIL,10010) IELEM, IQ(JPHXS-2)
-10010 FORMAT(' *** GPHSGP : element N ',I6,' requested, ',
+10010 FORMAT(' *** G3PHSGP : element N ',I6,' requested, ',
      +'but only ',I6,' elements in present mixture')
          CALL GMAIL(0,0)
          GOTO 20
@@ -70,6 +73,6 @@ C Use Sandia data
          ENDIF
    10 CONTINUE
 C This value is in cm**2/g
-   20 GPHSGP = MAX(RES,0.)
+   20 G3PHSGP = MAX(RES,0.)
 C
       END

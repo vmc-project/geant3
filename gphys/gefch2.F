@@ -1,7 +1,10 @@
 *
-* $Id: gefch2.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gefch2.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gefch2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      FUNCTION GEFCH2(Z1,Z2,TK)
+      FUNCTION G3EFCH2(Z1,Z2,TK)
 C.    *******************************************************************
 C.    *                                                                 *
 C.    *  Calculates  gamma**2=( eff.charge/z1)**2 for heavy ions        *
@@ -50,5 +53,5 @@ C
 C     .........................
       GA=1.-X1*EXP(EE)
 C
-      GEFCH2=GA**2
+      G3EFCH2=GA**2
       END

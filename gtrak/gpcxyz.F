@@ -1,7 +1,10 @@
 *
-* $Id: gpcxyz.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpcxyz.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gpcxyz.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 06/12/94  16.50.58  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GPCXYZ
+      SUBROUTINE G3PCXYZ
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -75,8 +78,8 @@ C
       NTMOLD=NTMULT
 C
   20  R=SQRT(VECT(1)**2+VECT(2)**2)
-      CALL GEVKEV(DESTEP,DESU,KUN1)
-      CALL GEVKEV(GEKIN ,GEKU,KUN2)
+      CALL G3EVKEV(DESTEP,DESU,KUN1)
+      CALL G3EVKEV(GEKIN ,GEKU,KUN2)
       NS = 1
       NW = MIN(NS+5,NM)
       WRITE(CHMAIL,2000)(VECT(I),I=1,3),R,NAMES(NLEVEL),NUMBER(NLEVEL)

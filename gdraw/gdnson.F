@@ -1,16 +1,5 @@
 *
-* $Id: gdnson.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdnson.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -23,7 +12,7 @@ C.    *       Return in NSON the number of sons of object NAME         *
 C.    *       and in NDIV its number of divisions, always positive     *
 C.    *       (NDIV=0 means no division)                               *
 C.    *                                                                *
-C.    *    ==>Called by : GDPRTR, GDSPEC, GDTR1                        *
+C.    *    ==>Called by : GDPRTR, G3DSPEC, GDTR1                       *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

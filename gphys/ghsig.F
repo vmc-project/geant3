@@ -1,7 +1,10 @@
 *
-* $Id: ghsig.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: ghsig.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: ghsig.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GHSIG(P,ITYPE,A)
+      FUNCTION G3HSIG(P,ITYPE,A)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *                momentum P (GEV/C)                              *
 C.    *                type ITYPE                                      *
 C.    *      on a nucleus of atomic number A                           *
 C.    *                                                                *
-C.    *    ==>Called by : GHSIGM                                       *
+C.    *    ==>Called by : G3HSIGM                                      *
 C.    *       Author    R.Barlow  *********                            *
 C.    *                                                                *
 C.    ******************************************************************
@@ -189,5 +192,5 @@ C
       IF (IS.GE.100) IS = 99
       SB     = SIGB(IS) + (S - IS) * (SIGB(IS + 1) - SIGB(IS))
       AL     = ALPHA(IS) + (S - IS) * (ALPHA(IS + 1) - ALPHA(IS))
-      GHSIG  = SB*A**AL
+      G3HSIG = SB*A**AL
       END

@@ -1,7 +1,10 @@
 *
-* $Id: gloren.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gloren.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gloren.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GLOREN(BETA,PA,PB)
+      SUBROUTINE G3LOREN(BETA,PA,PB)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -33,7 +36,7 @@ C     *       BETA(2)        as seen from frame A                      *
 C     *       BETA(3)                                                  *
 C     *       BETA(4)    1./SQRT(1.-BETA**2)                           *
 C.    *                                                                *
-C.    *    ==>Called by : GDECAY,GDECA3                                *
+C.    *    ==>Called by : G3DECAY,G3DECA3                              *
 C.    *       Author    M.Hansroul  *********                          *
 C.    *                                                                *
 C.    ******************************************************************

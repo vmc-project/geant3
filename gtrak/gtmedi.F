@@ -1,7 +1,10 @@
 *
-* $Id: gtmedi.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtmedi.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtmedi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +19,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/02 29/03/94  15.22.08  by  S.Giani
 *-- Author :
-      SUBROUTINE GTMEDI (X, NUMED)
+      SUBROUTINE G3TMEDI (X, NUMED)
 C.
 C.    ******************************************************************
 C.    *                                                                *

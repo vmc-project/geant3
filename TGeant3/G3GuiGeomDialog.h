@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3GuiGeomDialog.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3GuiGeomDialog.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 //
 // Dialog Panels for the G3 GUI
@@ -52,6 +52,9 @@ private:
     TGTransientFrame((const TGTransientFrame&)gd) {}
   virtual G3GuiGeomDialog & operator=(const G3GuiGeomDialog &) 
   {return *this;}
+
+  ClassDef(G3GuiGeomDialog,1)
+
 };
 
 R__EXTERN G3Volume  *gCurrentVolume;

@@ -1,7 +1,10 @@
 *
-* $Id: ganni2.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: ganni2.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: ganni2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GANNI2
+      SUBROUTINE G3ANNI2
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Generates positron annihilation at rest                  *
-C.    *       (alias of GANNIR , directly called from GPAIRG)          *
+C.    *       (alias of G3ANNIR , directly called from G3PAIRG)        *
 C.    *                                                                *
-C.    *    ==>Called by : GPAIRG,GPAIRM                                *
+C.    *    ==>Called by : G3PAIRG,G3PAIRM                              *
 C.    *       Author    M.Maire *********                              *
 C.    *                                                                *
 C.    ******************************************************************

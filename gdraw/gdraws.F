@@ -1,24 +1,10 @@
 *
-* $Id: gdraws.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdraws.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.2  2001/03/20 06:36:25  alibrary
-* 100 parameters now allowed for geant shapes
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:24  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAWS(ISHAPE,PAR)
+      SUBROUTINE G3DRAWS(ISHAPE,PAR)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -48,7 +34,7 @@ C.    *  14       HYPE     RMIN,RMAX,DZ,PHI                            *
 C.    *  NSGTRA   GTRA     DZ,TH,PHI,TWIST,Y1,XL1,XH1,TH1,Y2,XL2,XH2,..*
 C.    *  NSCTUB   CTUB     RMIN,RMAX,DZ,PHIMIN,PHIMAX,LXL,LYL,LZL,LXH,.*
 C.    *                                                                *
-C.    *    ==>Called by : GDRAW                                        *
+C.    *    ==>Called by : G3DRAW                                       *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *       Modification log.                                        *
 C.    *        1-Jun-88 A.C.McPherson - Introduce cut tube shape.      *
@@ -467,7 +453,7 @@ C
       X(3,J) = RMAX*COS(THET)
  3004 CONTINUE
       CALL GDFR3D(X,46,U,V)
-      CALL GDRAWV(U,V,46)
+      CALL G3DRAWV(U,V,46)
  3005 CONTINUE
       IF(RMIN.GE.0.) THEN
       PPH = PHMI-DDP
@@ -483,7 +469,7 @@ C
       X(3,J) = RMIN*COS(THET)
  3006 CONTINUE
       CALL GDFR3D(X,46,U,V)
-      CALL GDRAWV(U,V,46)
+      CALL G3DRAWV(U,V,46)
  3007 CONTINUE
       ENDIF
       DO 3010 I=1,3

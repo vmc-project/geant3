@@ -1,7 +1,10 @@
 *
-* $Id: giasho.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: giasho.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: giasho.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +22,7 @@
 #if defined(CERNLIB_ASHO)
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GIASHO
+      SUBROUTINE G3IASHO
 #include "geant321/gcbank.inc"
 #include "geant321/gcmate.inc"
       DIMENSION E0ELM(100),NSELM(100)
