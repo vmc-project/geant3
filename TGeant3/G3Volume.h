@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Volume.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
+/* $Id: G3Volume.h,v 1.3 2004/01/28 08:17:52 brun Exp $ */
 
 #include <TGListTree.h>
 #include "TROOT.h"
@@ -17,7 +17,7 @@
 class TShape;
 class TMaterial;
 
-class G3Volume : public TNamed 
+class G3Volume : public TNamed
 {
 public:
     G3Volume() {;}
@@ -49,23 +49,23 @@ public:
     virtual Int_t Material() const {return fIdMaterial;}
     // Increase copy number by one
     virtual void  AddCopy() {fIdCopy ++;}
-    // Set link to ListTree Item 
+    // Set link to ListTree Item
     virtual void  SetItem(TObject *item) {fItem = item;}
     // Get link to ListTree Item
     virtual void  SetPosition(Float_t x, Float_t y, Float_t z);
     virtual TArrayF Position(Int_t i) const;
-    
+
     virtual void  SetRotMatrix(Int_t irot) {fRotMatrix = irot;}
     virtual Int_t RotMatrix() const {return fRotMatrix;}
     virtual void  SetShape(Int_t shape) {fShape = shape;}
     virtual Int_t Shape() const {return fShape;}
     virtual void  SetParameters(Int_t np, Float_t* param);
-    virtual Int_t NParam() const {return fNParam;} 
+    virtual Int_t NParam() const {return fNParam;}
     virtual void  Parameters(Int_t i, TArrayF& param) const;
     virtual TList* Copies() const {return fCopies;}
     virtual void  AddCopy(G3Volume* volume);
     virtual G3Volume* Copy(Int_t i);
-    
+
     virtual Int_t  NCopies() const {return fNCopies;}
     virtual Bool_t Posp() const {return fPosp;}
     virtual void   SetPosp(Bool_t flag) {fPosp = flag;}
@@ -76,16 +76,16 @@ public:
     virtual Int_t   Ndiv()   {return fNdiv;}
     virtual Float_t Step()   {return fStep;}
     virtual Float_t StartC() {return fStartC;}
-    
-	    
-	    
+
+
+
     virtual TObject* GetItem() {return fItem;}
 
     G3Volume(const G3Volume&);
-    
+
 
 private:
-    
+
     TArrayF  fPosition;     // position with respect to mother volume
     TArrayF  fParameters;   // volume parameters
     TList*   fCopies;       // volume copies
@@ -100,7 +100,7 @@ private:
     Int_t    fShape;       // G3 volume shape
     Float_t  fTheta;       // theta-angle for drawing
     Float_t  fPhi;         // phi-angle   for drawing
-    Float_t  fPsi;         // psi-angle   for drawing 
+    Float_t  fPsi;         // psi-angle   for drawing
     Float_t  fU;           // u-position
     Float_t  fV;           // v-position
     Float_t  fUscale;      // u-scaling factor
@@ -118,10 +118,11 @@ private:
     Float_t  fClipZmax;    // clip box range zmax
     Int_t    fIdVolume;    // geant volume id
     Int_t    fIdMedium;    // geant medium id
-    Int_t    fIdMaterial;  // geant material id    
+    Int_t    fIdMaterial;  // geant material id
     Int_t    fIdCopy;      // copy flag
     TObject* fItem;        //!current item
     G3Volume & operator=(const G3Volume&) {return *this;}
+    void     Copy(TObject &object) const;  // not implemented
 
     ClassDef(G3Volume,1) // G3 Volume for G3 GUI
 };
