@@ -15,6 +15,10 @@
 
 /*
 $Log: TGeant3Dummy.cxx,v $
+Revision 1.2  2003/07/18 10:22:51  brun
+Changes to reflect the equivalent changes in the abstract classes in vmc
+(thanks Peter Hristov)
+
 Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 initial import into CVS
 
@@ -146,7 +150,7 @@ void  TGeant3::Gfmate(Int_t, char*, Double_t&, Double_t&, Double_t&, Double_t&,
 		      Double_t&, Double_t*, Int_t&){}
 
 //___________________________________________
-void  TGeant3::Gfpart(Int_t, char*, Int_t&, Float_t&, Float_t&, Float_t&){}
+void  TGeant3::Gfpart(Int_t, char*, Int_t&, Float_t&, Float_t&, Float_t&) const {}
 
 //___________________________________________
 void  TGeant3::Gftmed(Int_t, char*, Int_t&, Int_t&, Int_t&, Float_t&, Float_t&,
