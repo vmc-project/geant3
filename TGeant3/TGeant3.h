@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.13 2004/06/08 10:27:20 brun Exp $ */
+/* $Id: TGeant3.h,v 1.14 2004/06/17 13:56:53 rdm Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -22,6 +22,8 @@
 #include "TMCProcess.h" 
 #include "TMCParticleType.h"
 #include "TGeoMCGeometry.h" 
+
+class TGeoMaterial;
 
 //______________________________________________________________
 //
@@ -947,7 +949,8 @@ protected:
 
 private:
 
-  void  DefineParticles();
+  void   DefineParticles();
+  Int_t  ImportMaterial(const TGeoMaterial* material);
   Int_t  TransportMethod(TMCParticleType particleType) const;
   TString  ParticleClass(TMCParticleType particleType) const;
   TMCParticleType ParticleType(Int_t itrtyp) const;

@@ -16,6 +16,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.30  2004/07/09 08:11:29  brun
+Fix by Ivana/Andrei to call TGeoMedium::setId and not TGeoMedium::SetUniqueID
+
 Revision 1.29  2004/06/17 13:56:53  rdm
 changed several "const int" arguments to "int". Was causing warnings of
 type "qualifier is meaningless".
@@ -5604,6 +5607,34 @@ TString  TGeant3::ParticleClass(TMCParticleType particleType) const
 }
 
 //____________________________________________________________________________
+Int_t  TGeant3::ImportMaterial(const TGeoMaterial* mat)
+{
+// Imports the Root material in Geant3 and returns its Geant3 index
+// ---
+      
+  Int_t kmat;
+  const TGeoMixture* mixt = dynamic_cast<const TGeoMixture*>(mat);
+  if (mixt) {
+    Int_t nlmat = mixt->GetNelements(); 
+    Float_t* fa = CreateFloatArray(mixt->GetAmixt(), TMath::Abs(nlmat));  
+    Float_t* fz = CreateFloatArray(mixt->GetZmixt(), TMath::Abs(nlmat));  
+    Float_t* fwmat = CreateFloatArray(mixt->GetWmixt(), TMath::Abs(nlmat));  
+    G3Mixture(kmat, mixt->GetName(), fa, fz, mixt->GetDensity(), nlmat, fwmat); 
+    delete [] fa;
+    delete [] fz;
+    delete [] fwmat;
+  } 
+  else {
+    Float_t* buf = 0;
+    G3Material(kmat, mat->GetName(), mat->GetA(), mat->GetZ(),
+               mat->GetDensity(), mat->GetRadLen(), mat->GetIntLen(), buf, 0);
+                                    // Is fIntLen == absl ??
+  }
+  return kmat;
+}  
+
+
+//____________________________________________________________________________
 void TGeant3::FinishGeometry()
 {
   //
@@ -5616,37 +5647,43 @@ void TGeant3::FinishGeometry()
 
 #if defined(WITHROOT) || defined(WITHBOTH)
   if (fImportRootGeometry) {
-    // Materials
+  
+    // Import materials
+    // 
     TIter next1(gGeoManager->GetListOfMaterials());
     TGeoMaterial* mat;
+    Int_t nofMaterials = 0;
     while ((mat=(TGeoMaterial*)next1())) {
-      Int_t kmat;
-      TGeoMixture* mixt = dynamic_cast<TGeoMixture*>(mat);
-      if (mixt) {
-        Int_t nlmat = mixt->GetNelements(); 
-        Float_t* fa = CreateFloatArray(mixt->GetAmixt(), TMath::Abs(nlmat));  
-        Float_t* fz = CreateFloatArray(mixt->GetZmixt(), TMath::Abs(nlmat));  
-        Float_t* fwmat = CreateFloatArray(mixt->GetWmixt(), TMath::Abs(nlmat));  
-        G3Mixture(kmat, mixt->GetName(), fa, fz, mixt->GetDensity(), nlmat, fwmat); 
-        delete [] fa;
-        delete [] fz;
-        delete [] fwmat;
-      } 
-      else {
-        Float_t* buf = 0;
-        G3Material(kmat, mat->GetName(), mat->GetA(), mat->GetZ(),
-                   mat->GetDensity(), mat->GetRadLen(), mat->GetIntLen(), buf, 0);
-                                                // Is fIntLen == absl ??
-      }
+      Int_t kmat = ImportMaterial(mat);
       mat->SetUniqueID(kmat);
+      nofMaterials++;
     }  	         	        
 
-    // Media
+    // Number of media
+    Int_t nofMedia = 0;
     TIter next2(gGeoManager->GetListOfMedia());
+    TGeoMedium* medx;
+    while ((medx=(TGeoMedium*)next2())) nofMedia++;
+    
+    // Import media
+    //
+    Int_t  maxNofMaterials = nofMaterials + nofMedia;  
+    TArrayI usedMaterials(maxNofMaterials);
+    for (Int_t i=0; i<maxNofMaterials; i++) 
+      usedMaterials[i] = -1; 
+    
+    TIter next3(gGeoManager->GetListOfMedia());
     TGeoMedium* med;
-    while ((med=(TGeoMedium*)next2())) {
+    while ((med=(TGeoMedium*)next3())) {
       Int_t kmed;
       Int_t nmat = med->GetMaterial()->GetUniqueID();
+      
+      // if material is already used define a new Geant3 material
+      // (do not reset TGeoMaterial index)
+      if (usedMaterials[nmat] >0 )
+        nmat = ImportMaterial(med->GetMaterial());
+      usedMaterials[nmat] = 1;        	        
+      
       Int_t isvol  = (Int_t) med->GetParam(0);
       Int_t ifield = (Int_t) med->GetParam(1);
       Double_t fieldm = med->GetParam(2);
@@ -5657,7 +5694,7 @@ void TGeant3::FinishGeometry()
       Double_t stmin  = med->GetParam(7);
       G3Medium(kmed, med->GetName(), nmat, isvol, ifield, fieldm, tmaxfd,
                stemax,deemax, epsil, stmin);
-      med->SetId(kmed);	         	        
+      med->SetId(kmed);	 
     }
     if (gDebug > 0) printf("FinishGeometry, geometry retreived from file, materials/media mapped to G3\n");
   } else {
