@@ -16,6 +16,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.21  2004/01/28 18:05:24  brun
+New version from Peter Hristov adding the graphics interface
+
 Revision 1.20  2004/01/28 08:30:54  brun
 Change the call to TRandom::RndmArray in function grndm
 
@@ -6263,8 +6266,10 @@ void gtonly(Int_t &isOnly)
    isOnly = (Int_t)gcvolu->gonly[gcvolu->nlevel-1];
 #endif
 #ifdef WITHROOT
-   if (gGeoManager->IsCurrentOverlapping()) isOnly = 0;
-   else isOnly = 1;
+//   if (gGeoManager->IsCurrentOverlapping()) isOnly = 0;
+//   else isOnly = 1;
+   // With TGeo, G3 is seeing a ONLY geometry
+   isOnly = 1;
 #endif
 }
 
@@ -6381,6 +6386,7 @@ void gtnext()
 #endif
    }
    gGeoManager->SetCurrentDirection(x[3],x[4],x[5]);
+   gGeoManager->SetLastPoint(x[0],x[1],x[2]);
    gGeoManager->FindNextBoundary(step);
    gctrak->safety = gGeoManager->GetSafeDistance();
    Double_t snext  = gGeoManager->GetStep();
