@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.16 2004/08/11 09:56:26 brun Exp $ */
+/* $Id: TGeant3.h,v 1.17 2004/10/12 07:46:24 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -609,6 +609,7 @@ public:
   void  SetMaxStep(Double_t maxstep);
   void  SetMaxNStep(Int_t maxnstp);
   Int_t GetMaxNStep() const;
+  void  ForceDecayTime(Float_t time);
   Bool_t SetCut(const char* cutName, Double_t cutValue);
   Bool_t SetProcess(const char* flagName, Int_t flagValue);
   const char *GetPath();

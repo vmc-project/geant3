@@ -16,6 +16,32 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.36  2004/10/13 10:38:32  brun
+From Andrei Gheata:
+some modifications in the current TGeant3.cxx :
+
+from Mihaela:
+- modifications in STATISTICS option: added branches to statistics tree
+(statsame + statpath)
+- global gckine added. gckine->itrtyp == 7 used in gtnext to optimize
+speed - 1% gain (computation of global matrix only when called from gtckov)
+- bias of 1E-7 (used previously for making sure a boundary is crossed)
+eliminated
+
+I removed the option WITHBOTH and fixed a problem in VolId() - in the
+last version of AliRoot some detector was calling gMC->VolId(name) with
+a name containing a blank at the end and now all volumes have the blanks
+supressed. Fixing this I noticed that there are 4 detectors that in
+their StepManager() they call at each step things like:
+  if (gMC->CurrentVolId(copy) == gMC->VolId("RICH")) ...
+Incredible !!! In G3 native this search by name does not penalize so
+much since names are converted to Int_t and the volume bank is looked
+for this Int_t. In TGeo we cannot do this since we support long names so
+we have to go to gGeoManager->GetVolume("name") which scans a list of
+2000 objects at each step several times...   I fixed this by hand by
+puting static variables in these methods and Peter will commit the
+changes. The gain in speed for TGeo case is considerable with full AliRoot.
+
 Revision 1.35  2004/10/12 07:46:23  brun
 >From Ivana:
 Implemented new functions from TVirtualMC:
@@ -2230,6 +2256,16 @@ void TGeant3::SetMaxNStep(Int_t maxnstp)
   // Set the maximum number of steps till the particle is in the current medium
   //
   fGctrak->maxnst=maxnstp;
+}
+
+void TGeant3::ForceDecayTime(Float_t time)
+{
+    //
+    // Force the decay time of the current particle
+    //
+    TLorentzVector p;
+    TrackMomentum(p);
+    Gcphys()->sumlif = time / p.Beta() / p.Gamma()  * 2.99792458e10;
 }
 
 //_____________________________________________________________________________
