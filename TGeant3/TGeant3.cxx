@@ -16,6 +16,10 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.27  2004/05/28 13:45:00  brun
+From Ivana
+Implementation of StopRun (new function in TVirtualMC)
+
 Revision 1.26  2004/05/14 08:32:01  brun
 In function gtnext, call GetNextBoundary(-step) instead of (step).
 This fixes a problem when tracking Cherenkov photons.
@@ -1489,11 +1493,13 @@ const char* TGeant3::VolName(Int_t id) const
 }
 
 //_____________________________________________________________________________
-void    TGeant3::SetCut(const char* cutName, Double_t cutValue)
+Bool_t  TGeant3::SetCut(const char* cutName, Double_t cutValue)
 {
   //
   // Set transport cuts for particles
   //
+  Bool_t success = kTRUE;
+  
   if(!strcmp(cutName,"CUTGAM")) 
     fGccuts->cutgam=cutValue; 
   else if(!strcmp(cutName,"CUTELE")) 
@@ -1516,15 +1522,22 @@ void    TGeant3::SetCut(const char* cutName, Double_t cutValue)
     fGccuts->ppcutm=cutValue; 
   else if(!strcmp(cutName,"TOFMAX")) 
     fGccuts->tofmax=cutValue; 
-  else Warning("SetCut","Cut %s not implemented\n",cutName);
+  else {
+    Warning("SetCut","Cut %s not implemented\n",cutName);
+    success = kFALSE;
+  }
+  
+  return success;
 }
 
 //_____________________________________________________________________________
-void    TGeant3::SetProcess(const char* flagName, Int_t flagValue)
+Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
 {
   //
   // Set thresholds for different processes
   //
+  Bool_t success = kTRUE;
+
   if(!strcmp(flagName,"PAIR")) 
     fGcphys->ipair=flagValue;
   else if(!strcmp(flagName,"COMP")) 
@@ -1557,12 +1570,17 @@ void    TGeant3::SetProcess(const char* flagName, Int_t flagValue)
     fGcphlt->isync=flagValue;
   else if(!strcmp(flagName,"CKOV"))
     fGctlit->itckov = flagValue;
-  else  Warning("SetFlag","Flag %s not implemented\n",flagName);
+  else  {
+    Warning("SetFlag","Flag %s not implemented\n",flagName);
+    success = kFALSE;
+  }
+  
+  return  success; 
 }
  
  //_____________________________________________________________________________
-void TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
-                    Double_t mass, Double_t charge, Double_t lifetime)
+Bool_t TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                      Double_t mass, Double_t charge, Double_t lifetime)
 {
 // 
 // Set a user defined particle
@@ -1574,14 +1592,14 @@ void TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
   // in TGeant3
   if (IdFromPDG(pdg) > 0) {
     Error("SetParticle", "Particle already exists.");
-    return;
+    return kFALSE;
   }  
 
   // Check if particle type is known to Geant3
   Int_t itrtyp = TransportMethod(type);
   if (itrtyp < 0) {
     Error("SetParticle", "Unknown particle transport.");
-    return;
+    return kFALSE;
   }
 
   // Add particle to Geant3  
@@ -1594,11 +1612,13 @@ void TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
       ->AddParticle(name, name, mass, kTRUE, 0, charge*3, 
                     ParticleClass(type).Data(), pdg);
   fPDGCode[fNPDGCodes++] = pdg;
+  
+  return kTRUE;
 }
 
 //_____________________________________________________________________________
-void  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
-                         Double_t excEnergy, Double_t mass)
+Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+                           Double_t excEnergy, Double_t mass)
 {
 //
 // Set a user defined ion.
@@ -1613,8 +1633,10 @@ void  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
   while (TDatabasePDG::Instance()->GetParticle(pdg) &&
          pdg < pdgMax) 
       pdg++;
-  if (TDatabasePDG::Instance()->GetParticle(pdg))
+  if (TDatabasePDG::Instance()->GetParticle(pdg)) {
       Fatal("SetIon", "All isomer numbers are already used");
+      return kFALSE;
+  }    
 
   // Particle properties
         // excitation energy not used by G3
@@ -1625,7 +1647,7 @@ void  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
   Double_t lifetime = 1.e20;
   
   // Call DefineParticle now
-  DefineParticle(pdg, name, partType, mass, charge, lifetime);
+  return DefineParticle(pdg, name, partType, mass, charge, lifetime);
 }		       
 
 //_____________________________________________________________________________

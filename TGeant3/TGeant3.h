@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.11 2003/12/03 02:27:07 brun Exp $ */
+/* $Id: TGeant3.h,v 1.12 2004/05/28 13:45:00 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -602,13 +602,13 @@ public:
   void  SetMaxStep(Double_t maxstep);
   void  SetMaxNStep(Int_t maxnstp);
   Int_t GetMaxNStep() const;
-  void SetCut(const char* cutName, Double_t cutValue);
-  void SetProcess(const char* flagName, Int_t flagValue);
+  Bool_t SetCut(const char* cutName, Double_t cutValue);
+  Bool_t SetProcess(const char* flagName, Int_t flagValue);
   const char *GetPath();
   const char *GetNodeName();
-  void DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+  Bool_t DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
                    Double_t mass, Double_t charge, Double_t lifetime);
-  void DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
+  Bool_t DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q, 
                    Double_t excEnergy, Double_t mass);
   virtual TString   ParticleName(Int_t pdg) const;	  
   virtual Double_t  ParticleMass(Int_t pdg) const;	  
