@@ -15,6 +15,9 @@
 
 /*
 $Log: TGeant3Dummy.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 Revision 1.2  2002/07/10 08:38:54  alibrary
 Cleanup of code
 
@@ -36,7 +39,7 @@ TGeant3::TGeant3(){}
 
 //___________________________________________
 TGeant3::TGeant3(const char *title, Int_t)
-       :TVirtualMC("TGeant3",title){}
+       :TVirtualMC("TGeant3",title,kTRUE){}
 
 //___________________________________________ 
 void TGeant3::DefaultRange() {}

@@ -1,7 +1,10 @@
 *
-* $Id: ggord.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: ggord.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: ggord.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -38,6 +41,7 @@ C.    *****************************************************************
 C.
 #include "geant321/gcbank.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / JSB, JSC0, JVO, JSCV
       DIMENSION CLOW(500),CHIGH(500),CORD(1000),ITYPE(1000),
      +ICONT(500),ICON(1000),ICONS(500)
       DIMENSION P(100)

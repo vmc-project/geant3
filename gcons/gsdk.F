@@ -1,7 +1,10 @@
 *
-* $Id: gsdk.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gsdk.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gsdk.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -31,6 +34,7 @@ C.
 #include "geant321/gcphys.inc"
 #include "geant321/gcnum.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / JDK1, JDK2, JPA
       DIMENSION BRATIO(6)
       DIMENSION MODE(6)
 C.

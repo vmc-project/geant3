@@ -1,7 +1,15 @@
 *
-* $Id: gphysi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphysi.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gphysi.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -47,16 +55,23 @@ C.
 #include "geant321/gctime.inc"
 #include "geant321/gctrak.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / LBANK, JTP
       DIMENSION CUTS(10),UCUT(10),MECA(5,13)
       EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
       CHARACTER*4 DNAME,KCUT(10)
       CHARACTER*20 CHTITL
       LOGICAL NUCRIN
+      PARAMETER (LOUPHY=10)
 C.
 C.    ------------------------------------------------------------------
 C.
 C              Write RUN parameters, version numbers and CUTS
 C
+      WRITE(CHMAIL,13000)
+      CALL GMAIL(1,0)
+      OPEN(10,FILE='gphysi.dat')
+      LOUSAV=LOUT
+      LOUT=LOUPHY
       WRITE(CHMAIL,10000)
       CALL GMAIL(0,0)
       WRITE(CHMAIL,10100)
@@ -643,6 +658,11 @@ C
       WRITE(CHMAIL,10400)
       CALL GMAIL(0,2)
 C
+      CLOSE(LOUPHY)
+      LOUT=LOUSAV
+      WRITE(CHMAIL,13100)
+      CALL GMAIL(1,0)
+C
 10000 FORMAT('1',99('*'))
 10100 FORMAT(' *',97X,'*')
 10200 FORMAT(
@@ -697,4 +717,9 @@ C
      +' *  IHADR=3 not supported any more. GHEISHA will handle     *')
 12900 FORMAT(
      +' *  hadronic interactions for the above tracking medium     *')
+13000 FORMAT(
+     +' Calculating cross section tables, see gphysi.dat for more',
+     +' information')
+13100 FORMAT(
+     +' Cross section calculation concluded successfully')
   999 END

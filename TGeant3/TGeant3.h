@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.1 2002/07/09 16:30:01 alibrary Exp $ */
+/* $Id: TGeant3.h,v 1.7 2003/07/16 07:40:10 brun Exp $ */
 
 //////////////////////////////////////////////// 
 //  C++ interface to Geant3 basic routines    // 
@@ -22,7 +22,7 @@
 //----------QUEST 
 //      COMMON/QUEST/IQUEST(100) 
 typedef struct { 
-  Int_t    iquest[100]; 
+  Int_t   iquest[100]; 
 } Quest_t; 
  
 //----------GCBANK
@@ -178,7 +178,7 @@ typedef struct {
   Float_t  vect[7]; 
   Float_t  getot; 
   Float_t  gekin; 
-  Int_t    vout[7]; 
+  Float_t  vout[7]; 
   Int_t    nmec; 
   Int_t    lmec[MAXMEC]; 
   Int_t    namec[MAXMEC]; 
@@ -533,6 +533,7 @@ public:
   } 
 
   virtual void LoadAddress(); 
+  virtual void  SetRootGeometry(){} 
  
 ///////////////////////////////////////////////////////////////////////
 //                                                                   //
@@ -557,7 +558,9 @@ public:
   const char* VolName(Int_t id) const;
   Double_t Xsec(char* reac, Double_t energy, Int_t part, Int_t mate);
   void  TrackPosition(TLorentzVector &xyz) const;
+  void  TrackPosition(Double_t &x, Double_t &y, Double_t &z) const;
   void  TrackMomentum(TLorentzVector &xyz) const;  
+  void  TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const;
   Int_t NofVolumes() const;
   Int_t VolId2Mate(Int_t id) const;
   Double_t TrackTime() const;  
@@ -735,7 +738,7 @@ public:
    virtual  void  Gtrack(); 
    virtual  void  Gtreve(); 
    virtual  void  GtreveRoot(); 
-   virtual  void  Grndm(Float_t *rvec, const Int_t len) const; 
+   virtual  void  Grndm(Float_t *rvec, const Int_t len) const;
    virtual  void  Grndmq(Int_t &is1, Int_t &is2, const Int_t iseq, const Text_t *chopt); 
  
       // functions from GGEOM 
@@ -837,7 +840,6 @@ public:
    virtual  void  Vname(const char *name, char *vname);
 
    virtual  void  InitLego();
-   virtual  TMCGeomType GetMCGeomType() const { return kGeant3; }
 
   // Routines from GEANE
 
@@ -913,7 +915,16 @@ protected:
   TMCProcess G3toVMC(Int_t iproc) const;
 
 private:
-  TGeant3(const TGeant3 &) {}
+
+  enum {kTRIG = BIT(14),
+        kSWIT = BIT(15),
+        kDEBU = BIT(16),
+        kAUTO = BIT(17),
+        kABAN = BIT(18),
+        kOPTI = BIT(19),
+        kERAN = BIT(20)
+  };
+  TGeant3(const TGeant3& g3): TVirtualMC(g3) {}
   TGeant3 & operator=(const TGeant3&) {return *this;}
   
   // array conversion

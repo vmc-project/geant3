@@ -1,7 +1,10 @@
 *
-* $Id: gsvert.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gsvert.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsvert.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -51,6 +54,7 @@ C.
 #include "geant321/gcnum.inc"
 #include "geant321/gcpush.inc"
 #include "geant321/gctrak.inc"
+      COMMON / FIXIT / JV, JUV, JK
       DIMENSION V(3),UBUF(1)
 C.
 C.    ------------------------------------------------------------------

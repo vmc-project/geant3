@@ -1,7 +1,10 @@
 *
-* $Id: gphxsi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphxsi.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphxsi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -39,6 +42,7 @@
 #include "geant321/gcpmxz.inc"
 #include "geant321/gcphxs.inc"
 #include "geant321/gc10ev.inc"
+      COMMON / FIXIT / JPHXS, JPHFN
       CHARACTER*1 CHSHEL, CHGROU
       DIMENSION EUP(MAXINT),TMP(MAXPOW,MAXINT),ESHL(24)
       PARAMETER (NXSB=73,NXSBF=70)
