@@ -1,4 +1,4 @@
-# $Id: MakeMacros,v 1.4 2003/06/30 07:42:34 brun Exp $
+# $Id: MakeMacros,v 1.5 2003/12/08 12:20:21 brun Exp $
 
 ############################   MACROS   #######################################
 
@@ -16,12 +16,12 @@ $(SLIBRARY):
                 ifeq ($(PLATFORM),aix)
 		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
                 else
-                   ifneq ($(PLATFORM),Darwin)
-		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+                   ifneq (,$(findstring Darwin,$(PLATFORM)))
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+		      @cd tmp; $(SHLD) -bundle -flat_namespace -undefined dynamic_lookup $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
                    else
-		      cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
-		      cd tmp; $(SHLD) -bundle -flat_namespace -undefined suppress $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
-                    endif
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+                   endif
                 endif
 		@chmod 555 $@
 		@-rm -rf tmp
@@ -60,6 +60,9 @@ $(BINDIR)/Make-depend:
 
 dist:
 	@$(MAKEDIST)
+
+distclean:
+	rm -rf $(TOCLEANALL)
 
 distsrc:
 	@$(MAKEDISTSRC)

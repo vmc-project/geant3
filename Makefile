@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.11 2003/12/08 12:20:21 brun Exp $
+# $Id: Makefile,v 1.12 2004/01/28 08:22:37 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -6,7 +6,7 @@ PACKAGE   = geant321
 PACKAGE2  = dummies
 
 ifeq ($(PLATFORM),)
-PLATFORM = $(shell uname)
+PLATFORM = $(shell root-config --arch)
 endif
 
 BINDIR  = tgt_$(PLATFORM)
@@ -107,16 +107,15 @@ OBJS2	:= $(COBJ2)
 
 # C++ compilation flags
 
-CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) $(CLIBDEFS) -I. \
-			-I$(ROOT_INCDIR) -ITGeant3
-
+CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. \
+			-I$(ROOTSYS)/include -ITGeant3
 # C compilation flags
 
-CFLAGS      := $(COPT) $(CLIBCOPT) $(CLIBDEFS) -I. -Iminicern
+CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
 
 # FORTRAN compilation flags
 
-FFLAGS      := $(FOPT) $(CLIBFOPT) $(CLIBDEFS) -I. -Iminicern
+FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern
 ifeq ($(PLATFORM),Linux)
    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
 endif
