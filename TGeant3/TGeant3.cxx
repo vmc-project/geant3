@@ -15,6 +15,12 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.5  2003/01/23 11:34:04  brun
+In gustep, replace
+   gMC->TrackPosition(x,y,z);
+by
+   geant3->TrackPosition(x,y,z);
+
 Revision 1.4  2003/01/06 17:20:52  brun
 Add new functions TrackPosition and TrackMomentum as alternative to the original
 functions filling a TLorentzVector object.
@@ -932,10 +938,10 @@ void TGeant3::DefineParticles()
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
   Gspart(56, "Tau+", 5, 1.77705, +1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=15;           //56 = Tau+
+  fPDGCode[fNPDGCodes++] = -15;        //56 = Tau+
 
   Gspart(57, "Tau-", 5, 1.77705, -1., 2.9e-13);
-  fPDGCode[fNPDGCodes++]=-15;          //57 = Tau-  
+  fPDGCode[fNPDGCodes++] = 15;          //57 = Tau-  
 
   Gspart(58, "B0",     3, 5.2792, +0., 1.56e-12);
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
@@ -4995,10 +5001,18 @@ void gudcay()
 //
 //    ------------------------------------------------------------------
 //
-    
+//
+//  Check if external decayer available
+    TVirtualMCDecayer* decayer = gMC->GetDecayer();    
+    if (! decayer) {
+	Warning("gudcay","External decayer needed, but not defined !\n");
+	return;
+    }
     TGeant3* geant3=(TGeant3*) gMC;
+
     // set decay table
-    gMC->GetDecayer()->ForceDecay();
+    
+    decayer->ForceDecay();
 
 // Initialize 4-momentum vector    
     Int_t ipart = geant3->Gckine()->ipart;
@@ -5015,10 +5029,10 @@ void gudcay()
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
 // Decay
-    gMC->GetDecayer()->Decay(iplund, &p);
+    decayer->Decay(iplund, &p);
     
 // Fetch Particles
-    Int_t np = geant3->GetDecayer()->ImportParticles(particles);
+    Int_t np = decayer->ImportParticles(particles);
     if (np <=1) return;
 
     TParticle *  iparticle = (TParticle *) particles->At(0);
@@ -5038,7 +5052,7 @@ void gudcay()
 	Int_t ks = iparticle->GetStatusCode();
 //
 // Deselect daughters of deselected particles
-// and jump skip the current particle
+// and skip the current particle
 	if (pFlag[i] == 1) {
 	    if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    continue;
@@ -5047,7 +5061,7 @@ void gudcay()
 // Decay products are deselected
 //	
 	if (ks != 1) { 
-	    Double_t lifeTime = gMC->GetDecayer()->GetLifetime(kf);
+	    Double_t lifeTime = decayer->GetLifetime(kf);
 	    if (lifeTime > (Double_t) 1.e-15) {
 		if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    } else{
