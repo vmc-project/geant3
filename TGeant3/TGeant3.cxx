@@ -15,6 +15,12 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.4  2003/01/06 17:20:52  brun
+Add new functions TrackPosition and TrackMomentum as alternative to the original
+functions filling a TLorentzVector object.
+Use these new functions in gustep and gudcay.
+This makes a 25 per cent speed improvement in case of Alice.
+
 Revision 1.3  2002/12/10 07:58:36  brun
 Update by Federico for the calls to Grndm
 
@@ -5358,7 +5364,7 @@ void gustep()
   TVirtualMCStack* stack = gMC->GetStack();
   //     Stop particle if outside user defined tracking region 
   Double_t x, y, z, rmax;
-  gMC->TrackPosition(x,y,z);
+  geant3->TrackPosition(x,y,z);
   rmax = app->TrackingRmax();
   if (x*x+y*y > rmax*rmax ||
       TMath::Abs(z) > app->TrackingZmax()) {
