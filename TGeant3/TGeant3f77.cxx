@@ -283,17 +283,17 @@ TGeant3f77::TGeant3f77(const char *title, Int_t nwgeant)
 //____________________________________________________________________________ 
 extern "C" 
 {
-  void  g3pvolu(); 
-  void  g3protm(); 
-  void  g3ptmed(); 
-  void  g3pmate(); 
-  void  g3ppart(); 
-  void  g3psets(); 
-  void  g3pvert(); 
-  void  g3pkine(); 
-  void  g3pjxyz(); 
-  void  g3phits(); 
-  void  g3part(); 
+  void  g3pvolu(Int_t &); 
+  void  g3protm(Int_t &); 
+  void  g3ptmed(Int_t &); 
+  void  g3pmate(Int_t &); 
+  void  g3ppart(Int_t &); 
+  void  g3psets(Int_t &); 
+  void  g3pvert(Int_t &); 
+  void  g3pkine(Int_t &); 
+  void  g3pjxyz(Int_t &); 
+  void  g3phits(Int_t &); 
+  void  g3part(Int_t &); 
   void  g3mate(); 
   void  g3bhsta(); 
   void  g3scank(); 
@@ -1517,54 +1517,54 @@ void gdinit()
 }
 
 //____________________________________________________________________________
-void gpvolu()
+void gpvolu(int &i)
 {
-   g3pvolu();
+   g3pvolu(i);
 }
 //____________________________________________________________________________
-void gprotm()
+void gprotm(int &i)
 {
-   g3protm();
+   g3protm(i);
 }
 //____________________________________________________________________________
-void gpmate()
+void gpmate(int &i)
 {
-   g3pmate();
+   g3pmate(i);
 }
 //____________________________________________________________________________
-void gptmed()
+void gptmed(int &i)
 {
-   g3ptmed();
+   g3ptmed(i);
 }
 //____________________________________________________________________________
-void gppart()
+void gppart(int &i)
 {
-   g3ppart();
+   g3ppart(i);
 }
 //____________________________________________________________________________
-void gpsets()
+void gpsets(int &i)
 {
-   g3psets();
+   g3psets(i);
 }
 //____________________________________________________________________________
-void gpvert()
+void gpvert(int &i)
 {
-   g3pvert();
+   g3pvert(i);
 }
 //____________________________________________________________________________
-void gpkine()
+void gpkine(int &i)
 {
-   g3pkine();
+   g3pkine(i);
 }
 //____________________________________________________________________________
-void gpjxyz()
+void gpjxyz(int &i)
 {
-   g3pjxyz();
+   g3pjxyz(i);
 }
 //____________________________________________________________________________
-void gphits()
+void gphits(int &i)
 {
-   g3phits();
+   g3phits(i);
 }
 //____________________________________________________________________________
 void gpart()
