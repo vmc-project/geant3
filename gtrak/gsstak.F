@@ -1,7 +1,10 @@
 *
-* $Id: gsstak.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsstak.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gsstak.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSSTAK (IFLAG)
+      SUBROUTINE G3SSTAK (IFLAG)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -71,11 +74,11 @@ C.    ------------------------------------------------------------------
 * *** Check if an entry in JKINE structure is required
 *
       IF (IFLAG.EQ.1) THEN
-         CALL GSVERT (VERT, ITRA, 0, UBUF, 0, NVTX)
-         CALL GSKINE (PVERT, IPART, NVTX, UBUF, 0, ITR)
+         CALL G3SVERT (VERT, ITRA, 0, UBUF, 0, NVTX)
+         CALL G3SKINE (PVERT, IPART, NVTX, UBUF, 0, ITR)
       ELSE IF (IFLAG.LT.0) THEN
          NVTX = -IFLAG
-         CALL GSKINE (PVERT, IPART, NVTX, UBUF, 0, ITR)
+         CALL G3SKINE (PVERT, IPART, NVTX, UBUF, 0, ITR)
       ELSE
          IF (IFLAG.EQ.0) THEN
 *          Store -ITRA in stack for a track without entry in JKINE

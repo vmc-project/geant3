@@ -1,7 +1,10 @@
 *
-* $Id: glands.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: glands.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glands.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GLANDS(X)
+      FUNCTION G3LANDS(X)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Copy of the CERN library routine DSTLAN (G110)                *
 C.    *                                                                *
-C.    *    ==>Called by : GVACOE                                       *
+C.    *    ==>Called by : G3VACOE                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -74,34 +77,34 @@ C
       V=X
       IF(V .LT. -5.5) THEN
        U=EXP(V+1.0)
-       GLANDS=0.3989422803*EXP(-1.0/U)*SQRT(U)*
+       G3LANDS=0.3989422803*EXP(-1.0/U)*SQRT(U)*
      1        (1.0+(A1(1)+(A1(2)+A1(3)*U)*U)*U)
       ELSE IF(V .LT. -1.0) THEN
        U=EXP(-V-1.0)
-       GLANDS=(EXP(-U)/SQRT(U))*
+       G3LANDS=(EXP(-U)/SQRT(U))*
      1        (P1(0)+(P1(1)+(P1(2)+(P1(3)+P1(4)*V)*V)*V)*V)/
      2        (Q1(0)+(Q1(1)+(Q1(2)+(Q1(3)+Q1(4)*V)*V)*V)*V)
       ELSE IF(V .LT. 1.0) THEN
-       GLANDS=(P2(0)+(P2(1)+(P2(2)+P2(3)*V)*V)*V)/
+       G3LANDS=(P2(0)+(P2(1)+(P2(2)+P2(3)*V)*V)*V)/
      1        (Q2(0)+(Q2(1)+(Q2(2)+Q2(3)*V)*V)*V)
       ELSE IF(V .LT. 4.0) THEN
-       GLANDS=(P3(0)+(P3(1)+(P3(2)+P3(3)*V)*V)*V)/
+       G3LANDS=(P3(0)+(P3(1)+(P3(2)+P3(3)*V)*V)*V)/
      1        (Q3(0)+(Q3(1)+(Q3(2)+Q3(3)*V)*V)*V)
       ELSE IF(V .LT. 12.0) THEN
        U=1.0/V
-       GLANDS=(P4(0)+(P4(1)+(P4(2)+P4(3)*U)*U)*U)/
+       G3LANDS=(P4(0)+(P4(1)+(P4(2)+P4(3)*U)*U)*U)/
      1        (Q4(0)+(Q4(1)+(Q4(2)+Q4(3)*U)*U)*U)
       ELSE IF(V .LT. 50.0) THEN
        U=1.0/V
-       GLANDS=(P5(0)+(P5(1)+(P5(2)+P5(3)*U)*U)*U)/
+       G3LANDS=(P5(0)+(P5(1)+(P5(2)+P5(3)*U)*U)*U)/
      1        (Q5(0)+(Q5(1)+(Q5(2)+Q5(3)*U)*U)*U)
       ELSE IF(V .LT. 300.0) THEN
        U=1.0/V
-       GLANDS=(P6(0)+(P6(1)+(P6(2)+P6(3)*U)*U)*U)/
+       G3LANDS=(P6(0)+(P6(1)+(P6(2)+P6(3)*U)*U)*U)/
      1        (Q6(0)+(Q6(1)+(Q6(2)+Q6(3)*U)*U)*U)
       ELSE
        U=1.0/(V-V*LOG(V)/(V+1.0))
-       GLANDS=1.0-(A2(1)+(A2(2)+A2(3)*U)*U)*U
+       G3LANDS=1.0-(A2(1)+(A2(2)+A2(3)*U)*U)*U
       END IF
       RETURN
       END

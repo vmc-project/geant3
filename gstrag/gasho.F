@@ -1,7 +1,10 @@
 *
-* $Id: gasho.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gasho.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gasho.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +22,7 @@
 #if defined(CERNLIB_ASHO)
 *CMZ :  3.21/02 29/03/94  15.41.24  by  S.Giani
 *-- Author :
-      SUBROUTINE GASHO(P,XXMASS,GSTEP,DE)
+      SUBROUTINE G3ASHO(P,XXMASS,GSTEP,DE)
 #include "geant321/gcbank.inc"
 #include "geant321/gcjloc.inc"
 #include "geant321/gccuts.inc"
@@ -117,11 +120,11 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C      Here is the calculation of the parameters of the oscillators
 C-----------------------------------------------------------------------
-      CALL GOSCMG
+      CALL G3OSCMG
 C-----------------------------------------------------------------------
 C      Here is the calculation of the diffrential distribution
 C-----------------------------------------------------------------------
-      CALL GDIFMG(DE)
+      CALL G3DIFMG(DE)
       DE = 1E-6*DE
 C-----------------------------------------------------------------------
       END

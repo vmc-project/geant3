@@ -1,7 +1,10 @@
 *
-* $Id: ghelix.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: ghelix.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ghelix.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GHELIX (CHARGE, STEP, VECT, VOUT)
+      SUBROUTINE G3HELIX (CHARGE, STEP, VECT, VOUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -59,7 +62,7 @@ C
       H(4) = H(3)**2 + H2XY
       IF (H(4).LE.1.E-12)       GO TO 10
       IF (H2XY.LE.1.E-12*H(4))  THEN
-         CALL GHELX3 (CHARGE*H(3), STEP, VECT, VOUT)
+         CALL G3HELX3 (CHARGE*H(3), STEP, VECT, VOUT)
          GO TO 999
       ENDIF
       H(4) = SQRT(H(4))

@@ -1,7 +1,10 @@
 *
-* $Id: gmol4.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmol4.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmol4.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMOL4(Y,X,VAL,ARG,EPS,IER)
+      SUBROUTINE G3MOL4(Y,X,VAL,ARG,EPS,IER)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -32,7 +35,7 @@ C.    *                                IN 4TH ORDER INTERPOLATION .    *
 C.    *                            = 2 TWO IDENTICAL ELEMENTS IN THE   *
 C.    *                                ARGUMENT ARRAY .                *
 C.    *                                                                *
-C.    *    ==>Called by : GMOLIE                                       *
+C.    *    ==>Called by : G3MOLIE                                      *
 C.    *         Author M.S. Dixit NRCC Ottawa    *********             *
 C.    *                                                                *
 C.    ******************************************************************

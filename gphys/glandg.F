@@ -1,7 +1,10 @@
 *
-* $Id: glandg.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: glandg.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glandg.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GLANDG(YRAN)
+      SUBROUTINE G3LANDG(YRAN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -24,7 +27,7 @@ C.    *  Generation of LANDAU-distributed random numbers by 4-point    *
 C.    *  interpolation in the previously-tabulated inverse cumulative  *
 C.    *  distribution                                                  *
 C.    *                                                                *
-C.    *    ==>Called by : GLANDO                                       *
+C.    *    ==>Called by : G3LANDO                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.

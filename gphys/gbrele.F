@@ -1,7 +1,10 @@
 *
-* $Id: gbrele.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrele.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrele.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,14 +21,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      FUNCTION GBRELE(ZZ,T,BCUT)
+      FUNCTION G3BRELE(ZZ,T,BCUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Calculates energy loss by soft Bremsstrahlung                 *
 C.    *         (in GeV barn/atom)                                     *
 C.    *                                                                *
-C.    *    ==>Called by : GBRELA                                       *
+C.    *    ==>Called by : G3BRELA                                      *
 C.    *       Author  L.Urban  *********                               *
 C.    *    ( correction for T>100. GeV)                                *
 C.    *                                                                *
@@ -96,7 +99,7 @@ C.
       DATA THIGH,CHIGH/100.,50./
 C.    ------------------------------------------------------------------
 C.
-      GBRELE=0.
+      G3BRELE=0.
 
       IF(BCUT.LE.0.) GOTO 99
 ************************************
@@ -182,7 +185,7 @@ C
       FAC=ZZ*(ZZ+AKSI)*E*E*(EC*CORR/TT)**BETA/(E+EMASS)
       IF(FAC.LE.0.) GOTO 99
 C
-      GBRELE=FAC*S
+      G3BRELE=FAC*S
 
       IF(T.GT.THIGH) THEN
 
@@ -198,7 +201,7 @@ C
         S=S/(EC*(1.-0.5*RAT+2.*RAT*RAT/9.))
        ENDIF
 
-        GBRELE=GBRELE*S
+        G3BRELE=G3BRELE*S
       ENDIF
 ******************************************
       BCUT=CUTSAV

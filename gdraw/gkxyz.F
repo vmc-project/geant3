@@ -1,7 +1,10 @@
 *
-* $Id: gkxyz.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gkxyz.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gkxyz.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -81,7 +84,7 @@ C
  
 C
    20 CONTINUE
-      CALL GWORK(MAXWS)
+      CALL G3WORK(MAXWS)
       ANGEPS=ABS(EPSILO)
       EPSIL=1.
       EPS=MAX(PLTRNX,PLTRNY)*EPSIL/20.

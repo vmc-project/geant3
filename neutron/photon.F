@@ -1,7 +1,10 @@
 *
-* $Id: photon.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: photon.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: photon.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -331,7 +334,7 @@ C       BEING CONSERVED.  THIS RARELY OCCURS BUT IS NECESSARY.
 C poisson distributed photon multiplicity CZ 13.8.92
       IGTRY=0
       MGPAR=INT(FLOAT(MAXPAR)*0.7)
-  340 CALL GPOISS(YP,NUMBG,1)
+  340 CALL G3POISS(YP,NUMBG,1)
       IGTRY=IGTRY+1
       IF(NUMBG.GT.INT(4.*YP).OR.
      +   NUMBG.GT.MGPAR.AND.IGTRY.LT.5) GOTO 340

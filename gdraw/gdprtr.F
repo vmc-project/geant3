@@ -1,7 +1,10 @@
 *
-* $Id: gdprtr.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdprtr.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdprtr.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -204,7 +207,7 @@ C
 C
 C                GET PARAMETERS
 C
-      CALL GFPARA(NAME,1,0,NPAR,NATT,PAR,ATT)
+      CALL G3FPARA(NAME,1,0,NPAR,NATT,PAR,ATT)
       IF(NPAR.LE.0) GO TO 999
 C
       ISHAPE=Q(JVO+2)
@@ -239,7 +242,7 @@ C             Add local value KSEEN 1 to starting node of tree
 C
       KSEEN=KSEEN+110
       ISEEN=KSEEN
-      CALL GSATT(NAME,'SEEN',ISEEN)
+      CALL G3SATT(NAME,'SEEN',ISEEN)
 C
       CALL GDNSON(NAME,NSON,IDIV)
       DO 60  N=1,NSON
@@ -255,7 +258,7 @@ C             Add local value SEEN -2 to each one-level-down node
 C
          KSEEN=KSEEN+80
          ISEEN=KSEEN
-         CALL GSATT(ISON,'SEEN',ISEEN)
+         CALL G3SATT(ISON,'SEEN',ISEEN)
    60 CONTINUE
       CALL GDRAW(NAME,45.,135.,0.,XPOS,YPOS,XSCALE,YSCALE)
 C
@@ -267,7 +270,7 @@ C
          IF (KSEEN.LT.50) GO TO 70
          ISEENL=KSEEN/10.+0.5
          ISEENG=KSEEN-ISEENL*10.
-         CALL GSATT(NAMSEE,'SEEN',ISEENG)
+         CALL G3SATT(NAMSEE,'SEEN',ISEENG)
    70 CONTINUE
 C
   999 END

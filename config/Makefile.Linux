@@ -1,4 +1,4 @@
-# $ Id: $
+# $Id: Makefile.Linux,v 1.2 2002/10/08 13:23:11 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -24,6 +24,12 @@ AWK	  = awk
 CXXOPTS       = $(OPT) -Wall -fPIC -pipe
 COPT	      = $(OPT)
 FOPT	      = $(OPT) -fno-second-underscore
+
+GCC_MAJOR    := $(shell $(CXX) -v 2>&1 | \
+                  grep version | cut -d' ' -f3  | cut -d'.' -f1)
+ifneq ($(GCC_MAJOR),3)
+   FOPT      := $(filter-out -O%,$(FOPT))
+endif
 
 # CERNLIB defines
 

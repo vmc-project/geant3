@@ -1,7 +1,10 @@
 *
-* $Id: gprelm.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprelm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprelm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GPRELM(Z,T,CUT)
+      FUNCTION G3PRELM(Z,T,CUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       To calculate DE/DX in GeV*barn/atom for direct           *
 C.    *       pair production by muons.                                *
 C.    *                                                                *
-C.    *    ==>Called by : GPRSGA                                       *
+C.    *    ==>Called by : G3PRSGA                                      *
 C.    *       Author    L.Urban  *********                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -68,7 +71,7 @@ C                               CONMX=0.75*SQRT(2.7182...)*EMMU
 C.
 C.    ------------------------------------------------------------------
 C.
-      GPRELM=0.
+      G3PRELM=0.
       IF(CUT.LT.ECMIN) GOTO 999
 C
       Z3=Z**0.333333
@@ -139,9 +142,9 @@ C
 C
       FAC=E*((CCUT-ECMIN)/E)**BETA
       FAC=Z*(Z+AKSI*(1.+DEL*LOG(Z)))*FAC
-      GPRELM=FAC*S
+      G3PRELM=FAC*S
       IF(CUT.LE.ECMA5) GOTO 999
-      GPREL5=GPRELM
+      GPREL5=G3PRELM
 C
  160  Y=Z3
       S=D(1)
@@ -162,11 +165,11 @@ C
 C
       FAC=Z*(Z+1.)*ECMAX
       IF(FAC.LE.0.) GOTO 999
-      GPRELM=FAC*S
+      G3PRELM=FAC*S
 C
       IF((CUT.LE.ECMA5).OR.(CUT.GE.ECMAX)) GOTO 999
-      DEL1=(GPRELM-GPREL5)/(ECMAX-ECMA5)
-      GPRELM=GPREL5+DEL1*(CUT-ECMA5)
+      DEL1=(G3PRELM-GPREL5)/(ECMAX-ECMA5)
+      G3PRELM=GPREL5+DEL1*(CUT-ECMA5)
 C
 999   RETURN
       END

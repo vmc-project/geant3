@@ -1,7 +1,10 @@
 *
-* $Id: gdplst.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdplst.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdplst.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -139,13 +142,13 @@
             IF(GCHAR.EQ.' ')GO TO 50
             CALL UHTOC(IQ(JNAM1+J),4,NAME1,4)
             IF (GCHAR.EQ.'2') THEN
-               CALL GSATT(NAME1,'SEEN',-2)
+               CALL G3SATT(NAME1,'SEEN',-2)
             ELSE IF (GCHAR.EQ.'-') THEN
-               CALL GSATT(NAME1,'SEEN',-1)
+               CALL G3SATT(NAME1,'SEEN',-1)
             ELSE IF (GCHAR.EQ.'0') THEN
-               CALL GSATT(NAME1,'SEEN',0)
+               CALL G3SATT(NAME1,'SEEN',0)
             ELSE IF (GCHAR.EQ.'1') THEN
-               CALL GSATT(NAME1,'SEEN',1)
+               CALL G3SATT(NAME1,'SEEN',1)
             ENDIF
             GO TO 20
          ENDIF

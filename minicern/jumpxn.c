@@ -1,7 +1,10 @@
 /*
- * $Id: jumpxn.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: jumpxn.c,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
  *
  * $Log: jumpxn.c,v $
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -46,6 +49,13 @@ C- 3) CALL JUMPX2 (par1,par2)      to transfer
 #if !defined(CERNLIB_QCCINDAD)
 #define IADR iadr
 #endif
+
+#if defined(CERNLIB_LXIA64)
+#define INT long long int
+#else
+#define INT int
+#endif
+
 #if defined(CERNLIB_QX_SC)
 #define jumpad type_of_call jumpad_
 #define jumpst type_of_call jumpst_
@@ -78,10 +88,10 @@ C- 3) CALL JUMPX2 (par1,par2)      to transfer
 static void  (type_of_call *tarsub)();
 
 /* ----   jumpad   ---------------------------------------------  */
-int jumpad(ifun)
+INT jumpad(ifun)
     char *ifun;
 {
-    return (int) ifun;
+    return (INT) ifun;
 }
 /* ----   jumpst   ---------------------------------------------  */
 void jumpst(iadr)

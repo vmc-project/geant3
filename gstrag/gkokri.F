@@ -1,7 +1,10 @@
 *
-* $Id: gkokri.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gkokri.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gkokri.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GKOKRI(E,EMINEV,EMAXEV)
+      FUNCTION G3KOKRI(E,EMINEV,EMAXEV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -31,7 +34,7 @@ C.
 #include "geant321/gc10ev.inc"
 #if !defined(CERNLIB_SINGLE)
       DOUBLE PRECISION EINV,ECUR,ONE,RES,ZERO,EBEG,EEND
-      DOUBLE PRECISION ALPH,BETA,GAMM,E1,E2,GPSCIN,POLE
+      DOUBLE PRECISION ALPH,BETA,GAMM,E1,E2,G3PSCIN,POLE
       DOUBLE PRECISION EMAX,EMIN,REST
 #endif
       PARAMETER (ONE=1,ZERO=0)
@@ -89,7 +92,7 @@ C Use Sandia data
                ENDIF
 *
 * *** This is a normal integration
-               RES = RES + GPSCIN(E1,E2,ECUR,Q(J))
+               RES = RES + G3PSCIN(E1,E2,ECUR,Q(J))
             ENDIF
             EBEG = EEND
             IF(EBEG.GE.EMAX) GO TO 20
@@ -97,7 +100,7 @@ C Use Sandia data
    20    REST = REST+WEIGHT*RES
    30 CONTINUE
 C RES value is in cm**2/(g keV)
-      GKOKRI = REST*1E-6*A/AVO
+      G3KOKRI = REST*1E-6*A/AVO
 C Now in Megabarns/eV
 C
       END

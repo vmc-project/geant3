@@ -1,7 +1,10 @@
 *
-* $Id: glando.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: glando.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glando.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GLANDO(IMODE,STEP,Z,A,RHO,P,E,XMASS,DE,IFLAG)
+      SUBROUTINE G3LANDO(IMODE,STEP,Z,A,RHO,P,E,XMASS,DE,IFLAG)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *                                                                *
-C.    *  GLANDO                                                        *
-C.    *  ------                                                        *
+C.    *  G3LANDO                                                       *
+C.    *  -------                                                       *
 C.    *                                                                *
 C.    *  Energy straggling using Gaussian, Landau & Vavilov theories.  *
 C.    *                                                                *
@@ -41,7 +44,7 @@ C.    *  DE     =  DE/DX - <DE/DX>     (GeV)                           *
 C.    *                                                                *
 C.    *  IFLAG  =  3   Landau(RANLAN) sampling used                    *
 C.    *         =  4   Landau(GENLAN) sampling used                    *
-C.    *         =  5   Vavilov(GVAVIV) sampling used                   *
+C.    *         =  5   Vavilov(G3VAVIV) sampling used                  *
 C.    *         =  6   Gaussian sampling used                          *
 C.    *                                                                *
 C.    *  Warning                                                       *
@@ -110,7 +113,7 @@ C
          XLAMX = FLAND(XMEAN)
    20    CALL GRNDM(RNDM,1)
          IF( RNDM(1) .GT. 0.980 ) GO TO 20
-         XLAMB = GLANDR(RNDM(1))
+         XLAMB = G3LANDR(RNDM(1))
          IF(XLAMB.GT.XLAMX) GO TO 20
          IFLAG  = 3
 C
@@ -123,7 +126,7 @@ C
       ELSEIF (IMODEI.EQ.4) THEN
          XMEAN = -BETA**2-LOG(XI/EMAX)+EULER-1.
          XLAMX = FLAND(XMEAN)
-  25     CALL GLANDG(XLAMB)
+  25     CALL G3LANDG(XLAMB)
          IF(XLAMB.GT.XLAMX) GO TO 25
          IFLAG = 4
 C
@@ -139,7 +142,7 @@ C
          RKA = CAPPA
          BE2 = BETA*BETA
          CALL GRNDM(RNDM,1)
-         XLAMB = GVAVIV(RKA,BE2,RNDM(1))
+         XLAMB = G3VAVIV(RKA,BE2,RNDM(1))
          IFLAG = 5
 C
 C     +-----------------------------------+

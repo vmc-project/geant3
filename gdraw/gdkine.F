@@ -1,7 +1,10 @@
 *
-* $Id: gdkine.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdkine.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdkine.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -68,7 +71,7 @@
        PLAB(2) = -PKINE(1)*YCOSYS
        PLAB(3) = -PKINE(1)*ZCOSZS
 ********************************************************************************
-      CALL GSVERT(VERTEX,0,0,0,0,NVERT)
-      CALL GSKINE(PLAB,IK,NVERT,0,0,NT)
+      CALL G3SVERT(VERTEX,0,0,0,0,NVERT)
+      CALL G3SKINE(PLAB,IK,NVERT,0,0,NT)
 *
       END

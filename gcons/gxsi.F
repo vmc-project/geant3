@@ -1,7 +1,10 @@
 *
-* $Id: gxsi.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gxsi.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gxsi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.20  by  S.Giani
 *-- Author :
-      FUNCTION GXSI (Z)
+      FUNCTION G3XSI (Z)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -30,5 +33,5 @@ C.    ******************************************************************
 C.
       DATA AL183  , AL1440 / 5.20948 , 7.27239 /
       ALZ  = LOG(Z)/3.
-      GXSI  = (AL1440 - 2*ALZ) / (AL183 - ALZ - GFCOUL(Z))
+      G3XSI  = (AL1440 - 2*ALZ) / (AL183 - ALZ - G3FCOUL(Z))
       END

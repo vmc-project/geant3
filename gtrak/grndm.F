@@ -1,7 +1,10 @@
 *
-* $Id: grndm.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grndm.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: grndm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -53,6 +56,7 @@ CDIR$ STACK
       PARAMETER  (MAXSEQ=215)
       COMMON / GCRNDM / JSEQ(2), ISEED(2,MAXSEQ)
 C
+      print *,"GRNDM f77 called'
       ISEQ   = JSEQ(1)
       ISEED1 = ISEED(1,ISEQ)
       ISEED2 = ISEED(2,ISEQ)
