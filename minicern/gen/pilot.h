@@ -22,7 +22,11 @@
 #endif
 #endif 
 
-#if defined(CERNLIB_SUN)||defined(CERNLIB_DECS)||defined(CERNLIB_QMALPH)||defined(CERNLIB_APOLLO)||defined(CERNLIB_SGI)||defined(CERNLIB_NEXT)||defined(CERNLIB_LINUX)||defined(CERNLIB_MSDOS)||defined(CERNLIB_CONVEX32)||defined(CERNLIB_QFAPOGEE)||defined(CERNLIB_QFEPC)||defined(CERNLIB_QFMSOFT)||defined(CERNLIB_QFDEC)||defined(CERNLIB_WINNT)
+#if defined(CERNLIB_SUN)||defined(CERNLIB_DECS)||defined(CERNLIB_QMALPH)||\
+defined(CERNLIB_APOLLO)||defined(CERNLIB_SGI)||defined(CERNLIB_NEXT)||\
+defined(CERNLIB_LINUX)||defined(CERNLIB_MSDOS)||defined(CERNLIB_CONVEX32)||\
+defined(CERNLIB_QFAPOGEE)||defined(CERNLIB_QFEPC)||defined(CERNLIB_QFMSOFT)||\
+defined(CERNLIB_QFDEC)||defined(CERNLIB_WINNT)
 #ifndef CERNLIB_NOQUAD
 #define CERNLIB_NOQUAD
 #endif
