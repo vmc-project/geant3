@@ -1,24 +1,10 @@
 *
-* $Id: gdrawp.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrawp.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.2  1996/09/30 13:37:32  ravndal
-* Backward compatibility for view banks
-*
-* Revision 1.1.1.1  1995/10/24 10:20:24  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAWP(U,V,NP)
+      SUBROUTINE G3DRAWP(U,V,NP)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -37,7 +23,7 @@ C.    *       Bit 11-13 = Line style                                   *
 C.    *       Bit 14-16 = Fill area                                    *
 C.    *       Bit 17-24 = Line color                                   *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAWV                                       *
+C.    *    ==>Called by : G3DRAWV                                      *
 C.    *       Author : P.Zanarini ; S.Giani  1992 ********             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -211,6 +197,6 @@ C
    50 WRITE (CHMAIL,10000)
       CALL GMAIL(0,0)
 C
-10000 FORMAT (' *** GDRAWP ***: Memory overflow in pushing a bank')
+10000 FORMAT (' *** G3DRAWP ***: Memory overflow in pushing a bank')
   999 END
 

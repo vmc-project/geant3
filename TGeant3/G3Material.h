@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Material.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3Material.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 #include "TMaterial.h"
 
@@ -23,7 +23,7 @@ public:
     
 private:
     Int_t   fId;          // Id number of the material
-    G3Material(const G3Material &) {}
+    G3Material(const G3Material & mat): TMaterial(mat) {}
     G3Material &operator=(const G3Material &) {return *this;}
 
     ClassDef(G3Material,1) // G3 Material Class for the G3 GUI 

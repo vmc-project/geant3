@@ -5,6 +5,15 @@
 *FCA :          19/03/99  10:01:09 by  Federico Carminati
 *               Do not use CERNLIB_USRJMP for alpha
 #endif
+
+#if defined(CERNLIB_LXIA64)
+*
+* Take normal LINUX as basis for Itanium
+#ifndef CERNLIB_LINUX
+#define CERNLIB_LINUX
+#endif
+#endif
+
 #if defined(CERNLIB_MSDOS)||defined(CERNLIB_LINUX)
 #ifndef CERNLIB_F2C
 #define CERNLIB_F2C

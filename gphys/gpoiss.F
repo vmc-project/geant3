@@ -1,7 +1,10 @@
 *
-* $Id: gpoiss.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpoiss.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpoiss.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GPOISS(AMVEC,NPVEC,LEN)
+      SUBROUTINE G3POISS(AMVEC,NPVEC,LEN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -26,7 +29,7 @@ C.    *  If the mean value A greater than PLIM, N is calculated        *
 C.    *  according to the Gaussian approximation of the Poisson        *
 C.    *  distribution.                                                 *
 C.    *                                                                *
-C.    *     ==> Called by : GLANDZ,GMCOUL                              *
+C.    *     ==> Called by : G3LANDZ,G3MCOUL                            *
 C.    *                                                                *
 C.    *  Author      : L.Urban                                         *
 C.    *  Date        : 28.04.1988           Last update :  1.02.1990   *

@@ -1,7 +1,10 @@
 *
-* $Id: gtreve.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtreve.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtreve.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -15,16 +18,16 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 07/10/94  18.07.13  by  S.Giani
 *-- Author :
-      SUBROUTINE GTREVE
+      SUBROUTINE G3TREVE
 C.
 C.    ******************************************************************
 C.    *                                                                *
-C.    *    SUBR. GTREVE                                                *
+C.    *    SUBR. G3TREVE                                               *
 C.    *                                                                *
 C.    *   Controls tracking of all particles belonging to the current  *
 C.    *    event.                                                      *
 C.    *                                                                *
-C.    *   Called by : GUTREV, called by GTRIG                          *
+C.    *   Called by : GUTREV, called by G3TRIG                         *
 C.    *   Authors   : R.Brun, F.Bruyant                                *
 C.    *                                                                *
 C.    ******************************************************************
@@ -40,7 +43,6 @@ C.
 #if defined(CERNLIB_USRJMP)
 #include "geant321/gcjump.inc"
 #endif
-#include "geant321/gcvdma.inc"
       REAL UBUF(2)
       EQUIVALENCE (UBUF(1),WS(1))
       LOGICAL   BTEST
@@ -60,15 +62,6 @@ C.    ------------------------------------------------------------------
          IF (NT.LE.0) GO TO 290
          TOFG   = Q(JV+4)
          SAFETY = 0.
-         IF (NJTMAX.GT.0) THEN
-            CALL GMEDIA (Q(JV+1), NUMED)
-            IF (NUMED.EQ.0) THEN
-               WRITE (CHMAIL, 1001) (Q(JV+I), I=1,3)
-               CALL GMAIL (0, 0)
-               GO TO 290
-            ENDIF
-            CALL GLSKLT
-         ENDIF
 *
 *  **   Loop over tracks attached to current vertex
 *
@@ -76,7 +69,7 @@ C.    ------------------------------------------------------------------
             JV   = LQ(JVERTX-IV)
             ITRA = Q(JV+7+IT)
             IF (BTEST(IQ(LQ(JKINE-ITRA)),0)) GO TO 190
-            CALL GFKINE (ITRA, VERT, PVERT, IPART, IVERT, UBUF, NWBUF)
+            CALL G3FKINE (ITRA, VERT, PVERT, IPART, IVERT, UBUF, NWBUF)
             IF (IVERT.NE.IV) THEN
                WRITE (CHMAIL, 1002) IV, IVERT
                CALL GMAIL (0, 0)
@@ -85,7 +78,7 @@ C.    ------------------------------------------------------------------
 *
 *   *      Store current track parameters in stack JSTAK
 *
-            CALL GSSTAK (2)
+            CALL G3SSTAK (2)
   190    CONTINUE
 *
 *  **   Start tracking phase
@@ -99,30 +92,25 @@ C.    ------------------------------------------------------------------
 *
 *   *         Initialize tracking parameters
 *
-               CALL GLTRAC
+               CALL G3LTRAC
                IF (NUMED.EQ.0) GO TO 210
             ELSE
 *
 *   *         otherwise, select next track segment from stack JTRACK
 *
-               CALL GFTRAC
+               print *,' =======CALLING GFTRAC'
+c               CALL GFTRAC
 *
             ENDIF
 *
 *   *       Resume tracking
 *
-            IF(RAYTRA.EQ.1.)THEN
-#if defined(CERNLIB_HIGZ)
-              CALL GDRACK
-#endif
-            ELSE
 #if !defined(CERNLIB_USRJMP)
               CALL GUTRAK
 #endif
 #if defined(CERNLIB_USRJMP)
               CALL JUMPT0(JUTRAK)
 #endif
-            ENDIF
             IF (IEOTRI.NE.0) GO TO 999
             GO TO 210
          ENDIF

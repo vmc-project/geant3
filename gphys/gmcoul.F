@@ -1,7 +1,10 @@
 *
-* $Id: gmcoul.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmcoul.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmcoul.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +19,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMCOUL(OMEGA,DIN)
+      SUBROUTINE G3MCOUL(OMEGA,DIN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -33,7 +36,7 @@ C.    *       No path length correction is included                    *
 C.    *                                                                *
 C.    *       Output angles overwrite VECT                             *
 C.    *                                                                *
-C.    *    ==>Called by : GMULTS                                       *
+C.    *    ==>Called by : G3MULTS                                      *
 C.    *         Author G. Lynch (LBL)  (adapted by M. Maire  1.02.90)  *
 C.    *                                                                *
 C.    ******************************************************************
@@ -50,7 +53,7 @@ C.
 * *** Compute number of scatters (Poisson distr. with mean OMEGA0)
 *
       OMEGA0 = OMCF*OMEGA
-      CALL GPOISS (OMEGA0,NSCA,1)
+      CALL G3POISS (OMEGA0,NSCA,1)
       IF (NSCA.LE.0)THEN
          DIN(1) = 0.
          DIN(2) = 0.

@@ -13,7 +13,10 @@
  * provided "as is" without express or implied warranty.                  *
  **************************************************************************/
 /*
-$Log$
+$Log: G3Medium.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 */
 
 

@@ -1,7 +1,15 @@
 *
-* $Id: ginit.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: ginit.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: ginit.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -24,25 +32,25 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 22/02/95  16.02.44  by  S.Giani
 *-- Author :
-      SUBROUTINE GINIT
+      SUBROUTINE G3INIT
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       GEANT initialisation routine                             *
 C.    *                                                                *
 C.    *         IFINIT(1)=1 free                                       *
-C.    *               (2)=1 if GZINIT   "  "                           *
-C.    *               (3)=1 if GLUND or GLUNDI have been called        *
+C.    *               (2)=1 if G3ZINIT   "  "                          *
+C.    *               (3)=1 if G3LUND or G3LUNDI have been called      *
 C.    *               (4)=1 if GHEINI or GPGHEI have been called       *
 C.    *               (5)=1 if GHCASC has been called                  *
-C.    *               (6)=1 if GLUDKY has been called                  *
-C.    *               (7)=1 if GTAU  "   "                             *
-C.    *               (8)=1 if GPRELA                                  *
-C.    *               (9)=1 if GPCXYZ                                  *
+C.    *               (6)=1 if G3LUDKY has been called                 *
+C.    *               (7)=1 if G3TAU  "   "                            *
+C.    *               (8)=1 if G3PRELA                                 *
+C.    *               (9)=1 if G3PCXYZ                                 *
 C.    *              (10)=1 if GDRAW                                   *
 C.    *              (11)=1 if INIT_GMR                                *
 C.    *              (12)=1 if GET_GEANT_STRUCTURE                     *
-C.    *              (13)=1 if GPIONS                                  *
+C.    *              (13)=1 if G3PIONS                                 *
 C.    *              (14)=1 if GDINIT                                  *
 C.    *                                                                *
 C.    *    ==>Called by : <USER>, UGINIT                               *
@@ -85,6 +93,9 @@ C.
      +              GUINME, GUINTI, GUKINE, GUNEAR, GUOUT , GUPHAD,
      +              GUSKIP, GUSTEP, GUSWIM, GUTRAK, GUTREV, GUVIEW,
      +              GUPARA
+#if defined(CERNLIB_LXIA64)
+      INTEGER*8 JUMPAD
+#endif
 #endif
 C
 C             ZEBRA system common blocks
@@ -118,7 +129,7 @@ C.    ------------------------------------------------------------------
 C.
 C
 #if defined (CERNLIB_PARA)
-      CALL GPINIT()
+      CALL G3PINIT()
 #endif
       IDATQQ = 0
       ITIMQQ = 0
@@ -144,7 +155,7 @@ C
 *
       WRITE(CHINFO,10000) GVERSN, GVERSC
 10000 FORMAT(' Version/Cradle: ',F7.4,'/',F7.4)
-      CALL GEAMON(1,CHINFO)
+      CALL G3EAMON(1,CHINFO)
 #endif
 C      Since conversion to CVS library handling, this
 C      is ommitted because PATCHY does not anymore 
@@ -342,7 +353,7 @@ C             Initialize Random number generator
 C
       NRNDM(1) = 0
       NRNDM(2) = 0
-      CALL GRNDMQ(0,0,1,' ')
+*      CALL GRNDMQ(0,0,1,' ')
 #if defined (CERNLIB_PARA)
       CALL GPDEFRNG(1)
 #endif
@@ -365,7 +376,7 @@ C               routines from the GEANG file on some machines
 C               like VAX.
 C
       IF(LOAD.NE.0)THEN
-         CALL GWORK (IP1)
+         CALL G3WORK (IP1)
 #if !defined(CERNLIB_USRJMP)
          CALL GUDCAY
          CALL GUDIGI

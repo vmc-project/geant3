@@ -1,7 +1,10 @@
 *
-* $Id: gutrak.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gutrak.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gutrak.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -29,6 +32,6 @@ C.
 C.    ------------------------------------------------------------------
 C.
 *
-      CALL GTRACK
+      CALL G3TRACK
 *                                                             END GUTRAK
       END

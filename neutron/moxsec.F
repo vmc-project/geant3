@@ -1,7 +1,10 @@
 *
-* $Id: moxsec.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: moxsec.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: moxsec.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -243,7 +246,7 @@ C get GEANT name of material
          ENDIF
          IF(KMED.NE.LD(LFP10+I)) THEN
           NISO = 1
-          CALL GFMATE(LD(LGE2MO+LD(LFP10+I)),MATNAM,AA,ZZ,DENS,
+          CALL G3FMATE(LD(LGE2MO+LD(LFP10+I)),MATNAM,AA,ZZ,DENS,
      +       RADL,ABSL,UB,NW)
           NBLK = LNBLNK(MATNAM)
           DO 120 JC=NBLK+1,20

@@ -3,11 +3,11 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Medium.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3Medium.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 #include "TNamed.h"
 
-const static Int_t kNPars=33;
+static const Int_t kNPars=33;
 
 class G3Medium : public TNamed
 {
@@ -54,8 +54,8 @@ public:
     //
     Int_t   fItem;           // Link to Widget Entry
 
-  G3Medium(const G3Medium&) {}
-  G3Medium & operator=(const G3Medium&) {return *this;}
+    G3Medium(const G3Medium& med): TNamed(med) {}
+    G3Medium & operator=(const G3Medium&) {return *this;}
 
     ClassDef(G3Medium,1) // G3 Tracking Medium Class for the G3 GUI 
 };

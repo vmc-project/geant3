@@ -1,7 +1,10 @@
 *
-* $Id: glandz.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: glandz.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glandz.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 22/02/95  10.38.36  by  S.Giani
 *-- Author :
-      SUBROUTINE GLANDZ(Z,STEP,P,E,DEDX,DE,POTI,POTIL)
+      SUBROUTINE G3LANDZ(Z,STEP,P,E,DEDX,DE,POTI,POTIL)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -30,7 +33,7 @@ C.    *                                                                *
 C.    *  Output: DE    = actual energy loss (Gev)                      *
 C.    *                 ( NOT the fluctuation DE/DX-<DE/DX> !)         *
 C.    *                                                                *
-C.    *     ==> Called by : GTELEC,GTHADR,GTMUON                       *
+C.    *     ==> Called by : G3TELEC,G3THADR,G3TMUON                    *
 C.    *                                                                *
 C.    *  Author      : L.Urban                                         *
 C.    *  Date        : 28.04.1988       Last update :  1.02.90         *
@@ -130,7 +133,7 @@ C.
 *      excitation only ....
             APOIS(1)=EMEAN/E0
 *
-            CALL GPOISS(APOIS,NPOIS,1)
+            CALL G3POISS(APOIS,NPOIS,1)
             FPOIS(1)=NPOIS(1)
             DE=FPOIS(1)*E0
 *
@@ -138,7 +141,7 @@ C.
 *         ionization only ....
             EM=TM+E0
             APOIS(1)=EMEAN*(EM-E0)/(EM*E0*LOG(EM/E0))
-            CALL GPOISS(APOIS,NPOIS,1)
+            CALL G3POISS(APOIS,NPOIS,1)
             NN=NPOIS(1)
             DE=0.
 *
@@ -162,14 +165,14 @@ C.
       ENDIF
 *
       IF(MAX(APOIS(1),APOIS(2),APOIS(3)).LT.HMXINT) THEN
-         CALL GPOISS(APOIS,NPOIS,3)
+         CALL G3POISS(APOIS,NPOIS,3)
          FPOIS(1)=NPOIS(1)
          FPOIS(2)=NPOIS(2)
          FPOIS(3)=NPOIS(3)
       ELSE
          DO 20 JPOIS=1, 3
             IF(APOIS(JPOIS).LT.HMXINT) THEN
-               CALL GPOISS(APOIS(JPOIS),NPOIS(JPOIS),1)
+               CALL G3POISS(APOIS(JPOIS),NPOIS(JPOIS),1)
                FPOIS(JPOIS)=NPOIS(JPOIS)
             ELSE
                CALL GRNDM(RNDM,2)

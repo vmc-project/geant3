@@ -1,7 +1,10 @@
 *
-* $Id: gfluct.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfluct.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfluct.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GFLUCT(DEMEAN,DE)
+      SUBROUTINE G3FLUCT(DEMEAN,DE)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,13 +32,13 @@ C.    *                                                                *
 C.    *   DNMIN:  <---------->1<-------->30<--------->50<--------->    *
 C.    *                                                                *
 C.    *   LOSS=2  :                                                    *
-C.    *   STRA=0  <----------GLANDZ-------------------><--GLANDO-->    *
+C.    *   STRA=0  <----------G3LANDZ-------------------><--G3LANDO-->  *
 C.    *   LOSS=1,3:                                                    *
-C.    *   STRA=0  <---------------------GLANDZ-------------------->    *
+C.    *   STRA=0  <---------------------G3LANDZ-------------------->   *
 C.    *                                                                *
-C.    *   STRA=1  <-----------PAI---------------------><--GLANDZ-->    *
+C.    *   STRA=1  <-----------PAI---------------------><--G3LANDZ-->   *
 #if defined(CERNLIB_ASHO)
-C.    *   STRA=2  <---PAI----><---ASHO---><----PAI----><--GLANDZ-->    *
+C.    *   STRA=2  <---PAI----><---ASHO---><----PAI----><--G3LANDZ-->   *
 C.    *                                                                *
 #endif
 C.    *                                                                *
@@ -46,7 +49,7 @@ C.    *                                                                *
 C.    *   Input  : DEMEAN (mean energy loss)                           *
 C.    *   Output : DE   (energy loss in the current step)              *
 C.    *                                                                *
-C.    *    ==>Called by : GTELEC,GTMUON,GTHADR                         *
+C.    *    ==>Called by : G3TELEC,G3TMUON,G3THADR                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -81,7 +84,7 @@ C.
          DEDX = DEMEAN/STEP
          POTI=Q(JPROB+9)
          IF(ISTRA.EQ.0.AND.(ILOSS.EQ.1.OR.ILOSS.EQ.3)) THEN
-            CALL GLANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,Q(JPROB+10))
+            CALL G3LANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,Q(JPROB+10))
          ELSEIF (ILOSS.EQ.5) THEN
 * This is Marek Kowalski's fluctuation algorithm, it works only when
 * the step size has been limited to one ionisation on average
@@ -149,11 +152,11 @@ C.
 *     +---------------------------------------------------------------+
 *  10                   CALL GRNDM(RNDM,1)
 *                       IF( RNDM(1) .GT. 0.980 ) GO TO 10
-*                       XLAMB = GLANDR(RNDM(1))
+*                       XLAMB = G3LANDR(RNDM(1))
 *     +---------------------------------------------------------------+
 *     I Sample lambda variable from James/Hancock Landau distribution I
 *     +---------------------------------------------------------------+
-   10                      CALL GLANDG(XLAMB)
+   10                      CALL G3LANDG(XLAMB)
                            IF(XLAMB.GT.XLAMX) GO TO 10
                         ELSE
 *            +---------------------------------------------------------+
@@ -161,7 +164,7 @@ C.
 *            I Rotondi&Montagna&Kolbig Vavilov distribution            I
 *            +---------------------------------------------------------+
                            CALL GRNDM(RNDM,1)
-                           XLAMB = GVAVIV(CAPPA,BET2,RNDM(1))
+                           XLAMB = G3VAVIV(CAPPA,BET2,RNDM(1))
                         ENDIF
 *
 *     Calculate DE/DX - <DE/DX>
@@ -170,12 +173,12 @@ C.
                   ENDIF
                   DE = DEMEAN + DELAND
                ELSE
-                  CALL GLANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,
+                  CALL G3LANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,
      +            Q(JPROB+ 10))
                ENDIF
             ELSE IF (ISTRA.LE.2) THEN
                IF(DNMIN.GE.DNLIM) THEN
-                  CALL GLANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,
+                  CALL G3LANDZ(Z,STEP,VECT(7),GETOT,DEDX,DE,POTI,
      +            Q(JPROB+ 10))
                ELSE
                   NMEC = NMEC+1
@@ -183,13 +186,13 @@ C.
 #if defined(CERNLIB_ASHO)
                   IF (DNMIN.GE.ASHMIN.AND.DNMIN.LT.ASHMAX .AND.ISTRA.EQ
      +            .2) THEN
-                     CALL GASHO(VECT(7),AMASS,STEP,DE)
+                     CALL G3ASHO(VECT(7),AMASS,STEP,DE)
                   ELSE
-                     DE = GSTREN(GAMMA,DCUTE,STEP)
+                     DE = G3STREN(GAMMA,DCUTE,STEP)
                   ENDIF
 #endif
 #if !defined(CERNLIB_ASHO)
-                  DE = GSTREN(GAMMA,DCUTE,STEP)
+                  DE = G3STREN(GAMMA,DCUTE,STEP)
 #endif
 *
 * ***   Add brem losses to ionisation

@@ -1,7 +1,10 @@
 *
-* $Id: gmunu.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gmunu.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gmunu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,12 +18,12 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.38  by  S.Giani
 *-- Author :
-      SUBROUTINE GMUNU
+      SUBROUTINE G3MUNU
 C
 C *** GENERATION OF MUON-NUCLEUS INTERACTIONS ***
 C *** NVE 16-MAR-1988 CERN GENEVA ***
 C
-C CALLED BY : GTMUON
+C CALLED BY : G3TMUON
 C ORIGIN : H.FESEFELDT (ROUTINE CASMU)
 C
 C ***Revised Sep-90 by C. CHIERA, E. LAMANNA:
@@ -152,7 +155,7 @@ C
 C               Store muon on stack and write virtual photon on
 C                     result common, rotate muon momenta
 C
-      CALL GVROT(VECT(4),VMUOUT)
+      CALL G3VROT(VECT(4),VMUOUT)
       IF(IMUNU.EQ.1) THEN
 C
 C            Now compute momentum of the outgoing pion
@@ -179,7 +182,7 @@ C
         TLIFE     = Q(JPA+9)
         GETOT     = SQRT(VECT(7)*VECT(7)+AMASS*AMASS)
         GEKIN     = GETOT-AMASS
-        CALL GEKBIN
+        CALL G3EKBIN
 C
 C             Now force interaction of the pion
 C
@@ -234,7 +237,7 @@ C
       VECT(6)   = VMUOUT(3)/VECT(7)
       GETOT     = SQRT(VECT(7)*VECT(7)+AMASS*AMASS)
       GEKIN     = GETOT-AMASS
-      CALL GEKBIN
+      CALL G3EKBIN
 C
 C             Update probabilities
 C

@@ -14,7 +14,10 @@
  **************************************************************************/
 
 /*
-$Log$
+$Log: G3GUISliders.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 */
 
 //
@@ -29,10 +32,12 @@ $Log$
 #include "G3Volume.h"
 
 static Text_t* kLabelText[7]  = 
-{"Theta  ", "Phi    ", "Psi    ", "U      ", "V      ", "UScale", "VScale"};
+{"Theta ", "Phi   ", "Psi   ", "U     ", "V     ", "UScale", "VScale"};
 static Int_t   IRangeMin[7]  = {    0,     0,     0,    0,    0,   0,   0};
 static Int_t   IRangeMax[7]  = {36000, 36000, 36000, 2000, 2000, 10, 10};
 static Int_t   DefaultPos[7] = { 3000,  4000,     0, 1000, 1000,   1,   1};
+
+ClassImp(G3GUISliders)
 
 G3GUISliders::G3GUISliders(const TGWindow *p, const TGWindow *,
                          UInt_t w, UInt_t h) :
@@ -44,7 +49,7 @@ G3GUISliders::G3GUISliders(const TGWindow *p, const TGWindow *,
     fBly = new TGLayoutHints(kLHintsTop | kLHintsExpandY, 5, 5, 5, 5);
 
    //--- layout for the frame: place at bottom, right g3gned
-    fBfly1 = new TGLayoutHints(kLHintsLeft | kLHintsExpandX );
+    fBfly1 = new TGLayoutHints(kLHintsLeft);
 //
 // Frames
 
@@ -54,17 +59,21 @@ G3GUISliders::G3GUISliders(const TGWindow *p, const TGWindow *,
        fHframe[i] = new TGHorizontalFrame(this, 400, 100, kFixedWidth);
        fTbh[i] = new TGTextBuffer(10);
        fTeh[i] = new TGTextEntry(fHframe[i], fTbh[i],idT);
+
+       
        char buf[10];
        sprintf(buf, "%6.2f", Float_t(DefaultPos[i])/100);
        fTbh[i]->AddText(0, buf);
+       fTeh[i]->SetWidth(80);
        fTeh[i]->Associate(this);
        
-       fHslider[i] = new TGHSlider(fHframe[i], 400, kSlider1 | kScaleBoth, idS);
+       fHslider[i] = new TGHSlider(fHframe[i], 200, kSlider1 | kScaleBoth, idS);
        fHslider[i]->Associate(this);
        fHslider[i]->SetRange(IRangeMin[i], IRangeMax[i]);
        fHslider[i]->SetPosition(DefaultPos[i]);
 
        fLabel[i] = new TGLabel(fHframe[i], kLabelText[i]);
+       fLabel[i]->SetWidth(100);
        
        
        fHframe[i]->AddFrame(fLabel[i], fBfly1);

@@ -1,7 +1,10 @@
 *
-* $Id: gphini.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphini.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphini.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,19 +18,19 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHINI
+      SUBROUTINE G3PHINI
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C     *       Initialize material constants for                        *
 C.    *       the photoelectric effect                                 *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author    J. Chwastowski                                 *
 C.    *                                                                *
 C.    ******************************************************************
 C.
-      CALL GPHRIN
-      CALL GSHLIN
-      CALL GPHXIN
+      CALL G3PHRIN
+      CALL G3SHLIN
+      CALL G3PHXIN
       END

@@ -1,16 +1,5 @@
 *
-* $Id: gdtr0.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdtr0.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:28  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -27,7 +16,7 @@ C.    *       IVTREE= view bank used to store tree structure (input)   *
 C.    *       IROOT = root of the tree to be built up (input)          *
 C.    *       IER   = error flag to detect nodes overflow (output)     *
 C.    *                                                                *
-C.    *    ==>Called by : GDFSPC, GDTREE                               *
+C.    *    ==>Called by : GDFSPC, G3DTREE                              *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *       Revised: S.Giani      *********                          *
 C.    *                                                                *
@@ -48,7 +37,7 @@ C.    ------------------------------------------------------------------
 C.
       IF (IVTREE.LE.NKVIEW.AND.LQ(JDRAW-IVTREE).NE.0) THEN
          Q(JDRAW+IVTREE)=1.
-         CALL GDELET(IVTREE)
+         CALL G3DELET(IVTREE)
       ELSEIF (IVTREE.GT.NKVIEW) THEN
          NDL=IVTREE-NKVIEW
          CALL MZNEED(IXCONS,2*NDL,'G')

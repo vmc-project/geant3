@@ -1,7 +1,10 @@
 *
-* $Id: gphoti.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphoti.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphoti.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GPHOTI
+      SUBROUTINE G3PHOTI
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -32,7 +35,7 @@ C     *   contribution from photoeffect is negligible for EGAM.GT.0.050*
 C     *  (2) From 10KeV to 100KeV a special parametrization            *
 C     *       has been introduced                                      *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author    L.Urban  *********                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -59,7 +62,7 @@ C
 C             simple material (element)
 C
                JPROB=LQ(JMA-4)
-               SIG=GPHSIG(Z,EGAM)*AVO*DENS/A
+               SIG=G3PHSIG(Z,EGAM)*AVO*DENS/A
             ELSE
 C
 C             compound/mixture
@@ -72,7 +75,7 @@ C
                   AA=Q(J)
                   ZZ=Q(J+NLM)
                   WMAT=Q(J+2*NLM)
-                  S=GPHSIG(ZZ,EGAM)
+                  S=G3PHSIG(ZZ,EGAM)
                   S=S*WMAT/AA
                   SIG=SIG+AVO*DENS*S
    10          CONTINUE
@@ -83,7 +86,7 @@ C
 C New x-sections. Sandia parametrization
             JPROB=LQ(JMA-4)
             SIG = 0.0
-            IF(EGAM.GE.1.E-8) SIG=GPHSG1(EGAM)*DENS
+            IF(EGAM.GE.1.E-8) SIG=G3PHSG1(EGAM)*DENS
          ENDIF
       ENDIF
       IF(SIG.GT.0.)THEN

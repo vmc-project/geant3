@@ -1,7 +1,10 @@
 *
-* $Id: gludky.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gludky.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gludky.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 09/01/95  16.20.45  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GLUDKY
+      SUBROUTINE G3LUDKY
 C.
 C.    ******************************************************************
 C.    *                                                                *

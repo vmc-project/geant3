@@ -1,7 +1,10 @@
 *
-* $Id: gweucl.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gweucl.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gweucl.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -80,7 +83,7 @@
          NROTM = 0
       ENDIF
       NWTOT  = IADROT + NROTM
-      CALL GWORK (NWTOT)
+      CALL G3WORK (NWTOT)
       CALL VZERO (IWS(1),NWTOT)
       MLEVEL = NLEVEL
       IF (NLEVEL.LE.0) MLEVEL = 20
@@ -88,7 +91,7 @@
 * *** find the top volume and put it in the stak
       NUMBR = NUMBER
       IF (NUMBER.LE.0) NUMBR = 1
-      CALL GFPARA (TOPVOL,NUMBR,1,NPAR,NATT,PAR,ATT)
+      CALL G3FPARA (TOPVOL,NUMBR,1,NPAR,NATT,PAR,ATT)
       IF (NPAR.LE.0) THEN
          WRITE (CHMAIL,11100) TOPVOL,NUMBR
          CALL GMAIL (0,0)

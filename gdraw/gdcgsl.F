@@ -1,16 +1,5 @@
 *
-* $Id: gdcgsl.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcgsl.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:21  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -23,7 +12,7 @@ C.    *       This routine allows computes the coefficients of the     *
 C.    *       cut plane and the limits and array of the clipping       *
 C.    *       volumes (boxes, cones, tubes, spheres).                  *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAW                                        *
+C.    *    ==>Called by : G3DRAW                                        *
 C.    *                                                                *
 C.    *       Authors :  J.Salt ; S.Giani                              *
 C.    ******************************************************************

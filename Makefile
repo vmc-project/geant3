@@ -1,8 +1,9 @@
-# $ Id:  $
+# $Id: Makefile,v 1.11 2003/12/08 12:20:21 brun Exp $
 
 ############################### geant321 Makefile #############################
 
 PACKAGE   = geant321
+PACKAGE2  = dummies
 
 ifeq ($(PLATFORM),)
 PLATFORM = $(shell uname)
@@ -10,35 +11,36 @@ endif
 
 BINDIR  = tgt_$(PLATFORM)
 LIBDIR  = $(shell pwd)/lib/tgt_$(PLATFORM)
+CONFDIR = $(shell pwd)/config
 
-include config/Makefile.$(PLATFORM)
+ifeq ($(ROOTSYS),)
+ROOT_INCDIR = $(shell root-config --incdir)
+ROOT_BINDIR = $(shell root-config --prefix)/bin
+else
+ROOT_INCDIR = $(ROOTSYS)/include
+ROOT_BINDIR = $(ROOTSYS)/bin
+endif
+
+include $(CONFDIR)/Makefile.$(PLATFORM)
 
 ############################### Sources #######################################
 
-GDIRS:=	added gbase gcons gdraw geocad ggeom gheisha ghits ghrout ghutils \
+GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	giface giopa gkine gparal gphys gscan gstrag gtrak matx55 miface \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
-        minicern
+        minicern gdraw
 
-include config/MakeRules
+include $(CONFDIR)/MakeRules
 
-# Dummy library (should be avoidable!)
-
-DSRCS          = TGeant3/TGeant3Dummy.cxx
 
 # C++ Headers
 
-DHDRS          = TGeant3/TGeant3.h TGeant3/geant3LinkDef.h
+DHDRS          = TGeant3/TGeant3.h 
 
-# Dummy library dictionary
-
-DDICT          = $(BINDIR)/TGeant3/geant3DummyCint.cxx
-DDICTH         = $(DDICT:.cxx=.h)
-DDICTO         = $(patsubst %.cxx,%.o,$(DDICT))
 
 # Dummy Geant Objects
 
-DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS)) $(DDICTO)
+DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS))
 
 # Library dictionary
 
@@ -48,7 +50,7 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 # Sources
 
-FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F
+FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F TGeant3/rdummies.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
 ifeq ($(PLATFORM),Linux)
 	  FSRC += minicern/lnxgs/rdmin.F
@@ -60,14 +62,28 @@ CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS)))
 ifeq ($(PLATFORM),Linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
+ifeq ($(PLATFORM),Darwin)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),icc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-ecc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),Linux-ia64-gcc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
 ifeq ($(PLATFORM),HP-UX)
 	  CSRC += minicern/hpxgs/traceqc.c
 endif
 ifneq ($(PLATFORM),HP-UX)
 	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
 endif
+CSRC	:= $(filter-out added/dummies2.c,$(CSRC))
+
 CXXSRC	:= $(wildcard $(patsubst %,%/*.cxx,$(GDIRS))) \
-           $(filter-out TGeant3/TGeant3Dummy.cxx,$(wildcard TGeant3/*.cxx))
+           $(wildcard TGeant3/*.cxx)
 SRCS	:= $(FSRC) $(CSRC) $(CXXSRC)
 
 # C++ Headers
@@ -82,10 +98,17 @@ COBJ	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC))
 CXXOBJ	:= $(patsubst %.cxx,$(BINDIR)/%.o,$(CXXSRC))
 OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
 
+# Dummies objects separated from geant321.so library
+
+CSRC2	:= added/dummies2.c
+COBJ2	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC2))
+OBJS2	:= $(COBJ2)
+
+
 # C++ compilation flags
 
 CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) $(CLIBDEFS) -I. \
-			-I$(ROOTSYS)/include -ITGeant3
+			-I$(ROOT_INCDIR) -ITGeant3
 
 # C compilation flags
 
@@ -98,13 +121,13 @@ ifeq ($(PLATFORM),Linux)
    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
 endif
 
-DEPINC 		+= -I. -I$(ROOTSYS)/include
+DEPINC 		+= -I. -I$(ROOT_INCDIR)
 
 ############################### Targets #######################################
 
 
-SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/libG3mcDummy.$(SL) 
-ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a
+SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/lib$(PACKAGE2).$(SL)
+ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a $(LIBDIR)/lib$(PACKAGE2).a
 
 ifeq ($(PLATFORM),OSF1)
         default:	depend $(ALIBRARY) $(SLIBRARY) 
@@ -115,8 +138,8 @@ endif
 $(LIBDIR)/lib$(PACKAGE).$(SL):  $(OBJS)
 $(LIBDIR)/lib$(PACKAGE).a:  $(OBJS)
 
-$(LIBDIR)/libG3mcDummy.$(SL):	$(DOBJS)
-$(LIBDIR)/libG3mcDummy.a:	$(DOBJS)
+$(LIBDIR)/lib$(PACKAGE2).$(SL):  $(OBJS2)
+$(LIBDIR)/lib$(PACKAGE2).a:  $(OBJS2)
 
 DICT:= $(GDICT) $(DDICT)
 
@@ -127,9 +150,12 @@ $(DDICT): $(DHDRS)
 depend:		$(SRCS)
 
 TOCLEAN		= $(BINDIR)
-TOCLEANALL		= $(BINDIR) $(LIBDIR)
+TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-include config/MakeMacros
+MAKEDIST	= $(CONFDIR)/makedist.sh lib
+MAKEDISTSRC	= $(CONFDIR)/makedist.sh
+
+include $(CONFDIR)/MakeMacros
 
 ############################### Dependencies ##################################
 

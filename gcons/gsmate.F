@@ -1,7 +1,15 @@
 *
-* $Id: gsmate.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gsmate.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: gsmate.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +26,7 @@
 *               Calculation of radiation length and interaction length
 *               ignoring user input parameters
 *-- Author :
-      SUBROUTINE GSMATE(IMAT,NAMATE,A,Z,DENS,RADL,ABSL,UBUF,NWBUF)
+      SUBROUTINE G3SMATE(IMAT,NAMATE,A,Z,DENS,RADL,ABSL,UBUF,NWBUF)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -153,6 +161,7 @@ C.
 #include "geant321/gcmzfo.inc"
 #include "geant321/gcunit.inc"
 #include "geant321/gconsp.inc"
+      COMMON / FIXIT / JMA
       DIMENSION UBUF(1)
       CHARACTER*(*) NAMATE
       CHARACTER*20 NAME
@@ -174,7 +183,7 @@ C.
          IF(JMA1.GT.0) THEN
             WRITE(CHMAIL,10000)
             CALL GMAIL(1,0)
-            CALL GPMATE(IMAT)
+            CALL G3PMATE(IMAT)
             CALL MZDROP(IXCONS,LQ(JMATE-IMAT),' ')
          ENDIF
       ENDIF
@@ -198,13 +207,13 @@ C
             Q(JMA+9)=-RADL
          ELSE
             ALZ=LOG(Z)/3
-            Q(JMA + 9) = A/(ALR2AV*DENS*Z*(Z+GXSI(Z))*
-     +        (AL183-LOG(Z)/3-GFCOUL(Z)))
+            Q(JMA + 9) = A/(ALR2AV*DENS*Z*(Z+G3XSI(Z))*
+     +        (AL183-LOG(Z)/3-G3FCOUL(Z)))
          ENDIF
          IF(ABSL.LT.0) THEN
             Q(JMA+10)=-ABSL
          ELSE
-            Q(JMA + 10) = A/(AVO*DENS*1E-3*GHSIGM(5.,8,A))
+            Q(JMA + 10) = A/(AVO*DENS*1E-3*G3HSIGM(5.,8,A))
          ENDIF
       ELSE
          Q(JMA + 9) = BIG
@@ -214,7 +223,7 @@ C
       IF(NWBUF.GT.0)CALL UCOPY(UBUF,Q(JMA+12),NWBUF)
 C
       IF(JMA1.GT.0) THEN
-         CALL GPMATE(-IMAT)
+         CALL G3PMATE(-IMAT)
       ENDIF
 C
 10000 FORMAT(' *** GSMATE ***: Warning, material redefinition:')
