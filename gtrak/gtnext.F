@@ -1,7 +1,10 @@
 *
-* $Id: gtnext.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id: gtnext.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gtnext.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 * initial import into CVS
 *
@@ -121,13 +124,13 @@ C*****  End of Code Expanded From Routine:  GROT
       INGOTO = 0
       JVO    = LQ(JVOLUM-LVOLUM(NLEVEL))
       ISH    = Q(JVO+2)
-      IF (Q(JVO+3).EQ.0.) GO TO 300
+      NIN    = Q(JVO+3)
+      IF (NIN.EQ.0) GO TO 300
       if(raytra.eq.1..and.imyse.eq.1)then
             CALL UHTOC(NAMES(NLEVEL),4,NAME,4)
             CALL GFIND(NAME,'SEEN',ISSEEN)
             if(isseen.eq.-2.or.isseen.eq.-1)goto 300
       endif
-      NIN = Q(JVO+3)
       IF (NIN.LT.0) GO TO 200
 *
 * *** Case with contents positioned

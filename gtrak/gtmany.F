@@ -3,6 +3,7 @@
 #include "geant321/gcvol1.inc"
 #include "geant321/gcvolu.inc"
 #include "geant321/gcvdma.inc"
+#include "geant321/gctrak.inc"
       integer level1
 
       if(mycoun.gt.1.and.nfmany.gt.0.and.step.ge.safety)then
