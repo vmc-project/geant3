@@ -15,6 +15,9 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.9  2003/06/03 21:26:46  brun
+New version of gustep by Andreas Morsch
+
 Revision 1.8  2003/02/28 10:41:49  brun
 From Andreas Morsch
 in DefineParticles: rho0 decay channel corrected
@@ -1272,6 +1275,8 @@ void    TGeant3::SetProcess(const char* flagName, Int_t flagValue)
     fGcphlt->istra=flagValue;
   else if(!strcmp(flagName,"SYNC")) 
     fGcphlt->isync=flagValue;
+  else if(!strcmp(flagName,"CKOV"))
+    fGctlit->itckov = flagValue;
   else  Warning("SetFlag","Flag %s not implemented\n",flagName);
 }
 
@@ -3645,6 +3650,7 @@ void TGeant3::SetABAN(Int_t par)
   //       0 particles are transported normally
   //
   fGcphys->dphys1 = par;
+  SetBit(kABAN);
 }
  
  
@@ -3670,6 +3676,7 @@ void TGeant3::SetAUTO(Int_t par)
   //       =1 automati calculation.
   //  
   fGctrak->igauto = par;
+  SetBit(kAUTO);
 }
  
  
@@ -3841,6 +3848,7 @@ void TGeant3::SetDEBU(Int_t emin, Int_t emax, Int_t emod)
   fGcflag->idemin = emin;
   fGcflag->idemax = emax;
   fGcflag->itest  = emod;
+  SetBit(kDEBU);
 }
  
  
@@ -3868,6 +3876,7 @@ void TGeant3::SetERAN(Float_t ekmin, Float_t ekmax, Int_t nekbin)
   fGcmulo->ekmin = ekmin;
   fGcmulo->ekmax = ekmax;
   fGcmulo->nekbin = nekbin;
+  SetBit(kERAN);
 }
  
 //_____________________________________________________________________________
@@ -3959,6 +3968,7 @@ void TGeant3::SetOPTI(Int_t par)
   //      2 all volumes are ordered along the best axis.
   //  
   fGcopti->ioptim = par;
+  SetBit(kOPTI);
 }
  
 //_____________________________________________________________________________
@@ -4032,6 +4042,7 @@ void TGeant3::SetSWIT(Int_t sw, Int_t val)
   //  
   if (sw <= 0 || sw > 10) return;
   fGcflag->iswit[sw-1] = val;
+  SetBit(kSWIT);
 }
  
  
@@ -4042,6 +4053,7 @@ void TGeant3::SetTRIG(Int_t nevents)
   // Set number of events to be run
   //
   fGcflag->nevent = nevents;
+  SetBit(kTRIG);
 }
  
 //_____________________________________________________________________________
@@ -4616,6 +4628,15 @@ void TGeant3::Init()
     //
     //=================Create Materials and geometry
     //
+
+    //  Some default settings, if not changed by user
+    if (!TestBit(kTRIG)) SetTRIG(1);         // Number of events to be processed
+    if (!TestBit(kSWIT)) SetSWIT(4, 10);     //
+    if (!TestBit(kDEBU)) SetDEBU(0, 0, 1);   //
+    if (!TestBit(kAUTO)) SetAUTO(1);         // Select automatic STMIN etc... calc. (AUTO 1) or manual (AUTO 0)
+    if (!TestBit(kABAN)) SetABAN(0);         // Restore 3.16 behaviour for abandoned tracks
+    if (!TestBit(kOPTI)) SetOPTI(2);         // Select optimisation level for GEANT geometry searches (0,1,2)
+    if (!TestBit(kERAN)) SetERAN(5.e-7);     //
 
     fApplication->ConstructGeometry();
     FinishGeometry();
@@ -5364,7 +5385,6 @@ void gufld(Float_t *x, Float_t *b)
 
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
 }
-
 
 //______________________________________________________________________
 void gustep()
