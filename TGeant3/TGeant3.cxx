@@ -16,6 +16,21 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.33  2004/08/25 07:28:54  brun
+From Ivana and Lionel Chaussard
+ In method DefineParticles(), we had:
+
+         pdgcode(Tau+)=15
+         pdgcode(Tau-)=-15
+
+ This is in contradiction with the other leptons (pdgcode>0 for
+ negative leptons, pdgcode<0 for positive leptons). I also checked
+ in the PDG WEB pages that Tau- should have a code +15.
+
+ changed to:
+         pdgcode(tau+)=-15
+         pdgcode(tau-)=+15 ?
+
 Revision 1.32  2004/08/05 12:20:39  brun
 From Andrei Gheata:
 I have found/fixed a bug in TGeoManager::IsSameLocation(x,y,z). Also I
@@ -2517,6 +2532,11 @@ void  TGeant3::SetRootGeometry()
 // Notify Geant3 about use of TGeo geometry.
 // The materials and tracking medias will be imported from
 // TGeo at FinishGeometry().
+
+#if defined(WITHG3) || defined(WITHBOTH)
+  Fatal("SetRootGeometry", 
+        "TGeant3 was not compiled with WITHROOT option");
+#endif
 
   fImportRootGeometry = kTRUE;
 }  			
