@@ -1,7 +1,10 @@
 *
-* $Id: berttp.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: berttp.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: berttp.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -54,12 +57,12 @@ C---------------------------------------------------------------------
       ELSE
 #if defined(CERNLIB_UNIX)||defined(CERNLIB_CRAY)
          CHROOT=' '
-         CALL GETENVF('ALICE_ROOT',CHROOT)
+         CALL GETENVF('ALICE',CHROOT)
          LNROOT = LNBLNK(CHROOT)
          IF(LNROOT.LE.0) THEN
             FILNAM='flukaaf.dat'
          ELSE
-            FILNAM=CHROOT(1:LNROOT)//'/GEANT321/data/flukaaf.dat'
+            FILNAM=CHROOT(1:LNROOT)//'/geant3/data/flukaaf.dat'
          ENDIF
          INQUIRE(FILE=FILNAM,EXIST=EXISTS)
          IF(.NOT.EXISTS) THEN
