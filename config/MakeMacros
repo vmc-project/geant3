@@ -1,4 +1,4 @@
-# $Id: MakeMacros,v 1.5 2003/12/08 12:20:21 brun Exp $
+# $Id: MakeMacros,v 1.6 2004/05/13 09:12:40 brun Exp $
 
 ############################   MACROS   #######################################
 
@@ -16,7 +16,7 @@ $(SLIBRARY):
                 ifeq ($(PLATFORM),aix)
 		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
                 else
-                   ifneq (,$(findstring Darwin,$(PLATFORM)))
+                   ifneq (,$(findstring macosx,$(PLATFORM)))
 		      @cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
 		      @cd tmp; $(SHLD) -bundle -flat_namespace -undefined dynamic_lookup $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
                    else
