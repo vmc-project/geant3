@@ -1,6 +1,11 @@
-// $Id: E01.C,v 1.1 2003/11/28 12:00:25 brun Exp $
+// $Id: E01.C,v 1.2 2003/12/08 14:12:35 brun Exp $
 //
 // Macro for running Example01 with Geant3 
+// Before running this macro, the libexampl01.so library
+// must have been built. To build it, go to your geant4_vmc/examples directory
+// and run make.
+// Note that this macro is a simplified version of the equivalent macro
+// in the geant4_vmc/examples/E01 directory
 
 {
   // Load basic libraries
