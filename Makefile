@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.12 2004/01/28 08:22:37 brun Exp $
+# $Id: Makefile,v 1.13 2004/05/13 09:12:40 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -52,14 +52,14 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F TGeant3/rdummies.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
-ifeq ($(PLATFORM),Linux)
+ifeq ($(PLATFORM),linux)
 	  FSRC += minicern/lnxgs/rdmin.F
 endif
 ifneq ($(PLATFORM),SunOS)
 	  FSRC := $(filter-out minicern/uset.F,$(FSRC))
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
-ifeq ($(PLATFORM),Linux)
+ifeq ($(PLATFORM),linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),Darwin)
@@ -68,10 +68,10 @@ endif
 ifeq ($(PLATFORM),icc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),Linux-ia64-ecc)
+ifeq ($(PLATFORM),linux-ia64-ecc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),Linux-ia64-gcc)
+ifeq ($(PLATFORM),linux-ia64-gcc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),HP-UX)
@@ -116,7 +116,7 @@ CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
 # FORTRAN compilation flags
 
 FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern
-ifeq ($(PLATFORM),Linux)
+ifeq ($(PLATFORM),linux)
    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
 endif
 
