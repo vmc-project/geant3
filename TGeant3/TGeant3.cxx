@@ -15,6 +15,11 @@
 
 /* 
 $Log: TGeant3.cxx,v $
+Revision 1.7  2003/02/04 17:50:34  brun
+From Ivana
+ In Mixture(): pass abs(nlmat) to CreateFloatArray calls
+ as nlmat can be negative.
+
 Revision 1.6  2003/01/31 18:23:06  brun
 Ivana's suggested corrections.
 - corrected tau pdg code
@@ -1122,7 +1127,7 @@ void TGeant3::DefineParticles()
     }
     ipa = 44;
     bratio[0] = 100.;
-    mode[0] = 707;
+    mode[0] = 809;
     Gsdk(ipa, bratio, mode);
     /*
 // --- jpsi ---
