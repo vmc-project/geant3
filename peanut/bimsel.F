@@ -1,7 +1,18 @@
 *
-* $Id: bimsel.F,v 1.2 2003/11/28 11:23:57 brun Exp $
+* $Id: bimsel.F,v 1.3 2004/02/24 15:50:30 brun Exp $
 *
 * $Log: bimsel.F,v $
+* Revision 1.3  2004/02/24 15:50:30  brun
+* From Peter Hristov:
+* We had some problems with the Geant3 version during the tests for the
+* physics data challenge. They are related to the fact that TRandom3 for
+* sure doesn't generate 0, but it may return 1, so things like
+* CALL GRANDOM(RNDM,1)
+* X = -LOG(1-RNDM(1))
+* may lead to floating point exceptions. So I have replaced most of such
+* calls with
+* X = -LOG(RNDM(1))
+*
 * Revision 1.2  2003/11/28 11:23:57  brun
 * New version of geant321 with all geant3 routines renamed from G to G3
 *
@@ -75,7 +86,6 @@
 #endif
       DATA IBTOLD, ICTOLD / 2*0 /
 *
-      LLMDBR = .FALSE.
       KPROJ  = JPROJ
       AUSFL  = IBTAR
       ZUSFL  = ICHTAR
@@ -256,7 +266,6 @@
       END IF
       GO TO 4500
       ENTRY BIMNXT ( LBCHCK )
-         LLMDBR = .FALSE.
          IF ( EKECON .LT. 2.D+00 * GAMMIN ) THEN
             LABRST = .TRUE.
             CALL RSTNXT
@@ -310,12 +319,22 @@
             IF ( BIMPTR .GE. RADTOT ) THEN
                X1 = BIMPTR - RADTOT
                DUMMY = 2.D+00 * X1 / ( RADPRO + X1 )
-               IF (ABS(DUMMY).GT.1.D0) THEN
-                  PRINT *,"Warning in GEANT321/peanut/bimsel.F "
-                  PRINT *,"Illegal ACOS argument ",DUMMY
-                  DUMMY = SIGN(1.D0, DUMMY )
+c$$$               IF (ABS(DUMMY).GT.1.D0) THEN
+c$$$                  PRINT *,"Warning in GEANT321/peanut/bimsel.F "
+c$$$                  PRINT *,"Illegal ACOS argument ",DUMMY
+c$$$                  DUMMY = SIGN(1.D0, DUMMY )
+c$$$               ENDIF
+c$$$               ANGRED = ACOS ( DUMMY ) / PI
+               IF ( ABS(DUMMY) .LT. 1.0 ) THEN
+                  ANGRED = ACOS ( DUMMY ) / PI
+               ELSE
+                  PRINT*,'*******************************************'
+                  PRINT*,'*** WARNING IN GEANT321/peanut/bimsel.F ***'
+                  PRINT*,
+     &            '*** ILLEGAL ACOS ARGUMENT               ***',DUMMY
+                  PRINT*,'*******************************************'
+                  ANGRED = ACOS ( SIGN(1,DUMMY)*.99D+00 ) / PI
                ENDIF
-               ANGRED = ACOS ( DUMMY ) / PI
                X1 = X1 / ( R0PROT * RPRONU * RADCO2 )
                DSKRED = ( 0.5D+00 * X1 * X1 + X1 + 1.D+00 ) * EXP (-X1)
      &                * ANGRED

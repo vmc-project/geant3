@@ -1,7 +1,18 @@
 *
-* $Id: abbrch.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: abbrch.F,v 1.2 2004/02/24 15:50:29 brun Exp $
 *
 * $Log: abbrch.F,v $
+* Revision 1.2  2004/02/24 15:50:29  brun
+* From Peter Hristov:
+* We had some problems with the Geant3 version during the tests for the
+* physics data challenge. They are related to the fact that TRandom3 for
+* sure doesn't generate 0, but it may return 1, so things like
+* CALL GRANDOM(RNDM,1)
+* X = -LOG(1-RNDM(1))
+* may lead to floating point exceptions. So I have replaced most of such
+* calls with
+* X = -LOG(RNDM(1))
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -76,7 +87,7 @@ C*****CHOICE OF THE CUT OFF ENERGY
       AM=AM0-1.D0/B1*LOG(X)
       IF (RNDM(2).LT.CUTBAM)AM=AM0+0.9D0*RX*RNDM(3)
       X=RNDM(4)
-      ESA=AM0-1.D0/B2*LOG(1.D0-X)
+      ESA=AM0-1.D0/B2*LOG(1.D0-X+1.D-10)
       IF (RNDM(5).LT.CUTBAM)ESA=AM0+0.9D0*RX*RNDM(6)
 *  *** Now: ***
       PSA=ABS(ESA-AM0)*(ESA+AM0)
