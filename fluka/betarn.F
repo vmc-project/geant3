@@ -1,7 +1,10 @@
 *
-* $Id: betarn.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: betarn.F,v 1.2 2004/12/17 11:46:46 brun Exp $
 *
 * $Log: betarn.F,v $
+* Revision 1.2  2004/12/17 11:46:46  brun
+* Several protections introduced by Rachid Guernane and Peter Hristov
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -59,7 +62,7 @@
             CALL GRNDM(RNDM,2)
             BETARN = RNDM (1)**GAMI
 
-            IF ( ETAM1 < 0 .AND. BETARN .EQ. 1.D+00 ) THEN
+            IF ( ETAM1 .LT. 0.D+00 .AND. BETARN .EQ. 1.D+00 ) THEN
                REJE   = ( 1.D+00 - BETARN + 1.D-10 )**ETAM1
             ELSE
                REJE   = ( 1.D+00 - BETARN )**ETAM1

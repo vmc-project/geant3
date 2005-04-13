@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.17 2004/07/30 12:22:21 brun Exp $
+# $Id: Makefile,v 1.18 2004/12/17 11:55:47 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -115,10 +115,10 @@ CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
 
 # FORTRAN compilation flags
 
-FFLAGS      := -pg $(FOPT) $(CLIBFOPT) -I. -Iminicern
-ifeq ($(PLATFORM),linux)
-   FFLAGS      := $(filter-out -O%,$(FFLAGS))  
-endif
+FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern
+# ifeq ($(PLATFORM),linux)
+#    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
+# endif
 
 DEPINC 		+= -I. -I$(ROOT_INCDIR)
 
