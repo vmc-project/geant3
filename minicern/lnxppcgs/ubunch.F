@@ -1,7 +1,13 @@
 *
-* $Id: ubunch.F,v 1.1 1998/09/25 09:32:14 mclareni Exp $
+* $Id: ubunch.F,v 1.1 2003/06/30 07:42:34 brun Exp $
 *
 * $Log: ubunch.F,v $
+* Revision 1.1  2003/06/30 07:42:34  brun
+* From Federico:
+* Add new makefile for MacOS
+* Fixes in ublow/ubunch.
+* Implement clean destructor for TGeant3
+*
 * Revision 1.1  1998/09/25 09:32:14  mclareni
 * Modifications for the Mklinux port flagged by CERNLIB_PPC
 *
@@ -16,8 +22,13 @@ C ORIG. 03/02/89 K.M.STORR
 C
 
       DIMENSION    MS(99), MT(99), NCHP(9)
+#ifdef __G95__
+      data iblan1/z'20202020'/
+      data mask1/z'ff000000'/
+#else
       data iblan1/x'20202020'/
       data mask1/x'ff000000'/
+#endif
 
       NCH = NCHP(1)
       IF   (NCH)             91,39,11
