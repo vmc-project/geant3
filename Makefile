@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 2004/12/17 11:55:47 brun Exp $
+# $Id: Makefile,v 1.19 2005/04/13 14:46:16 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -71,8 +71,11 @@ endif
 ifeq ($(PLATFORM),linuxia64ecc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),linuxia64gcc)
+ifeq ($(PLATFORM),linuxx8664gcc)
 	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),linuxia64gcc)
+          CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),hpuxacc)
 	  CSRC += minicern/hpxgs/traceqc.c
