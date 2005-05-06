@@ -1,7 +1,10 @@
 *
-* $Id: gbstat.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gbstat.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbstat.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GBSTAT
+      SUBROUTINE G3BSTAT
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Book banks for volume statistics                         *
 C.    *                                                                *
-C.    *    ==>Called by : GGCLOS                                       *
+C.    *    ==>Called by : G3GCLOS                                      *
 C.    *         Author  R.Brun  *********                              *
 C.    *                                                                *
 C.    ******************************************************************

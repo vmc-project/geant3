@@ -1,7 +1,10 @@
 *
-* $Id: gdrprt.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gdrprt.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdrprt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRPRT(IPART,IMATE,STEP,MPOINT)
+      SUBROUTINE G3DRPRT(IPART,IMATE,STEP,MPOINT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -86,8 +89,8 @@ C.
       DO 10 JTK=2,NPOINT
          TKINV(JTK) = TKINV(JTK-1)*STEPL
    10 CONTINUE
-      CALL GFTMAT(IMATE,IPART,'LOSS',NPOINT,TKINV,DEDXMV,TCUT,IXST)
-      CALL GFTMAT(IMATE,IPART,'DRAY',NPOINT,TKINV,DNTOTV,TCUT,IXST)
+      CALL G3FTMAT(IMATE,IPART,'LOSS',NPOINT,TKINV,DEDXMV,TCUT,IXST)
+      CALL G3FTMAT(IMATE,IPART,'DRAY',NPOINT,TKINV,DNTOTV,TCUT,IXST)
       DO 20  I=1,NPOINT
          TKIN  = TKINV(I)
          DEDXM = DEDXMV(I)
@@ -138,7 +141,7 @@ C.
          ENDIF
 *
 * ***    print
-         CALL GEVKEV (TKIN,TKUN,KUNIT)
+         CALL G3EVKEV (TKIN,TKUN,KUNIT)
          WRITE (CHMAIL,10400) TKUN,KUNIT,DNTOT,DEPOT,DNLOW,DNHIG,
      +   REGIME
          CALL GMAIL(0,0)

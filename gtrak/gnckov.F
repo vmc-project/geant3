@@ -1,7 +1,10 @@
 *
-* $Id: gnckov.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gnckov.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gnckov.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GNCKOV
+      SUBROUTINE G3NCKOV
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   This routine calculates the number of Cerenkov photons       *
 C.    *   produced per centimeter in the current medium.               *
 C.    *                                                                *
-C.    *   ==>Called by : GRANGI                                        *
+C.    *   ==>Called by : G3RANGI                                       *
 C.    *      Authors     R.Jones, F.Carminati ********                 *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,0 +1,54 @@
+# $Id: Makefile.linuxicc,v 1.3 2004/05/27 13:15:33 rdm Exp $
+
+# Linux (with icc) platform dependent definitions for GEANT321 Makefile
+
+# The compilers
+CXX           = icc
+CC            = icc
+
+ICC_MAJOR    := $(shell $(CXX) -V 2>&1 | awk '{ if (NR==1) print $$8 }' | \
+                cut -d'.' -f1)
+ICC_MINOR    := $(shell $(CXX) -V 2>&1 | awk '{ if (NR==1) print $$8 }' | \
+                cut -d'.' -f2)
+
+ifeq ($(ICC_MAJOR),8)
+F77           = ifort
+else
+F77           = ifc
+endif
+
+# Global optimisation
+OPT           = -O -ip
+
+# Shared library suffix
+SL            = so
+
+# AWK
+AWK           = awk
+
+# The options
+#
+# starting from root.2.22 on Linux the flags -fno-rtti -fno-exceptions are
+# not necessary any more
+#
+CXXOPTS       = $(OPT)
+COPT          = $(OPT)
+FOPT          = $(OPT)
+
+# CERNLIB defines
+
+CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ
+CLIBCXXOPTS   = $(CLIBDEFS)
+CLIBCOPT      = $(CLIBDEFS)
+CLIBFOPT      = $(CLIBDEFS)
+
+LD            = icc
+LDFLAGS       = $(OPT)
+
+SHLD          = $(LD)
+SOFLAGS       = -Wl,-soname,$(notdir $@) -shared
+SHLIB         =
+
+LIBS          = $(ROOTLIBS)
+LIBNOVER      = `find /lib -name 'libNoVersion*.so' | xargs --replace basename {} .so | sed -e 's/lib/ -l/'`
+

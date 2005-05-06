@@ -1,7 +1,10 @@
 *
-* $Id: ghmix.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: ghmix.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: ghmix.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.20  by  S.Giani
 *-- Author :
-      SUBROUTINE GHMIX(A, W, N, AEFF)
+      SUBROUTINE G3HMIX(A, W, N, AEFF)
 C
 C     ******************************************************************
 C     *                                                                *
@@ -29,7 +32,7 @@ C     * For details see Memorandum OPAL/0037N/JA/md, ref. Hadron       *
 C     * Milestone 84/003, Calculation of Hadronic Interaction Lengths  *
 C     * for Mixtures.                                                  *
 C.    *                                                                *
-C.    *    ==>Called by : GSMIXT                                       *
+C.    *    ==>Called by : G3SMIXT                                      *
 C.    *       Author    J.Allison  *********                           *
 C     *                                                                *
 C     ******************************************************************
@@ -48,7 +51,7 @@ C
       AINV   = 0.
       WTOT   = 0.
       DO 10 I = 1, N
-         PINT   = PINT + W(I) * GHSIGM(5., 8, A(I)) / A(I)
+         PINT   = PINT + W(I) * G3HSIGM(5., 8, A(I)) / A(I)
          AINV   = AINV + W(I) / A(I)
          WTOT   = WTOT + W(I)
   10  CONTINUE
@@ -59,7 +62,7 @@ C         Work out AEFF which gives PINT for 5 GeV/c pion.
 C         (This is a short Newton's method loop.)
 C
       AEFF   = 1. / AINV
-      PNEW   = GHSIGM ( 5., 8, AEFF ) / AEFF
+      PNEW   = G3HSIGM ( 5., 8, AEFF ) / AEFF
       DA     = 1.
       ITER   = 0
    20 CONTINUE
@@ -67,7 +70,7 @@ C
       AEFF   = AEFF + DA
       POLD   = PNEW
       DAOLD  = DA
-      PNEW   = GHSIGM ( 5., 8, AEFF ) / AEFF
+      PNEW   = G3HSIGM ( 5., 8, AEFF ) / AEFF
       DP     = PNEW - POLD
       DA     = (PINT - PNEW ) * DAOLD / DP
       IF ( ( ITER .GT. 1 ) .AND. ( ABS ( DA ) .GT. ABS ( DAOLD ) ) )

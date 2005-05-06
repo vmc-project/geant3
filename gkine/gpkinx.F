@@ -1,7 +1,10 @@
 *
-* $Id: gpkinx.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gpkinx.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpkinx.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GPKINX(IT)
+      SUBROUTINE G3PKINX(IT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Prints kinematics bank JKINE for track number IT         *
 C.    *       If IT=0 Prints all kinematics banks                      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, GPRINT                               *
+C.    *    ==>Called by : <USER>, G3PRINT                              *
 C.    *       Author    R.Brun  S.Giani *********                      *
 C.    *                                                                *
 C.    ******************************************************************

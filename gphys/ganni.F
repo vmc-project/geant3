@@ -1,7 +1,10 @@
 *
-* $Id: ganni.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: ganni.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: ganni.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,13 +21,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GANNI
+      SUBROUTINE G3ANNI
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates positron annihilation                               *
 C.    *                                                                *
-C.    *    ==>Called by : GTELEC                                       *
+C.    *    ==>Called by : G3TELEC                                      *
 C.    *       Author    L.Urban *********                              *
 C.    *       10/06/93: modified by Georges Azuelos (Vancouver)        *
 C     *                 to include 1-quantum annihilation              *
@@ -109,7 +112,7 @@ C
 C
 C             Rotate tracks into GEANT system and store.
 C
-         CALL GFANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
+         CALL G3FANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
 C
 C            Polar co-ordinates to momentum components.
 C
@@ -127,7 +130,7 @@ C
             GPOS(2,NGKINE) = VECT(2)
             GPOS(3,NGKINE) = VECT(3)
             IF(ROTATE)
-     +      CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +      CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
          ELSE
             DESTEP = DESTEP + EPHOT1
          ENDIF
@@ -148,7 +151,7 @@ C
             GPOS(2,NGKINE) = VECT(2)
             GPOS(3,NGKINE) = VECT(3)
             IF(ROTATE)
-     +      CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +      CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
          ELSE
             DESTEP = DESTEP + EPHOT2
          ENDIF
@@ -163,7 +166,7 @@ C Assume photon collinear with positron
 C
 C             Rotate tracks into GEANT system and store.
 C
-         CALL GFANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
+         CALL G3FANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
 C
 C            Polar co-ordinates to momentum components.
 C
@@ -181,7 +184,7 @@ C
             GPOS(2,NGKINE) = VECT(2)
             GPOS(3,NGKINE) = VECT(3)
             IF(ROTATE)
-     +      CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +      CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
          ELSE
             DESTEP = DESTEP + EPHOT
          ENDIF

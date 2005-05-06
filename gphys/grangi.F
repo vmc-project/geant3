@@ -1,7 +1,10 @@
 *
-* $Id: grangi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grangi.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: grangi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GRANGI
+      SUBROUTINE G3RANGI
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *      The stopping range is the integral of the inverse of the  *
 C.    *      DE/DX table.                                              *
 C.    *     There are 4 tables : electron,positron,muon,proton         *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author      M.Maire   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

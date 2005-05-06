@@ -1,16 +1,5 @@
 *
-* $Id: gdtr8.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdtr8.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -25,7 +14,7 @@ C.    *       NAME = volume name (input)                               *
 C.    *       MOTH = mother name of NAME (output)                      *
 C.    *       IONL = 'ONLY' flag (1 for 'ONLY', 0 for 'MANY') (output) *
 C.    *                                                                *
-C.    *    ==>Called by : GDTREE                                       *
+C.    *    ==>Called by : G3DTREE                                      *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

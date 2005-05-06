@@ -1,7 +1,10 @@
 *
-* $Id: gphsg1.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphsg1.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphsg1.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GPHSG1(E)
+      FUNCTION G3PHSG1(E)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       FUNCTION TO COMPUTE THE PHOTOEFFECT TOTAL CROSS-SECTION  *
 C.    *       AS A FUNCTION OF E                                       *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GPHOTI                                       *
+C.    *    ==>CALLED BY : G3PHOTI                                      *
 C.    *                                                                *
 C.    *    (1) Sandia parametrizsation is used;                        *
 C.    *    (2) GPHSG1 in cm**2/g.                                      *
@@ -61,6 +64,6 @@ C Use Sandia data
          ENDIF
    10 CONTINUE
 C This value is in cm**2/g
-   20 GPHSG1 = MAX(RES,0.)
+   20 G3PHSG1 = MAX(RES,0.)
 C
       END

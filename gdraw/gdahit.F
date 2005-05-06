@@ -1,7 +1,10 @@
 *
-* $Id: gdahit.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdahit.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gdahit.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -110,7 +113,7 @@ C            soft-characters 840...854 (see above)
 C
          V=V-SSYMB*0.5
          CALL UHTOC(MSYMB,4,CHTEXT,4)
-         CALL GDRAWT(U,V,CHTEXT,SSYMB,0.,1,0)
+         CALL G3DRAWT(U,V,CHTEXT,SSYMB,0.,1,0)
 C
       ELSE
 C
@@ -121,12 +124,12 @@ C
          UU(2) = U+DP
          VV(1) = V+DP
          VV(2) = V-DP
-         CALL GDRAWV(UU,VV,2)
+         CALL G3DRAWV(UU,VV,2)
          UU(1) = U+DP
          UU(2) = U-DP
          VV(1) = V+DP
          VV(2) = V-DP
-         CALL GDRAWV(UU,VV,2)
+         CALL G3DRAWV(UU,VV,2)
 C
       ENDIF
 C

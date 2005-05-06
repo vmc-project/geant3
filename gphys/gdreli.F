@@ -1,7 +1,10 @@
 *
-* $Id: gdreli.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdreli.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdreli.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRELI(A1,Z1,A2,Z2,DENS,T,DEDX)
+      SUBROUTINE G3DRELI(A1,Z1,A2,Z2,DENS,T,DEDX)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -35,7 +38,7 @@ C.    *   Tamax depend on Z1 and Z2 , Tamax .le. few MeV).             *
 C.    *  In the case of low T , the energy loss curve has been         *
 C.    *  extrapolated down to T -> 0.                                  *
 C.    *                                                                *
-C.    *    ==>Called by : GDRELA                                       *
+C.    *    ==>Called by : G3DRELA                                      *
 C.    *       Author    L.Urban    *********                           *
 C.    *                                                                *
 C.    ******************************************************************
@@ -62,14 +65,14 @@ C.
 *
 *     "high energy" case
 *
-         CALL GDRELP(A2,Z2,DENS,TA,S)
-         S=Z1**2*GEFCH2(Z1,Z2,TA)*S
+         CALL G3DRELP(A2,Z2,DENS,TA,S)
+         S=Z1**2*G3EFCH2(Z1,Z2,TA)*S
       ELSE
 *
 *     "low energy" case
 *
-         CALL GDRELP(A2,Z2,DENS,TAMAX,S0)
-         S0=Z1**2*GEFCH2(Z1,Z2,TAMAX)*S0
+         CALL G3DRELP(A2,Z2,DENS,TAMAX,S0)
+         S0=Z1**2*G3EFCH2(Z1,Z2,TAMAX)*S0
          R=TA/TAMAX
          S=S0*(2.*SQRT(R)-R)
       ENDIF

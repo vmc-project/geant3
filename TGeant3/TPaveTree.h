@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TPaveTree.h,v 1.2 2002/07/10 08:32:52 alibrary Exp $ */
+/* $Id: TPaveTree.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -28,7 +28,7 @@ public:
   virtual void  SavePrimitive(ofstream &out, Option_t *option);
 
 private:  
-  TPaveTree(const TPaveTree &PaveTree) {}
+  TPaveTree(const TPaveTree &PaveTree ):TPaveLabel(PaveTree) {}
 
   ClassDef(TPaveTree,1)  //A TPaveLabel specialized for Geant GDTREE
 };

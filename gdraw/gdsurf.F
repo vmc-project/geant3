@@ -1,16 +1,5 @@
 *
-* $Id: gdsurf.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdsurf.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:28  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -46,5 +35,5 @@ C
       CALL GDFR3D(P,4,U,V)
       U(5)=U(1)
       V(5)=V(1)
-      CALL GDRAWV(U,V,5)
+      CALL G3DRAWV(U,V,5)
       END

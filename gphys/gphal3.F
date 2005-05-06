@@ -1,7 +1,10 @@
 *
-* $Id: gphal3.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphal3.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphal3.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GPHAL3(BET)
+      FUNCTION G3PHAL3(BET)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates Photoelectron Angular ditribution from L3 shell     *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GPHOT                                        *
+C.    *    ==>CALLED BY : G3PHOT                                       *
 C.    *       AUTHOR    : J. Chwastowski                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -62,7 +65,7 @@ C.
       S5 = 2*(GAMA+ONE)
       S6 = GAMA*(3*GAMA-ONE)*(GAMA+ONE)
       S7 = G2*(G2-1)
-      GPHAL3 = 0.0
+      G3PHAL3 = 0.0
    30 CONTINUE
       CALL GRNDM(RAN,2)
       DRN = 2*RAN(1)
@@ -80,5 +83,5 @@ C.
       SAUT6 = SAUT5*SIN2T
       SAUT7 = (SAUT1+SAUT2+SAUT3+SAUT4+SAUT6)*ANOR
       IF(RAN(2).GT.SAUT7) GO TO 30
-      GPHAL3 = COST
+      G3PHAL3 = COST
       END

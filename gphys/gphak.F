@@ -1,7 +1,10 @@
 *
-* $Id: gphak.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphak.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gphak.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      REAL FUNCTION GPHAK(BET)
+      REAL FUNCTION G3PHAK(BET)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates Photoelectron Angular ditribution from K shell      *
-C.    *   from L1 shell ditribution ENTRY GPHAL1                       *
+C.    *   from L1 shell ditribution ENTRY G3PHAL1                      *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GPHOT                                        *
+C.    *    ==>CALLED BY : G3PHOT                                       *
 C.    *       AUTHOR    : J. Chwastowski                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -40,7 +43,7 @@ C.
 C
 C L1 shell entry
 C
-      ENTRY GPHAL1(BET)
+      ENTRY G3PHAL1(BET)
 C
       BETA = MIN(BET,BETMAX)
       B1 = ONE-BETA
@@ -55,7 +58,7 @@ C
        ENDIF
    10 CONTINUE
    20 SAUT2 = HALF*GAMA*G1*(GAMA-2)
-      GPHAK = 0.0
+      G3PHAK = 0.0
    30 CONTINUE
       CALL GRNDM(RAN,2)
       DRN = 2*RAN(1)
@@ -65,6 +68,6 @@ C
       SIN2T = (ONE-COST)*(ONE+COST)
       SAUT3 = SIN2T/(X**2)*(ONE+SAUT2*X)*ANOR
       IF(RAN(2).GT.SAUT3) GO TO 30
-      GPHAK = COST
-      GPHAL1 = GPHAK
+      G3PHAK  = COST
+      G3PHAL1 = G3PHAK
       END

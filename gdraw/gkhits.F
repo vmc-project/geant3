@@ -1,16 +1,5 @@
 *
-* $Id: gkhits.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gkhits.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:04  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -93,7 +82,7 @@ C
          VP(4)=VP(3)
          UP(5)=UP(1)
          VP(5)=VP(1)
-         CALL GDRAWV(UP,VP,5)
+         CALL G3DRAWV(UP,VP,5)
       ENDIF
 C
 C            loop on all selected sets
@@ -267,7 +256,7 @@ C
       VP(4)=VP(3)
       UP(5)=UP(1)
       VP(5)=VP(1)
-      CALL GDRAWV(UP,VP,5)
+      CALL G3DRAWV(UP,VP,5)
 C
 C             Print parameters of the picked hit
 C

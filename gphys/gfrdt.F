@@ -1,7 +1,10 @@
 *
-* $Id: gfrdt.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfrdt.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfrdt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GFRDT(ZZ,ESHL,NSHL,NWORD,NRAD,PRB,ENER)
+      SUBROUTINE G3FRDT(ZZ,ESHL,NSHL,NWORD,NRAD,PRB,ENER)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C     *       Fetch Radiative Decay probability Tables and the modes   *
 C.    *       the radiative shells decay                               *
 C.    *                                                                *
-C.    *    ==>Called by : GFSHDC                                       *
+C.    *    ==>Called by : G3FSHDC                                      *
 C.    *       Author    J. Chwastowski                                 *
 C.    *                                                                *
 C.    ******************************************************************

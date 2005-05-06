@@ -1,7 +1,10 @@
 *
-* $Id: gvaviv.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gvaviv.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gvaviv.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GVAVIV(RKAPPA,BETA2,RAN)
+      FUNCTION G3VAVIV(RKAPPA,BETA2,RAN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *                                                                *
-C.    *  GVAVIV                                                        *
-C.    *  ------                                                        *
+C.    *  G3VAVIV                                                       *
+C.    *  -------                                                       *
 C.    *                                                                *
 C.    *  Initializes the parameters for a Vavilov distribution         *
 C.    *                                                                *
@@ -38,7 +41,7 @@ C.    *    Fast calculation of Vavilov distribution NIMB 1990          *
 C.    *                                                                *
 C.    *       Author    K.S.Koelbig     ********                       *
 C.    *                                                                *
-C.    *   ==> Called by : GLANDO                                       *
+C.    *   ==> Called by : G3LANDO                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -200,7 +203,7 @@ C.
      2  0.           , -0.14540925E+1, -0.39529833E+0,
      3 -0.44293243E-1,  0.88741049E-1/
  
-      GVAVIV=0
+      G3VAVIV=0
       IF(RKAPPA .LT. 0.01 .OR. RKAPPA .GT. 12) RETURN
       IF(RKAPPA .GE. 0.29) THEN
        ITYPE=1
@@ -339,7 +342,7 @@ C.
      2            (1+X*Y*AC(7))
        AC(12)=(0.045+X*AC(11))*Y
       ENDIF
-      IF(ITYPE .EQ. 4) AC(10)=0.995/GLANDS(AC(8))
+      IF(ITYPE .EQ. 4) AC(10)=0.995/G3LANDS(AC(8))
  
       T=2*RAN/AC(9)
       RLAM=AC(0)
@@ -373,14 +376,14 @@ C.
         FU=(AC(11)*X+AC(12))*X
        ENDIF
       ELSE
-       FU=AC(10)*GLANDE(RLAM)
+       FU=AC(10)*G3LANDE(RLAM)
       ENDIF
       S=S+FL+FU
       IF(S .GT. T) GO TO 22
    21 FL=FU
  
    22 S0=S-FL-FU
-      GVAVIV=RLAM-AC(9)
-      IF(S .GT. S0) GVAVIV=GVAVIV+AC(9)*(T-S0)/(S-S0)
+      G3VAVIV=RLAM-AC(9)
+      IF(S .GT. S0) G3VAVIV=G3VAVIV+AC(9)*(T-S0)/(S-S0)
       RETURN
       END

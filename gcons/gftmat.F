@@ -1,7 +1,10 @@
 *
-* $Id: gftmat.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gftmat.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gftmat.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 11/01/95  08.57.12  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GFTMAT(IMATE,IPATT,CHMECA,KDIM,TKIN,VALUE,PCUT,IXST)
+      SUBROUTINE G3FTMAT(IMATE,IPATT,CHMECA,KDIM,TKIN,VALUE,PCUT,IXST)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -363,7 +366,7 @@ C.
             ENDIF
             IF(CERKOV) THEN
                VECT(7)=SQRT(TKIN(IKB)*(TKIN(IKB)+2*AMASS))
-               CALL GNCKOV
+               CALL G3NCKOV
                STCKOV = MXPHOT/MAX(3.*DNDL,1E-10)
             ELSE
                STCKOV=BIG
