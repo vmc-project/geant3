@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3TGeo.h,v 1.2 2004/12/21 15:34:48 brun Exp $ */
+/* $Id: TGeant3TGeo.h,v 1.3 2005/02/08 11:22:03 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -14,11 +14,29 @@
 
 class TGeoMaterial;
 
+//______________________________________________________________
+//
+//       Geant3 prototypes for commons
+//
+//______________________________________________________________
+//
+
+//----------GCVOL1
+//      COMMON/GCVOL1/NLEVL1,NAMES1(15),NUMBR1(15),LVOLU1(15)
+typedef struct {
+  Int_t    nlevl1;
+  Int_t    names1[15];
+  Int_t    numbr1[15];
+  Int_t    lvolu1[15];
+} Gcvol1_t;
+
+
 class TGeant3TGeo : public TGeant3 {
 
 public:
   TGeant3TGeo();
   TGeant3TGeo(const char *title, Int_t nwgeant=0);
+  virtual void LoadAddress();
   virtual ~TGeant3TGeo();
   virtual Bool_t  IsRootGeometrySupported() const {return kTRUE;}
 
@@ -74,6 +92,7 @@ public:
 
   virtual void   SetRootGeometry();
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                         //
 //                                                                                         //
@@ -81,6 +100,10 @@ public:
 //                                                                                         //
 //                                                                                         //
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+  // access functions to commons
+
+  virtual Gcvol1_t* Gcvol1() const {return fGcvol1;}
 
       // functions from GBASE
    virtual  void  Ggclos();
@@ -153,6 +176,7 @@ protected:
   TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled in FinishGeometry()
+  Gcvol1_t *fGcvol1;          //! GCVOLU common structure
 
 private:
 

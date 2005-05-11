@@ -16,6 +16,15 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.3  2005/02/08 11:22:03  brun
+From Ivana:
+For TGeant3.h:
+Added IsRootGeometrySupported() function
+(now required by TVirtualMC)
+
+For TGeant3.cxx:
+Updated text in Fatal in SetRootGeometry.
+
 Revision 1.2  2004/12/21 15:34:48  brun
 Implement TGeant3TGeo::isRootGeometry returning kTRUE
 
@@ -293,6 +302,7 @@ Cleanup of code
 # define g3stmed  g3stmed_
 # define g3treve  g3treve_
 # define gtreveroot  gtreveroot_
+# define gcomad gcomad_
 
 # define g3brelm g3brelm_
 # define g3prelm g3prelm_
@@ -346,6 +356,7 @@ Cleanup of code
 # define gprotm  GPROTM
 # define gsvolu  GSVOLU
 # define gprint  GPRINT
+# define gcomad  GCOMAD
 
 #endif
 
@@ -372,6 +383,7 @@ extern "C"
 			   Float_t &, Float_t &, Float_t &, Float_t &,
 			   Float_t &, Float_t &, Float_t *, Int_t & DEFCHARL);
 
+  void type_of_call gcomad(DEFCHARD, Int_t*& DEFCHARL);
 }
 
 
@@ -396,6 +408,7 @@ extern "C" type_of_call void ggperpTGeo(Float_t*, Float_t*, Int_t&);
 //
 // Geant3 global pointer
 //
+Gcvol1_t *gcvol1 = 0;
 TGeoNode *gCurrentNode = 0;
 R__EXTERN Gctrak_t *gctrak;
 R__EXTERN Gcvolu_t *gcvolu;
@@ -438,7 +451,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
 
   fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
 
-
+  LoadAddress();
   //set pointers to tracker functions
   fginvol = ginvolTGeo;
   fgtmedi = gtmediTGeo;
@@ -454,6 +467,19 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
 TGeant3TGeo::~TGeant3TGeo()
 {
    delete fMCGeo;
+}
+
+//____________________________________________________________________________
+void TGeant3TGeo::LoadAddress()
+{
+  //
+  // Assigns the address of the GEANT common blocks to the structures
+  // that allow their access from C++
+  //
+   printf("LoadAddress\n");
+//   TGeant3::LoadAddress();
+   gcomad(PASSCHARD("GCVOL1"),(int*&) fGcvol1  PASSCHARL("GCVOL1"));
+   gcvol1 = fGcvol1;
 }
 
 //_____________________________________________________________________________
@@ -520,7 +546,7 @@ const char* TGeant3TGeo::CurrentVolName() const
   //
   // Returns the current volume name
   //
-  if (gGeoManager->IsOutside()) return 0;
+  if (gGeoManager->IsOutside()) return gGeoManager->GetTopVolume()->GetName();
   return gGeoManager->GetCurrentVolume()->GetName();
 }
 
@@ -1888,6 +1914,7 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 {
    gcchan->lsamvl = kTRUE;
    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+   gcchan->lsamvl = gGeoManager->IsSameLocation();
    if (gGeoManager->IsOutside()) {
       numed=0;
    } else {
@@ -1895,7 +1922,6 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
       gGeoManager->GetBranchNames(gcvolu->names);
       gGeoManager->GetBranchNumbers(gcvolu->number,gcvolu->lvolum);
       TGeoVolume *vol = gCurrentNode->GetVolume();
-      gcchan->lsamvl = gGeoManager->IsSameLocation();
       if (vol) {
          TGeoMedium *medium = vol->GetMedium();
          if (medium) numed = medium->GetId();
@@ -1929,6 +1955,16 @@ void gmediaTGeo(Float_t *x, Int_t &numed, Int_t &check)
 //______________________________________________________________________
 void gtmanyTGeo(Int_t &level1)
 {
+   if (level1==1) {
+      Int_t nlevel = gcvolu->nlevel;
+//      printf("gtmanyTGeo nlevel=%i %s\n",nlevel,gGeoManager->GetPath());
+      gcvol1->nlevl1 = nlevel;
+      if (nlevel>0) {
+         memcpy(gcvol1->names1, gcvolu->names, nlevel*sizeof(Int_t));
+         memcpy(gcvol1->numbr1, gcvolu->number, nlevel*sizeof(Int_t));
+         memcpy(gcvol1->lvolu1, gcvolu->lvolum, nlevel*sizeof(Int_t));
+      }  
+   }   
 }
 
 //______________________________________________________________________
@@ -1961,7 +1997,43 @@ void glvoluTGeo(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
   //  to zero NLEVEL in the common GCVOLU. It return 0 if there were no
   //  problems in make the call.
   //
-// printf("glvolu called\n");
+   TGeoVolume *vol = gGeoManager->GetTopVolume();
+   TGeoVolume *vdaughter = 0;
+   TGeoNode *node = 0;
+   Int_t nd;
+   Bool_t found = kFALSE;
+   ier = 0;
+   gGeoManager->CdTop();
+   if (nlev<1) nlev = 1;
+   gcvolu->nlevel = nlev;
+   if (nlev==1) return;
+   Int_t *lvol = gcvol1->lvolu1;
+   memcpy(gcvolu->names, lnam,  nlev*sizeof(Int_t));
+   memcpy(gcvolu->number, lnum, nlev*sizeof(Int_t));
+   memcpy(gcvolu->lvolum, lvol, nlev*sizeof(Int_t));
+//   for (Int_t i=0;i<nlev;i++) printf(" #%i: %i  %i  %i\n", i, lnam[i], lnum[i],lvol[i]);
+   
+   for (Int_t i=1; i<nlev; i++) {
+      nd = vol->GetNdaughters();
+      found = kFALSE;
+      for (Int_t id=0; id<nd; id++) {
+         node = vol->GetNode(id);
+         vdaughter = node->GetVolume();
+         if (vdaughter->GetNumber() == lvol[i]) {
+            if (node->GetNumber()==lnum[i]) {
+               found = kTRUE;
+               gGeoManager->CdDown(id);
+               vol = vdaughter;
+               break;
+            } 
+         }
+      }
+      if (!found) {
+         printf("### ERROR in TGeant3TGeo::glvoluTGeo(): cannot restore path\n");
+         ier = 1;
+         return;
+      }           
+   }   
 }
 
 
