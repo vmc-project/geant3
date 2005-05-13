@@ -4,10 +4,10 @@
 #include "TClonesArray.h"
 #include "TParticle.h"
 
-#if defined(WITHROOT) || defined(WITHBOTH)
+//#define COLLECT_TRACKS
+#if defined(COLLECT_TRACKS)
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
-//#define COLLECT_TRACKS
 #endif
    
 #ifndef WIN32
@@ -101,7 +101,7 @@
 #endif
 
 extern TGeant3* geant3;
-#if defined(WITHROOT) || defined(WITHBOTH)
+#if defined(COLLECT_TRACKS)
 extern TGeoManager *gGeoManager;
 #endif
 
@@ -597,83 +597,55 @@ void gustep()
   geant3->TrackPosition(x,y,z);
 
 #if defined(COLLECT_TRACKS)
+  if (gMC->IsRootGeometrySupported()) {
   Int_t nstep = geant3->Gctrak()->nstep;
-//  Int_t copy;
-//  Int_t id = gMC->CurrentVolID(copy);
+  Int_t cpdg = gMC->PDGFromId(geant3->Gckine()->ipart);
   Bool_t isnew = kFALSE; // gMC->IsNewTrack() returns true just for new used indices
   if (nstep==0) isnew = kTRUE;
   Int_t cid = stack->GetCurrentTrackNumber();
-  Int_t cgid = (gGeoManager->GetNtracks())?gGeoManager->GetCurrentTrack()->GetId():-1;
-  printf("step: cid=%i cgid=%i\n", cid,cgid);
-  if (cid==cgid) {
-     isnew=kFALSE;
-  } else {
-     printf("getting new track %i\n", cid);
-     Int_t ind = gGeoManager->GetTrackIndex(cid);
-     if (ind>=0) {
-        printf("found... not new, making it current\n");
-        gGeoManager->SetCurrentTrack(ind);
-        isnew = kFALSE;
-     }
-  }     	     
-  Int_t mid = stack->CurrentTrackParent();
-  printf("mid=%i\n",mid);
-  Int_t cpdg = gMC->PDGFromId(geant3->Gckine()->ipart);
-  Double_t xo,yo,zo,to;
-  TVirtualGeoTrack *track = gGeoManager->GetCurrentTrack();
-  if (!track) printf("woops, no track\n");
+  Int_t mid = stack->GetCurrentParentTrackNumber();
+  Double_t tofg = geant3->Gctrak()->tofg;
+  //printf("id=%i mid=%i pdg=%i nstep=%i (%f,%f,%f)\n",cid,mid,cpdg,nstep,x,y,z);
+
+  TVirtualGeoTrack *parent = 0;
+  if (mid>=0) {
+     parent = gGeoManager->GetTrackOfId(mid);
+     if (!parent) printf("Error: no parent track with id=%i\n",mid);
+  }   
+  TVirtualGeoTrack *track;
   if (isnew) {
-     if (mid<0) {
-        // new primary
-        Int_t itrack = gGeoManager->AddTrack(cid, cpdg);
+     if (parent) {
+        //printf("Adding daughter %i of %i\n",cid,mid);
+        track = parent->AddDaughter(cid, cpdg);
+        gGeoManager->SetCurrentTrack(track);
+     } else {     
+        Int_t itrack = gGeoManager->AddTrack(cid, cpdg); 
+        //printf("Added new primary %i\n",cid);
         gGeoManager->SetCurrentTrack(itrack);
         track = gGeoManager->GetCurrentTrack();
-        printf("NEW PRIMARY %i AT (%g, %g, %g)\n",cid, x,y,z);
-     } else {
-        // new secondary
-        if (!track) {
-           printf("NO CURRENT TRACK !!! FATAL\n");
-           exit(1);
-        }
-	if (mid != cgid) {
-	   track = gGeoManager->GetParentTrackOfId(mid);
-           if (!track) track = gGeoManager->GetTrackOfId(mid);
-           if (!track) {
-              printf("NO MOTHER TRACK with id=%i !!! FATAL\n",mid);
-              exit(1);
-           }
-	}   
-        track = track->AddDaughter(cid, cpdg);
-        gGeoManager->SetCurrentTrack(track);
-        printf("NEW TRACK %i AT (%g, %g, %g) parent=%i\n",cid, x,y,z,mid);
-     }      
-         
+     }
      TDatabasePDG *pdgdb = TDatabasePDG::Instance();
      if (pdgdb) {
         TParticlePDG *part = pdgdb->GetParticle(cpdg);
-        if (part) track->SetName(part->GetName());
+        if (part) {
+           track->SetName(part->GetName());
+           track->SetParticle(part);
+        }   
      }   
-     track->AddPoint(x,y,z,geant3->Gctrak()->tofg);
   } else {
-     if (cid != cgid) {
-        Int_t ind = gGeoManager->GetTrackIndex(cid);
-        if (ind<0) {
-           printf("Track of id=%i not found !!!\n", cid);
-        } else {
-	        gGeoManager->SetCurrentTrack(ind);
-           track = gGeoManager->GetCurrentTrack();
-        }
-     }		
+     track = gGeoManager->GetCurrentTrack();
+  } 
+  Double_t xo,yo,zo,to;
+  Bool_t skippoint = kFALSE;
+  if (track->HasPoints()) {
      track->GetLastPoint(xo,yo,zo,to);
-     Bool_t skippoint = kFALSE;
-     if (!gMC->IsTrackStop() && !gMC->IsTrackOut()) {
-        skippoint = (TMath::Abs(xo*xo+yo*yo+zo*zo-x*x-y*y-z*z) < 1E-1)?kTRUE:kFALSE;
-     } else {
-//        printf("nstep=%i STOPPED\n", nstep);
-     }	
-     if (!skippoint) track->AddPoint(x,y,z,geant3->Gctrak()->tofg);
-  }     		
+     Double_t rdist = TMath::Sqrt((xo-x)*(xo-x)+(yo-y)*(yo-y)+(zo-z)*(zo-z));
+     if (rdist<0.01) skippoint=kTRUE;
+  }   
+  if (!skippoint) track->AddPoint(x,y,z,tofg);
+  }
 #endif  
+
   rmax = app->TrackingRmax();
   if (x*x+y*y > rmax*rmax ||
       TMath::Abs(z) > app->TrackingZmax()) {
