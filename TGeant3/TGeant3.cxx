@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.42  2005/02/16 08:01:51  brun
+Implement function grndmq. It returns gRandom->GetSeed().
+The result makes sense only when Trandom is the generator.
+
 Revision 1.41  2005/02/08 11:22:03  brun
 From Ivana:
 For TGeant3.h:
@@ -2484,17 +2488,6 @@ void TGeant3::G3Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
     }
   }
   g3smixt(kmat,PASSCHARD(name), a, z,Float_t(dens), nlmat,wmat PASSCHARL(name));
-
-  if (nlmat < 0) {
-     nlmat = - nlmat;
-     Double_t amol = 0;
-     for (i=0;i<nlmat;i++) {
-        amol += a[i]*wmat[i];
-     }
-     for (i=0;i<nlmat;i++) {
-        wmat[i] *= a[i]/amol;
-     }
-  }
 }
 
 //_____________________________________________________________________________
@@ -5639,6 +5632,7 @@ void TGeant3::Init()
     fApplication->AddParticles();
     fApplication->ConstructGeometry();
     FinishGeometry();
+    fApplication->ConstructOpGeometry();
     fApplication->InitGeometry();
 }
 
@@ -5778,7 +5772,11 @@ Float_t* TGeant3::CreateFloatArray(Double_t* array, Int_t size) const
   Float_t* floatArray;
   if (size>0) {
     floatArray = new Float_t[size];
-    for (Int_t i=0; i<size; i++) floatArray[i] = array[i];
+    for (Int_t i=0; i<size; i++)
+      if (array[i] >= FLT_MAX ) 
+        floatArray[i] = FLT_MAX/100.;
+      else	
+        floatArray[i] = array[i];
   }
   else {
     //floatArray = 0;
