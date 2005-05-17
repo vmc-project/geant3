@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.4  2005/05/11 11:46:54  brun
+From Andrei Gheata:
+ Implementation of gtmany (PUSH) and glvolu (POP) in
+TGeant3TGeo class (needed for the correct boundary crossing sequence in
+case of Cerenkov transport).
+
 Revision 1.3  2005/02/08 11:22:03  brun
 From Ivana:
 For TGeant3.h:
@@ -448,6 +454,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
   // Standard constructor for TGeant3 with ZEBRA initialisation
   //
 
+  SetName("TGeant3TGeo");
 
   fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
 
