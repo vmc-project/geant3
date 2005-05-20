@@ -1,7 +1,12 @@
 *
-* $Id: q_jbit.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
+* $Id: q_jbit.inc,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: q_jbit.inc,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
 * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
 * initial import into CVS
 *
@@ -56,7 +61,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       JBIT (IZW,IZP)    = SHFTR (SHFTL(IZW,32-IZP), 31)
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
       JBIT(IZW,IZP)     = AND(RSHIFT(IZW,IZP-1),1)
 
 #elif defined(CERNLIB_OS9)

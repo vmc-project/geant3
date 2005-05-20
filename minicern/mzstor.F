@@ -1,7 +1,10 @@
 *
-* $Id: mzstor.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id: mzstor.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: mzstor.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov
 * Separate distribution  of Geant3
 *
@@ -151,7 +154,11 @@ C--                Calculate table off-set
 
 #if defined(CERNLIB_QPRINT)
       IF (NQLOGL.GE.-1)
+#if defined(__G95__)
+     +WRITE (IQLOG,9021) JQSTOR,CHNAME(1:4),CHNAME(5:8)
+#else
      +WRITE (IQLOG,9021) JQSTOR,NQSNAM(1),NQSNAM(2)
+#endif
      +,                  LQSTOR,LOCT,LQSTOR,LOCT,KQS,KQT,KQS,KQT
      +,                  NQSTRU,NQREF,LQ2END,NDATAT,NFEND
  9021 FORMAT (1X/' MZSTOR.  Initialize Store',I3,'  in ',2A4,

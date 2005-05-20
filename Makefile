@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.19 2005/04/13 14:46:16 brun Exp $
+# $Id: Makefile,v 1.20 2005/04/30 10:07:54 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -82,6 +82,9 @@ ifeq ($(PLATFORM),hpuxacc)
 endif
 ifneq ($(PLATFORM),hpuxacc)
 	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
+endif
+ifeq  ($(PLATFORM),macosx)
+	  CSRC += minicern/lnblnk.c
 endif
 CSRC	:= $(filter-out added/dummies2.c,$(CSRC))
 

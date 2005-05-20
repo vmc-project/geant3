@@ -1,4 +1,4 @@
-# $Id: MakeMacros,v 1.8 2004/06/01 22:40:27 rdm Exp $
+# $Id: MakeMacros,v 1.9 2004/11/26 16:54:51 brun Exp $
 
 ############################   MACROS   #######################################
 
@@ -17,10 +17,14 @@ $(SLIBRARY):
 		   @cd tmp; $(SHLD) -o $@ $(LIBS) -p 0 $(notdir $^)
                 else
                    ifneq (,$(findstring macosx,$(PLATFORM)))
-		      @cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
-		      @cd tmp; $(SHLD) -bundle -undefined dynamic_lookup $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(notdir $^) $(SHLIB) -o $@
+                      ifneq (4,$(MACOSX_MINOR))
+			@cd tmp; $(SHLD) -bundle -undefined dynamic_lookup $(notdir $^) $(SHLIB) -o $(subst .$(SL),.so,$@)
+                      else
+			@cd $(dir $@); rm -f $(notdir $(subst .$(SL),.so,$@)); ln -s $(notdir $@) $(notdir $(subst .$(SL),.so,$@))
+                      endif
                    else
-		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@ ;
+		      @cd tmp; $(SHLD) $(SOFLAGS) $(LDFLAGS) $(notdir $^) $(SHLIB) -o $@
                    endif
                 endif
 		@chmod 555 $@

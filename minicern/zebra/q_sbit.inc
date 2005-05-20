@@ -1,7 +1,10 @@
 *
-* $Id: q_sbit.inc,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id: q_sbit.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: q_sbit.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov
 * Separate distribution  of Geant3
 *
@@ -52,7 +55,7 @@
       MSBIT (MZ,IZW,IZP) = LOR (LAND (IZW, LCOMPL(SHFTL(1,IZP-1)) )
      +                                 , SHFTL(LAND(MZ,1),IZP-1) )
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
       MSBIT (MZ,IZW,IZP) = OR (AND (IZW, NOT(LSHIFT(1,IZP-1)))
      +                              ,LSHIFT(AND(MZ,1),IZP-1))
 
