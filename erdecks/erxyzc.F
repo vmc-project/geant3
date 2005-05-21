@@ -1,7 +1,10 @@
 *
-* $Id: erxyzc.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: erxyzc.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: erxyzc.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -48,8 +51,8 @@ C.
       ENDIF
 *
       R = SQRT(VECT(1)**2+VECT(2)**2)
-      CALL GEVKEV (DESTEP,DESU,KUN1)
-      CALL GEVKEV (GEKIN ,GEKU,KUN2)
+      CALL G3EVKEV (DESTEP,DESU,KUN1)
+      CALL G3EVKEV (GEKIN ,GEKU,KUN2)
       WRITE(CHMAIL,2000)(VECT(I),I=1,3),R,NAMES(NLEVEL),NUMBER(NLEVEL)
      +      ,SLENG,STEP,DESU,KUN1,GEKU,KUN2,(MECNAM(I),I=1,NMEC)
       CALL GMAIL(0,0)

@@ -1,7 +1,10 @@
 *
-* $Id: gsking.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsking.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gsking.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,11 +18,11 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSKING (IGK)
+      SUBROUTINE G3SKING (IGK)
 C.
 C.    ******************************************************************
 C.    *                                                                *
-C.    *    SUBR. GSKING (IGK)                                          *
+C.    *    SUBR. G3SKING (IGK)                                         *
 C.    *                                                                *
 C.    *   Stores in stack JSTAK either the IGKth track of /GCKING/,    *
 C.    *    or the NGKINE tracks when IGK is 0.                         *
@@ -86,7 +89,7 @@ C.    ------------------------------------------------------------------
          ELSE
             IFLAG = -IFLGK(N)
          ENDIF
-         CALL GSSTAK (IFLAG)
+         CALL G3SSTAK (IFLAG)
          IF (IFLAG.NE.0) THEN
             IFLGK(N) = ITR
             IFLGK(NGKINE+1) = NVTX

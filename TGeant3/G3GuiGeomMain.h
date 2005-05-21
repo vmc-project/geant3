@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3GuiGeomMain.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3GuiGeomMain.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 #include "TClonesArray.h"
 #include "TGFrame.h"

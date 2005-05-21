@@ -1,7 +1,10 @@
 *
-* $Id: gbteth.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbteth.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbteth.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      REAL FUNCTION GBTETH(ENER,PARTM,EFRAC)
+      REAL FUNCTION G3BTETH(ENER,PARTM,EFRAC)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *   the real distribution function which can be found in         *
 C.    *   Yung-Su Tsai: Rev. Mod. Phys. 46,815(1974)                   *
 C.    *     +erratum  : Rev. Mod. Phys. 49,421(1977)                   *
 C.    *                                                                *
-C.    *   Called by : GBREME, GBREMM, GPAIRG                           *
+C.    *   Called by : G3BREME, G3BREMM, G3PAIRG                        *
 C.    *   Authors   : L.Urban                                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -36,7 +39,7 @@ C.
       PARAMETER (ALFA=0.625)
 *     ----------------------------------------------------------
 * GEANT 3.15
-*     GBTETH=1.
+*     G3BTETH=1.
 *     GOTO 999
 * Angular distribution with d=const
 *     D=27.
@@ -62,6 +65,6 @@ C.
 *
       IF(U.GE.UMAX) GOTO 10
 *
-      GBTETH=U
+      G3BTETH=U
 *
  999  END

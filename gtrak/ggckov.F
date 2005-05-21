@@ -1,7 +1,10 @@
 *
-* $Id: ggckov.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: ggckov.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ggckov.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GGCKOV
+      SUBROUTINE G3GCKOV
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -27,7 +30,7 @@ C.    *   azimuth w.r.t. the particle direction. The parameters are    *
 C.    *   then transformed into the Master Reference System, and they  *
 C.    *   are added to the particle stack.                             *
 C.    *                                                                *
-C.    *   ==>Called by : GTMUON, GTHADR, GTELEC                        *
+C.    *   ==>Called by : G3TMUON, G3THADR, G3TELEC                     *
 C.    *      Authors     R.Jones, F.Carminati ********                 *
 C.    *                                                                *
 C.    ******************************************************************
@@ -76,8 +79,8 @@ C        GEMIN = Q(JCURIN+JMIN)*RATI1+Q(JCURIN+JMIN+1)*RATIO
 C        GE    = Q(JCURIN+NPCKOV)-GEMIN
 C     ENDIF
 C     DNDL = RFACT*(CHARGE**2)*(DP-GE*THRIND**2)
-      IF(ITRTYP.NE.4.AND.ITRTYP.NE.8) CALL GNCKOV
-      CALL GPOISS(DNDL*STEP,NGPHOT,1)
+      IF(ITRTYP.NE.4.AND.ITRTYP.NE.8) CALL G3NCKOV
+      CALL G3POISS(DNDL*STEP,NGPHOT,1)
       IF(NGPHOT.EQ.0) THEN
          GO TO 999
       ELSEIF(NGPHOT.GT.MXPHOT) THEN
@@ -90,7 +93,7 @@ C     DNDL = RFACT*(CHARGE**2)*(DP-GE*THRIND**2)
 *
 * ***  Set up rotation to Particle frame
 *
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
 *
 * ***  Distribute the photons in origin, direction, momentum
       COSMX  = THRIND/Q(JINDEX+NPCKOV)
@@ -146,8 +149,8 @@ C     DNDL = RFACT*(CHARGE**2)*(DP-GE*THRIND**2)
          XPHOT(10,J) = -SINT
 *
          IF(ROTATE) THEN
-            CALL GDROT(XPHOT(8,J),COSTH,SINTH,COSPH,SINPH)
-            CALL GDROT(XPHOT(4,J),COSTH,SINTH,COSPH,SINPH)
+            CALL G3DROT(XPHOT(8,J),COSTH,SINTH,COSPH,SINPH)
+            CALL G3DROT(XPHOT(4,J),COSTH,SINTH,COSPH,SINPH)
          ENDIF
    40 CONTINUE
   999 END

@@ -1,21 +1,10 @@
 *
-* $Id: gdrawt.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrawt.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:25  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAWT(X,Y,CHTEXT,SIZE,ANGLE,LWIDTH,IOPT)
+      SUBROUTINE G3DRAWT(X,Y,CHTEXT,SIZE,ANGLE,LWIDTH,IOPT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,8 +18,8 @@ C.    *       Bit  4- 7 = Text color                                   *
 C.    *       Bit  8-11 = Text font                                    *
 C.    *       Bit 12-24 = Reserved for future use                      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDAHIT, GDARR, GDHEAD,      *
-C.    *                   GDPART, GDPRTR, GDSCAL, GDSHOW, GDSPEC       *
+C.    *    ==>Called by : <USER>, <GXINT>, GDAHIT, GDARR, G3DHEAD,     *
+C.    *                   GDPART, GDPRTR, GDSCAL, G3DSHOW, G3DSPEC     *
 C.    *       Authors : P.Zanarini ; S.Giani  *********                *
 C.    *                                                                *
 C.    ******************************************************************
@@ -146,5 +135,5 @@ C
    50 WRITE (CHMAIL,10000)
       CALL GMAIL(0,0)
 C
-10000 FORMAT (' ERROR IN GDRAWT: MEMORY OVERFLOW IN PUSHING A BANK')
+10000 FORMAT (' ERROR IN G3DRAWT: MEMORY OVERFLOW IN PUSHING A BANK')
   999 END

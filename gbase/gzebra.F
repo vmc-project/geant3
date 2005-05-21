@@ -1,7 +1,10 @@
 *
-* $Id: gzebra.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gzebra.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gzebra.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GZEBRA(NZEB)
+      SUBROUTINE G3ZEBRA(NZEB)
 C.
 C.    ******************************************************************
 C.    *                                                                *

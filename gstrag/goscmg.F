@@ -1,7 +1,10 @@
 *
-* $Id: goscmg.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: goscmg.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: goscmg.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -20,7 +23,7 @@
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
 C
-      SUBROUTINE GOSCMG
+      SUBROUTINE G3OSCMG
  
 #include "geant321/gcmate.inc"
 #include "geant321/gcasho.inc"
@@ -41,7 +44,7 @@ C-----------------------------------------------------------------------
       C2 = 2.*LOG(PLIN)-BE2
       KSI0 = C1*ZMED
       X = 2.*LOG(E0MED/PLASM) + 1.
-      CALL GSTCOR(X,E0MED,PLOG,DENS,D)
+      CALL G3STCOR(X,E0MED,PLOG,DENS,D)
       A0 = LOG(TWOELM*TRNSMA/E0MED**2)+C2-D
       EMEAN = KSI0*A0
       DO 10 I = 1,NSMED
@@ -73,7 +76,7 @@ C-----------------------------------------------------------------------
          X = C1*ZOSC(I)
          BOSC(I) = X/EOSC(I)
          X = 2.*LOG(EOSC(I)/PLASM)+1.
-         CALL GSTCOR(X,EOSC(I),PLOG,DENS,D)
+         CALL G3STCOR(X,EOSC(I),PLOG,DENS,D)
          AOSC(I) = LOG(TWOELM/EOSC(I)) +C3 -D
    50 CONTINUE
       END

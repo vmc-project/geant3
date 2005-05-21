@@ -14,7 +14,10 @@
  **************************************************************************/
 
 /*
-$Log$
+$Log: G3GuiGeomDialog.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 */
 
 
@@ -33,6 +36,8 @@ $Log$
 #include "G3GuiGeomMain.h"
 #include "G3GUISliders.h"
 #include "G3Volume.h"
+
+ClassImp(G3GuiGeomDialog)
 
 G3GuiGeomDialog::G3GuiGeomDialog(const TGWindow *p, const TGWindow *main, UInt_t w,
                        UInt_t h, UInt_t options)
@@ -148,7 +153,7 @@ G3GuiGeomDialog::G3GuiGeomDialog(const TGWindow *p, const TGWindow *main, UInt_t
    fTbh12->AddText(0, "2000");
    fTeh12->Associate(this);
     
-   fDslider1 = new TGDoubleHSlider(fHSframe1, 400, kSlider1 | kScaleBoth, 1);
+   fDslider1 = new TGDoubleHSlider(fHSframe1, 200, kSlider1 | kScaleBoth, 1);
    fDslider1->Associate(this);
    fDslider1->SetRange(-2000, 2000);
    fDslider1->SetPosition(0, 2000);
@@ -175,7 +180,7 @@ G3GuiGeomDialog::G3GuiGeomDialog(const TGWindow *p, const TGWindow *main, UInt_t
    fTbh22->AddText(0, "2000");
    fTeh22->Associate(this);
 
-   fDslider2 = new TGDoubleHSlider(fHSframe2, 400, kSlider1 | kScaleBoth, 2);
+   fDslider2 = new TGDoubleHSlider(fHSframe2, 200, kSlider1 | kScaleBoth, 2);
    fDslider2->Associate(this);
    fDslider2->SetRange(-2000, 2000);
    fDslider2->SetPosition(0, 2000);
@@ -202,7 +207,7 @@ G3GuiGeomDialog::G3GuiGeomDialog(const TGWindow *p, const TGWindow *main, UInt_t
    fTbh32->AddText(0, "2000");
    fTeh32->Associate(this);
 
-   fDslider3 = new TGDoubleHSlider(fHSframe3, 400, kSlider1 | kScaleBoth, 3);
+   fDslider3 = new TGDoubleHSlider(fHSframe3, 200, kSlider1 | kScaleBoth, 3);
    fDslider3->Associate(this);
    fDslider3->SetRange(-2000, 2000);
    fDslider3->SetPosition(0, 2000);

@@ -1,21 +1,10 @@
 *
-* $Id: gdkine.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdkine.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GDKINE
+      SUBROUTINE G3DKINE
 *
 ************************************************************************
 *                                                                      *
@@ -68,7 +57,7 @@
        PLAB(2) = -PKINE(1)*YCOSYS
        PLAB(3) = -PKINE(1)*ZCOSZS
 ********************************************************************************
-      CALL GSVERT(VERTEX,0,0,0,0,NVERT)
-      CALL GSKINE(PLAB,IK,NVERT,0,0,NT)
+      CALL G3SVERT(VERTEX,0,0,0,0,NVERT)
+      CALL G3SKINE(PLAB,IK,NVERT,0,0,NT)
 *
       END

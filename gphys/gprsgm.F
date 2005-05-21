@@ -1,7 +1,10 @@
 *
-* $Id: gprsgm.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprsgm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprsgm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GPRSGM(Z,T,CCUT)
+      FUNCTION G3PRSGM(Z,T,CCUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       To calculate cross-section in barn/atom for direct       *
 C.    *       pair production by muons.                                *
 C.    *                                                                *
-C.    *    ==>Called by : GPRSGA                                       *
+C.    *    ==>Called by : G3PRSGA                                      *
 C.    *       Author    L.Urban  *********                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -63,7 +66,7 @@ C
 C.
 C.    ------------------------------------------------------------------
 C.
-      GPRSGM=0.
+      G3PRSGM=0.
       CUT=CCUT
       IF(CUT.LT.ECMIN) CUT=ECMIN
 C
@@ -132,7 +135,7 @@ C     SOLUTION: LIN. INTERPOLATION FOR 0.2*ECMAX<CUT<ECMAX
 C
       FAC=2.*(LOG(ECMAX/CUT))**ALFA
       FAC=Z*(Z+AKSI*(1.+GAM*LOG(Z)))*FAC
-      GPRSGM=FAC*S
+      G3PRSGM=FAC*S
 C
   99  RETURN
       END

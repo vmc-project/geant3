@@ -1,7 +1,10 @@
 *
-* $Id: gzinit.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gzinit.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gzinit.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  17.18.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GZINIT
+      SUBROUTINE G3ZINIT
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -57,7 +60,7 @@ C
 C
 C                 Define a default work space of KWWORK words
 C
-      CALL GWORK(KWWORK)
+      CALL G3WORK(KWWORK)
 C
 C                 Create a permanent link area for master pointers
 C

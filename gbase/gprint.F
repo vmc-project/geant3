@@ -1,7 +1,10 @@
 *
-* $Id: gprint.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gprint.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gprint.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GPRINT(CHNAME,NUMB)
+      SUBROUTINE G3PRINT(CHNAME,NUMB)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -47,16 +50,16 @@ C.
 C
       CALL GLOOK(NAME,NHAMES,11,JUMP)
 C
-      IF(JUMP.EQ. 1) CALL GPDIGI ('*','*')
-      IF(JUMP.EQ. 2) CALL GPJXYZ (NUMB)
-      IF(JUMP.EQ. 3) CALL GPHITS ('*','*')
-      IF(JUMP.EQ. 4) CALL GPKINE (NUMB)
-      IF(JUMP.EQ. 5) CALL GPMATE (NUMB)
-      IF(JUMP.EQ. 6) CALL GPVOLU (NUMB)
-      IF(JUMP.EQ. 7) CALL GPROTM (NUMB)
-      IF(JUMP.EQ. 8) CALL GPSETS ('*','*')
-      IF(JUMP.EQ. 9) CALL GPTMED (NUMB)
-      IF(JUMP.EQ.10) CALL GPPART (NUMB)
-      IF(JUMP.EQ.11) CALL GPVERT (NUMB)
+      IF(JUMP.EQ. 1) CALL G3PDIGI ('*','*')
+      IF(JUMP.EQ. 2) CALL G3PJXYZ (NUMB)
+      IF(JUMP.EQ. 3) CALL G3PHITS ('*','*')
+      IF(JUMP.EQ. 4) CALL G3PKINE (NUMB)
+      IF(JUMP.EQ. 5) CALL G3PMATE (NUMB)
+      IF(JUMP.EQ. 6) CALL G3PVOLU (NUMB)
+      IF(JUMP.EQ. 7) CALL G3PROTM (NUMB)
+      IF(JUMP.EQ. 8) CALL G3PSETS ('*','*')
+      IF(JUMP.EQ. 9) CALL G3PTMED (NUMB)
+      IF(JUMP.EQ.10) CALL G3PPART (NUMB)
+      IF(JUMP.EQ.11) CALL G3PVERT (NUMB)
 C
       END

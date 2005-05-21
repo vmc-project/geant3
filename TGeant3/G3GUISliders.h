@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3GUISliders.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3GUISliders.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 #include "TGFrame.h"
 #include "TGSlider.h"
@@ -35,7 +35,7 @@ private:
   G3GUISliders & operator=(const G3GUISliders &) {return *this;}
   
       
-   //   ClassDef(G3GUISliders,1)  // Sliders for the G3 GUI
+  ClassDef(G3GUISliders,1)  // Sliders for the G3 GUI
 };
 
 R__EXTERN G3Volume  *gCurrentVolume;

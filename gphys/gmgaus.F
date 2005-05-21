@@ -1,7 +1,10 @@
 *
-* $Id: gmgaus.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmgaus.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmgaus.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +19,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMGAUS(BETA2,DIN)
+      SUBROUTINE G3MGAUS(BETA2,DIN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *       with parameters VECT in common /GCTRAK/                  *
 C.    *       in current medium described in common /GCMATE/           *
 C.    *       Output angles overwrite VECT                             *
 C.    *                                                                *
-C.    *    ==>Called by : GMULTS                                       *
+C.    *    ==>Called by : G3MULTS                                      *
 C.    *       Authors    R.Brun, M.Maire, G.Lynch  *********           *
 C.    *                                                                *
 C.    ******************************************************************
