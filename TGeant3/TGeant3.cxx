@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.43  2005/05/17 12:47:00  brun
+From Ivana:
+- Added call to new TVirtualMCApplication::ConstructOpGeometry() function
+- Bug fix in G3Mixture (do not update wmat values twice)
+- In CreateFloatArray: added check for values > FLT_MAX
+
 Revision 1.42  2005/02/16 08:01:51  brun
 Implement function grndmq. It returns gRandom->GetSeed().
 The result makes sense only when Trandom is the generator.
@@ -5632,7 +5638,9 @@ void TGeant3::Init()
     fApplication->AddParticles();
     fApplication->ConstructGeometry();
     FinishGeometry();
+#if ROOT_VERSION_CODE >= ROOT_VERSION(5,01,1)
     fApplication->ConstructOpGeometry();
+#endif
     fApplication->InitGeometry();
 }
 
