@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.5  2005/05/17 12:48:00  brun
+From Ivana:
+- Set name TGeant3TGeo
+
 Revision 1.4  2005/05/11 11:46:54  brun
 From Andrei Gheata:
  Implementation of gtmany (PUSH) and glvolu (POP) in
@@ -1895,6 +1899,7 @@ void TGeant3TGeo::SetColors()
   TIter next(gGeoManager->GetListOfVolumes());
   TGeoVolume *volume;
   while ((volume = (TGeoVolume*)next())) {
+     if (volume->IsAssembly()) continue;
      TGeoMedium *medium = (TGeoMedium*)volume->GetMedium();
      Int_t icol = medium->GetId()%6+2;
      volume->SetLineColor(icol);
