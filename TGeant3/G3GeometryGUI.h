@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3GeometryGUI.h,v 1.1 2002/06/16 17:09:41 hristov Exp $ */
+/* $Id: G3GeometryGUI.h,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $ */
 
 
 #include "TClonesArray.h"
@@ -26,7 +26,7 @@ class G3GeometryGUI : public TObject {
     TClonesArray   *fMedia;      // array of materials
     TObjArray      *fRotations;  // Rotation Matrices
  private:
-    G3GeometryGUI(const G3GeometryGUI&) {}
+    G3GeometryGUI(const G3GeometryGUI& geo): TObject(geo) {}
     G3GeometryGUI & operator=(const G3GeometryGUI&) 
     {return *this;}
     

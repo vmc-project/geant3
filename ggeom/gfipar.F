@@ -1,7 +1,10 @@
 *
-* $Id: gfipar.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gfipar.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfipar.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -61,7 +64,7 @@ C.
             INUM = IN
          ENDIF
          CALL UHTOC(IQ(JVOLUM+IVO),4,NAME,4)
-         CALL GLMOTH (NAME, INUM, NLDM, LVOLS, LINDX)
+         CALL G3LMOTH (NAME, INUM, NLDM, LVOLS, LINDX)
          IF (NLDM.LE.0) GO TO 930
          JPAR = LQ(LQ(JVOLUM-LVOLS(1)))
          IF (NLDM.GT.1) THEN

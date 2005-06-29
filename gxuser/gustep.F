@@ -1,7 +1,10 @@
 *
-* $Id: gustep.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gustep.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gustep.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -41,8 +44,8 @@
       IF(NGKINE.GT.0) THEN
         DO 5 I=1,NGKINE
           ITYPA  = GKIN(5,I)
-          IF(ITYPA.NE.4)  CALL GSKING(I)
+          IF(ITYPA.NE.4)  CALL G3SKING(I)
    5    CONTINUE
       ENDIF
-      CALL GDEBUG
+      CALL G3DEBUG
   99  END

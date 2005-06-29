@@ -289,7 +289,7 @@ C.    ------------------------------------------------------------------
             GEKIN  = GEKINT
             GETOT  = GEKIN + AMASS
             VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
-            CALL GEKBIN
+            CALL G3EKBIN
          ELSE
             DESTEP = GEKINT
             GEKIN  = 0.

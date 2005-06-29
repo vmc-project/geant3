@@ -1,7 +1,10 @@
 *
-* $Id: gxgint.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gxgint.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gxgint.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GXGINT(EXT,A,B,EPS)
+      FUNCTION G3XGINT(EXT,A,B,EPS)
 *
 *    Gauss integration routine
 *
@@ -66,7 +69,7 @@
       ENDIF
 *
    30 CONTINUE
-      GXGINT=OTB
-10000 FORMAT('*** GXGINT : required precision ',G10.3,
+      G3XGINT=OTB
+10000 FORMAT('*** G3XGINT : required precision ',G10.3,
      +      ' obtained precision ',G10.3)
       END

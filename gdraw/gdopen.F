@@ -1,27 +1,10 @@
 *
-* $Id: gdopen.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdopen.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.2  1997/01/24 14:16:06  mclareni
-* NZLEFT 2nd argument 0 instead of blank for Msoft
-*
-* Revision 1.1.1.1.2.1  1997/01/21 11:24:20  mclareni
-* All mods for Winnt 96a on winnt branch
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDOPEN(IVIEW)
+      SUBROUTINE G3DOPEN(IVIEW)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -156,8 +139,8 @@ C
    60 WRITE (CHMAIL,1200)
       CALL GMAIL(0,0)
 C
- 1000 FORMAT (' ERROR IN GDOPEN: VIEW ALREADY EXISTING')
- 1100 FORMAT (' ERROR IN GDOPEN: MEMORY OVERFLOW IN PUSHING A BANK')
- 1200 FORMAT (' ERROR IN GDOPEN: ANOTHER VIEW IS ALREADY OPENED')
+ 1000 FORMAT (' ERROR IN G3DOPEN: VIEW ALREADY EXISTING')
+ 1100 FORMAT (' ERROR IN G3DOPEN: MEMORY OVERFLOW IN PUSHING A BANK')
+ 1200 FORMAT (' ERROR IN G3DOPEN: ANOTHER VIEW IS ALREADY OPENED')
   999 RETURN
       END

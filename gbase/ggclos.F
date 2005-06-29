@@ -1,7 +1,15 @@
 *
-* $Id: ggclos.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: ggclos.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: ggclos.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +27,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/04 13/12/94  15.29.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GGCLOS
+      SUBROUTINE G3GCLOS
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,7 +37,7 @@ C.    *    volume following the order they have been positioned, and   *
 C.    *    inserting the content '0' when a call to GSNEXT (-1) has    *
 C.    *    been required by the user.                                  *
 C.    *    Performs the development of the JVOLUM structure for all    *
-C.    *    volumes with variable parameters, by calling GGDVLP.        *
+C.    *    volumes with variable parameters, by calling GGDVLP.       *
 C.    *    Interprets the user calls to GSORD, through GGORD.          *
 C.    *    Computes and stores in a bank (next to JVOLUM mother bank)  *
 C.    *    the number of levels in the geometrical tree and the        *
@@ -56,6 +64,7 @@ C.
 #include "geant321/gcunit.inc"
 #include "geant321/gcopti.inc"
 #include "geant321/gchvir.inc"
+      COMMON / FIXIT / JVO, JN
       CHARACTER*4 NAME
       LOGICAL BTEST
 C.
@@ -153,7 +162,7 @@ C.    ------------------------------------------------------------------
 *
          CALL GGDVLP
 *
-* ***    Fill GSORD ordering banks if required
+* ***    Fill G3SORD ordering banks if required
 *
 * Modified by S.Egli to allow GGORDQ to find the optimum sorting for
 * all volumes
@@ -640,11 +649,11 @@ C.    ------------------------------------------------------------------
 * *** Scan the volume structure to retrieve the path through
 *      the physical tree for all sensitive detectors
 *
-       CALL GHCLOS
+       CALL G3HCLOS
 *
 * *** Books STAT banks if data card STAT is submitted
 *
-      IF (NSTAT.GT.0)  CALL GBSTAT
+      IF (NSTAT.GT.0)  CALL G3BSTAT
 *
       CALL MZGARB (IXCONS, 0)
 *

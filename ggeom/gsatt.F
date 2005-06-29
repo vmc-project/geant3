@@ -1,7 +1,10 @@
 *
-* $Id: gsatt.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsatt.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsatt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.30  by  S.Giani
 *-- Author :
-      SUBROUTINE GSATT(NAME,IAT,IVAL)
+      SUBROUTINE G3SATT(NAME,IAT,IVAL)
 C.
 C.    ******************************************************************
 C.    *                                                                *

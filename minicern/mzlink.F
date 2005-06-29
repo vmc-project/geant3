@@ -1,7 +1,10 @@
 *
-* $Id: mzlink.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id: mzlink.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: mzlink.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov
 * Separate distribution  of Geant3
 *
@@ -100,7 +103,11 @@ C--                Range of possible values for an origin-link
 
 #if defined(CERNLIB_QPRINT)
       IF (NQLOGL.GE.0)
+#if defined(__G95__)
+     +WRITE (IQLOG,9039) CHNAME(1:4),CHNAME(5:8),JQSTOR,NL,NS
+#else
      +WRITE (IQLOG,9039) NAME,JQSTOR,NL,NS
+#endif
  9039 FORMAT (1X/' MZLINK.  Initialize Link Area  ',2A4,'  for Store'
      F,I3,' NL/NS=',2I6)
 

@@ -1,7 +1,16 @@
 *
-* $Id: beta.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: beta.F,v 1.2 2003/06/10 16:12:15 brun Exp $
 *
 * $Log: beta.F,v $
+* Revision 1.2  2003/06/10 16:12:15  brun
+* From Andreas Morsch:
+* I changed the name of the function BETA from geant3/fluka/beta.F to
+* BETA_G3. The reason is that if one uses PDF and Geant3 in the same
+* simulation there is a clash between a similar function in PDF.
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -20,7 +29,7 @@
 *
 *=== beta =============================================================*
 *
-      FUNCTION BETA(X1,X2,BET)
+      FUNCTION BETA_G3(X1,X2,BET)
  
 #include "geant321/dblprc.inc"
 #include "geant321/dimpar.inc"
@@ -29,6 +38,6 @@
       BETX1=BET*X1
       IF(BETX1.LT.70.D0) AX=-1.D0/BET**2*(BETX1+1.D0)*EXP(-BETX1)
       AY=1.D0/BET**2*(BET*X2+1.D0)*EXP(-BET*X2)
-      BETA=AX+AY
+      BETA_G3=AX+AY
       RETURN
       END

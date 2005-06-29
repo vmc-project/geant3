@@ -1,7 +1,10 @@
 *
-* $Id: gheish.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gheish.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gheish.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -715,7 +718,7 @@ C --- In case of crazy momentum value ==> no change to GEANT stack ---
       GETOT=EN
       GEKIN=EK
 C --- CHECK KINETIC ENERGY ---
-      CALL GEKBIN
+      CALL G3EKBIN
       EDEP=ABS(ENOLD-EN)
       RMASSI=EN-EK
       IF (NPRT(9) .AND. (EN .GT. ENOLD))

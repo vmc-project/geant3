@@ -1,7 +1,15 @@
 *
-* $Id: gspos.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gspos.F,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: gspos.F,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.30  by  S.Giani
 *-- Author :
-      SUBROUTINE GSPOS(CHNAME,NR,CHMOTH,X,Y,Z,IROT,CHONLY)
+      SUBROUTINE G3SPOS(CHNAME,NR,CHMOTH,X,Y,Z,IROT,CHONLY)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -44,6 +52,7 @@ C.
 #include "geant321/gcflag.inc"
 #include "geant321/gcunit.inc"
 #include "geant321/gcnum.inc"
+      COMMON / FIXIT / JIN, JVO
       CHARACTER*4 CHNAME,CHMOTH,CHONLY
 C.
 C.    ------------------------------------------------------------------

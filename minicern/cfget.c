@@ -1,7 +1,15 @@
 /*
- * $Id: cfget.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: cfget.c,v 1.2 2002/12/02 16:37:45 brun Exp $
  *
  * $Log: cfget.c,v $
+ * Revision 1.2  2002/12/02 16:37:45  brun
+ * Changes from Federico Carminati and Peter Hristov who ported the system
+ * on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+ * seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+ *
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -29,6 +37,7 @@
  */
 #include "kerngen/pilot.h"
 #include "kerngen/fortranc.h"
+#include "stdio.h"
 
 #if defined(CERNLIB_QMOS9)
 #include "os9gs/cfget.c"
@@ -85,7 +94,7 @@ void type_of_call CFGET(lundes, medium, nwrec, nwtak, mbuf,
       nbdn   = read (fildes, mbuf, nbdo);
       if (nbdn == 0)               goto heof;
       if (nbdn <  0)               goto herror;
-retn: *nwtak = (nbdn - 1) / NBYTPW + 1;
+      *nwtak = (nbdn - 1) / NBYTPW + 1;
       return;
 
 /*        Handle exceptions        */

@@ -1,7 +1,10 @@
 *
-* $Id: gprobi.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprobi.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprobi.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GPROBI
+      SUBROUTINE G3PROBI
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Initialise material constants used in the computation of      *
 C.    *  the probability for various interactions.                     *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Authors    R.Brun, G.Patrick, L.Urban  *********         *
 C.    *                                                                *
 C.    ******************************************************************
@@ -171,9 +174,9 @@ C
 C            Constants for Moliere scattering
 C
       IF(JMIXT.LE.0)THEN
-         CALL GMOLI(A,Z,1.,1,DENS,Q(JPROB+21),Q(JPROB+25))
+         CALL G3MOLI(A,Z,1.,1,DENS,Q(JPROB+21),Q(JPROB+25))
       ELSE
-         CALL GMOLI(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
+         CALL G3MOLI(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
      +              NLM,DENS,Q(JPROB+21),Q(JPROB+25))
       ENDIF
 C

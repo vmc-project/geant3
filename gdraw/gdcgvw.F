@@ -1,16 +1,5 @@
 *
-* $Id: gdcgvw.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcgvw.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:21  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 29/08/94  11.37.51  by  S.Giani
@@ -31,7 +20,7 @@ C.    *  Output Parameters:                                            *
 C.    *                                                                *
 C.    *     VMA(4,3): Viewing Matrix                                   *
 C.    *                                                                *
-C.    *    ==>Called by :   GDINIT,GDRAW                               *
+C.    *    ==>Called by :   GDINIT,G3DRAW                              *
 C.    *                                                                *
 C.    *       Author : J.Salt     *********                            *
 C.    *                                                                *

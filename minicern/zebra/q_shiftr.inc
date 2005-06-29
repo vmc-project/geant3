@@ -1,7 +1,15 @@
 *
-* $Id: q_shiftr.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id: q_shiftr.inc,v 1.2 2002/12/02 16:37:45 brun Exp $
 *
 * $Log: q_shiftr.inc,v $
+* Revision 1.2  2002/12/02 16:37:45  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov
 * Separate distribution  of Geant3
 *
@@ -38,7 +46,8 @@ C       ISHFT(IZW,NZB)  = LSHIFT(IZW,NZB)
 #elif defined(CERNLIB_QF_SIEM)
       ISHFTR (IZW,NZB) = SHFTR (IZW, NZB)
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+      ISHFTR (IZW,NZB) = RSHIFT (IZW,NZB)
 
 #elif (defined(CERNLIB_SUN))&&(!defined(CERNLIB_BUGLRSHFT))
       ISHFTR (IZW,NZB) = lrshft (IZW, NZB)

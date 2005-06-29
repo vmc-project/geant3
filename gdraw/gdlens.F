@@ -1,16 +1,5 @@
 *
-* $Id: gdlens.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdlens.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -95,12 +84,12 @@ C.
       CALL IGPXMP(IPXSAV,ISU21,ISV21,'OC')
       CALL IGPXMP(IPXSAV,ISU1,ISV1,'S')
       IPX1=2+IPX1
-*                             CALL GDSHOW(ISEL1)
+*                             CALL G3DSHOW(ISEL1)
       CALL IGPXMP(IPX1,ISU21,ISV21,'O')
 ***         CALL IGCHWK(9,ISU1,ISV1,ISU21,ISV21)
 ***         CALL IOPWK(2,1,9)
 ***         CALL IACWK(2)
-      CALL GDSHOW(ISEL1)
+      CALL G3DSHOW(ISEL1)
       CALL IGPXMP(IPX1,ISU1,ISV1,'CDR')
    20 CONTINUE
       CALL IRQLC(1,MO,JISTA,NT,PX,PY)
@@ -144,7 +133,7 @@ C.
 ***           CALL IGBOX(0.,20.,20.,0.)
             IPX1=IPX1+2
             CALL IGPXMP(IPX1,ISU21,ISV21,'O')
-            CALL GDSHOW(ISEL1)
+            CALL G3DSHOW(ISEL1)
             CALL IGPXMP(IPX1,ISU1,ISV1,'CDR')
             GOTO 20
          ELSEIF(JISTA.EQ.2)THEN
@@ -171,7 +160,7 @@ C.
             GZVC=VV0-VVZ0*ZOOMFV
             IPX1=IPX1+2
             CALL IGPXMP(IPX1,ISU21,ISV21,'O')
-            CALL GDSHOW(ISEL1)
+            CALL G3DSHOW(ISEL1)
             IPXX=PX*RVAL(1)*.05-ISU21*.5
             IPYY=(20.-PY)*RVAL(2)*.05-ISV21*.5
             CALL IGPXMP(IPX1,IPXX,IPYY,'C')
@@ -220,7 +209,7 @@ C.
 ***           CALL IGBOX(0.,20.,20.,0.)
             IPX1=IPX1+2
             CALL IGPXMP(IPX1,ISU21,ISV21,'O')
-            CALL GDSHOW(ISEL1)
+            CALL G3DSHOW(ISEL1)
             CALL IGPXMP(IPX1,ISU1,ISV1,'CDR')
             GOTO 20
          ELSEIF((JISTA.EQ.-1.AND.ISTR.EQ.1).OR. (JISTA.GT.0.AND.ISTR.EQ
@@ -241,7 +230,7 @@ C.
             GZVC=VV0-VVZ0*ZOOMFV
             IPX1=IPX1+2
             CALL IGPXMP(IPX1,ISU21,ISV21,'O')
-            CALL GDSHOW(ISEL1)
+            CALL G3DSHOW(ISEL1)
             CALL IGPXMP(IPX1,IPXX,IPYY,'C')
             CALL IGPXMP(IPXSAV,IPXX,IPYY,'DR')
             IPXX=PX*RVAL(1)*.05-ISU21*.5

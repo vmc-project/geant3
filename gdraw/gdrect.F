@@ -1,16 +1,5 @@
 *
-* $Id: gdrect.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrect.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:27  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -21,7 +10,7 @@ C.    ******************************************************************
 C.    *                                                                *
 C.    *       Draw a rectangle of points P1,P2,P3,P4                   *
 C.    *                                                                *
-C.    *    ==>Called by : GDRAWS                                       *
+C.    *    ==>Called by : G3DRAWS                                      *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -51,7 +40,7 @@ C
 CM
       U(5)=U(1)
       V(5)=V(1)
-      CALL GDRAWV(U,V,5)
+      CALL G3DRAWV(U,V,5)
 C
   999 RETURN
       END

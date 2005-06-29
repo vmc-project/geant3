@@ -1,7 +1,10 @@
 /*
- * $Id: abend.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: abend.c,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
  *
  * $Log: abend.c,v $
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -20,6 +23,7 @@
  */
 #include "kerngen/pilot.h"
 #include "kerngen/fortranc.h"
+#include "stdlib.h"
 
 /*>    ROUTINE ABEND
   CERN PROGLIB# Z035    ABEND           .VERSION KERNFOR  4.31  911111

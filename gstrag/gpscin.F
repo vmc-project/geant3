@@ -1,7 +1,10 @@
 *
-* $Id: gpscin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpscin.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gpscin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GPSCIN(EBEG,EEND,ECUR,COEFF)
+      FUNCTION G3PSCIN(EBEG,EEND,ECUR,COEFF)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -51,8 +54,8 @@ C.
 *     VALEND = CONS1*F1(YEND)+CONS3*F2(YEND)+
 *    +         YENDIN*(CONS2+YENDIN*(CONS4+YENDIN*CONS5))
 *
-*     GPSCIN = VALEND-VALBEG
-      GPSCIN =
+*     G3PSCIN = VALEND-VALBEG
+      G3PSCIN =
      +      CONS1*LOG(ABS((YEND**2-1)*YBEG**2/((YBEG**2-1)*YEND**2)))+
      +      CONS2*(YENDIN-YBEGIN)+
      +      CONS3*LOG(ABS((1-YEND)*(1+YBEG)/((1-YBEG)*(1+YEND))))+

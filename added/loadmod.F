@@ -1,6 +1,6 @@
       subroutine loadmod
-      call gtreve
-      call gtrigi
+      call g3treve
+      call g3trigi
       call gudcay
       call gudigi
       call gufld

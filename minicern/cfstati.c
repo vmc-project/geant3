@@ -1,7 +1,10 @@
 /*
- * $Id: cfstati.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: cfstati.c,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
  *
  * $Log: cfstati.c,v $
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -40,6 +43,7 @@
  *    is in use)
 */
 #include <stdio.h>
+#include <stdlib.h>
 #if defined(CERNLIB_QMVAX)||defined(CERNLIB_QMOS9)
 #include <types.h>
 #include <stat.h>
