@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.6  2005/06/15 08:49:21  brun
+From Andrei Gheata:
+Change related to  usage of assemblies (that have no medium).
+
 Revision 1.5  2005/05/17 12:48:00  brun
 From Ivana:
 - Set name TGeant3TGeo
@@ -972,20 +976,7 @@ void  TGeant3TGeo::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
   //       In this case, WMAT in output is changed to relative
   //       weigths.
   //
-  g3smixt(imat,PASSCHARD(name), a, z,dens, nlmat,wmat PASSCHARL(name));
-
-  Int_t i;
-  if (nlmat < 0) {
-     nlmat = - nlmat;
-     Double_t amol = 0;
-     for (i=0;i<nlmat;i++) {
-        amol += a[i]*wmat[i];
-     }
-     for (i=0;i<nlmat;i++) {
-        wmat[i] *= a[i]/amol;
-     }
-  }
-  gGeoManager->Mixture(name, a, z, dens, nlmat, wmat, imat);
+  Mixture(imat,name,a,z,dens,nlmat,wmat);
 }
 
 //_____________________________________________________________________________
