@@ -16,6 +16,13 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.7  2005/07/11 12:00:47  brun
+From Andrei Gheata:
+a fix in TGeant3TGeo::Gsmixt. The problem (found by Federico) was
+that the array of weights for mixture components in case nlmat<0 (number of
+atoms) was recomputed once by G3 itself then again inside Gsmixt, resulting
+in wrong fractions.
+
 Revision 1.6  2005/06/15 08:49:21  brun
 From Andrei Gheata:
 Change related to  usage of assemblies (that have no medium).
@@ -491,7 +498,7 @@ void TGeant3TGeo::LoadAddress()
   // Assigns the address of the GEANT common blocks to the structures
   // that allow their access from C++
   //
-   printf("LoadAddress\n");
+//   printf("LoadAddress\n");
 //   TGeant3::LoadAddress();
    gcomad(PASSCHARD("GCVOL1"),(int*&) fGcvol1  PASSCHARL("GCVOL1"));
    gcvol1 = fGcvol1;

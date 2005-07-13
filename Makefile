@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.20 2005/04/30 10:07:54 brun Exp $
+# $Id: Makefile,v 1.21 2005/05/20 10:43:20 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -59,6 +59,7 @@ ifneq ($(PLATFORM),solarisCC5)
 	  FSRC := $(filter-out minicern/uset.F,$(FSRC))
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
+CSRC     := $(filter-out minicern/lnblnk.c,$(CSRC)) 
 ifeq ($(PLATFORM),linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
@@ -80,10 +81,10 @@ endif
 ifeq ($(PLATFORM),hpuxacc)
 	  CSRC += minicern/hpxgs/traceqc.c
 endif
-ifneq ($(PLATFORM),hpuxacc)
-	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
+ifeq ($(PLATFORM),hpuxacc)
+	  CSRC += minicern/lnblnk.c
 endif
-ifeq  ($(PLATFORM),macosx)
+ifeq ($(PLATFORM),macosx)
 	  CSRC += minicern/lnblnk.c
 endif
 CSRC	:= $(filter-out added/dummies2.c,$(CSRC))

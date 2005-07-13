@@ -1,4 +1,4 @@
-# $Id: Makefile.macosx,v 1.2 2004/11/26 16:54:51 brun Exp $
+# $Id: Makefile.macosx,v 1.3 2005/05/20 10:43:20 brun Exp $
 
 # MacOSX platform dependent definitions for GEANT321 Makefile
 
@@ -13,14 +13,10 @@ FINK_ROOT := $(shell which fink | sed -e 's?/bin/fink??')
 CXX   	  = g++ 
 CC	  = gcc
 
-ifneq ($(MACOSX_MINOR),4)
-F77	      = g77
-else
 ifeq (g95,$(findstring g95,$(ROOTBUILD)))
 F77	      = g95
 else
 F77	      = gfortran
-endif
 endif
 
 # Global optimisation
@@ -55,14 +51,10 @@ LDFLAGS       = $(OPT) -bind_at_load
 SHLD	      = $(LD)
 SOFLAGS       = -dynamiclib -undefined dynamic_lookup -single_module
 
-ifneq ($(MACOSX_MINOR),4)
-SHLIBS := -lg2c
-else
 ifeq (g95,$(findstring g95,$(ROOTBUILD)))
 SHLIB := -L$(dir $(shell find $(FINK_ROOT) -name libf95.a)) -lf95
 else
 SHLIB := -ldl -L$(dir $(shell find $(FINK_ROOT) -name libgfortran.dylib)) -lgfortranbegin -lgfortran
-endif
 endif
 
 
