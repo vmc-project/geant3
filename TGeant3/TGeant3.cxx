@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.44  2005/05/21 05:48:33  brun
+In TGeant3::Init put the code calling ConstructGeometry conditional
+on ROOT versions >-5.01/01
+
 Revision 1.43  2005/05/17 12:47:00  brun
 From Ivana:
 - Added call to new TVirtualMCApplication::ConstructOpGeometry() function
@@ -1866,7 +1870,7 @@ Bool_t TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type
 
 //_____________________________________________________________________________
 Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
-                           Double_t excEnergy, Double_t mass)
+                           Double_t /* excEnergy */, Double_t mass)
 {
 //
 // Set a user defined ion.
@@ -2782,7 +2786,7 @@ Double_t TGeant3::Etot() const
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 //____________________________________________________________________________
-void  TGeant3::Gfile(const char *filename, const char *option)
+void  TGeant3::Gfile(const char * /*filename*/, const char * /*option*/)
 {
   //
   //    Routine to open a GEANT/RZ data base.
@@ -4608,7 +4612,7 @@ void TGeant3::SetAUTO(Int_t par)
 
 
 //_____________________________________________________________________________
-void TGeant3::SetBOMB(Float_t boom)
+void TGeant3::SetBOMB(Float_t /*boom*/)
 {
   //
   //  BOOM  : Exploding factor for volumes position

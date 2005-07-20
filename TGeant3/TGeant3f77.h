@@ -1,6 +1,6 @@
 #ifndef ROOT_TGeant3f77
 #define ROOT_TGeant3f77 
-/* $Id: TGeant3f77.h,v 1.1 2003/11/28 11:10:49 brun Exp $ */
+/* $Id: TGeant3f77.h,v 1.2 2004/12/17 11:55:47 brun Exp $ */
 
 //////////////////////////////////////////////////// 
 //  C++/f77 interface to Geant3 basic routines    // 
@@ -17,8 +17,8 @@ public:
  
 
 private:
-  TGeant3f77(const TGeant3f77 &) {}
-  TGeant3f77 & operator=(const TGeant3f77&) {return *this;}
+  TGeant3f77(const TGeant3f77 &tg3);
+  TGeant3f77 & operator=(const TGeant3f77 &tg3);
   
   ClassDef(TGeant3f77,1)  //C++/f77 interface to Geant basic routines 
 }; 

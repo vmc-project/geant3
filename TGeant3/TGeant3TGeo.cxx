@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.8  2005/07/13 09:36:18  brun
+From Federico:
+  Mods for Mac and removal of stupid printout.
+
 Revision 1.7  2005/07/11 12:00:47  brun
 From Andrei Gheata:
 a fix in TGeant3TGeo::Gsmixt. The problem (found by Federico) was
@@ -920,7 +924,7 @@ void  TGeant3TGeo::Ggclos()
 }
 
 //_____________________________________________________________________________
-void  TGeant3TGeo::Gprint(const char *name)
+void  TGeant3TGeo::Gprint(const char * /*name*/)
 {
   //
   // Routine to print data structures
@@ -1272,7 +1276,7 @@ void  TGeant3TGeo::Gsdvt2(const char *name, const char *mother, Double_t step,
 }
 
 //_____________________________________________________________________________
-void  TGeant3TGeo::Gsord(const char *name, Int_t iax)
+void  TGeant3TGeo::Gsord(const char * /*name*/, Int_t /*iax*/)
 {
   //
   //    Flags volume CHNAME whose contents will have to be ordered
@@ -1570,7 +1574,7 @@ void TGeant3TGeo::Gsatt(const char *name, const char *att, Int_t val)
 }
 
 //_____________________________________________________________________________
-Int_t TGeant3TGeo::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
+Int_t TGeant3TGeo::Glvolu(Int_t /*nlev*/, Int_t * /*lnam*/,Int_t * /*lnum*/)
 {
   //
   //  nlev   number of leveles deap into the volume tree
@@ -1593,7 +1597,7 @@ Int_t TGeant3TGeo::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdshow(Int_t iview)
+void TGeant3TGeo::Gdshow(Int_t /*iview*/)
 {
   //
   //  IVIEW  View number
@@ -1604,7 +1608,7 @@ void TGeant3TGeo::Gdshow(Int_t iview)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdopt(const char *name,const char *value)
+void TGeant3TGeo::Gdopt(const char * /*name*/,const char * /*value*/)
 {
   //
   //  NAME   Option name
@@ -1638,8 +1642,8 @@ void TGeant3TGeo::Gdopt(const char *name,const char *value)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
-		    Double_t u0,Double_t v0,Double_t ul,Double_t vl)
+void TGeant3TGeo::Gdraw(const char * /*name*/,Double_t /*theta*/, Double_t /*phi*/, Double_t /*psi*/,
+			Double_t /*u0*/,Double_t /*v0*/,Double_t /*ul*/,Double_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -1679,8 +1683,8 @@ void TGeant3TGeo::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t 
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
-		     Float_t v0,Float_t ul,Float_t vl)
+void TGeant3TGeo::Gdrawc(const char * /*name*/,Int_t /*axis*/, Float_t /*cut*/,Float_t /*u0*/,
+			 Float_t /*v0*/,Float_t /*ul*/,Float_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -1702,9 +1706,9 @@ void TGeant3TGeo::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
-		     Float_t cutval, Float_t theta, Float_t phi, Float_t u0,
-		     Float_t v0,Float_t ul,Float_t vl)
+void TGeant3TGeo::Gdrawx(const char * /*name*/,Float_t /*cutthe*/, Float_t /*cutphi*/,
+		     Float_t /*cutval*/, Float_t /*theta*/, Float_t /*phi*/, Float_t /*u0*/,
+			 Float_t /*v0*/,Float_t /*ul*/,Float_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -1727,7 +1731,7 @@ void TGeant3TGeo::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdspec(const char *name)
+void TGeant3TGeo::Gdspec(const char * /*name*/)
 {
   //
   //  NAME   Volume name
@@ -1742,7 +1746,7 @@ void TGeant3TGeo::Gdspec(const char *name)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::DrawOneSpec(const char *name)
+void TGeant3TGeo::DrawOneSpec(const char * /*name*/)
 {
   //
   //  Function called when one double-clicks on a volume name
@@ -1752,7 +1756,7 @@ void TGeant3TGeo::DrawOneSpec(const char *name)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::Gdtree(const char *name,Int_t levmax, Int_t isel)
+void TGeant3TGeo::Gdtree(const char * /*name*/,Int_t /*levmax*/, Int_t /*isel*/)
 {
   //
   //  NAME   Volume name
@@ -1771,7 +1775,7 @@ void TGeant3TGeo::Gdtree(const char *name,Int_t levmax, Int_t isel)
 }
 
 //_____________________________________________________________________________
-void TGeant3TGeo::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
+void TGeant3TGeo::GdtreeParent(const char * /*name*/,Int_t /*levmax*/, Int_t /*isel*/)
 {
   //
   //  NAME   Volume name
@@ -1943,7 +1947,7 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 
 
 //______________________________________________________________________
-void gmediaTGeo(Float_t *x, Int_t &numed, Int_t &check)
+void gmediaTGeo(Float_t *x, Int_t &numed, Int_t & /*check*/)
 {
    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
    if (gGeoManager->IsOutside()) {
@@ -2084,7 +2088,7 @@ void gtnextTGeo()
 
 
 //______________________________________________________________________
-void ggperpTGeo(Float_t *x, Float_t *norm, Int_t &ierr)
+void ggperpTGeo(Float_t * /*x*/, Float_t *norm, Int_t &ierr)
 {
 // Computes the normal to the next crossed surface, assuming that
 // FindNextBoundary() was already called.

@@ -1,4 +1,4 @@
-// $Id: TG3Application.cxx,v 1.1 2003/11/28 11:10:49 brun Exp $
+// $Id: TG3Application.cxx,v 1.2 2003/11/28 18:09:41 brun Exp $
 //
 // Class TG3Application
 // ----------------------- 
@@ -79,7 +79,7 @@ void TG3Application::ConstructVolumes()
 //
 
 //_____________________________________________________________________________
-void TG3Application::InitMC(const char* setup)
+void TG3Application::InitMC(const char* /*setup*/)
 {    
   //
   // Initialize MC.
@@ -90,7 +90,7 @@ void TG3Application::InitMC(const char* setup)
 }
 
 //_____________________________________________________________________________
-void TG3Application::RunMC(Int_t nofEvents)
+void TG3Application::RunMC(Int_t /*nofEvents*/)
 {    
   //
   // MC run.
@@ -229,7 +229,7 @@ Double_t TG3Application::TrackingZmax() const
 }
 
 //_____________________________________________________________________________
-void TG3Application::Field(const Double_t* x, Double_t* b) const
+void TG3Application::Field(const Double_t* /* x */, Double_t* b) const
 {
   // 
   // No magnetic field.
