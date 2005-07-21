@@ -15,6 +15,9 @@
 
 /*
 $Log: G3toRoot.cxx,v $
+Revision 1.3  2004/01/28 08:17:52  brun
+Reintroduce the Geant3 graphics classes (thanks Andreas Morsch)
+
 Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 initial import into CVS
 
@@ -575,7 +578,7 @@ void G3toRoot::ConvertToRootShapes(TFolder *item, G3Node** node, Int_t nNodes)
 	
 	if (ncopy) {
 	    for (Int_t icop = 0; icop < ncopy; icop++) {
-		G3Volume* copy = volume->Copy(icop);
+		G3Volume* copy = volume->MakeCopy(icop);
 		
 		sprintf(nameN,"%s%d" , volume->GetName(), icop+1);
 		if (copy->Posp()) {

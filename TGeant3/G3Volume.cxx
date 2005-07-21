@@ -15,6 +15,9 @@
 
 /*
 $Log: G3Volume.cxx,v $
+Revision 1.3  2004/01/28 08:17:52  brun
+Reintroduce the Geant3 graphics classes (thanks Andreas Morsch)
+
 Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 initial import into CVS
 
@@ -308,7 +311,7 @@ void  G3Volume::AddCopy(G3Volume* volume)
     fNCopies++;
 }
 
-G3Volume* G3Volume::Copy(Int_t i)
+G3Volume* G3Volume::MakeCopy(Int_t i)
 {
     return (G3Volume*) fCopies->At(i);
 }
