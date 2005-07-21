@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.9  2005/07/20 09:22:51  brun
+From Federico:
+Fixes to compile with gcc4CVS: ----------------------------------------------------------------------
+
 Revision 1.8  2005/07/13 09:36:18  brun
 From Federico:
   Mods for Mac and removal of stupid printout.
@@ -692,7 +696,9 @@ void TGeant3TGeo::Material(Int_t& kmat, const char* name, Double_t a, Double_t z
   //  nbuf               number of user words
   //
 
-  G3Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
+  Float_t* fbuf = CreateFloatArray(buf, nwbuf);
+  G3Material(kmat, name, a, z, dens, radl, absl, fbuf, nwbuf);
+  delete [] fbuf;
 
   fMCGeo->Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
 }
@@ -745,7 +751,19 @@ void TGeant3TGeo::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   // weigths.
   //
 
-  G3Mixture(kmat, name, a, z, dens, nlmat, wmat);
+  Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));
+  Float_t* fz = CreateFloatArray(z, TMath::Abs(nlmat));
+  Float_t* fwmat = CreateFloatArray(wmat, TMath::Abs(nlmat));
+
+  G3Mixture(kmat, name, fa, fz, dens, nlmat, fwmat);
+  Int_t i;
+  for (i=0; i<TMath::Abs(nlmat); i++) {
+    a[i] = fa[i]; z[i] = fz[i]; wmat[i] = fwmat[i];
+  }
+
+  delete [] fa;
+  delete [] fz;
+  delete [] fwmat;
 
   fMCGeo->Mixture(kmat, name, a, z, dens, TMath::Abs(nlmat), wmat);
 }
