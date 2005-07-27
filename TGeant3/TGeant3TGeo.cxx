@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.10  2005/07/21 17:54:37  brun
+Implement same code in the float* versions that were already implemented
+in the Double* versions.
+
 Revision 1.9  2005/07/20 09:22:51  brun
 From Federico:
 Fixes to compile with gcc4CVS: ----------------------------------------------------------------------
@@ -751,19 +755,7 @@ void TGeant3TGeo::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   // weigths.
   //
 
-  Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));
-  Float_t* fz = CreateFloatArray(z, TMath::Abs(nlmat));
-  Float_t* fwmat = CreateFloatArray(wmat, TMath::Abs(nlmat));
-
-  G3Mixture(kmat, name, fa, fz, dens, nlmat, fwmat);
-  Int_t i;
-  for (i=0; i<TMath::Abs(nlmat); i++) {
-    a[i] = fa[i]; z[i] = fz[i]; wmat[i] = fwmat[i];
-  }
-
-  delete [] fa;
-  delete [] fz;
-  delete [] fwmat;
+  G3Mixture(kmat, name, a, z, dens, nlmat, wmat);
 
   fMCGeo->Mixture(kmat, name, a, z, dens, TMath::Abs(nlmat), wmat);
 }
