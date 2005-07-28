@@ -16,6 +16,9 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.11  2005/07/27 13:06:52  brun
+Simplify logic in TGeant3TGeo::Mixture (Float_t* case)
+
 Revision 1.10  2005/07/21 17:54:37  brun
 Implement same code in the float* versions that were already implemented
 in the Double* versions.
@@ -997,7 +1000,8 @@ void  TGeant3TGeo::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
   //       In this case, WMAT in output is changed to relative
   //       weigths.
   //
-  Mixture(imat,name,a,z,dens,nlmat,wmat);
+  g3smixt(imat,PASSCHARD(name),a,z,dens,nlmat,wmat PASSCHARL(name));
+  fMCGeo->Mixture(imat, name, a, z, dens, TMath::Abs(nlmat), wmat);
 }
 
 //_____________________________________________________________________________
@@ -1805,20 +1809,23 @@ Int_t  TGeant3TGeo::ImportMaterial(const TGeoMaterial* mat)
   Int_t kmat;
   const TGeoMixture* mixt = dynamic_cast<const TGeoMixture*>(mat);
   if (mixt) {
+    // TGeo stores only proportions by weigth
     Int_t nlmat = mixt->GetNelements();
     Float_t* fa = CreateFloatArray(mixt->GetAmixt(), TMath::Abs(nlmat));
     Float_t* fz = CreateFloatArray(mixt->GetZmixt(), TMath::Abs(nlmat));
     Float_t* fwmat = CreateFloatArray(mixt->GetWmixt(), TMath::Abs(nlmat));
-    G3Mixture(kmat, mixt->GetName(), fa, fz, mixt->GetDensity(), nlmat, fwmat);
+    G3Mixture(kmat, mixt->GetName(), fa, fz, mixt->GetDensity(), TMath::Abs(nlmat), fwmat);
     delete [] fa;
     delete [] fz;
     delete [] fwmat;
   }
   else {
     Float_t* buf = 0;
+    // Inject radlen with negative sign to be stored in G3
+    Double_t radlen = mat->GetRadLen();
+    // Ignore abslen from TGeo and let G3 compute it
     G3Material(kmat, mat->GetName(), mat->GetA(), mat->GetZ(),
-               mat->GetDensity(), mat->GetRadLen(), mat->GetIntLen(), buf, 0);
-                                    // Is fIntLen == absl ??
+               mat->GetDensity(), -radlen, 0, buf, 0);
   }
   return kmat;
 }
