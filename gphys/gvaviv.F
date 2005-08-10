@@ -1,7 +1,10 @@
 *
-* $Id: gvaviv.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: gvaviv.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gvaviv.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -335,7 +338,11 @@ C.
       AC(9)=(AC(8)-AC(0))/NPT
       IF(ITYPE .EQ. 3) THEN
        X=(AC(7)-AC(8))/(AC(7)*AC(8))
-       Y=1/LOG(AC(8)/AC(7))
+       IF(AC(7) .NE. AC(8)) THEN
+          Y=1/LOG(AC(8)/AC(7))
+       ELSE
+          Y=1.E10
+       ENDIF
        P2=AC(7)**2
        AC(11)=P2*(AC(1)*EXP(-AC(2)*(AC(7)+AC(5)*P2)-
      1            AC(3)*EXP(-AC(4)*(AC(7)+AC(6)*P2)))-0.045*Y/AC(7))/
