@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.21 2005/05/20 10:43:20 brun Exp $
+# $Id: Makefile,v 1.22 2005/07/13 09:36:17 brun Exp $
 
 ############################### geant321 Makefile #############################
 
@@ -22,6 +22,13 @@ ROOT_BINDIR = $(ROOTSYS)/bin
 endif
 
 include $(CONFDIR)/Makefile.$(PLATFORM)
+
+ifneq ($(findstring gcc,$(CC)),)
+GCC_MAJOR    := $(shell $(CC) -dumpversion 2>&1 | cut -d'.' -f1)
+GCC_MINOR    := $(shell $(CC) -dumpversion 2>&1 | cut -d'.' -f2)
+GCC_VERS     := gcc-$(GCC_MAJOR).$(GCC_MINOR)
+endif
+
 
 ############################### Sources #######################################
 
@@ -158,8 +165,8 @@ depend:		$(SRCS)
 TOCLEAN		= $(BINDIR)
 TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-MAKEDIST	= $(CONFDIR)/makedist.sh lib
-MAKEDISTSRC	= $(CONFDIR)/makedist.sh
+MAKEDIST	= $(CONFDIR)/makedist.sh $(GCC_VERS) lib
+MAKEDISTSRC	= $(CONFDIR)/makedist.sh $(GCC_VERS)
 
 include $(CONFDIR)/MakeMacros
 

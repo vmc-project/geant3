@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: $
+# $Id: makedist.sh,v 1.1 2002/10/08 08:21:36 brun Exp $
 # ---------------------------------------------------------------------
 # Script to produce source and optionally binary distribution of geant3.
 # Called by main Makefile.
@@ -17,12 +17,23 @@ CURDIR=`pwd`
 # gmake is called from geant3
 cd ..
 
-MAKELIB=$1
+if [ "x$1" = "xlib" ]; then
+   GCC_VERS=""
+   MAKELIB="lib"
+elif [ "x$2" = "xlib" ]; then
+   GCC_VERS=$1
+   MAKELIB="lib"
+else
+   GCC_VERS=$1
+fi
 VERSION=`cat geant3/config/version_number`
-MACHINE=`uname`
-OSREL=`uname -r`
-if [ "$MAKELIB" = "lib" ] ; then  
-  TYPE=$MACHINE.$OSREL.
+MACHINE=`root-config --arch`
+if [ "x$MAKELIB" = "xlib" ]; then
+   if [ "x$GCC_VERS" = "x" ]; then  
+      TYPE=$MACHINE.
+   else
+      TYPE=$MACHINE.$GCC_VERS.
+   fi
 else   
   TYPE=""
 fi  
@@ -39,7 +50,7 @@ else
    TAR=$TAR" zcvf"
    rm -f $TARFILE.gz
    TARFILE=$TARFILE".gz"
-   EXCLUDE="--exclude CVS"
+   EXCLUDE="--exclude CVS --exclude tmp --exclude geant3/tgt_*"
 fi
 
 SOURCES=`ls geant3`
