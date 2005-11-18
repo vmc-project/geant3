@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.46  2005/07/21 17:54:37  brun
+Implement same code in the float* versions that were already implemented
+in the Double* versions.
+
 Revision 1.45  2005/07/20 09:22:50  brun
 From Federico:
 Fixes to compile with gcc4CVS: ----------------------------------------------------------------------
@@ -293,13 +297,13 @@ Cleanup of code
 
 */
 
-///////////////////////////////////////////////////////////////////////////////
-//                                                                           //
-//  Interface Class to the Geant3.21 MonteCarlo                              //
-//                                                                           //
-//                                                                           //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//  Interface Class to the Geant3.21 Monte Carlo                      //
+//                                                                    //
+//                                                                    //
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -309,6 +313,10 @@ Cleanup of code
 #include "TDatabasePDG.h"
 #include "TLorentzVector.h"
 #include "TArrayI.h"
+#include "TArrayD.h"
+#include "TString.h"
+#include "TParameter.h"
+#include "TGeoMatrix.h"
 
 #include "TGeant3.h"
 
@@ -571,7 +579,7 @@ Cleanup of code
 
 #endif
 
-//____________________________________________________________________________
+//______________________________________________________________________
 extern "C"
 {
   //
@@ -738,8 +746,8 @@ extern "C"
 
   void type_of_call g3satt(DEFCHARD, DEFCHARD, Int_t & DEFCHARL DEFCHARL);
 
-  void type_of_call g3fpara(DEFCHARD , Int_t&, Int_t&, Int_t&, Int_t&, Float_t*,
-			   Float_t* DEFCHARL);
+  void type_of_call g3fpara(DEFCHARD , Int_t&, Int_t&, Int_t&, Int_t&, 
+                            Float_t*, Float_t* DEFCHARL);
 
   void type_of_call gckpar(Int_t&, Int_t&, Float_t*);
 
@@ -796,8 +804,10 @@ extern "C"
 
   void type_of_call ertrgo();
 
-    float type_of_call g3brelm(const Float_t &z, const Float_t& t, const Float_t& cut);
-    float type_of_call g3prelm(const Float_t &z, const Float_t& t, const Float_t& cut);
+    float type_of_call g3brelm(const Float_t &z, const Float_t& t, 
+                               const Float_t& cut);
+    float type_of_call g3prelm(const Float_t &z, const Float_t& t, 
+                               const Float_t& cut);
 }
 
 #ifndef WIN32
@@ -958,7 +968,7 @@ TTree *stattree =0;
 TFile *statfile=0;
 #endif
 
-//____________________________________________________________________________
+//______________________________________________________________________
 TGeant3::TGeant3()
   : TVirtualMC(),
     fNG3Particles(0),
@@ -973,14 +983,14 @@ TGeant3::TGeant3()
    geant3 = this;
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 TGeant3::TGeant3(const char *title, Int_t nwgeant)
        : TVirtualMC("TGeant3",title, kFALSE),
          fImportRootGeometry(kFALSE),
          fStopRun(kFALSE)
 {
   //
-  // Standard constructor for TGeant3 with ZEBRA initialisation
+  // Standard constructor for TGeant3 with ZEBRA initialization
   //
 
 #ifdef STATISTICS
@@ -1024,7 +1034,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   fggperp = g3gperp;
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 TGeant3::~TGeant3()
 {
   if(fVolNames) {
@@ -1033,7 +1043,7 @@ TGeant3::~TGeant3()
   }
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens,
 			       Float_t &radl, Float_t &absl) const
 {
@@ -1048,7 +1058,7 @@ Int_t TGeant3::CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens,
   return 1;  //this could be the number of elements in mixture
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::DefaultRange()
 {
   //
@@ -1061,11 +1071,11 @@ void TGeant3::DefaultRange()
   gHigz->Range(0,0,20,20);
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::InitHIGZ()
 {
   //
-  // Initialise HIGZ
+  // Initialize HIGZ
   //
   if (!gHigz) {
     new THIGZ(kDefSize);
@@ -1073,7 +1083,7 @@ void TGeant3::InitHIGZ()
   }
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::LoadAddress()
 {
   //
@@ -1122,17 +1132,17 @@ void TGeant3::LoadAddress()
    gckine = fGckine;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::GeomIter()
 {
   //
   // Geometry iterator for moving upward in the geometry tree
-  // Initialise the iterator
+  // Initialize the iterator
   //
   fNextVol=fGcvolu->nlevel;
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::NextVolUp(Text_t *name, Int_t &copy)
 {
   //
@@ -1152,13 +1162,13 @@ Int_t TGeant3::NextVolUp(Text_t *name, Int_t &copy)
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::BuildPhysics()
 {
   Gphysi();
 }
 
-//___________________________________________________________________________$
+//______________________________________________________________________
 void TGeant3::AddParticlesToPdgDataBase() const
 {
 
@@ -1204,7 +1214,7 @@ void TGeant3::AddParticlesToPdgDataBase() const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::CurrentVolID(Int_t &copy) const
 {
   //
@@ -1223,7 +1233,7 @@ Int_t TGeant3::CurrentVolID(Int_t &copy) const
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::CurrentVolOffID(Int_t off, Int_t &copy) const
 {
   //
@@ -1244,7 +1254,7 @@ Int_t TGeant3::CurrentVolOffID(Int_t off, Int_t &copy) const
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char* TGeant3::CurrentVolName() const
 {
   //
@@ -1262,7 +1272,7 @@ const char* TGeant3::CurrentVolName() const
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char* TGeant3::CurrentVolOffName(Int_t off) const
 {
   //
@@ -1283,7 +1293,7 @@ const char* TGeant3::CurrentVolOffName(Int_t off) const
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char* TGeant3::CurrentVolPath()
 {
 // Return the path in geometry tree for the current volume
@@ -1292,7 +1302,7 @@ const char* TGeant3::CurrentVolPath()
   return GetPath();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::IdFromPDG(Int_t pdg) const
 {
   //
@@ -1303,7 +1313,7 @@ Int_t TGeant3::IdFromPDG(Int_t pdg) const
   return -1;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::PDGFromId(Int_t id) const
 {
   //
@@ -1313,7 +1323,7 @@ Int_t TGeant3::PDGFromId(Int_t id) const
   else return -1;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::DefineParticles()
 {
   //
@@ -1363,10 +1373,10 @@ void TGeant3::DefineParticles()
   fNG3Particles = 33;
 
   /* --- Define additional particles */
-  Gspart(fNG3Particles++, "OMEGA(782)", 3, 0.782, 0., 7.836e-23);  // 33 = OMEGA(782)
+  Gspart(fNG3Particles++,"OMEGA(782)",3,0.782,0.,7.836e-23);// 33 = OMEGA(782)
   fPDGCode[fNPDGCodes++]=223;   // 33 = Omega(782)
 
-  Gspart(fNG3Particles++, "PHI(1020)", 3, 1.019, 0., 1.486e-22); // 34 = PHI(1020)
+  Gspart(fNG3Particles++,"PHI(1020)",3,1.019,0.,1.486e-22);// 34 = PHI(1020)
   fPDGCode[fNPDGCodes++]=333;   // 34 = PHI (1020)
 
   Gspart(fNG3Particles++, "D +", 4, 1.87, 1., 1.066e-12);        // 35 = D+
@@ -1378,7 +1388,7 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "D 0", 3, 1.865, 0., 4.2e-13);         // 37 = D0
   fPDGCode[fNPDGCodes++]=421;   // 37 = D0
 
-  Gspart(fNG3Particles++, "ANTI D 0", 3, 1.865, 0., 4.2e-13);    // 38 = Anti D0
+  Gspart(fNG3Particles++,"ANTI D 0",3,1.865,0.,4.2e-13);    // 38 = Anti D0
   fPDGCode[fNPDGCodes++]=-421;  // 38 = D0 bar
 
 
@@ -1651,7 +1661,7 @@ void TGeant3::DefineParticles()
     AddParticlesToPdgDataBase();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::VolId(const Text_t *name) const
 {
   //
@@ -1665,7 +1675,7 @@ Int_t TGeant3::VolId(const Text_t *name) const
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::NofVolumes() const
 {
   //
@@ -1674,7 +1684,7 @@ Int_t TGeant3::NofVolumes() const
   return fGcnum->nvolum;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::NofVolDaughters(const char* volName) const
 {
 // Return number of daughters of the volume specified by volName
@@ -1688,7 +1698,7 @@ Int_t TGeant3::NofVolDaughters(const char* volName) const
   return nin;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char*  TGeant3::VolDaughterName(const char* volName, Int_t i) const
 {
 // Return the name of i-th daughters of the volume specified by volName
@@ -1706,7 +1716,7 @@ const char*  TGeant3::VolDaughterName(const char* volName, Int_t i) const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::VolDaughterCopyNo(const char* volName, Int_t i) const
 {
 // Return the copyNo of i-th daughters of the volume specified by volName
@@ -1722,7 +1732,7 @@ Int_t TGeant3::VolDaughterCopyNo(const char* volName, Int_t i) const
   return  Int_t(fZq[jin +3]);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::VolId2Mate(Int_t id) const
 {
   //
@@ -1736,7 +1746,7 @@ Int_t TGeant3::VolId2Mate(Int_t id) const
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char* TGeant3::VolName(Int_t id) const
 {
   //
@@ -1748,7 +1758,7 @@ const char* TGeant3::VolName(Int_t id) const
     return fVolNames[id-1];
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t  TGeant3::SetCut(const char* cutName, Double_t cutValue)
 {
   //
@@ -1786,7 +1796,7 @@ Bool_t  TGeant3::SetCut(const char* cutName, Double_t cutValue)
   return success;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
 {
   //
@@ -1834,17 +1844,17 @@ Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
   return  success;
 }
 
- //_____________________________________________________________________________
-Bool_t TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+ //______________________________________________________________________
+Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
                       Double_t mass, Double_t charge, Double_t lifetime)
 {
 //
 // Set a user defined particle
 // Function is ignored if particle with specified pdg
-// aready exists and error report is printed.
+// already exists and error report is printed.
 // ---
 
-  // Check if particle with specified pdg aready exists
+  // Check if particle with specified pdg already exists
   // in TGeant3
   if (IdFromPDG(pdg) > 0) {
     Error("SetParticle", "Particle already exists.");
@@ -1872,7 +1882,7 @@ Bool_t TGeant3::DefineParticle(Int_t pdg, const char* name, TMCParticleType type
   return kTRUE;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
                            Double_t /* excEnergy */, Double_t mass)
 {
@@ -1906,7 +1916,7 @@ Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
   return DefineParticle(pdg, name, partType, mass, charge, lifetime);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TString  TGeant3::ParticleName(Int_t pdg) const
 {
 //  Return G3 particle name
@@ -1921,7 +1931,7 @@ TString  TGeant3::ParticleName(Int_t pdg) const
   return TString(name);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t  TGeant3::ParticleMass(Int_t pdg) const
 {
 //  Return G3 particle mass
@@ -1935,7 +1945,7 @@ Double_t  TGeant3::ParticleMass(Int_t pdg) const
   return mass;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t  TGeant3::ParticleCharge(Int_t pdg) const
 {
 // Return G3 particle charge (in e)
@@ -1949,7 +1959,7 @@ Double_t  TGeant3::ParticleCharge(Int_t pdg) const
   return charge;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t  TGeant3::ParticleLifeTime(Int_t pdg) const
 {
 // Return G3 particle life time
@@ -1963,7 +1973,7 @@ Double_t  TGeant3::ParticleLifeTime(Int_t pdg) const
   return tlife;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TMCParticleType TGeant3::ParticleMCType(Int_t pdg) const
 {
 // Return MC particle type
@@ -1978,7 +1988,7 @@ TMCParticleType TGeant3::ParticleMCType(Int_t pdg) const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::Xsec(char* reac, Double_t /* energy */,
 		      Int_t part, Int_t /* mate */)
 {
@@ -1994,7 +2004,7 @@ Double_t TGeant3::Xsec(char* reac, Double_t /* energy */,
   return 0;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::TrackPosition(TLorentzVector &xyz) const
 {
   //
@@ -2007,7 +2017,7 @@ void TGeant3::TrackPosition(TLorentzVector &xyz) const
   xyz[3]=fGctrak->tofg;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
 {
   //
@@ -2019,7 +2029,7 @@ void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
   z=fGctrak->vect[2];
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::TrackTime() const
 {
   //
@@ -2028,7 +2038,7 @@ Double_t TGeant3::TrackTime() const
   return fGctrak->tofg;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::TrackMomentum(TLorentzVector &xyz) const
 {
   //
@@ -2042,8 +2052,9 @@ void TGeant3::TrackMomentum(TLorentzVector &xyz) const
   xyz[3]=fGctrak->getot;
 }
 
-//_____________________________________________________________________________
-void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &etot) const
+//______________________________________________________________________
+void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, 
+                            Double_t &etot) const
 {
   //
   // Return the direction and the momentum (GeV/c) of the track
@@ -2056,7 +2067,7 @@ void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz, Double_t &
   etot=fGctrak->getot;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::TrackCharge() const
 {
   //
@@ -2065,7 +2076,7 @@ Double_t TGeant3::TrackCharge() const
   return fGckine->charge;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::TrackMass() const
 {
   //
@@ -2074,7 +2085,7 @@ Double_t TGeant3::TrackMass() const
   return fGckine->amass;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::TrackPid() const
 {
   //
@@ -2083,7 +2094,7 @@ Int_t TGeant3::TrackPid() const
   return PDGFromId(fGckine->ipart);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::TrackStep() const
 {
   //
@@ -2092,7 +2103,7 @@ Double_t TGeant3::TrackStep() const
   return fGctrak->step;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::TrackLength() const
 {
   //
@@ -2101,7 +2112,7 @@ Double_t TGeant3::TrackLength() const
   return fGctrak->sleng;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsNewTrack() const
 {
   //
@@ -2110,7 +2121,7 @@ Bool_t TGeant3::IsNewTrack() const
   return (fGctrak->sleng==0);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackInside() const
 {
   //
@@ -2119,7 +2130,7 @@ Bool_t TGeant3::IsTrackInside() const
   return (fGctrak->inwvol==0);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackEntering() const
 {
   //
@@ -2128,7 +2139,7 @@ Bool_t TGeant3::IsTrackEntering() const
   return (fGctrak->inwvol==1);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackExiting() const
 {
   //
@@ -2137,7 +2148,7 @@ Bool_t TGeant3::IsTrackExiting() const
   return (fGctrak->inwvol==2);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackOut() const
 {
   //
@@ -2146,7 +2157,7 @@ Bool_t TGeant3::IsTrackOut() const
   return (fGctrak->inwvol==3);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackStop() const
 {
   //
@@ -2155,7 +2166,7 @@ Bool_t TGeant3::IsTrackStop() const
   return (fGctrak->istop==2);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t   TGeant3::NSecondaries() const
 {
   //
@@ -2164,7 +2175,7 @@ Int_t   TGeant3::NSecondaries() const
   return fGcking->ngkine;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t   TGeant3::CurrentEvent() const
 {
   //
@@ -2173,7 +2184,7 @@ Int_t   TGeant3::CurrentEvent() const
   return fGcflag->idevt;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TMCProcess TGeant3::ProdProcess(Int_t ) const
 {
   //
@@ -2196,7 +2207,7 @@ TMCProcess TGeant3::ProdProcess(Int_t ) const
   return kPNoProcess;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::StepProcesses(TArrayI &proc) const
 {
   //
@@ -2216,22 +2227,24 @@ Int_t TGeant3::StepProcesses(TArrayI &proc) const
   return nvproc;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TMCProcess TGeant3::G3toVMC(Int_t iproc) const
 {
   //
   // Conversion between GEANT and TMC processes
   //
 
-  const TMCProcess kPG2MC1[30] = {kPNoProcess, kPMultipleScattering, kPEnergyLoss, kPMagneticFieldL, kPDecay,
-			     kPPair, kPCompton, kPPhotoelectric, kPBrem, kPDeltaRay,
-			     kPAnnihilation, kPHadronic, kPNoProcess, kPEvaporation, kPNuclearFission,
-			     kPNuclearAbsorption, kPPbarAnnihilation, kPNCapture, kPHElastic, kPHInhelastic,
-			     kPMuonNuclear, kPTOFlimit, kPPhotoFission, kPNoProcess, kPRayleigh,
-			     kPNoProcess, kPNoProcess, kPNoProcess, kPNull, kPStop};
+  const TMCProcess kPG2MC1[30] = {
+    kPNoProcess, kPMultipleScattering, kPEnergyLoss, kPMagneticFieldL, kPDecay,
+    kPPair, kPCompton, kPPhotoelectric, kPBrem, kPDeltaRay,
+    kPAnnihilation, kPHadronic, kPNoProcess, kPEvaporation, kPNuclearFission,
+    kPNuclearAbsorption, kPPbarAnnihilation, kPNCapture, kPHElastic, 
+    kPHInhelastic, kPMuonNuclear, kPTOFlimit, kPPhotoFission, kPNoProcess, 
+    kPRayleigh, kPNoProcess, kPNoProcess, kPNoProcess, kPNull, kPStop};
 
-  const TMCProcess kPG2MC2[9] = {kPLightAbsorption, kPLightScattering, kStepMax, kPNoProcess, kPCerenkov,
-			    kPLightReflection, kPLightRefraction, kPSynchrotron, kPNoProcess};
+  const TMCProcess kPG2MC2[9] = {
+      kPLightAbsorption, kPLightScattering, kStepMax, kPNoProcess, kPCerenkov,
+      kPLightReflection, kPLightRefraction, kPSynchrotron, kPNoProcess};
 
   TMCProcess proc=kPNoProcess;
   if(1<iproc && iproc<=30) proc= kPG2MC1[iproc-1];
@@ -2240,7 +2253,7 @@ TMCProcess TGeant3::G3toVMC(Int_t iproc) const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void    TGeant3::GetSecondary(Int_t isec, Int_t& ipart,
 			      TLorentzVector &x, TLorentzVector &p)
 {
@@ -2264,7 +2277,7 @@ void    TGeant3::GetSecondary(Int_t isec, Int_t& ipart,
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::InitLego()
 {
   //
@@ -2274,18 +2287,18 @@ void TGeant3::InitLego()
   SetDEBU(0,0,0);  //do not print a message
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackDisappeared() const
 {
   //
-  // True if the current particle has disappered
+  // True if the current particle has disappeared
   // either because it decayed or because it underwent
   // an inelastic collision
   //
   return (fGctrak->istop==1);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Bool_t TGeant3::IsTrackAlive() const
 {
   //
@@ -2295,7 +2308,7 @@ Bool_t TGeant3::IsTrackAlive() const
   return (fGctrak->istop==0);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::StopTrack()
 {
   //
@@ -2304,7 +2317,7 @@ void TGeant3::StopTrack()
   fGctrak->istop=1;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::StopEvent()
 {
   //
@@ -2313,7 +2326,7 @@ void TGeant3::StopEvent()
   fGcflag->ieotri=1;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::StopRun()
 {
   //
@@ -2325,7 +2338,7 @@ void TGeant3::StopRun()
   fStopRun = kTRUE;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::MaxStep() const
 {
   //
@@ -2334,7 +2347,7 @@ Double_t TGeant3::MaxStep() const
   return fGctmed->stemax;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetMaxStep(Double_t maxstep)
 {
   //
@@ -2343,7 +2356,7 @@ void TGeant3::SetMaxStep(Double_t maxstep)
   fGctmed->stemax=maxstep;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetMaxNStep(Int_t maxnstp)
 {
   //
@@ -2362,7 +2375,7 @@ void TGeant3::ForceDecayTime(Float_t time)
     Gcphys()->sumlif = time / p.Beta() / p.Gamma()  * 2.99792458e10;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::GetMaxNStep() const
 {
   //
@@ -2371,10 +2384,10 @@ Int_t TGeant3::GetMaxNStep() const
   return fGctrak->maxnst;
 }
 
-//_____________________________________________________________________________
-void TGeant3::G3Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
-		         Double_t dens, Double_t radl, Double_t absl, Float_t* buf,
-		         Int_t nwbuf)
+//_______________________________________________________________________
+void TGeant3::G3Material(Int_t& kmat, const char* name, Double_t a, 
+                         Double_t z, Double_t dens, Double_t radl, 
+                         Double_t absl, Float_t* buf, Int_t nwbuf)
 {
   //
   // Defines a Material
@@ -2384,7 +2397,7 @@ void TGeant3::G3Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   //  a                  atomic mass in au
   //  z                  atomic number
   //  dens               density in g/cm3
-  //  absl               absorbtion length in cm
+  //  absl               absorption length in cm
   //                     if >=0 it is ignored and the program
   //                     calculates it, if <0. -absl is taken
   //  radl               radiation length in cm
@@ -2416,7 +2429,7 @@ void TGeant3::G3Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
 	 nwbuf PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
 		       Double_t dens, Double_t radl, Double_t absl, Float_t* buf,
 		       Int_t nwbuf)
@@ -2429,7 +2442,7 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   //  a                  atomic mass in au
   //  z                  atomic number
   //  dens               density in g/cm3
-  //  absl               absorbtion length in cm
+  //  absl               absorption length in cm
   //                     if >=0 it is ignored and the program
   //                     calculates it, if <0. -absl is taken
   //  radl               radiation length in cm
@@ -2442,7 +2455,7 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   G3Material(kmat, name, a, z, dens, radl, absl, buf, nwbuf);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
 		       Double_t dens, Double_t radl, Double_t absl, Double_t* buf,
 		       Int_t nwbuf)
@@ -2455,7 +2468,7 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   //  a                  atomic mass in au
   //  z                  atomic number
   //  dens               density in g/cm3
-  //  absl               absorbtion length in cm
+  //  absl               absorption length in cm
   //                     if >=0 it is ignored and the program
   //                     calculates it, if <0. -absl is taken
   //  radl               radiation length in cm
@@ -2471,7 +2484,7 @@ void TGeant3::Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
   delete [] fbuf;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::G3Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
 		        Double_t dens, Int_t nlmat, Float_t* wmat)
 {
@@ -2485,7 +2498,7 @@ void TGeant3::G3Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   // If nlmat < 0 then WMAT contains the number of atoms
   // of a given kind into the molecule of the COMPOUND
   // In this case, WMAT in output is changed to relative
-  // weigths.
+  // weights.
   //
 
   Int_t jmate=fGclink->jmate;
@@ -2501,10 +2514,10 @@ void TGeant3::G3Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
       }
     }
   }
-  g3smixt(kmat,PASSCHARD(name), a, z,Float_t(dens), nlmat,wmat PASSCHARL(name));
+  g3smixt(kmat,PASSCHARD(name),a,z,Float_t(dens),nlmat,wmat PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
 		      Double_t dens, Int_t nlmat, Float_t* wmat)
 {
@@ -2518,7 +2531,7 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   // If nlmat < 0 then WMAT contains the number of atoms
   // of a given kind into the molecule of the COMPOUND
   // In this case, WMAT in output is changed to relative
-  // weigths.
+  // weights.
   //
 
   Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));
@@ -2536,7 +2549,7 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Float_t* a, Float_t* z,
   delete [] fwmat;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
 		      Double_t dens, Int_t nlmat, Double_t* wmat)
 {
@@ -2550,7 +2563,7 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   // If nlmat < 0 then WMAT contains the number of atoms
   // of a given kind into the molecule of the COMPOUND
   // In this case, WMAT in output is changed to relative
-  // weigths.
+  // weights.
   //
 
   Float_t* fa = CreateFloatArray(a, TMath::Abs(nlmat));
@@ -2568,7 +2581,7 @@ void TGeant3::Mixture(Int_t& kmat, const char* name, Double_t* a, Double_t* z,
   delete [] fwmat;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
 		     Int_t ifield, Double_t fieldm, Double_t tmaxfd,
 		     Double_t stemax, Double_t deemax, Double_t epsil,
@@ -2610,11 +2623,11 @@ void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   Float_t fdeemax = deemax;
   Float_t fepsil  = epsil;
   Float_t fstmin =  stmin;
-  g3stmed(kmed, PASSCHARD(name), nmat, isvol, ifield, ffieldm, ftmaxfd, fstemax,
-	 fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
+  g3stmed(kmed, PASSCHARD(name),nmat,isvol,ifield,ffieldm,ftmaxfd,fstemax,
+          fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
 		     Int_t ifield, Double_t fieldm, Double_t tmaxfd,
 		     Double_t stemax, Double_t deemax, Double_t epsil,
@@ -2638,12 +2651,12 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   //  performed with g3helix; ifield = 3 if tracking performed with g3helx3.
   //
 
-  G3Medium(kmed, name, nmat, isvol, ifield, fieldm, tmaxfd, stemax, deemax, epsil,
+  G3Medium(kmed,name,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,epsil,
            stmin, ubuf, nbuf);
 
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
 		     Int_t ifield, Double_t fieldm, Double_t tmaxfd,
 		     Double_t stemax, Double_t deemax, Double_t epsil,
@@ -2660,7 +2673,7 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   //  stemax    max. step allowed
   //  deemax    max. fraction of energy lost in a step
   //  epsil     tracking precision (cm)
-  //  stmin     min. step due to continuos processes (cm)
+  //  stmin     min. step due to continuous processes (cm)
   //
   //  ifield = 0 if no magnetic field; ifield = -1 if user decision in guswim;
   //  ifield = 1 if tracking performed with g3rkuta; ifield = 2 if tracking
@@ -2668,13 +2681,13 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   //
 
   Float_t* fubuf = CreateFloatArray(ubuf, nbuf);
-  G3Medium(kmed, name, nmat, isvol, ifield, fieldm, tmaxfd, stemax, deemax, epsil,
+  G3Medium(kmed,name,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,epsil,
            stmin, fubuf, nbuf);
   delete [] fubuf;
 
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
 		     Double_t phiy, Double_t thez, Double_t phiz)
 {
@@ -2706,8 +2719,8 @@ void TGeant3::Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
   g3srotm(krot, thex, phix, they, phiy, thez, phiz);
 }
 
-//_____________________________________________________________________________
-Int_t TGeant3::GetMedium() const
+//______________________________________________________________________
+Int_t TGeant3::CurrentMedium() const
 {
   //
   // Return the number of the current medium
@@ -2715,14 +2728,29 @@ Int_t TGeant3::GetMedium() const
 //#ifdef WITHROOT
 //  Int_t imed = 0;
 //  TGeoNode *node = gGeoManager->GetCurrentNode();
-//  if (!node) imed = gGeoManager->GetTopNode()->GetVolume()->GetMedium()->GetId();
+//  if (!node) imed = gGeoManager->GetTopNode()->GetVolume()->
+//                                                 GetMedium()->GetId();
 //  else       imed = node->GetVolume()->GetMedium()->GetId();
   //printf("==GetMedium: ROOT id=%i  numed=%i\n", imed,fGctmed->numed);
 //#endif
   return fGctmed->numed;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
+Int_t TGeant3::GetMedium() const
+{
+  //
+  // Return the number of the current medium
+  // Deprecated function - replaced with CurrentMedium()
+  //
+
+  Warning("GetMedium", 
+          "Deprecated function - use CurrentMedium() instead");
+
+  return CurrentMedium();
+}
+ 
+//______________________________________________________________________
 void  TGeant3::SetRootGeometry()
 {
 // Notify Geant3 about use of TGeo geometry.
@@ -2735,7 +2763,7 @@ void  TGeant3::SetRootGeometry()
   fImportRootGeometry = kTRUE;
 }  
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char *TGeant3::GetPath()
 {
 // Get current path inside G3 geometry
@@ -2762,7 +2790,7 @@ const char *TGeant3::GetPath()
    return fPath;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 const char *TGeant3::GetNodeName()
 {
 // Get name of current G3 node
@@ -2777,7 +2805,7 @@ const char *TGeant3::GetNodeName()
    return fPath;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::Edep() const
 {
   //
@@ -2786,7 +2814,7 @@ Double_t TGeant3::Edep() const
   return fGctrak->destep;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Double_t TGeant3::Etot() const
 {
   //
@@ -2795,13 +2823,13 @@ Double_t TGeant3::Etot() const
   return fGctrak->getot;
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GBASE
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfile(const char * /*filename*/, const char * /*option*/)
 {
   //
@@ -2831,7 +2859,7 @@ void  TGeant3::Gfile(const char * /*filename*/, const char * /*option*/)
 //	 PASSCHARL(option));
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gpcxyz()
 {
   //
@@ -2840,7 +2868,7 @@ void  TGeant3::Gpcxyz()
 
     g3pcxyz();
 }
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Ggclos()
 {
   //
@@ -2873,7 +2901,7 @@ void  TGeant3::Ggclos()
   strcpy(fVolNames[fGcnum->nvolum],"NULL");
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Glast()
 {
   //
@@ -2882,7 +2910,7 @@ void  TGeant3::Glast()
   g3last();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gprint(const char *name)
 {
   //
@@ -2894,7 +2922,7 @@ void  TGeant3::Gprint(const char *name)
   g3print(PASSCHARD(vname),0 PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Grun()
 {
   //
@@ -2903,7 +2931,7 @@ void  TGeant3::Grun()
   g3run();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gtrig()
 {
   //
@@ -2917,7 +2945,7 @@ void  TGeant3::Gtrig()
   //printf("count_gtnext= %8d\n",count_gtnext);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gtrigc()
 {
   //
@@ -2926,16 +2954,16 @@ void  TGeant3::Gtrigc()
   g3trigc();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gtrigi()
 {
   //
-  // Initialises event partition
+  // Initializes event partition
   //
   g3trigi();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gwork(Int_t nwork)
 {
   //
@@ -2944,22 +2972,22 @@ void  TGeant3::Gwork(Int_t nwork)
   g3work(nwork);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gzinit()
 {
   //
-  // To initialise GEANT/ZEBRA data structures
+  // To initialize GEANT/ZEBRA data structures
   //
   g3zinit();
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GCONS
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z,
 		      Float_t &dens, Float_t &radl, Float_t &absl,
 		      Float_t* ubuf, Int_t& nbuf)
@@ -2971,7 +2999,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z,
 	 PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
 		      Double_t &dens, Double_t &radl, Double_t &absl,
 		      Double_t* ubuf, Int_t& nbuf)
@@ -2998,7 +3026,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
   delete [] fubuf;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfpart(Int_t ipart, char *name, Int_t &itrtyp,
 		   Float_t &amass, Float_t &charge, Float_t &tlife) const
 {
@@ -3013,7 +3041,7 @@ void  TGeant3::Gfpart(Int_t ipart, char *name, Int_t &itrtyp,
 	 PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,
 		   Int_t &ifield, Float_t &fieldm, Float_t &tmaxfd,
 		    Float_t &stemax, Float_t &deemax, Float_t &epsil,
@@ -3027,7 +3055,7 @@ void  TGeant3::Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
  void  TGeant3::Gftmat(Int_t imate, Int_t ipart, char *chmeca, Int_t kdim,
 		      Float_t* tkin, Float_t* value, Float_t* pcut,
 		      Int_t &ixst)
@@ -3040,7 +3068,7 @@ void  TGeant3::Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,
 
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Float_t TGeant3::Gbrelm(Float_t z, Float_t t, Float_t bcut)
 {
   //
@@ -3049,7 +3077,7 @@ Float_t TGeant3::Gbrelm(Float_t z, Float_t t, Float_t bcut)
   return g3brelm(z,t,bcut);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Float_t TGeant3::Gprelm(Float_t z, Float_t t, Float_t bcut)
 {
   //
@@ -3058,7 +3086,7 @@ Float_t TGeant3::Gprelm(Float_t z, Float_t t, Float_t bcut)
   return g3prelm(z,t,bcut);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gmate()
 {
   //
@@ -3067,7 +3095,7 @@ void  TGeant3::Gmate()
   g3mate();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gpart()
 {
   //
@@ -3077,7 +3105,7 @@ void  TGeant3::Gpart()
   g3part();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode)
 {
 //  Defines branching ratios and decay modes for standard
@@ -3085,7 +3113,7 @@ void  TGeant3::Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode)
    g3sdk(ipart,bratio,mode);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
 		   Float_t dens, Float_t radl, Float_t absl)
 {
@@ -3097,7 +3125,7 @@ void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
   //  a                  atomic mass in au
   //  z                  atomic number
   //  dens               density in g/cm3
-  //  absl               absorbtion length in cm
+  //  absl               absorption length in cm
   //                     if >=0 it is ignored and the program
   //                     calculates it, if <0. -absl is taken
   //  radl               radiation length in cm
@@ -3109,14 +3137,15 @@ void  TGeant3::Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
   Float_t *ubuf=0;
   Int_t   nbuf=0;
   if (dens <= 0 && a != 0 && z != 0) {
-     Warning("Gsmate","Density was o, set to 0.01 for imat=%d, name=%s",imat,name);
+     Warning("Gsmate","Density was o, set to 0.01 for imat=%d, name=%s",
+             imat,name);
      dens = 0.01;
   }
   g3smate(imat,PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf
 	 PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
 		   Float_t dens, Int_t nlmat, Float_t *wmat)
 {
@@ -3125,17 +3154,17 @@ void  TGeant3::Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
   //       THE BASIC NLMAT materials defined by arrays A,Z and WMAT
   //
   //       If NLMAT.GT.0 then WMAT contains the PROPORTION BY
-  //       WEIGTHS OF EACH BASIC MATERIAL IN THE MIXTURE.
+  //       WEIGHTS OF EACH BASIC MATERIAL IN THE MIXTURE.
   //
   //       If NLMAT.LT.0 then WMAT contains the number of atoms
   //       of a given kind into the molecule of the COMPOUND
   //       In this case, WMAT in output is changed to relative
-  //       weigths.
+  //       weights.
   //
   g3smixt(imat,PASSCHARD(name), a, z,dens, nlmat,wmat PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gspart(Int_t ipart, const char *name, Int_t itrtyp,
 		   Double_t amass, Double_t charge, Double_t tlife)
 {
@@ -3159,7 +3188,7 @@ void  TGeant3::Gspart(Int_t ipart, const char *name, Int_t itrtyp,
 	 PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,
 		      Int_t ifield, Float_t fieldm, Float_t tmaxfd,
 		      Float_t stemax, Float_t deemax, Float_t epsil,
@@ -3188,66 +3217,66 @@ void  TGeant3::Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,
 	 deemax, epsil, stmin, ubuf, nbuf PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsckov(Int_t itmed, Int_t npckov, Float_t *ppckov,
 			   Float_t *absco, Float_t *effic, Float_t *rindex)
 {
   //
   //    Stores the tables for UV photon tracking in medium ITMED
-  //    Please note that it is the user's responsability to
+  //    Please note that it is the user's responsibility to
   //    provide all the coefficients:
   //
   //
   //       ITMED       Tracking medium number
   //       NPCKOV      Number of bins of each table
   //       PPCKOV      Value of photon momentum (in GeV)
-  //       ABSCO       Absorbtion coefficients
-  //                   dielectric: absorbtion length in cm
-  //                   metals    : absorbtion fraction (0<=x<=1)
+  //       ABSCO       Absorption coefficients
+  //                   dielectric: absorption length in cm
+  //                   metals    : absorption fraction (0<=x<=1)
   //       EFFIC       Detection efficiency for UV photons
   //       RINDEX      Refraction index (if=0 metal)
   //
   g3sckov(itmed,npckov,ppckov,absco,effic,rindex);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov,
 			   Float_t *absco, Float_t *effic, Float_t *rindex)
 {
   //
   //    Stores the tables for UV photon tracking in medium ITMED
-  //    Please note that it is the user's responsability to
+  //    Please note that it is the user's responsibility to
   //    provide all the coefficients:
   //
   //
   //       ITMED       Tracking medium number
   //       NPCKOV      Number of bins of each table
   //       PPCKOV      Value of photon momentum (in GeV)
-  //       ABSCO       Absorbtion coefficients
-  //                   dielectric: absorbtion length in cm
-  //                   metals    : absorbtion fraction (0<=x<=1)
+  //       ABSCO       Absorption coefficients
+  //                   dielectric: absorption length in cm
+  //                   metals    : absorption fraction (0<=x<=1)
   //       EFFIC       Detection efficiency for UV photons
   //       RINDEX      Refraction index (if=0 metal)
   //
   g3sckov(itmed,npckov,ppckov,absco,effic,rindex);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov,
 			   Double_t *absco, Double_t *effic, Double_t *rindex)
 {
   //
   //    Stores the tables for UV photon tracking in medium ITMED
-  //    Please note that it is the user's responsability to
+  //    Please note that it is the user's responsibility to
   //    provide all the coefficients:
   //
   //
   //       ITMED       Tracking medium number
   //       NPCKOV      Number of bins of each table
   //       PPCKOV      Value of photon momentum (in GeV)
-  //       ABSCO       Absorbtion coefficients
-  //                   dielectric: absorbtion length in cm
-  //                   metals    : absorbtion fraction (0<=x<=1)
+  //       ABSCO       Absorption coefficients
+  //                   dielectric: absorption length in cm
+  //                   metals    : absorption fraction (0<=x<=1)
   //       EFFIC       Detection efficiency for UV photons
   //       RINDEX      Refraction index (if=0 metal)
   //
@@ -3265,7 +3294,63 @@ void  TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov,
   delete [] frindex;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
+void  TGeant3::DefineOpSurface(const char* /*name*/,
+                EMCOpSurfaceModel /*model*/, EMCOpSurfaceType /*surfaceType*/,
+                EMCOpSurfaceFinish /*surfaceFinish*/, Double_t /*sigmaAlpha*/) 
+{
+   
+   Warning("DefineOpSurface", 
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+                
+//______________________________________________________________________
+void  TGeant3::SetBorderSurface(const char* /*name*/,
+                const char* /*vol1Name*/, int /*vol1CopyNo*/,
+                const char* /*vol2Name*/, int /*vol2CopyNo*/,
+                const char* /*opSurfaceName*/) 
+{
+   Warning("SetBorderSurface",
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+                
+//______________________________________________________________________
+void  TGeant3::SetSkinSurface(const char* /*name*/,
+                const char* /*volName*/,
+                const char* /*opSurfaceName*/) 
+{
+   Warning("SetSkinSurface",
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+                
+//______________________________________________________________________
+void  TGeant3::SetMaterialProperty(
+                Int_t /*itmed*/, const char* /*propertyName*/, 
+                Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
+{
+   Warning("SetMaterialProperty",
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+                
+//______________________________________________________________________
+void  TGeant3::SetMaterialProperty(
+                Int_t /*itmed*/, const char* /*propertyName*/, 
+                Double_t /*value*/) 
+{
+   Warning("SetMaterialProperty",
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+                
+//______________________________________________________________________
+void  TGeant3::SetMaterialProperty(
+                const char* /*surfaceName*/, const char* /*propertyName*/, 
+                Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
+		{
+   Warning("SetMaterialProperty",
+           "Not applicable in Geant3 - setting is ignored.");
+}   
+
+//______________________________________________________________________
 void  TGeant3::Gstpar(Int_t itmed, const char *param, Double_t parval)
 {
   //
@@ -3285,15 +3370,15 @@ void  TGeant3::Gstpar(Int_t itmed, const char *param, Double_t parval)
   g3stpar(itmed,PASSCHARD(param), fparval PASSCHARL(param));
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GCONS
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
-void  TGeant3::Gfkine(Int_t itra, Float_t *vert, Float_t *pvert, Int_t &ipart,
-		      Int_t &nvert)
+//______________________________________________________________________
+void  TGeant3::Gfkine(Int_t itra, Float_t *vert, Float_t *pvert, 
+                      Int_t &ipart, Int_t &nvert)
 {
   //           Storing/Retrieving Vertex and Track parameters
   //           ----------------------------------------------
@@ -3332,7 +3417,7 @@ void  TGeant3::Gfkine(Int_t itra, Float_t *vert, Float_t *pvert, Int_t &ipart,
   g3fkine(itra,vert,pvert,ipart,nvert,ubuf,nbuf);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfvert(Int_t nvtx, Float_t *v, Int_t &ntbeam, Int_t &nttarg,
 		      Float_t &tofg)
 {
@@ -3346,7 +3431,7 @@ void  TGeant3::Gfvert(Int_t nvtx, Float_t *v, Int_t &ntbeam, Int_t &nttarg,
   g3fvert(nvtx,v,ntbeam,nttarg,tofg,ubuf,nbuf);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::Gskine(Float_t *plab, Int_t ipart, Int_t nv, Float_t *buf,
 		      Int_t nwbuf)
 {
@@ -3359,7 +3444,7 @@ Int_t TGeant3::Gskine(Float_t *plab, Int_t ipart, Int_t nv, Float_t *buf,
   return nt;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::Gsvert(Float_t *v, Int_t ntbeam, Int_t nttarg, Float_t *ubuf,
 		      Int_t nwbuf)
 {
@@ -3373,29 +3458,29 @@ Int_t TGeant3::Gsvert(Float_t *v, Int_t ntbeam, Int_t nttarg, Float_t *ubuf,
   return nwtx;
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GPHYS
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gphysi()
 {
   //
-  //       Initialise material constants for all the physics
+  //       Initialize material constants for all the physics
   //       mechanisms used by GEANT
   //
   g3physi();
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GTRAK
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gdebug()
 {
   //
@@ -3404,7 +3489,7 @@ void  TGeant3::Gdebug()
   g3debug();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gekbin()
 {
   //
@@ -3414,7 +3499,7 @@ void  TGeant3::Gekbin()
   g3ekbin();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gfinds()
 {
   //
@@ -3433,7 +3518,7 @@ void  TGeant3::Gfinds()
   g3finds();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsking(Int_t igk)
 {
   //
@@ -3443,7 +3528,7 @@ void  TGeant3::Gsking(Int_t igk)
   g3sking(igk);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gskpho(Int_t igk)
 {
   //
@@ -3453,7 +3538,7 @@ void  TGeant3::Gskpho(Int_t igk)
   g3skpho(igk);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsstak(Int_t iflag)
 {
   //
@@ -3470,7 +3555,7 @@ void  TGeant3::Gsstak(Int_t iflag)
   g3sstak(iflag);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsxyz()
 {
   //
@@ -3479,7 +3564,7 @@ void  TGeant3::Gsxyz()
   g3sxyz();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gtrack()
 {
   //
@@ -3488,7 +3573,7 @@ void  TGeant3::Gtrack()
   g3track();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gtreve()
 {
   //
@@ -3497,7 +3582,7 @@ void  TGeant3::Gtreve()
   g3treve();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::GtreveRoot()
 {
   //
@@ -3506,7 +3591,7 @@ void  TGeant3::GtreveRoot()
   gtreveroot();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Grndm(Float_t *rvec, Int_t len) const
 {
   //
@@ -3516,7 +3601,7 @@ void  TGeant3::Grndm(Float_t *rvec, Int_t len) const
   for(Int_t i=0; i<len; rvec[i++]=r->Rndm());
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Grndmq(Int_t &is1, Int_t &is2, Int_t /*iseq*/,
 		      const Text_t */*chopt*/)
 {
@@ -3528,13 +3613,13 @@ void  TGeant3::Grndmq(Int_t &is1, Int_t &is2, Int_t /*iseq*/,
    is2 = 0;
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GDRAW
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gdxyz(Int_t it)
 {
   //
@@ -3543,7 +3628,7 @@ void  TGeant3::Gdxyz(Int_t it)
   g3dxyz(it);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gdcxyz()
 {
   //
@@ -3552,13 +3637,13 @@ void  TGeant3::Gdcxyz()
   g3dcxyz();
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //                        Functions from GGEOM
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gdtom(Float_t *xd, Float_t *xm, Int_t iflag)
 {
   //
@@ -3570,12 +3655,12 @@ void  TGeant3::Gdtom(Float_t *xd, Float_t *xm, Int_t iflag)
   //        (inverse routine is GMTOD)
   //
   //   If IFLAG=1  convert coordinates
-  //      IFLAG=2  convert direction cosinus
+  //      IFLAG=2  convert direction cosines
   //
   g3dtom(xd, xm, iflag);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gdtom(Double_t *xd, Double_t *xm, Int_t iflag)
 {
   //
@@ -3587,7 +3672,7 @@ void  TGeant3::Gdtom(Double_t *xd, Double_t *xm, Int_t iflag)
   //        (inverse routine is GMTOD)
   //
   //   If IFLAG=1  convert coordinates
-  //      IFLAG=2  convert direction cosinus
+  //      IFLAG=2  convert direction cosines
   //
 
   Float_t* fxd = CreateFloatArray(xd, 3);
@@ -3603,23 +3688,23 @@ void  TGeant3::Gdtom(Double_t *xd, Double_t *xm, Int_t iflag)
   delete [] fxm;
 }
 
-//_____________________________________________________________________________
-void  TGeant3::Glmoth(const char* iudet, Int_t iunum, Int_t &nlev, Int_t *lvols,
-		      Int_t *lindx)
+//______________________________________________________________________
+void  TGeant3::Glmoth(const char* iudet, Int_t iunum, Int_t &nlev, 
+                      Int_t *lvols, Int_t *lindx)
 {
   //
   //   Loads the top part of the Volume tree in LVOLS (IVO's),
   //   LINDX (IN indices) for a given volume defined through
   //   its name IUDET and number IUNUM.
   //
-  //   The routine stores only upto the last level where JVOLUM
+  //   The routine stores only up to the last level where JVOLUM
   //   data structure is developed. If there is no development
   //   above the current level, it returns NLEV zero.
   Int_t *idum=0;
   g3lmoth(PASSCHARD(iudet), iunum, nlev, lvols, lindx, idum PASSCHARL(iudet));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gmedia(Float_t *x, Int_t &numed)
 {
   //
@@ -3634,7 +3719,7 @@ void  TGeant3::Gmedia(Float_t *x, Int_t &numed)
   g3media(x,numed,check);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gmtod(Float_t *xm, Float_t *xd, Int_t iflag)
 {
   //
@@ -3647,12 +3732,12 @@ void  TGeant3::Gmtod(Float_t *xm, Float_t *xd, Int_t iflag)
   //             (inverse routine is GDTOM)
   //
   //        If IFLAG=1  convert coordinates
-  //           IFLAG=2  convert direction cosinus
+  //           IFLAG=2  convert direction cosines
   //
   g3mtod(xm, xd, iflag);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gmtod(Double_t *xm, Double_t *xd, Int_t iflag)
 {
   //
@@ -3665,7 +3750,7 @@ void  TGeant3::Gmtod(Double_t *xm, Double_t *xd, Int_t iflag)
   //             (inverse routine is GDTOM)
   //
   //        If IFLAG=1  convert coordinates
-  //           IFLAG=2  convert direction cosinus
+  //           IFLAG=2  convert direction cosines
   //
 
 
@@ -3682,7 +3767,7 @@ void  TGeant3::Gmtod(Double_t *xm, Double_t *xd, Int_t iflag)
   delete [] fxd;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvn(const char *name, const char *mother, Int_t ndiv,
 		     Int_t iaxis)
 {
@@ -3706,7 +3791,7 @@ void  TGeant3::Gsdvn(const char *name, const char *mother, Int_t ndiv,
 	PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvn2(const char *name, const char *mother, Int_t ndiv,
 		      Int_t iaxis, Double_t c0i, Int_t numed)
 {
@@ -3727,7 +3812,7 @@ void  TGeant3::Gsdvn2(const char *name, const char *mother, Int_t ndiv,
 	 PASSCHARL(vname) PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvs(const char *name, const char *mother, Float_t step,
 		     Int_t iaxis, Int_t numed)
 {
@@ -3743,7 +3828,7 @@ void  TGeant3::Gsdvs(const char *name, const char *mother, Float_t step,
 	PASSCHARL(vname) PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvs2(const char *name, const char *mother, Float_t step,
 		      Int_t iaxis, Float_t c0, Int_t numed)
 {
@@ -3759,7 +3844,7 @@ void  TGeant3::Gsdvs2(const char *name, const char *mother, Float_t step,
 	 PASSCHARL(vname) PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvt(const char *name, const char *mother, Double_t step,
 		     Int_t iaxis, Int_t numed, Int_t ndvmx)
 {
@@ -3768,7 +3853,7 @@ void  TGeant3::Gsdvt(const char *name, const char *mother, Double_t step,
   //
   //       Divides MOTHER into divisions called NAME along
   //       axis IAXIS in steps of STEP. If not exactly divisible
-  //       will make as many as possible and will centre them
+  //       will make as many as possible and will center them
   //       with respect to the mother. Divisions will have medium
   //       number NUMED. If NUMED is 0, NUMED of MOTHER is taken.
   //       NDVMX is the expected maximum number of divisions
@@ -3784,7 +3869,7 @@ void  TGeant3::Gsdvt(const char *name, const char *mother, Double_t step,
 	PASSCHARL(vname) PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsdvt2(const char *name, const char *mother, Double_t step,
 		      Int_t iaxis, Double_t c0, Int_t numed, Int_t ndvmx)
 {
@@ -3810,7 +3895,7 @@ void  TGeant3::Gsdvt2(const char *name, const char *mother, Double_t step,
 	 numed, ndvmx PASSCHARL(vname) PASSCHARL(vmother));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsord(const char *name, Int_t iax)
 {
   //
@@ -3832,9 +3917,10 @@ void  TGeant3::Gsord(const char *name, Int_t iax)
   g3sord(PASSCHARD(vname), iax PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
-void  TGeant3::Gspos(const char *name, Int_t nr, const char *mother, Double_t x,
-		     Double_t y, Double_t z, Int_t irot, const char *konly)
+//______________________________________________________________________
+void  TGeant3::Gspos(const char *name, Int_t nr, const char *mother, 
+                     Double_t x, Double_t y, Double_t z, Int_t irot, 
+                     const char *konly)
 {
   //
   // Position a volume into an existing one
@@ -3868,7 +3954,7 @@ void  TGeant3::Gspos(const char *name, Int_t nr, const char *mother, Double_t x,
 	PASSCHARL(konly));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::G3Gsposp(const char *name, Int_t nr, const char *mother,
 		      Double_t x, Double_t y, Double_t z, Int_t irot,
 		      const char *konly, Float_t *upar, Int_t np )
@@ -3894,7 +3980,7 @@ void  TGeant3::G3Gsposp(const char *name, Int_t nr, const char *mother,
 	 PASSCHARL(konly));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
 		      Double_t x, Double_t y, Double_t z, Int_t irot,
 		      const char *konly, Float_t *upar, Int_t np )
@@ -3907,7 +3993,7 @@ void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
   G3Gsposp(name, nr, mother, x, y, z, irot, konly, upar, np);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
 		      Double_t x, Double_t y, Double_t z, Int_t irot,
 		      const char *konly, Double_t *upar, Int_t np )
@@ -3922,7 +4008,7 @@ void  TGeant3::Gsposp(const char *name, Int_t nr, const char *mother,
   delete [] fupar;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2,
 		      Float_t phi2, Float_t theta3, Float_t phi3)
 {
@@ -3941,7 +4027,7 @@ void  TGeant3::Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2,
   g3srotm(nmat, theta1, phi1, theta2, phi2, theta3, phi3);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::Gprotm(Int_t nmat)
 {
   //
@@ -3951,7 +4037,7 @@ void  TGeant3::Gprotm(Int_t nmat)
   g3protm(nmat);
  }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::G3Gsvolu(const char *name, const char *shape, Int_t nmed,
 		      Float_t *upar, Int_t npar)
 {
@@ -3975,8 +4061,7 @@ Int_t TGeant3::G3Gsvolu(const char *name, const char *shape, Int_t nmed,
 
   return ivolu;
 }
-
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
 		      Float_t *upar, Int_t npar)
 {
@@ -3996,7 +4081,7 @@ Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
 
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
 		      Double_t *upar, Int_t npar)
 {
@@ -4018,59 +4103,63 @@ Int_t TGeant3::Gsvolu(const char *name, const char *shape, Int_t nmed,
   return ivolu;
 }
 
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
 //           T H E    D R A W I N G   P A C K A G E
 //           ======================================
-//  Drawing functions. These functions allow the visualization in several ways
-//  of the volumes defined in the geometrical data structure. It is possible
-//  to draw the logical tree of volumes belonging to the detector (DTREE),
-//  to show their geometrical specification (DSPEC,DFSPC), to draw them
-//  and their cut views (DRAW, DCUT). Moreover, it is possible to execute
-//  these commands when the hidden line removal option is activated; in
-//  this case, the volumes can be also either translated in the space
-//  (SHIFT), or clipped by boolean operation (CVOL). In addition, it is
-//  possible to fill the surfaces of the volumes
-//  with solid colours when the shading option (SHAD) is activated.
+//  Drawing functions. These functions allow the visualization in several 
+//  ways of the volumes defined in the geometrical data structure. It is 
+//  possible to draw the logical tree of volumes belonging to the detector 
+//  (DTREE), to show their geometrical specification (DSPEC,DFSPC), to 
+//  draw them and their cut views (DRAW, DCUT). Moreover, it is possible 
+//  to execute these commands when the hidden line removal option is 
+//  activated; in this case, the volumes can be also either translated 
+//  in the space (SHIFT), or clipped by boolean operation (CVOL). In 
+//  addition, it is possible to fill the surfaces of the volumes
+//  with solid colors when the shading option (SHAD) is activated.
 //  Several tools (ZOOM, LENS) have been developed to zoom detailed parts
 //  of the detectors or to scan physical events as well.
-//  Finally, the command MOVE will allow the rotation, translation and zooming
-//  on real time parts of the detectors or tracks and hits of a simulated event.
-//  Ray-tracing commands. In case the command (DOPT RAYT ON) is executed,
-//  the drawing is performed by the Geant ray-tracing;
-//  automatically, the color is assigned according to the tracking medium of each
-//  volume and the volumes with a density lower/equal than the air are considered
-//  transparent; if the option (USER) is set (ON) (again via the command (DOPT)),
-//  the user can set color and visibility for the desired volumes via the command
-//  (SATT), as usual, relatively to the attributes (COLO) and (SEEN).
-//  The resolution can be set via the command (SATT * FILL VALUE), where (VALUE)
-//  is the ratio between the number of pixels drawn and 20 (user coordinates).
-//  Parallel view and perspective view are possible (DOPT PROJ PARA/PERS); in the
-//  first case, we assume that the first mother volume of the tree is a box with
-//  dimensions 10000 X 10000 X 10000 cm and the view point (infinetely far) is
-//  5000 cm far from the origin along the Z axis of the user coordinates; in the
-//  second case, the distance between the observer and the origin of the world
-//  reference system is set in cm by the command (PERSP NAME VALUE); grand-angle
-//  or telescopic effects can be achieved changing the scale factors in the command
-//  (DRAW). When the final picture does not occupy the full window,
-//  mapping the space before tracing can speed up the drawing, but can also
-//  produce less precise results; values from 1 to 4 are allowed in the command
-//  (DOPT MAPP VALUE), the mapping being more precise for increasing (VALUE); for
-//  (VALUE = 0) no mapping is performed (therefore max precision and lowest speed).
-//  The command (VALCUT) allows the cutting of the detector by three planes
-//  ortogonal to the x,y,z axis. The attribute (LSTY) can be set by the command
-//  SATT for any desired volume and can assume values from 0 to 7; it determines
-//  the different light processing to be performed for different materials:
+//  Finally, the command MOVE will allow the rotation, translation and 
+//  zooming on real time parts of the detectors or tracks and hits of a 
+//  simulated event. Ray-tracing commands. In case the command (DOPT RAYT 
+//  ON) is executed, the drawing is performed by the Geant ray-tracing;
+//  automatically, the color is assigned according to the tracking medium 
+//  of each volume and the volumes with a density lower/equal than the 
+//  air are considered transparent; if the option (USER) is set (ON) 
+//  (again via the command (DOPT)), the user can set color and visibility 
+//  for the desired volumes via the command (SATT), as usual, relatively 
+//  to the attributes (COLO) and (SEEN). The resolution can be set via 
+//  the command (SATT * FILL VALUE), where (VALUE) is the ratio between 
+//  the number of pixels drawn and 20 (user coordinates). Parallel view 
+//  and perspective view are possible (DOPT PROJ PARA/PERS); in the first 
+//  case, we assume that the first mother volume of the tree is a box with
+//  dimensions 10000 X 10000 X 10000 cm and the view point (infinitely far) 
+//  is 5000 cm far from the origin along the Z axis of the user coordinates; 
+//  in the second case, the distance between the observer and the origin 
+//  of the world reference system is set in cm by the command (PERSP NAME 
+//  VALUE); grand-angle or telescopic effects can be achieved changing the 
+//  scale factors in the command (DRAW). When the final picture does not 
+//  occupy the full window, mapping the space before tracing can speed up 
+//  the drawing, but can also produce less precise results; values from 1 
+//  to 4 are allowed in the command (DOPT MAPP VALUE), the mapping being 
+//  more precise for increasing (VALUE); for (VALUE = 0) no mapping is 
+//  performed (therefore max precision and lowest speed). The command 
+//  (VALCUT) allows the cutting of the detector by three planes orthogonal 
+//  to the x,y,z axis. The attribute (LSTY) can be set by the command
+//  SATT for any desired volume and can assume values from 0 to 7; it 
+//  determines the different light processing to be performed for different 
+//  materials:
 //  0 = dark-matt, 1 = bright-matt, 2 = plastic, 3 = ceramic, 4 = rough-metals,
-//  5 = shiny-metals, 6 = glass, 7 = mirror. The detector is assumed to be in the
-//  dark, the ambient light luminosity is 0.2 for each basic hue (the saturation
-//  is 0.9) and the observer is assumed to have a light source (therefore he will
-//  produce parallel light in the case of parallel view and point-like-source
-//  light in the case of perspective view).
+//  5 = shiny-metals, 6 = glass, 7 = mirror. The detector is assumed to 
+//  be in the dark, the ambient light luminosity is 0.2 for each basic 
+//  hue (the saturation is 0.9) and the observer is assumed to have a 
+//  light source (therefore he will produce parallel light in the case 
+//  of parallel view and point-like-source light in the case of perspective 
+//  view).
 //
-//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+//*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
 {
   //
@@ -4096,25 +4185,25 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
   //     LWID   line width -7,...,1,2,3,..7 (default=1)
   //            LWID<0 will act as abs(LWID) was set for the volume
   //            and for all the levels below it. When SHAD is 'ON', LWID
-  //            represent the linewidth of the scan lines filling the surfaces
+  //            represent the line width of the scan lines filling the surfaces
   //            (whereas the FILL value represent their number). Therefore
   //            tuning this parameter will help to obtain the desired
   //            quality/performance ratio.
   //
-  //     COLO   colour code -166,...,1,2,..166 (default=1)
+  //     COLO   color code -166,...,1,2,..166 (default=1)
   //            n=1=black
   //            n=2=red;    n=17+m, m=0,25, increasing luminosity according to 'm';
   //            n=3=green;  n=67+m, m=0,25, increasing luminosity according to 'm';
   //            n=4=blue;   n=117+m, m=0,25, increasing luminosity according to 'm';
   //            n=5=yellow; n=42+m, m=0,25, increasing luminosity according to 'm';
   //            n=6=violet; n=142+m, m=0,25, increasing luminosity according to 'm';
-  //            n=7=lightblue; n=92+m, m=0,25, increasing luminosity according to 'm';
-  //            colour=n*10+m, m=1,2,...9, will produce the same colour
+  //            n=7=light-blue; n=92+m, m=0,25, increasing luminosity according to 'm';
+  //            color=n*10+m, m=1,2,...9, will produce the same color
   //            as 'n', but with increasing luminosity according to 'm';
   //            COLO<0 will act as if abs(COLO) was set for the volume
   //            and for all the levels below it.
   //            When for a volume the attribute FILL is > 1 (and the
-  //            option SHAD is on), the ABS of its colour code must be < 8
+  //            option SHAD is on), the ABS of its color code must be < 8
   //            because an automatic shading of its faces will be
   //            performed.
   //
@@ -4122,17 +4211,17 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
   //            when option SHAD is "on" the FILL attribute of any
   //            volume can be set different from 0 (normal drawing);
   //            if it is set to 1, the faces of such volume will be filled
-  //            with solid colours; if ABS(FILL) is > 1, then a light
+  //            with solid colors; if ABS(FILL) is > 1, then a light
   //            source is placed along the observer line, and the faces of
-  //            such volumes will be painted by colours whose luminosity
+  //            such volumes will be painted by colors whose luminosity
   //            will depend on the amount of light reflected;
   //            if ABS(FILL) = 1, then it is possible to use all the 166
-  //            colours of the colour table, becouse the automatic shading
+  //            colors of the color table, because the automatic shading
   //            is not performed;
   //            for increasing values of FILL the drawing will be performed
   //            with higher and higher resolution improving the quality (the
-  //            number of scan lines used to fill the faces increases with FILL);
-  //            it is possible to set different values of FILL
+  //            number of scan lines used to fill the faces increases with 
+  //            FILL); it is possible to set different values of FILL
   //            for different volumes, in order to optimize at the same time
   //            the performance and the quality of the picture;
   //            FILL<0 will act as if abs(FILL) was set for the volume
@@ -4140,14 +4229,14 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
   //            This kind of drawing can be saved in 'picture files'
   //            or in view banks.
   //            0=drawing without fill area
-  //            1=faces filled with solid colours and resolution = 6
+  //            1=faces filled with solid colors and resolution = 6
   //            2=lowest resolution (very fast)
   //            3=default resolution
   //            4=.................
   //            5=.................
   //            6=.................
   //            7=max resolution
-  //            Finally, if a coloured background is desired, the FILL
+  //            Finally, if a colored background is desired, the FILL
   //            attribute for the first volume of the tree must be set
   //            equal to -abs(colo), colo being >0 and <166.
   //
@@ -4164,7 +4253,7 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
 	PASSCHARL(vatt));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gfpara(const char *name, Int_t number, Int_t intext, Int_t& npar,
 			 Int_t& natt, Float_t* par, Float_t* att)
 {
@@ -4175,7 +4264,7 @@ void TGeant3::Gfpara(const char *name, Int_t number, Int_t intext, Int_t& npar,
 	 PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gckpar(Int_t ish, Int_t npar, Float_t* par)
 {
   //
@@ -4184,7 +4273,7 @@ void TGeant3::Gckpar(Int_t ish, Int_t npar, Float_t* par)
   gckpar(ish,npar,par);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gckmat(Int_t itmed, char* natmed)
 {
   //
@@ -4193,23 +4282,23 @@ void TGeant3::Gckmat(Int_t itmed, char* natmed)
   g3ckmat(itmed, PASSCHARD(natmed) PASSCHARL(natmed));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t TGeant3::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
 {
   //
-  //  nlev   number of leveles deap into the volume tree
+  //  nlev   number of levels deep into the volume tree
   //         size of the arrays lnam and lnum
-  //  lnam   an integer array whos 4 bytes contain the askii code for the
+  //  lnam   an integer array who's 4 bytes contain the ASCII code for the
   //         volume names
   //  lnum   an integer array containing the copy numbers for that specific
   //         volume
   //
-  //  This routine fills the volulme paramters in common /gcvolu/ for a
+  //  This routine fills the volume parameters in common /gcvolu/ for a
   //  physical tree, specified by the list lnam and lnum of volume names
   //  and numbers, and for all its ascendants up to level 1. This routine
-  //  is optimsed and does not re-compute the part of the history already
+  //  is optimized and does not re-compute the part of the history already
   //  available in GCVOLU. This means that if it is used in user programs
-  //  outside the usual framwork of the tracking, the user has to initilise
+  //  outside the usual framework of the tracking, the user has to initialize
   //  to zero NLEVEL in the common GCVOLU. It return 0 if there were no
   //  problems in make the call.
   //
@@ -4218,7 +4307,7 @@ Int_t TGeant3::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
   return ier;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdelete(Int_t iview)
 {
   //
@@ -4229,7 +4318,7 @@ void TGeant3::Gdelete(Int_t iview)
   g3delet(iview);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdopen(Int_t iview)
 {
   //
@@ -4242,14 +4331,14 @@ void TGeant3::Gdopen(Int_t iview)
   //  the contents of the bank can be displayed in a very fast way
   //  through a call to DSHOW; therefore, the detector can be easily
   //  zoomed many times in different ways. Please note that the pictures
-  //  with solid colours can now be stored in a view bank or in 'PICTURE FILES'
+  //  with solid colors can now be stored in a view bank or in 'PICTURE FILES'
   //
   InitHIGZ();
   gHigz->Clear();
   g3dopen(iview);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdclose()
 {
   //
@@ -4259,7 +4348,7 @@ void TGeant3::Gdclose()
   g3dclos();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdshow(Int_t iview)
 {
   //
@@ -4271,7 +4360,7 @@ void TGeant3::Gdshow(Int_t iview)
   g3dshow(iview);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdopt(const char *name,const char *value)
 {
   //
@@ -4299,7 +4388,7 @@ void TGeant3::Gdopt(const char *name,const char *value)
   //             ON  (D)  Normal shading.
   //     MAPP    1,2,3,4  Mapping before ray-tracing.
   //             0   (D)  No mapping.
-  //     USER    ON       User graphics options in the raytracing.
+  //     USER    ON       User graphics options in the ray tracing.
   //             OFF (D)  Automatic graphics options.
   //
   InitHIGZ();
@@ -4311,9 +4400,10 @@ void TGeant3::Gdopt(const char *name,const char *value)
 	PASSCHARL(vvalue));
 }
 
-//_____________________________________________________________________________
-void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
-		    Double_t u0,Double_t v0,Double_t ul,Double_t vl)
+//______________________________________________________________________
+void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, 
+                    Double_t psi, Double_t u0,Double_t v0,Double_t ul,
+                    Double_t vl)
 {
   //
   //  NAME   Volume name
@@ -4338,14 +4428,14 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
   //  the drawing requires more than the available memory, the program
   //  will evaluate and display the number of missing words
   //  (so that the user can increase the
-  //  size of its ZEBRA store). Finally, at the end of each drawing (with HIDE on),
-  //  the program will print messages about the memory used and
+  //  size of its ZEBRA store). Finally, at the end of each drawing (with 
+  //  HIDE on), the program will print messages about the memory used and
   //  statistics on the volumes' visibility.
   //  The following commands will produce the drawing of a green
   //  volume, specified by NAME, without using the hidden line removal
   //  technique, using the hidden line removal technique,
-  //  with different linewidth and colour (red), with
-  //  solid colour, with shading of surfaces, and without edges.
+  //  with different line width and color (red), with
+  //  solid color, with shading of surfaces, and without edges.
   //  Finally, some examples are given for the ray-tracing. (A possible
   //  string for the NAME of the volume can be found using the command DTREE).
   //
@@ -4362,13 +4452,14 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, Double_t psi,
   Float_t ful = ul;
   Float_t fvl = vl;
   if (fGcvdma->raytra != 1) {
-    g3draw(PASSCHARD(vname), ftheta,fphi,fpsi,fu0,fv0,ful,fvl PASSCHARL(vname));
+    g3draw(PASSCHARD(vname),ftheta,fphi,fpsi,fu0,fv0,ful,fvl PASSCHARL(vname));
   } else {
-    g3drayt(PASSCHARD(vname), ftheta,fphi,fpsi,fu0,fv0,ful,fvl PASSCHARL(vname));
+    g3drayt(PASSCHARD(vname),ftheta,fphi,fpsi,fu0,fv0,ful,
+            fvl PASSCHARL(vname));
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
 		     Float_t v0,Float_t ul,Float_t vl)
 {
@@ -4396,7 +4487,7 @@ void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
   g3drawc(PASSCHARD(vname), axis,cut,u0,v0,ul,vl PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
 		     Float_t cutval, Float_t theta, Float_t phi, Float_t u0,
 		     Float_t v0,Float_t ul,Float_t vl)
@@ -4427,7 +4518,7 @@ void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
 	  PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdhead(Int_t isel, const char *name, Double_t chrsiz)
 {
   //
@@ -4453,18 +4544,18 @@ void TGeant3::Gdhead(Int_t isel, const char *name, Double_t chrsiz)
   g3dhead(isel,PASSCHARD(name),fchrsiz PASSCHARL(name));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdman(Double_t u, Double_t v, const char *type)
 {
   //
   //  Draw a 2D-man at position (U0,V0)
   //  Parameters
-  //  U      U-coord. (horizontal) of the centre of man' R
-  //  V      V-coord. (vertical) of the centre of man' R
+  //  U      U-coord. (horizontal) of the center of man' R
+  //  V      V-coord. (vertical) of the center of man' R
   //  TYPE   D='MAN' possible values: 'MAN,WM1,WM2,WM3'
   //
   //   CALL GDMAN(u,v),CALL GDWMN1(u,v),CALL GDWMN2(u,v),CALL GDWMN2(u,v)
-  //  It superimposes the picure of a man or of a woman, chosen among
+  //  It superimposes the picture of a man or of a woman, chosen among
   //  three different ones, with the same scale factors as the detector
   //  in the current drawing.
   //
@@ -4483,7 +4574,7 @@ void TGeant3::Gdman(Double_t u, Double_t v, const char *type)
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdspec(const char *name)
 {
   //
@@ -4503,7 +4594,7 @@ void TGeant3::Gdspec(const char *name)
   g3dspec(PASSCHARD(vname) PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::DrawOneSpec(const char *name)
 {
   //
@@ -4528,7 +4619,7 @@ void TGeant3::DrawOneSpec(const char *name)
   gHigz = higzSave;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
 {
   //
@@ -4538,7 +4629,8 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
   //
   //  This function draws the logical tree,
   //  Each volume in the tree is represented by a TPaveTree object.
-  //  Double-clicking on a TPaveTree draws the specs of the corresponding volume.
+  //  Double-clicking on a TPaveTree draws the specs of the corresponding 
+  //  volume.
   //  Use TPaveTree pop-up menu to select:
   //    - drawing specs
   //    - drawing tree
@@ -4553,7 +4645,7 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
   gHigz->SetPname("");
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
 {
   //
@@ -4587,7 +4679,7 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetABAN(Int_t par)
 {
   //
@@ -4601,7 +4693,7 @@ void TGeant3::SetABAN(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetANNI(Int_t par)
 {
   //
@@ -4614,20 +4706,20 @@ void TGeant3::SetANNI(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetAUTO(Int_t par)
 {
   //
   //  To control automatic calculation of tracking medium parameters:
   //   par =0 no automatic calculation;
-  //       =1 automati calculation.
+  //       =1 automatic calculation.
   //
   fGctrak->igauto = par;
   SetBit(kAUTO);
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetBOMB(Float_t /*boom*/)
 {
   //
@@ -4636,7 +4728,7 @@ void TGeant3::SetBOMB(Float_t /*boom*/)
   //  To 'explode' the detector. If BOOM is positive (values smaller
   //  than 1. are suggested, but any value is possible)
   //  all the volumes are shifted by a distance
-  //  proportional to BOOM along the direction between their centre
+  //  proportional to BOOM along the direction between their center
   //  and the origin of the MARS; the volumes which are symmetric
   //  with respect to this origin are simply not shown.
   //  BOOM equal to 0 resets the normal mode.
@@ -4651,20 +4743,20 @@ void TGeant3::SetBOMB(Float_t /*boom*/)
 //  setbomb(boom);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetBREM(Int_t par)
 {
   //
-  //  To control bremstrahlung.
-  //   par =0 no bremstrahlung
-  //       =1 bremstrahlung. Photon processed.
-  //       =2 bremstrahlung. No photon stored.
+  //  To control bremsstrahlung.
+  //   par =0 no bremsstrahlung
+  //       =1 bremsstrahlung. Photon processed.
+  //       =2 bremsstrahlung. No photon stored.
   //
   fGcphys->ibrem = par;
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetCKOV(Int_t par)
 {
   //
@@ -4677,7 +4769,7 @@ void TGeant3::SetCKOV(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
 			  Double_t ymin,Double_t ymax,Double_t zmin,Double_t zmax)
 {
@@ -4690,7 +4782,7 @@ void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
   //  If "*" is given as the name of the
   //  volume to be clipped, all volumes are clipped by the given box.
   //  A volume can be clipped at most twice.
-  //  if a volume is explicitely clipped twice,
+  //  if a volume is explicitly clipped twice,
   //  the "*" will not act on it anymore. Giving "." as the name
   //  of the volume to be clipped will reset the clipping.
   //  Parameters
@@ -4717,10 +4809,11 @@ void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
   Float_t fymax = ymax;
   Float_t fzmin = zmin;
   Float_t fzmax = zmax;
-  setclip(PASSCHARD(vname),fxmin,fxmax,fymin,fymax,fzmin,fzmax PASSCHARL(vname));
+  setclip(PASSCHARD(vname),fxmin,fxmax,fymin,fymax,fzmin,
+          fzmax PASSCHARL(vname));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetCOMP(Int_t par)
 {
   //
@@ -4733,7 +4826,7 @@ void TGeant3::SetCOMP(Int_t par)
   fGcphys->icomp = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
 		      Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
 		      Float_t bcutm ,Float_t dcute ,Float_t dcutm ,
@@ -4772,7 +4865,7 @@ void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
   fGccuts->tofmax = tofmax;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetDCAY(Int_t par)
 {
   //
@@ -4785,7 +4878,7 @@ void TGeant3::SetDCAY(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetDEBU(Int_t emin, Int_t emax, Int_t emod)
 {
   //
@@ -4800,7 +4893,7 @@ void TGeant3::SetDEBU(Int_t emin, Int_t emax, Int_t emod)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetDRAY(Int_t par)
 {
   //
@@ -4812,14 +4905,14 @@ void TGeant3::SetDRAY(Int_t par)
   fGcphys->idray = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetERAN(Float_t ekmin, Float_t ekmax, Int_t nekbin)
 {
   //
   //  To control cross section tabulations
   //   ekmin = minimum kinetic energy in GeV
   //   ekmax = maximum kinetic energy in GeV
-  //   nekbin = number of logatithmic bins (<200)
+  //   nekbin = number of logarithmic bins (<200)
   //
   fGcmulo->ekmin = ekmin;
   fGcmulo->ekmax = ekmax;
@@ -4827,7 +4920,7 @@ void TGeant3::SetERAN(Float_t ekmin, Float_t ekmax, Int_t nekbin)
   SetBit(kERAN);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetHADR(Int_t par)
 {
   //
@@ -4839,7 +4932,7 @@ void TGeant3::SetHADR(Int_t par)
   fGcphys->ihadr = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetKINE(Int_t kine, Float_t xk1, Float_t xk2, Float_t xk3,
 		      Float_t xk4, Float_t xk5, Float_t xk6, Float_t xk7,
 		      Float_t xk8, Float_t xk9, Float_t xk10)
@@ -4861,7 +4954,7 @@ void TGeant3::SetKINE(Int_t kine, Float_t xk1, Float_t xk2, Float_t xk3,
   fGckine->pkine[9] = xk10;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetLOSS(Int_t par)
 {
   //
@@ -4878,7 +4971,7 @@ void TGeant3::SetLOSS(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetMULS(Int_t par)
 {
   //
@@ -4892,7 +4985,7 @@ void TGeant3::SetMULS(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetMUNU(Int_t par)
 {
   //
@@ -4904,14 +4997,14 @@ void TGeant3::SetMUNU(Int_t par)
   fGcphys->imunu = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetOPTI(Int_t par)
 {
   //
-  //  This flag controls the tracking optimisation performed via the
+  //  This flag controls the tracking optimization performed via the
   //  GSORD routine:
-  //      1 no optimisation at all; GSORD calls disabled;
-  //      0 no optimisation; only user calls to GSORD kept;
+  //      1 no optimization at all; GSORD calls disabled;
+  //      0 no optimization; only user calls to GSORD kept;
   //      1 all non-GSORDered volumes are ordered along the best axis;
   //      2 all volumes are ordered along the best axis.
   //
@@ -4919,7 +5012,7 @@ void TGeant3::SetOPTI(Int_t par)
   SetBit(kOPTI);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetPAIR(Int_t par)
 {
   //
@@ -4932,7 +5025,7 @@ void TGeant3::SetPAIR(Int_t par)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetPFIS(Int_t par)
 {
   //
@@ -4944,7 +5037,7 @@ void TGeant3::SetPFIS(Int_t par)
   fGcphys->ipfis = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetPHOT(Int_t par)
 {
   //
@@ -4956,7 +5049,7 @@ void TGeant3::SetPHOT(Int_t par)
   fGcphys->iphot = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetRAYL(Int_t par)
 {
   //
@@ -4967,19 +5060,19 @@ void TGeant3::SetRAYL(Int_t par)
   fGcphys->irayl = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetSTRA(Int_t par)
 {
   //
   //  To control energy loss fluctuations
-  //  with the PhotoAbsorption Ionisation model.
+  //  with the Photo-Absorption Ionization model.
   //   par =0 no Straggling.
   //       =1 Straggling yes => no Delta rays.
   //
   fGcphlt->istra = par;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetSWIT(Int_t sw, Int_t val)
 {
   //
@@ -4994,7 +5087,7 @@ void TGeant3::SetSWIT(Int_t sw, Int_t val)
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetTRIG(Int_t nevents)
 {
   //
@@ -5004,7 +5097,7 @@ void TGeant3::SetTRIG(Int_t nevents)
   SetBit(kTRIG);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetUserDecay(Int_t pdg)
 {
   //
@@ -5030,7 +5123,7 @@ void TGeant3::SetUserDecay(Int_t pdg)
   }
 }
 
-//______________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Vname(const char *name, char *vname)
 {
   //
@@ -5044,7 +5137,7 @@ void TGeant3::Vname(const char *name, char *vname)
   vname[4] = 0;
 }
 
-//______________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Ertrgo()
 {
   //
@@ -5053,7 +5146,7 @@ void TGeant3::Ertrgo()
   ertrgo();
 }
 
-//______________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1,
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt)
@@ -5075,26 +5168,26 @@ void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1,
   //*                     'B'   'Backward tracking' - i.e. energy loss     *
   //*                                        added to the current energy   *
   //*                     'E'   'Exact' calculation of errors assuming     *
-  //*                                        helix (i.e. pathlength not    *
+  //*                                        helix (i.e. path-length not   *
   //*                                        assumed as infinitesimal)     *
-  //*                     'L'   Tracking upto prescribed Lengths reached   *
+  //*                     'L'   Tracking up to prescribed Lengths reached  *
   //*                     'M'   'Mixed' prediction (not yet coded)         *
   //*                     'O'   Tracking 'Only' without calculating errors *
-  //*                     'P'   Tracking upto prescribed Planes reached    *
-  //*                     'V'   Tracking upto prescribed Volumes reached   *
-  //*                     'X'   Tracking upto prescribed Point approached  *
+  //*                     'P'   Tracking up to prescribed Planes reached   *
+  //*                     'V'   Tracking up to prescribed Volumes reached  *
+  //*                     'X'   Tracking up to prescribed Point approached *
   //*                                                                      *
   //*                Interface with GEANT :                                *
   //*             Track parameters are in /CGKINE/ and /GCTRAK/            *
   //*                                                                      *
   //*          ==>Called by : USER                                         *
-  //*             Authors   M.Maire, E.Nagy  ********//*                     *
+  //*             Authors   M.Maire, E.Nagy  ********//*                   *
   //*                                                                      *
   //************************************************************************
   ertrak(x1,p1,x2,p2,ipa,PASSCHARD(chopt) PASSCHARL(chopt));
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 			  Int_t number, Int_t nlevel)
 {
@@ -5169,7 +5262,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
   strcpy(&filetme[end],".tme");
   lun=fopen(filext,"w");
   //
-  // *** Initialisation of the working space
+  // *** Initialization of the working space
   iadvol=fGcnum->nvolum;
   iadtmd=iadvol+fGcnum->nvolum;
   iadrot=iadtmd+fGcnum->ntmed;
@@ -5185,12 +5278,12 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
   mlevel=nlevel;
   if(nlevel==0) mlevel=20;
   //
-  // *** find the top volume and put it in the stak
+  // *** find the top volume and put it in the stack
   numbr = number>0 ? number : 1;
   Gfpara(topvol,numbr,1,npar,natt,par,att);
   if(npar <= 0) {
-    printf(" *** GWEUCL *** top volume : %s number : %3d can not be a valid root\n",
-	   topvol, numbr);
+    printf(" *** GWEUCL *** top volume : %s number : %3d can not be "
+           "a valid root\n", topvol, numbr);
     return;
   }
   //
@@ -5204,8 +5297,8 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
   jvo = fZlq[fGclink->jvolum-ivo];
   ish = Int_t (fZq[jvo+2]);
   if(ish > 12) {
-    printf(" *** GWEUCL *** top volume : %s number : %3d can not be a valid root\n",
-	   topvol, numbr);
+    printf(" *** GWEUCL *** top volume : %s number : %3d can not be "
+           "a valid root\n",topvol, numbr);
   }
   //
   level = 1;
@@ -5214,11 +5307,11 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
   iws[iadvol+ivo] = level;
   ivstak = 0;
   //
-  //*** flag all volumes and fill the stak
+  //*** flag all volumes and fill the stack
   //
  L10:
   //
-  //    pick the next volume in stak
+  //    pick the next volume in stack
   ivstak += 1;
   ivo   = TMath::Abs(iws[ivstak]);
   jvo   = fZlq[fGclink->jvolum - ivo];
@@ -5264,7 +5357,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
     }
   }
   //
-  //     next volume in stak ?
+  //     next volume in stack ?
   if (ivstak < nvstak) goto L10;
   //
   // *** restore original material and media numbers
@@ -5280,7 +5373,8 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	imat =  Int_t (fZq[jtm+6]);
 	jma  = fZlq[fGclink->jmate-imat];
 	if (jma <= 0) {
-	  printf(" *** GWEUCL *** material not defined for tracking medium %5i %s\n",itm,natmed);
+	  printf(" *** GWEUCL *** material not defined for tracking medium "
+              "%5i %s\n",itm,natmed);
 	  flag=1;
 	} else {
 	  strncpy(namate,(char *)&fZiq[jma+1],20);
@@ -5293,22 +5387,26 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	if(iret<=0) goto L26;
 	flag=0;
 	if(!strcmp(key,"MATE")) {
-	  sscanf(card,"%d %s %f %f %f %f %f %d",&imatc,namatec,&az,&zc,&densc,&radlc,&abslc,&nparc);
+	  sscanf(card,"%d %s %f %f %f %f %f %d",&imatc,namatec,&az,&zc,
+              &densc,&radlc,&abslc,&nparc);
 	  Gfmate(imat,namate,a,z,dens,radl,absl,par,npar);
 	  if(!strcmp(namatec,namate)) {
 	    if(az==a && zc==z && densc==dens && radlc==radl
 	       && abslc==absl && nparc==nparc) {
 	      iomate[imat]=imatc;
 	      flag=1;
-	      printf("*** GWEUCL *** material : %3d '%s' restored as %3d\n",imat,namate,imatc);
+	      printf("*** GWEUCL *** material : %3d '%s' restored as %3d\n",
+                  imat,namate,imatc);
 	    } else {
-	      printf("*** GWEUCL *** different definitions for material: %s\n",namate);
+	      printf("*** GWEUCL *** different definitions for material: %s\n",
+                  namate);
 	    }
 	  }
 	}
 	if(strcmp(key,"END") && !flag) goto L23;
 	if (!flag) {
-	  printf("*** GWEUCL *** cannot restore original number for material: %s\n",namate);
+	  printf("*** GWEUCL *** cannot restore original number for "
+              "material: %s\n",namate);
 	}
 	//*
 	//*
@@ -5331,7 +5429,8 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	      printf("*** GWEUCL *** medium   : %3d '%20s' restored as %3d\n",
 		     itm,natmed,itmedc);
 	    } else {
-	      printf("*** GWEUCL *** different definitions for tracking medium: %s\n",natmed);
+	      printf("*** GWEUCL *** different definitions for tracking "
+                  "medium: %s\n",natmed);
 	    }
 	  }
 	}
@@ -5370,13 +5469,14 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
       //*
       if(jma<=0) {
 	strcpy(namate,"                  ");
-	printf(" *** GWEUCL *** material not defined for tracking medium %5d %s\n",
-	       itm,natmed);
+	printf(" *** GWEUCL *** material not defined for tracking "
+            "medium %5d %s\n", itm,natmed);
       } else {
 	strncpy(namate,(char *)&fZiq[jma+1],20);
 	namate[20]='\0';
       }
-      fprintf(lun,"TMED %3d '%20s' %3d '%20s'\n",iotmed[itm],natmed,iomate[imat],namate);
+      fprintf(lun,"TMED %3d '%20s' %3d '%20s'\n",iotmed[itm],natmed,
+              iomate[imat],namate);
     }
   }
   //*
@@ -5411,7 +5511,8 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
       if (npar>0) {
 	if (ivstak>1) for(i=0;i<npar;i++) par[i]=fZq[jvo+7+i];
 	Gckpar (ish,npar,par);
-	fprintf(lun,"VOLU '%4s' '%4s' %3d %3d\n",name,kShape[ish-1],iotmed[nmed],npar);
+	fprintf(lun,"VOLU '%4s' '%4s' %3d %3d\n",name,kShape[ish-1],
+             iotmed[nmed],npar);
 	for(i=0;i<(npar-1)/6+1;i++) {
 	  fprintf(lun,"     ");
 	  left=npar-i*6;
@@ -5419,7 +5520,8 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	  fprintf(lun,"\n");
 	}
       } else {
-	fprintf(lun,"VOLU '%4s' '%4s' %3d %3d\n",name,kShape[ish-1],iotmed[nmed],npar);
+	fprintf(lun,"VOLU '%4s' '%4s' %3d %3d\n",name,kShape[ish-1],
+             iotmed[nmed],npar);
       }
     }
   }
@@ -5531,10 +5633,12 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	  fprintf(lun,"\n");
       }
       //*  medium
-      Gftmed(itm,natmed,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,epsil,stmin,par,&npar);
-      fprintf(lun,"TMED %4d '%20s' %3d %1d %3d %11.5f %11.5f %11.5f %11.5f %11.5f %11.5f %3d\n",
-	      iotmed[itm],natmed,iomate[nmat],isvol,ifield,
-	      fieldm,tmaxfd,stemax,deemax,epsil,stmin,npar);
+      Gftmed(itm,natmed,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,
+             epsil,stmin,par,&npar);
+      fprintf(lun,"TMED %4d '%20s' %3d %1d %3d %11.5f %11.5f %11.5f "
+              "%11.5f %11.5f %11.5f %3d\n",
+              iotmed[itm],natmed,iomate[nmat],isvol,ifield,
+              fieldm,tmaxfd,stemax,deemax,epsil,stmin,npar);
       //*
       if (npar>0) {
 	  fprintf(lun,"     ");
@@ -5556,7 +5660,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
   return;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Int_t  TGeant3::TransportMethod(TMCParticleType particleType) const
 {
 //
@@ -5576,7 +5680,7 @@ Int_t  TGeant3::TransportMethod(TMCParticleType particleType) const
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TMCParticleType  TGeant3::ParticleType(Int_t itrtyp) const
 {
 //
@@ -5596,7 +5700,7 @@ TMCParticleType  TGeant3::ParticleType(Int_t itrtyp) const
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 TString  TGeant3::ParticleClass(TMCParticleType particleType) const
 {
 //
@@ -5618,11 +5722,11 @@ TString  TGeant3::ParticleClass(TMCParticleType particleType) const
   }
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::FinishGeometry()
 {
   //
-  // Finalise geometry construction
+  // Finalize geometry construction
   //
 
   //Close the geometry structure
@@ -5638,7 +5742,7 @@ void TGeant3::FinishGeometry()
   if (gDebug > 0) printf("FinishGeometry, returning\n");
 }
 
-//____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Init()
 {
     //
@@ -5646,13 +5750,16 @@ void TGeant3::Init()
     //
 
     //  Some default settings, if not changed by user
-    if (!TestBit(kTRIG)) SetTRIG(1);         // Number of events to be processed
-    if (!TestBit(kSWIT)) SetSWIT(4, 10);     //
-    if (!TestBit(kDEBU)) SetDEBU(0, 0, 1);   //
-    if (!TestBit(kAUTO)) SetAUTO(1);         // Select automatic STMIN etc... calc. (AUTO 1) or manual (AUTO 0)
-    if (!TestBit(kABAN)) SetABAN(0);         // Restore 3.16 behaviour for abandoned tracks
-    if (!TestBit(kOPTI)) SetOPTI(2);         // Select optimisation level for GEANT geometry searches (0,1,2)
-    if (!TestBit(kERAN)) SetERAN(5.e-7);     //
+    if (!TestBit(kTRIG)) SetTRIG(1);       // Number of events to be processed
+    if (!TestBit(kSWIT)) SetSWIT(4, 10);   //
+    if (!TestBit(kDEBU)) SetDEBU(0, 0, 1); //
+    if (!TestBit(kAUTO)) SetAUTO(1);       // Select automatic STMIN etc... 
+                                           // calc. (AUTO 1) or manual (AUTO 0)
+    if (!TestBit(kABAN)) SetABAN(0);       // Restore 3.16 behaviour for 
+                                           // abandoned tracks
+    if (!TestBit(kOPTI)) SetOPTI(2);       // Select optimisation level for 
+                                           // GEANT geometry searches (0,1,2)
+    if (!TestBit(kERAN)) SetERAN(5.e-7);   //
 
     DefineParticles();
     fApplication->AddParticles();
@@ -5701,7 +5808,7 @@ Bool_t TGeant3::ProcessRun(Int_t nevent)
   return returnValue;
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::ProcessEvent()
 {
   //
@@ -5712,7 +5819,7 @@ void TGeant3::ProcessEvent()
   Gtrig();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetColors()
 {
   //
@@ -5747,7 +5854,7 @@ void TGeant3::SetColors()
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::SetTrack(Int_t done, Int_t parent, Int_t pdg, Float_t *pmom,
 		        Float_t *vpos, Float_t *polar, Float_t tof,
 		        TMCProcess mech, Int_t &ntr, Float_t weight, Int_t is)
@@ -5761,7 +5868,7 @@ void TGeant3::SetTrack(Int_t done, Int_t parent, Int_t pdg, Float_t *pmom,
   // pdg    particle code
   // pmom     momentum GeV/c
   // vpos     position
-  // polar    polarisation
+  // polar    polarization
   // tof      time of flight in seconds
   // mecha    production mechanism
   // ntr      on output the number of the track stored
@@ -5780,17 +5887,19 @@ void TGeant3::SetTrack(Int_t done, Int_t parent, Int_t pdg, Float_t *pmom,
   Float_t e=TMath::Sqrt(mass*mass+pmom[0]*pmom[0]+
 			pmom[1]*pmom[1]+pmom[2]*pmom[2]);
 
-//    printf("Loading  mass %f ene %f No %d ip %d parent %d done %d pos %f %f %f mom %f %f %f kS %d m \n",
-//	   mass,e,fNtrack,pdg,parent,done,vpos[0],vpos[1],vpos[2],pmom[0],pmom[1],pmom[2],kS);
+//    printf("Loading  mass %f ene %f No %d ip %d parent %d done %d "
+//           "pos %f %f %f mom %f %f %f kS %d m \n",
+//	        mass,e,fNtrack,pdg,parent,done,vpos[0],vpos[1],vpos[2],
+//           pmom[0],pmom[1],pmom[2],kS);
 
 
   GetStack()->PushTrack(done, parent, pdg, pmom[0], pmom[1], pmom[2], e,
-                       vpos[0], vpos[1], vpos[2], tof, polar[0], polar[1], polar[2],
+                       vpos[0],vpos[1],vpos[2],tof,polar[0],polar[1],polar[2],
                        mech, ntr, weight, is);
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Float_t* TGeant3::CreateFloatArray(Float_t* array, Int_t size) const
 {
 // Converts Double_t* array to Float_t*,
@@ -5814,7 +5923,7 @@ Float_t* TGeant3::CreateFloatArray(Float_t* array, Int_t size) const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 Float_t* TGeant3::CreateFloatArray(Double_t* array, Int_t size) const
 {
 // Converts Double_t* array to Float_t*,
@@ -5838,7 +5947,7 @@ Float_t* TGeant3::CreateFloatArray(Double_t* array, Int_t size) const
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void TGeant3::Streamer(TBuffer &R__b)
 {
   //
@@ -5859,18 +5968,17 @@ void TGeant3::Streamer(TBuffer &R__b)
   }
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 //
 //                 Interfaces to Fortran
 //
-//_____________________________________________________________________________
+//______________________________________________________________________
 
 
-//_____________________________________________________________________________
-
-extern "C" void type_of_call  rxgtrak (Int_t &mtrack, Int_t &ipart, Float_t *pmom,
-				       Float_t &e, Float_t *vpos, Float_t *polar,
-				       Float_t &tof)
+//______________________________________________________________________
+extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
+                                      Float_t &e,Float_t *vpos,Float_t *polar,
+                                      Float_t &tof)
 {
   //
   //     Fetches next track from the ROOT stack for transport. Called by the
@@ -5910,7 +6018,7 @@ extern "C" void type_of_call  rxgtrak (Int_t &mtrack, Int_t &ipart, Float_t *pmo
 }
 
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 extern "C" void type_of_call  rxouth ()
 {
   //
@@ -5919,7 +6027,7 @@ extern "C" void type_of_call  rxouth ()
   TVirtualMCApplication::Instance()->FinishPrimary();
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 extern "C" void type_of_call  rxinh ()
 {
   //
@@ -5992,13 +6100,13 @@ void gtonly(Int_t &isOnly)
    fgtonly(isOnly);
 }
 
-//_____________________________________________________________________________
+//______________________________________________________________________
 void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
 {
   //
-  //  nlev   number of levels deap into the volume tree
+  //  nlev   number of levels deep into the volume tree
   //         size of the arrays lnam and lnum
-  //  lnam   an integer array whos 4 bytes contain the askii code for the
+  //  lnam   an integer array who's 4 bytes contain the ASCII code for the
   //         volume names
   //  lnum   an integer array containing the copy numbers for that specific
   //         volume
@@ -6006,7 +6114,7 @@ void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
   //  This routine fills the volume parameters in common /gcvolu/ for a
   //  physical tree, specified by the list lnam and lnum of volume names
   //  and numbers, and for all its ascendants up to level 1. This routine
-  //  is optimised and does not re-compute the part of the history already
+  //  is optimized and does not re-compute the part of the history already
   //  available in GCVOLU. This means that if it is used in user programs
   //  outside the usual framework of the tracking, the user has to initialize
   //  to zero NLEVEL in the common GCVOLU. It return 0 if there were no
@@ -6039,13 +6147,357 @@ void gtnext()
   stattree->Fill();
 #endif
 }
-
-
 //______________________________________________________________________
-void ggperp(Float_t *x, Float_t *norm, Int_t &ierr)
-{
+void ggperp(Float_t *x, Float_t *norm, Int_t &ierr){
 // Computes the normal to the next crossed surface, assuming that
 // FindNextBoundary() was already called.
 
-   fggperp(x,norm,ierr);
+    fggperp(x,norm,ierr);
+}
+//______________________________________________________________________
+Bool_t TGeant3::GetTransformation(const TString &volumePath,TGeoHMatrix &mat){
+    // Returns the Transformation matrix between the volume specified
+    // by the path volumePath and the Top or mater volume. The format
+    // of the path volumePath is as follows (assuming ALIC is the Top volume)
+    // "/ALIC_1/DDIP_1/S05I_2/S05H_1/S05G_3". Here ALIC is the top most
+    // or master volume which has only 1 instance of. Of all of the daughter
+    // volumes of ALICE, DDIP volume copy #1 is indicated. Similarly for
+    // the daughter volume of DDIP is S05I copy #2 and so on.
+    // Inputs:
+    //   TString& volumePath  The volume path to the specific volume
+    //                        for which you want the matrix. Volume name
+    //                        hierarchy is separated by "/" while the
+    //                        copy number is appended using a "_".
+    // Outputs:
+    //  TGeoHMatrix &mat      A matrix with its values set to those
+    //                        appropriate to the Local to Master transformation
+    // Return:
+    //   A logical value if kFALSE then an error occurred and no change to
+    //   mat was made.
+    Int_t i,n,k,*lnam=0,*lnum=0;
+    // Default rotation matrix, Unit
+    Double_t m[9] = {1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0};
+    Double_t s[3] = {1.0,1.0,1.0}; // Default scale, Unit
+    Double_t t[3] = {0.0,0.0,0.0}; // Default translation, none.
+
+    k =ConvertVolumePathString(volumePath,&lnam,&lnum);//Creates lnam, and lnum
+    if(k<=0) { // Error from Convert volumePathString.
+        delete[] lnam;
+        delete[] lnum;
+        return kFALSE;
+    } // end if k<=0
+    if(k==1){// only one volume listed, must be top most, return unit..
+        delete[] lnam;
+        delete[] lnum;
+        mat.SetRotation(m);
+        mat.SetTranslation(t);
+        mat.SetScale(s);
+        return kTRUE;
+    } // end if k==1
+    this->Gcvolu()->nlevel = 0;
+    i = this->Glvolu(k,lnam,lnum);
+    n = this->Gcvolu()->nlevel -1;
+    delete[] lnam; // created in ConvertVolumePathString.
+    delete[] lnum; // created in ConvertVolumePathString.
+    if(i!=0) return kFALSE; // Error
+    mat.SetScale(s); // Geant scale always 1.
+    if(!((this->Gcvolu()->grmat[n][9])==0.0)) { // not Unit matrix
+        for(i=0;i<9;i++) m[i] = (Double_t) this->Gcvolu()->grmat[n][i];
+    } // end if
+    mat.SetRotation(m);
+    for(i=0;i<3;i++) t[i] = (Double_t) (this->Gcvolu()->gtran[n][i]);
+    mat.SetTranslation(t);
+    return kTRUE;
+}/*
+//______________________________________________________________________
+Bool_t TGeant3::GetShape(const TString &volumeName,TString &shapeType,
+                         TArrayD &par){
+    // Returns the shape and its parameters for the volume specified
+    // by volumeName.
+    // Inputs:
+    //   TString& volumeName  The volume name
+    // Outputs:
+    //   TString &shapeType   Shape type
+    //   TArrayD &par         A TArrayD of parameters with all of the
+    //                        parameters of the specified shape.
+    // Return:
+    //   A logical indicating whether there was an error in getting this
+    //   information
+    const Int_t nshapes = 16;
+    const Char_t *vname[nshapes] = {"BOX","TRD1","TRD2","TRAP","TUBE","TUBS",
+                                   "CONE","CONS","SPHE","PARA","PGON","PCON",
+                                   "ELTU","HYPE","GTRA","CTUB"};
+    Int_t volid,i,jv0,ishape,npar;
+    Float_t *qpar;
+
+    volid = VolId(volumeName.Data());
+    if(volid==0) return kFALSE; // Error.
+    jv0 = this->Lq()[this->Gclink()->jvolum-volid];
+    ishape = (Int_t)(this->Q()[jv0+2]);
+    if(ishape<1||ishape>nshapes) return kFALSE; // error unknown shape
+    npar   = (Int_t)(this->Q()[jv0+5]);
+    qpar   = (this->Q())+jv0+7;
+    par.Set(npar); // Resize TArrayD
+    for(i=0;i<npar;i++) par.AddAt(((Double_t)qpar[i]),i);
+    shapeType = vname[ishape-1];
+    return kTRUE;
+}*/
+
+//______________________________________________________________________
+Bool_t TGeant3::GetShape(const TString &volumePath,TString &shapeType,
+                         TArrayD &par){
+    // Returns the shape and its parameters for the volume specified
+    // by the path volumePath. The format of the path volumePath is as 
+    // follows (assuming ALIC is the Top volume)
+    // "/ALIC_1/DDIP_1/S05I_2/S05H_1/S05G_3". Here ALIC is the top most
+    // or master volume which has only 1 instance of. Of all of the daughter
+    // volumes of ALICE, DDIP volume copy #1 is indicated. Similarly for
+    // the daughter volume of DDIP is S05I copy #2 and so on.
+    // Inputs:
+    //   TString& volumePath  The volume path to the specific volume
+    //                        for which you want the matrix. Volume name
+    //                        hierarchy is separated by "/" while the
+    //                        copy number is appended using a "_".
+    // Outputs:
+    //   TString &shapeType   Shape type
+    //   TArrayD &par         A TArrayD of parameters with all of the
+    //                        parameters of the specified shape.
+    // Return:
+    //   A logical indicating whether there was an error in getting this
+    //   information
+    const Int_t nshapes = 16;
+    const Char_t *vname[nshapes] = {"BOX","TRD1","TRD2","TRAP","TUBE","TUBS",
+                                   "CONE","CONS","SPHE","PARA","PGON","PCON",
+                                   "ELTU","HYPE","GTRA","CTUB"};
+    Int_t volid,i,k,jv0,ishape,npar,*lnam=0,*lnum=0;
+    Float_t *qpar;
+
+    k=ConvertVolumePathString(volumePath,&lnam,&lnum);//Creates lnam, and lnum
+    if(k<=0) { // Error from Convert volumePathString.
+        delete[] lnam;
+        delete[] lnum;
+        return kFALSE;
+    } // end if k<=0
+    this->Gcvolu()->nlevel = 0;
+    i = this->Glvolu(k,lnam,lnum);
+    delete[] lnam;
+    delete[] lnum;
+    if(i!=0) {// error
+        par.Set(0);
+        return kFALSE;
+    } // end if i!=1
+    volid = this->Gcvolu()->lvolum[this->Gcvolu()->nlevel-1];
+    jv0 = this->Lq()[this->Gclink()->jvolum-volid];
+    ishape = (Int_t)(this->Q()[jv0+2]);
+    if(ishape<1||ishape>nshapes) return kFALSE; // error unknown shape
+    npar   = (Int_t)(this->Q()[jv0+5]);
+    qpar   = (this->Q())+jv0+7;
+    par.Set(npar); // Resize TArrayD
+    for(i=0;i<npar;i++) par.AddAt((Double_t)qpar[i],i);
+    shapeType = vname[ishape-1];
+    shapeType = shapeType.Strip();
+    return kTRUE;
+}
+//______________________________________________________________________
+Bool_t TGeant3::GetMaterial(const TString &volumeName,
+                            TString &name,Int_t &imat,
+                            Double_t &a,Double_t &z,Double_t &dens,
+                            Double_t &radl,Double_t &inter,TArrayD &par){
+    // Returns the Material and its parameters for the volume specified
+    // by volumeName.
+    // Note, Geant3 stores and uses mixtures as an element with an effective
+    // Z and A. Consequently, if the parameter Z is not integer, then
+    // this material represents some sort of mixture.
+    // Inputs:
+    //   TString& volumeName  The volume name
+    // Outputs:
+    //   TSrting   &name       Material name
+    //   Int_t     &imat       Material index number
+    //   Double_t  &a          Average Atomic mass of material
+    //   Double_t  &z          Average Atomic number of material
+    //   Double_t  &dens       Density of material [g/cm^3]
+    //   Double_t  &radl       Average radiation length of material [cm]
+    //   Double_t  &inter      Average interaction length of material [cm]
+    //   TArrayD   &par        A TArrayD of user defined parameters.
+    // Return:
+    //   kTRUE if no errors
+    Int_t i,volid,jma,nbuf;
+    Float_t af,zf,densf,radlf,interf;
+    Float_t *ubuf;
+    Char_t *ch,namec[20] = {20*'\0'};
+
+    volid = VolId(volumeName.Data());
+    if(volid==0) return kFALSE; // Error
+    if(volid>0){ // Get Material number, imat.
+        Int_t imed = (Int_t) (this->Q()[this->Lq()[
+                                            this->Gclink()->jvolum-volid]+4]);
+        Int_t jtm  = this->Lq()[this->Gclink()->jtmed-imed];
+        imat = (Int_t)(this->Q()[jtm+6]);
+    } else {
+        i = this->Gclink()->jvolum + volid;
+        Int_t jdiv  = this->Lq()[i];
+        Int_t ivin  = (Int_t) (this->Q()[jdiv+2]);
+        i = this->Gclink()->jvolum - ivin;
+        Int_t jvin  = this->Lq()[i];
+        Int_t idmed = (Int_t)(this->Q()[jvin+4]);
+        i = this->Gclink()->jtmed-idmed;
+        Int_t jtm   = this->Lq()[i];
+        imat = (Int_t)(this->Q()[jtm+6]);
+    } // end if-else
+    nbuf = jma = this->Lq()[this->Gclink()->jmate-imat];
+    ubuf = new Float_t[nbuf];
+    Gfmate(imat,namec,af,zf,densf,radlf,interf,ubuf,nbuf);
+    // Problem with getting namec back from Gfmate, get it from 
+    // the Zebra bank directly.
+    ch = (char *)(this->Iq()+jma+1);
+    for(i=0;i<20;i++) if(ch[i]!=' ') namec[i] = ch[i];
+    name = namec;
+    name = name.Strip();
+    //
+    par.Set(nbuf);
+    for(i=0;i<nbuf;i++) par.AddAt(((Double_t)ubuf[i]),i);
+    delete[] ubuf;
+    a      = (Double_t) af;
+    z      = (Double_t) zf;
+    dens   = (Double_t) densf;
+    radl   = (Double_t) radlf;
+    inter  = (Double_t) interf;
+    return kTRUE;
+}
+//______________________________________________________________________
+Bool_t TGeant3::GetMedium(const TString &volumeName,TString &name,
+                          Int_t &imed,Int_t &nmat,Int_t &isvol,Int_t &ifield,
+                          Double_t &fieldm,Double_t &tmaxfd,Double_t &stemax,
+                          Double_t &deemax,Double_t &epsil, Double_t &stmin,
+                          TArrayD &par){
+    // Returns the Medium and its parameters for the volume specified
+    // by volumeName.
+    // Inputs:
+    //   TString& volumeName  The volume name.
+    // Outputs:
+    //   TString  &name       Medium name
+    //   Int_t    &nmat       Material number defined for this medium
+    //   Int_t    &imed       The medium index number
+    //   Int_t    &isvol      volume number defined for this medium
+    //   Int_t    &iflield    Magnetic field flag
+    //   Double_t &fieldm     Magnetic field strength
+    //   Double_t &tmaxfd     Maximum angle of deflection per step
+    //   Double_t &stemax     Maximum step size
+    //   Double_t &deemax     Maximum fraction of energy allowed to be lost
+    //                        to continuous process.
+    //   Double_t &epsil      Boundary crossing precision
+    //   Double_t &stmin      Minimum step size allowed
+    //   TArrayD  &par        A TArrayD of user parameters with all of the
+    //                        parameters of the specified medium.
+    // Return:
+    //   kTRUE if there where no errors
+    Int_t i,volid,nbuf;
+    Float_t fieldmf,tmaxfdf,stemaxf,deemaxf,epsilf,stminf;
+    Float_t *buf;
+    Char_t namec[25] = {25*'\0'};
+
+    volid = VolId(volumeName.Data());
+    if(volid==0) return kFALSE; // Error
+    if(volid>0){ // Get Material number, imat.
+        imed = (Int_t)(this->Q()[this->Lq()[this->Gclink()->jvolum-volid]+4]);
+    } else {
+        Int_t jdiv  = this->Lq()[this->Gclink()->jvolum + volid];
+        Int_t ivin  = (Int_t) (this->Q()[jdiv+2]);
+        Int_t jvin  = this->Lq()[this->Gclink()->jvolum - ivin];
+        imed = (Int_t)(this->Q()[jvin+4]);
+    } // end if-else
+    nbuf = this->Lq()[this->Gclink()->jtmed-imed];
+    buf  = new Float_t[nbuf];
+    Gftmed(imed,namec,nmat,isvol,ifield,fieldmf,tmaxfdf,stemaxf,deemaxf,
+           epsilf,stminf,buf,&nbuf);
+    name = namec;
+    name = name.Strip();
+    par.Set(nbuf);
+    for(i=0;i<nbuf;i++) par.AddAt(((Double_t)buf[i]),i);
+    delete[] buf;
+    fieldm = (Double_t) fieldmf;
+    tmaxfd = (Double_t) tmaxfdf;
+    stemax = (Double_t) stemaxf;
+    deemax = (Double_t) deemaxf;
+    epsil  = (Double_t) epsilf;
+    stmin  = (Double_t) stminf;
+    return kTRUE;
+}
+//____________________________private method____________________________
+Int_t TGeant3::ConvertVolumePathString(const TString &volumePath,
+                                       Int_t **lnam,Int_t **lnum){
+    // Parses the TString volumePath into an array of volume names 
+    // (4 character long limit) and copy numbers in a form used
+    // by Geant3.
+    // Inputs:
+    //   TString& volumePath  The volume path to the specific volume
+    //                        for which you want the matrix. Volume name
+    //                        hierarchy is separated by "/" while the
+    //                        copy number is appended using a "_".
+    // Outputs:
+    //   Int_t lnam           An integer array, created by this routine,
+    //                        containing the 4 character long volume names.
+    //   Int_t lnum           An integer array, created by this routine,
+    //                        containing the copy numbers.
+    // Return:
+    //   The size of the arrays lnam an lnum, the number of volumes down
+    //   the geometry tree. Note, These arrays are allocated within this
+    //   routine, but must be deleted outside of this routine.
+    Int_t i,j=0,k=0,ireturn,ichar,*inam;
+    Char_t *buf,**levels,**copies,nam[4];
+
+    inam = (Int_t*)nam; // Setup to convert character string to integer.
+    buf = new Char_t[volumePath.Length()+1];
+    for(i=0;i<volumePath.Length();i++) {
+        if(volumePath[i]!=' ')buf[j++] = volumePath[i]; // remove blanks
+        if(volumePath[i]=='/') k++;
+    } // end for i
+    buf[j] = '\0';
+    if(buf[j-1]=='/') {k--; buf[j-1]='\0';}// if path ends with '/' ignore 
+                                            // it, remove it.
+    levels = new Char_t*[k];
+    copies = new Char_t*[k];
+    (*lnam) = new Int_t[k]; // Allocate Geant3 volume name array
+    (*lnum) = new Int_t[k]; // Allocate Geant3 copy number array
+    ireturn = k;
+    ichar = j;
+    k = 0;
+    j = 0;
+    for(i=0;i<ichar;i++) {
+        if(buf[i]=='/'){ 
+            levels[k++] = &(buf[i+1]);
+            buf[i] = '\0'; // Terminate this sub string.
+        } // end if == '/'
+        if(buf[i]=='_'){
+            copies[j++] = &(buf[i+1]);
+            buf[i] = '\0'; // Terminate this sub string.
+        } // end if =='_'
+    } // end for i
+    if(k!=j){ // Error, different number of copy numbers and volume names.
+        // clean up everything.
+        delete[] buf;
+        delete[] levels;
+        delete[] copies;
+        delete[] (*lnam);
+        delete[] (*lnum);
+        (*lnam) = 0;
+        (*lnum) = 0;
+        Error("ConvertVolumePathString","Different number of volume names %d"
+              " and copy numbers %d in volumePath:%s",k,j,volumePath.Data());
+        return 0;
+    } // end if k!=j
+    for(i=0;i<k;i++){
+        *inam = 0;
+        (*lnum)[i] = atoi(copies[i]);
+        for(j=0;j<4;j++) {
+            if(levels[i][j] == 0) break; // If at end of string exit loop
+            nam[j] = levels[i][j];
+        } // end for j
+        (*lnam)[i] = *inam;
+    } // end for i
+    // clean up all but lnam and lnum
+    delete[] buf;
+    delete[] levels;
+    delete[] copies;
+    return ireturn; // return the size of lnam and lnum. 
 }
