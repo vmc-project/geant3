@@ -1,7 +1,10 @@
 *
-* $Id: gstxin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstxin.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstxin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTXIN
+      SUBROUTINE G3STXIN
 *   ********************************************************************
 *   *                                                                  *
 *   *   Initialization of the values needed in computation of          *
@@ -23,7 +26,7 @@
 *   *   Grishin,Ermilova,Kotelnikov,NIM A307(1991),273                 *
 *   *                 PLN 18.04.92, data tables of ILG                 *
 *   *                                                                  *
-*   *   ==> Called by : GSTINI                                         *
+*   *   ==> Called by : G3STINI                                        *
 *.  *       Authors   : P. Nevski, K. Lassila-Perini                   *
 *   *                                                                  *
 *   ********************************************************************
@@ -90,7 +93,7 @@
          ELSE
             E2 = EMM(IE+1)
          ENDIF
-         SFINT = SFINT+ GOSCIN(EXP(E1),EXP(E2))
+         SFINT = SFINT+ G3OSCIN(EXP(E1),EXP(E2))
          FINT(IE)=SFINT
    10 CONTINUE
 *
@@ -103,8 +106,8 @@
 *   complex dielectric constant
       DO 30  IE=1,NTAB
          E=EXP(EMM(IE))
-         EPSI(IE)=LOG(WP2*PIBY2*GPHSG2(E*1E-9)/(SFINT*E))
+         EPSI(IE)=LOG(WP2*PIBY2*G3PHSG2(E*1E-9)/(SFINT*E))
 *      scaled by
-         EPSR(IE)=WP2*GKOKRI(E,EXP(EMIN),DCUTE*1E9)*E/SFINT
+         EPSR(IE)=WP2*G3KOKRI(E,EXP(EMIN),DCUTE*1E9)*E/SFINT
    30 CONTINUE
       END

@@ -1,4 +1,4 @@
-# $ Id: $
+# $Id: Makefile.linux,v 1.1 2004/05/13 19:43:03 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -8,7 +8,7 @@ F77	  = g77
 CC	  = gcc
 
 # Global optimisation
-OPT   = -O -g
+OPT   = -O2 -g
 
 # Shared library suffix
 SL	  = so
@@ -21,16 +21,22 @@ AWK	  = awk
 # starting from root.2.22 on Linux the flags -fno-rtti -fno-exceptions are
 # not necessary any more
 #
-CXXOPTS       = $(OPT) -Wall -fPIC -pipe
+CXXOPTS       = $(OPT) -Wall -fPIC -pipe -Woverloaded-virtual
 COPT	      = $(OPT)
 FOPT	      = $(OPT) -fno-second-underscore
+
+GCC_MAJOR    := $(shell $(CXX) -v 2>&1 | \
+                  grep version | cut -d' ' -f3  | cut -d'.' -f1)
+ifneq ($(GCC_MAJOR),3)
+   FOPT      := $(filter-out -O%,$(FOPT))
+endif
 
 # CERNLIB defines
 
 CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ
-CLIBCXXOPTS   =
-CLIBCOPT      =
-CLIBFOPT      =
+CLIBCXXOPTS   = $(CLIBDEFS)
+CLIBCOPT      = $(CLIBDEFS)
+CLIBFOPT      = $(CLIBDEFS)
 
 LD            = g++
 LDFLAGS       = $(OPT)

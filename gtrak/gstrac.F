@@ -1,7 +1,10 @@
 *
-* $Id: gstrac.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstrac.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gstrac.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *

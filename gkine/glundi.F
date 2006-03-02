@@ -1,7 +1,13 @@
 *
-* $Id: glundi.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: glundi.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: glundi.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +24,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GLUNDI
+      SUBROUTINE G3LUNDI
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -58,6 +64,7 @@ C.
 #include "geant321/ludat1.inc"
 #include "geant321/ludat3.inc"
 #include "geant321/gclund.inc"
+      INTEGER PYCOMP
 C.
 C.    ------------------------------------------------------------------
 C.

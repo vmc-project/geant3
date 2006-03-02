@@ -1,7 +1,10 @@
 *
-* $Id: gpsets.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gpsets.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpsets.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.20  by  S.Giani
 *-- Author :
-      SUBROUTINE GPSETS(IUSET,IUDET)
+      SUBROUTINE G3PSETS(IUSET,IUDET)
 C.
 C.    ******************************************************************
 C.    *                                                                *

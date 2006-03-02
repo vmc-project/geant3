@@ -1,7 +1,10 @@
 *
-* $Id: uglast.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: uglast.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: uglast.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -32,7 +35,7 @@
          GO TO 99
       ENDIF
 #endif
-      CALL GLAST
+      CALL G3LAST
 *
 *             Close HIGZ
 *

@@ -1,7 +1,10 @@
 *
-* $Id: gsync.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsync.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsync.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 11/10/94  19.56.01  by  S.Giani
 *-- Author :
-      SUBROUTINE GSYNC
+      SUBROUTINE G3SYNC
 C
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Simulation of synchrotron radiation for e- and e+.           *
 C.    *                                                                *
-C.    *   ==> Called by : GTELEC                                       *
+C.    *   ==> Called by : G3TELEC                                      *
 C.    *       Authors   : Igor Gavrilenko                              *
 C.    *                                                                *
 C.    ******************************************************************
@@ -51,7 +54,7 @@ C...
       FLDT   = SQRT(FLDS2-
      +  (VECT(4)*FLD(1)+VECT(5)*FLD(2)+VECT(6)*FLD(3))**2)
 C...
-      CALL GSYNGE(GAMMA,AMASS,FLDT,STEP,NTR,ETR,STR)
+      CALL G3SYNGE(GAMMA,AMASS,FLDT,STEP,NTR,ETR,STR)
       IF(NTR.EQ.0) GO TO 999
 C...
       ELOSS          = 0.
@@ -105,6 +108,6 @@ C
    20 GETOT = GETOT-ELOSS
       GEKIN = GEKIN-ELOSS
       VECT(7) = SQRT(GEKIN*(GEKIN+2.*AMASS))
-      CALL GEKBIN
+      CALL G3EKBIN
 C...
  999  END

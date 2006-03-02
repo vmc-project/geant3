@@ -1,14 +1,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.24  by  S.Giani
 *-- Author :
-      SUBROUTINE GTGAMA
+      SUBROUTINE G3TGAMA
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Photon track. Computes step size and propagates particle     *
 C.    *    through step.                                               *
 C.    *                                                                *
-C.    *   ==>Called by : GTRACK                                        *
+C.    *   ==>Called by : G3TRACK                                       *
 C.    *      Authors    R.Brun, F.Bruyant L.Urban ********             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -210,12 +210,12 @@ C.    ------------------------------------------------------------------
 *  ** Pair production ?
 *
       IF (IPROC.EQ.6) THEN
-         CALL GPAIRG
+         CALL G3PAIRG
 *
 *  ** Compton scattering ?
 *
       ELSE IF (IPROC.EQ.7) THEN
-         CALL GCOMP
+         CALL G3COMP
 *
 *  ** Photo-electric effect ?
 *
@@ -240,23 +240,23 @@ C.    ------------------------------------------------------------------
             STOPMX = - (XCOEF3-GEKIN)/XCOEF2
          ENDIF
 *
-*        DO NOT call GPHOT if this (overestimated) range is smaller
+*        DO NOT call G3PHOT if this (overestimated) range is smaller
 *                than SAFETY
 *
          IF (STOPMX.LE.SAFETY) GOTO 998
         ENDIF
  
-         CALL GPHOT
+         CALL G3PHOT
 *
 *  ** Rayleigh effect ?
 *
       ELSE IF (IPROC.EQ.25) THEN
-         CALL GRAYL
+         CALL G3RAYL
 *
 *  ** Photo-fission ?
 *
       ELSE IF (IPROC.EQ.23) THEN
-         CALL GPFIS
+         CALL G3PFIS
 *
       ENDIF
 *

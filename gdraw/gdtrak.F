@@ -1,21 +1,10 @@
 *
-* $Id: gdtrak.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdtrak.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDTRAK(CHOPTT)
+      SUBROUTINE G3DTRAK(CHOPTT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -40,7 +29,7 @@ C.
       INTEGER COLO(8), OLDCOL, OLDLIN
       DIMENSION U(NPOBUF),V(NPOBUF),MODE(8)
 C
-C             MODE(ITRTYP) and COLO(ITRTYP) are used by ISLN and GDCOL
+C             MODE(ITRTYP) and COLO(ITRTYP) are used by ISLN and G3DCOL
 C             ITRTYP (the track type) correspond to :
 C
 C             ITRTYP  PARTICLE  |       HIGZ         |
@@ -106,8 +95,8 @@ C
          IMOD   = MODE(ITRTYP)
          ICOL   = COLO(ITRTYP)
          IF(ICOL.NE.OLDCOL) THEN
-            CALL GDCOL(ICOL)
-            CALL GDCOL1(ICOL)
+            CALL G3DCOL(ICOL)
+            CALL G3DCOL1(ICOL)
             OLDCOL=ICOL
          ENDIF
 *
@@ -140,7 +129,7 @@ C
                ENDIF
 *
             ELSE
-               CALL GDRAWP(U,V,NDO)
+               CALL G3DRAWP(U,V,NDO)
 *
             ENDIF
             NDONE = NDONE + NDO
@@ -161,6 +150,6 @@ C
    40 WRITE (CHMAIL,10100) ITRA
       CALL GMAIL(0,0)
 *
-10000 FORMAT(' *** GDTRAK: No JXYZ bank')
-10100 FORMAT(' *** GDTRAK: No points stored for track ',I10)
+10000 FORMAT(' *** G3DTRAK: No JXYZ bank')
+10100 FORMAT(' *** G3DTRAK: No points stored for track ',I10)
   999 END

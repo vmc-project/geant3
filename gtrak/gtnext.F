@@ -1,7 +1,17 @@
 *
-* $Id: gtnext.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtnext.F,v 1.3 2004/01/28 08:20:11 brun Exp $
 *
 * $Log: gtnext.F,v $
+* Revision 1.3  2004/01/28 08:20:11  brun
+* Some bug fixes by Peter Hristov
+* Reintroduce gstrac
+*
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +26,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/04 21/03/95  16.13.08  by  S.Giani
 *-- Author :
-      SUBROUTINE GTNEXT
+      SUBROUTINE G3TNEXT
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -118,13 +128,13 @@ C*****  End of Code Expanded From Routine:  GROT
       INGOTO = 0
       JVO    = LQ(JVOLUM-LVOLUM(NLEVEL))
       ISH    = Q(JVO+2)
-      IF (Q(JVO+3).EQ.0.) GO TO 300
+      NIN    = Q(JVO+3)
+      IF (NIN.EQ.0) GO TO 300
       if(raytra.eq.1..and.imyse.eq.1)then
             CALL UHTOC(NAMES(NLEVEL),4,NAME,4)
             CALL GFIND(NAME,'SEEN',ISSEEN)
             if(isseen.eq.-2.or.isseen.eq.-1)goto 300
       endif
-      NIN = Q(JVO+3)
       IF (NIN.LT.0) GO TO 200
 *
 * *** Case with contents positioned
@@ -386,8 +396,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          INGOTO = IN
@@ -452,8 +466,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
                ENDIF
 *
                safe=max(safe,0.)
-               if(snxt.le.-prec)snxt=big1
-               snxt=max(snxt,0.)
+               if(snxt.le.-prec) then
+                  snxt=big1
+                  goto 900
+               else
+                  snxt=max(snxt,0.)
+               endif
                IF (SAFE.LT.SAFETY) SAFETY = SAFE
                IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
                   SNEXT  = SNXT
@@ -817,8 +835,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          SNEXT  = SNXT
@@ -883,8 +905,12 @@ C*****  End of Code Expanded From Routine:  GRMTD
       ENDIF
 *
       safe=max(safe,0.)
-      if(snxt.le.-prec)snxt=big1
-      snxt=max(snxt,0.)
+      if(snxt.le.-prec) then
+         snxt=big1
+         goto 900
+      else
+         snxt=max(snxt,0.)
+      endif
       IF (SAFE.LT.SAFETY) SAFETY = SAFE
       IF (SNXT.LE.MIN(SNEXT,BIG1)) THEN
          SNEXT  = SNXT
@@ -962,7 +988,7 @@ C*****  End of Code Expanded From Routine:  GRMTD
 CCC debug
          IF (ISWIT(9).EQ.123456789) THEN
             PRINT *,' GTNEXT : SNEXT,SAFETY,INGOTO=',SNEXT,SAFETY,INGOTO
-            CALL GPCXYZ
+            CALL G3PCXYZ
          ENDIF
 CCC
          SAFETY = 0.

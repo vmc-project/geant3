@@ -1,7 +1,10 @@
 *
-* $Id: higxpt.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: higxpt.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: higxpt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -423,7 +426,7 @@ C**
       RAN=RNDM(1)
       BPP=BP(J)
       BPE=PTEX(J)
-      PT2=-LOG(1.-RAN)/BPP
+      PT2=-LOG(RAN)/BPP
       ASPAR=MASPAR(J)
       PT2=PT2**BPE
       PT =SQRT(PT2)
@@ -618,7 +621,7 @@ C**
       NPG1=NPG
       IF(NPG1.GT.5) NPG1=5
       CALL GRNDM(RNDM,1)
-      RMG=-LOG(1.-RNDM(1))
+      RMG=-LOG(RNDM(1))
       GPAR=G1PAR(NPG1)
       CPAR=C1PAR(NPG1)
       DUMNVE=GPAR

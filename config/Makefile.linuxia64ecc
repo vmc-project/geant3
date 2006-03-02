@@ -1,14 +1,14 @@
-# $Id: Makefile.icc,v 1.2 2002/07/10 08:33:25 alibrary Exp $
+# $Id: Makefile.linuxia64ecc,v 1.1 2004/05/13 19:43:03 brun Exp $
 
 # Linux (with icc) platform dependent definitions for GEANT321 Makefile
 
 # The compilers
-CXX       = icc 
-F77	      = ifc
+CXX           = icc 
+F77	      = ifort
 CC	      = icc
 
 # Global optimisation
-OPT       = -O
+OPT       = -g #-O
 
 # Shared library suffix
 SL	      = so
@@ -27,12 +27,12 @@ FOPT	      = $(OPT)
 
 # CERNLIB defines
 
-CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ
-CLIBCXXOPTS   =
-CLIBCOPT      =
-CLIBFOPT      =
+CLIBDEFS      = -DCERNLIB_LXIA64 -DCERNLIB_BLDLIB -DCERNLIB_CZ
+CLIBCXXOPTS   = $(CLIBDEFS)
+CLIBCOPT      = $(CLIBDEFS)
+CLIBFOPT      = $(CLIBDEFS)
 
-LD            = icc
+LD            = icpc
 LDFLAGS       = $(OPT)
 
 SHLD	      = $(LD)

@@ -1,0 +1,60 @@
+# $Id: Makefile.macosx,v 1.3 2005/05/20 10:43:20 brun Exp $
+
+# MacOSX platform dependent definitions for GEANT321 Makefile
+
+# OS version
+MACOSX_MAJOR := $(strip $(shell sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 1))
+MACOSX_MINOR := $(strip $(shell sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2))
+
+# fink directories
+FINK_ROOT := $(shell which fink | sed -e 's?/bin/fink??')
+
+# The compilers
+CXX   	  = g++ 
+CC	  = gcc
+
+ifeq (g95,$(findstring g95,$(ROOTBUILD)))
+F77	      = g95
+else
+F77	      = gfortran
+endif
+
+# Global optimisation
+OPT   = -g #-O
+
+# Shared library suffix
+SL	  = dylib
+
+# AWK
+AWK	  = awk
+
+# The options
+#
+#
+CXXOPTS       = $(OPT) -pipe -Wall -W -Woverloaded-virtual 
+COPT	      = $(OPT)
+FOPT	      = $(OPT) -fno-second-underscore
+
+# CERNLIB defines
+
+CLIBDEFS      = -DCERNLIB_LINUX -DCERNLIB_BLDLIB -DCERNLIB_CZ -DCERNLIB_PPC
+CLIBCXXOPTS   = $(CLIBDEFS)
+CLIBCOPT      = $(CLIBDEFS)
+CLIBFOPT      = $(CLIBDEFS)
+
+LD            = export MACOSX_DEPLOYMENT_TARGET=$(MACOSX_MAJOR).$(MACOSX_MINOR) ; \
+		unset LD_PREBIND ; \
+		g++
+
+LDFLAGS       = $(OPT) -bind_at_load
+
+SHLD	      = $(LD)
+SOFLAGS       = -dynamiclib -undefined dynamic_lookup -single_module
+
+ifeq (g95,$(findstring g95,$(ROOTBUILD)))
+SHLIB := -L$(dir $(shell find $(FINK_ROOT) -name libf95.a)) -lf95
+else
+SHLIB := -ldl -L$(dir $(shell find $(FINK_ROOT) -name libgfortran.dylib)) -lgfortranbegin -lgfortran
+endif
+
+

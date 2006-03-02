@@ -1,7 +1,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMULOF
+      SUBROUTINE G3MULOF
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -12,7 +12,7 @@ C.    *   : smuls  = min (Tbethe , 10*radl)                            *
 C.    *   : sloss  = DEEMAX*GEKIN/DEDX                                 *
 C.    *   : sfield = CFLD*P                                            *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Authors    R.Brun, Y.Dufour, M.Maire  *********          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -100,9 +100,9 @@ C.
 *
          IF (IMULS.GT.0.) THEN
             IF(JMIXT.LE.0)THEN
-               CALL GMOLIO(A,Z,1.,1,DENS,BETA2,1.,OMC)
+               CALL G3MOLIO(A,Z,1.,1,DENS,BETA2,1.,OMC)
             ELSE
-               CALL GMOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
+               CALL G3MOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
      +                    NLM,DENS,BETA2,1.,OMC)
             ENDIF
             PMCH2  = PMOM2/CHC2
@@ -134,7 +134,7 @@ C.
          IF(CERKOV) THEN
             CHARGE = 1.
             VECT(7) = PMOM
-            CALL GNCKOV
+            CALL G3NCKOV
             STCKOV = MXPHOT/MAX(3.*DNDL,1E-10)
          ENDIF
 *
@@ -167,9 +167,9 @@ C.
 *
          IF (IMULS.GT.0.) THEN
             IF(JMIXT.LE.0)THEN
-               CALL GMOLIO(A,Z,1.,1,DENS,BETA2,1.,OMC)
+               CALL G3MOLIO(A,Z,1.,1,DENS,BETA2,1.,OMC)
             ELSE
-               CALL GMOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
+               CALL G3MOLIO(Q(JMIXT+1),Q(JMIXT+NLM+1),Q(JMIXT+2*NLM+1),
      +                    NLM,DENS,BETA2,1.,OMC)
             ENDIF
             PMCH2  = PMOM2/CHC2
@@ -201,7 +201,7 @@ C.
          IF(CERKOV) THEN
             CHARGE = 1.
             VECT(7) = PMOM
-            CALL GNCKOV
+            CALL G3NCKOV
             STCKOV = MXPHOT/MAX(3.*DNDL,1E-10)
          ENDIF
 *

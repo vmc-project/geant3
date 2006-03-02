@@ -15,6 +15,12 @@
 
 /* 
 $Log: THIGZ.cxx,v $
+Revision 1.2  2002/11/12 17:41:12  brun
+Initialize the static geant3 in the THIGZ constructors
+
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 Revision 1.3  2002/07/10 08:38:54  alibrary
 Cleanup of code
 
@@ -114,7 +120,7 @@ Cleanup of code
 
 // static Int_t sNpid = 0;
 static char sCpar[1200];
-static TGeant3 *geant3=(TGeant3*)gMC;
+static TGeant3 *geant3= 0;
 
 THIGZ *gHigz = 0;
 
@@ -126,6 +132,7 @@ THIGZ::THIGZ()
   //
   // Default constructor
   //
+   geant3=(TGeant3*)gMC;
 }
    
 //____________________________________________________________________________ 
@@ -135,6 +142,7 @@ THIGZ::THIGZ(Int_t size)
   //
   // Standard Constructor
   //
+   geant3=(TGeant3*)gMC;
    gHigz = this;
    Reset();
    SetFillColor(10);

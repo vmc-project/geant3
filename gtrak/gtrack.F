@@ -1,7 +1,10 @@
 *
-* $Id: gtrack.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtrack.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtrack.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -21,7 +24,7 @@
 *               Added the modifications of P.Nevski in MANY volumes 
 *               force update of alternative list of many candidates
 *-- Author :
-      SUBROUTINE GTRACK
+      SUBROUTINE G3TRACK
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -56,6 +59,7 @@ C.
       COMMON/GCCHAN/LSAMVL
       LOGICAL LSAMVL
 *
+      integer isOnly
       DIMENSION CUTS(10),MECA(5,13)
       EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
       SAVE PRECOR
@@ -184,7 +188,7 @@ C.    ------------------------------------------------------------------
 *
       IF (JSET.GT.0) THEN
          IF(ISVOL.GT.0) THEN
-            CALL GFINDS
+            CALL G3FINDS
          ELSE
             IHSET = 0
             IHDET = 0
@@ -240,21 +244,21 @@ C.    ------------------------------------------------------------------
          ENDIF
       ENDIF
       IF      (ITRTYP.EQ.1) THEN
-         CALL GTGAMA
+         CALL G3TGAMA
       ELSE IF (ITRTYP.EQ.2) THEN
-         CALL GTELEC
+         CALL G3TELEC
       ELSE IF (ITRTYP.EQ.3) THEN
-         CALL GTNEUT
+         CALL G3TNEUT
       ELSE IF (ITRTYP.EQ.4) THEN
-         CALL GTHADR
+         CALL G3THADR
       ELSE IF (ITRTYP.EQ.5) THEN
-         CALL GTMUON
+         CALL G3TMUON
       ELSE IF (ITRTYP.EQ.6) THEN
-         CALL GTNINO
+         CALL G3TNINO
       ELSE IF (ITRTYP.EQ.7) THEN
-         CALL GTCKOV
+         CALL G3TCKOV
       ELSE IF (ITRTYP.EQ.8) THEN
-         CALL GTHION
+         CALL G3THION
       ENDIF
       IF(JGSTAT.NE.0) CALL GFSTAT(10+ITRTYP)
       STLOSS=STEP
@@ -269,7 +273,7 @@ C.    ------------------------------------------------------------------
             LMEC(NMEC) = 30
             WRITE(CHMAIL,10200) MAXNST
             CALL GMAIL(1,0)
-            CALL GPCXYZ
+            CALL G3PCXYZ
             WRITE(CHMAIL,10250) IEVENT,IDEVT,(NRNDM(I),I=1,2),TOFG*1.E9
             CALL GMAIL(0,1)
 10200       FORMAT(' *** GTRACK *** More than ',I6,
@@ -284,7 +288,7 @@ C.    ------------------------------------------------------------------
       SAFETY = SAFETY -STEP
 #if !defined(CERNLIB_USRJMP)
       CALL GUSTEP
-#endif
+#endif 
 #if defined(CERNLIB_USRJMP)
       CALL JUMPT0(JUSTEP)
 #endif
@@ -302,31 +306,26 @@ C.    ------------------------------------------------------------------
       ENDIF
 *                                        force update of alternatives:  
       IF (INWVOL.EQ.0) then
-         if (GONLY(NLEVEL).eq.0.and.Safety.le.0.and.Iswit(10).ge.0)
+         call gtonly(isOnly)
+         if (isOnly.eq.0.and.Safety.le.0.and.Iswit(10).ge.0)
      +        CALL GTMEDI(VECT,NMED)
          GO TO 80
       endif
 *
-      IF (NJTMAX.GT.0) THEN
-         CALL GSTRAC
-         IF (NLEVIN.EQ.0) GO TO 100
-         GO TO 999
-      ELSE
-         IF (NLEVIN.GE.NLEVEL) THEN
-            INFROM = 0
-         ELSE
-            IF (NLEVIN.EQ.0) GO TO 100
-            INFROM = LINDEX(NLEVIN+1)
-         ENDIF
-         IF (NLEVIN.NE.NLEVEL) INGOTO = 0
-         NLEVEL = NLEVIN
+       IF (NLEVIN.GE.NLEVEL) THEN
+          INFROM = 0
+       ELSE
+          IF (NLEVIN.EQ.0) GO TO 100
+          INFROM = LINDEX(NLEVIN+1)
+       ENDIF
+       IF (NLEVIN.NE.NLEVEL) INGOTO = 0
+       NLEVEL = NLEVIN
 *
-         CALL GTMEDI (VECT, NUMED)
-         IF (NUMED.NE.0) THEN
-            SAFETY = 0.
-            GO TO 10
-         ENDIF
-      ENDIF
+       CALL GTMEDI (VECT, NUMED)
+       IF (NUMED.NE.0) THEN
+          SAFETY = 0.
+          GO TO 10
+       ENDIF
 *
 *     Track outside setup, give control to user (INWVOL=3)
 *

@@ -1,7 +1,10 @@
 *
-* $Id: gsttab.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsttab.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gsttab.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,17 +18,17 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTTAB(GAMMA,NT,EN,FN)
+      SUBROUTINE G3STTAB(GAMMA,NT,EN,FN)
 C   ********************************************************************
 C   *                                                                  *
 C   *  dN^2/dEdx table for a gamma factor                              *
 C   *                                                                  *
-C   *  ==> Called by : GSTINI                                          *
+C   *  ==> Called by : G3STINI                                         *
 C   *      Authors   : P. Nevski                                       *
 C   *                                                                  *
 C   ********************************************************************
 #include "geant321/gcstra.inc"
-      EXTERNAL GSTDN
+      EXTERNAL G3STDN
 #if !defined(CERNLIB_SINGLE)
       DOUBLE PRECISION DGAMM, DGAM2, DBET2
 #endif
@@ -49,7 +52,7 @@ C   Loop over I=NTAB,1,-1
       DO 10 I=NTAB,1,-1
          EO=EI
          EI=EMM(I)
-         S=S+GXGINT(GSTDN,EI,EO,EPPS)
+         S=S+G3XGINT(G3STDN,EI,EO,EPPS)
 C      Skip Unless ABS(ES-EI)>RENER \ I==1
          IF ((ABS(ES-EI).LE.RENER).AND.(I.NE.1))GO TO 10
          ES=EI

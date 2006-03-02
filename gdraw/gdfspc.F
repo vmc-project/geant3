@@ -1,19 +1,5 @@
 *
-* $Id: gdfspc.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdfspc.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:04  fca
-* AliRoot sources
-*
-* Revision 1.2  1998/09/25 09:23:48  mclareni
-* Modifications for the Mklinux port flagged by CERNLIB_PPC
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -130,7 +116,7 @@ C
          ENDIF
          CALL ICLRWK(0,0)
          IF (NCH.GT.0) GO TO 120
-         CALL GDSPEC(NAME1)
+         CALL G3DSPEC(NAME1)
   120 CONTINUE
 C
 C             Delete tree structure on view bank 11

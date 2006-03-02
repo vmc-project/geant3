@@ -1,7 +1,10 @@
 *
-* $Id: gmunui.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gmunui.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gmunui.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.38  by  S.Giani
 *-- Author :
-      SUBROUTINE GMUNUI
+      SUBROUTINE G3MUNUI
 C
 C *** CALCULATION OF MUON-NUCLEUS CROSS SECTIONS IN CURRENT MATERIAL ***
 C *** NVE 16-MAR-1988 CERN GENEVA ***

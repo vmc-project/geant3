@@ -1,7 +1,10 @@
 *
-* $Id: colisn.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: colisn.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: colisn.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -721,7 +724,7 @@ C       DETERMINE THE COSINE OF THE NEUTRON SCATTERING ANGLE IN THE
 C       LABORATORY COORDINATE SYSTEM
 C changed in order to get N fission neutron CZ July 30,1992
 C INEU is poisson distributed with mean XNU
-  580 CALL GPOISS(XNU,INEU,1)
+  580 CALL G3POISS(XNU,INEU,1)
       IF(INEU.GT.INT(4.*XNU)) GOTO 580
 C check for maximum number of neutrons emitted
       IF(INEU.GT.INT(AWRI)-KZ(MED)) INEU = INT(AWRI) - KZ(MED)

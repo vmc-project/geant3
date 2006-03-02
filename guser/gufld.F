@@ -1,7 +1,10 @@
 *
-* $Id: gufld.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gufld.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gufld.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -22,7 +25,7 @@ C.    *                                                                *
 C.    *       User routine to compute the magnetic field F             *
 C.    *       at space point X                                         *
 C.    *                                                                *
-C.    *    ==>Called by : GHELIX,GRKUTA                                *
+C.    *    ==>Called by : G3HELIX,G3RKUTA                              *
 C.    *                                                                *
 C.    ******************************************************************
 C.
