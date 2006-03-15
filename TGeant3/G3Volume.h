@@ -3,12 +3,11 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Volume.h,v 1.7 2005/07/20 12:45:44 brun Exp $ */
+/* $Id: G3Volume.h,v 1.8 2005/07/21 17:50:46 brun Exp $ */
 
 #include <TGListTree.h>
 #include "TROOT.h"
 
-#include "THIGZ.h"
 #include "TGeant3.h"
 #include "TArrayF.h"
 #include "TNamed.h"

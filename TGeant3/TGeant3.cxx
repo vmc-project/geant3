@@ -16,6 +16,11 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.47  2005/11/18 21:25:22  brun
+From Bjorn, Andrei:
+Implemented new VMC functions for access to geometry;
+added -Woverloaded-virtual to Makefile.linux
+
 Revision 1.46  2005/07/21 17:54:37  brun
 Implement same code in the float* versions that were already implemented
 in the Double* versions.
@@ -324,11 +329,9 @@ Cleanup of code
 #include "TVirtualMCDecayer.h"
 #include "TPDGCode.h"
 
-#include "THIGZ.h"
-
 #ifndef WIN32
 # define g3zebra  g3zebra_
-# define grfile  grfile_
+# define grfile   grfile_
 # define g3pcxyz  g3pcxyz_
 # define g3gclos  g3gclos_
 # define g3last   g3last_
@@ -369,8 +372,8 @@ Cleanup of code
 # define g3track  g3track_
 # define g3treve  g3treve_
 # define gtreveroot  gtreveroot_
-# define grndm   grndm_
-# define grndmq  grndmq_
+# define grndm    grndm_
+# define grndmq   grndmq_
 # define g3dtom   g3dtom_
 # define g3lmoth  g3lmoth_
 # define g3media  g3media_
@@ -388,39 +391,18 @@ Cleanup of code
 # define g3protm  g3protm_
 # define g3svolu  g3svolu_
 # define g3print  g3print_
-# define gdinit  gdinit_
-# define gdopt   gdopt_
-# define gdraw   gdraw_
-# define gdrayt  gdrayt_
-# define gdrawc  gdrawc_
-# define gdrawx  gdrawx_
-# define gdhead  gdhead_
-# define gdwmn1  gdwmn1_
-# define gdwmn2  gdwmn2_
-# define gdwmn3  gdwmn3_
-# define gdxyz   gdxyz_
-# define gdcxyz  gdcxyz_
-# define gdman   gdman_
-# define gdspec  gdspec_
-# define gdtree  gdtree_
-# define gdelet  gdelet_
-# define gdclos  gdclos_
-# define gdshow  gdshow_
-# define gdopen  gdopen_
-# define dzshow  dzshow_
+# define dzshow   dzshow_
 # define g3satt   g3satt_
 # define g3fpara  g3fpara_
-# define gckpar  gckpar_
+# define gckpar   gckpar_
 # define g3ckmat  g3ckmat_
 # define g3lvolu  g3lvolu_
-# define geditv  geditv_
-# define mzdrop  mzdrop_
+# define geditv   geditv_
+# define mzdrop   mzdrop_
 
 # define ertrak  ertrak_
 # define ertrgo  ertrgo_
 
-# define setbomb setbomb_
-# define setclip setclip_
 # define gcomad gcomad_
 
 # define g3brelm g3brelm_
@@ -430,26 +412,6 @@ Cleanup of code
 # define rxouth  rxouth_
 # define rxinh   rxinh_
 
-// From gdraw
-# define g3dinit  g3dinit_
-# define g3dopt   g3dopt_
-# define g3draw   g3draw_
-# define g3drayt  g3drayt_
-# define g3drawc  g3drawc_
-# define g3drawx  g3drawx_
-# define g3dhead  g3dhead_
-# define g3dwmn1  g3dwmn1_
-# define g3dwmn2  g3dwmn2_
-# define g3dwmn3  g3dwmn3_
-# define g3dxyz   g3dxyz_
-# define g3dcxyz  g3dcxyz_
-# define g3dman   g3dman_
-# define g3dspec  g3dspec_
-# define g3dtree  g3dtree_
-# define g3delet  g3delet_
-# define g3dclos  g3dclos_
-# define g3dshow  g3dshow_
-# define g3dopen  g3dopen_
 
 #else
 
@@ -459,13 +421,13 @@ Cleanup of code
 # define ggclos  GGCLOS
 # define glast   GLAST
 # define ginit   GINIT
-# define g3cinit  G3CINIT
+# define g3cinit G3CINIT
 # define grun    GRUN
 # define gtrig   GTRIG
 # define gtrigc  GTRIGC
 # define gtrigi  GTRIGI
 # define gwork   GWORK
-# define g3zinit  G3ZINIT
+# define g3zinit G3ZINIT
 # define gfmate  GFMATE
 # define gfpart  GFPART
 # define gftmed  GFTMED
@@ -513,26 +475,6 @@ Cleanup of code
 # define gprotm  GPROTM
 # define gsvolu  GSVOLU
 # define gprint  GPRINT
-# define gdinit  GDINIT
-# define gdopt   GDOPT
-# define gdraw   GDRAW
-# define gdrayt  GDRAYT
-# define gdrawc  GDRAWC
-# define gdrawx  GDRAWX
-# define gdhead  GDHEAD
-# define gdwmn1  GDWMN1
-# define gdwmn2  GDWMN2
-# define gdwmn3  GDWMN3
-# define gdxyz   GDXYZ
-# define gdcxyz  GDCXYZ
-# define gdman   GDMAN
-# define gdfspc  GDFSPC
-# define gdspec  GDSPEC
-# define gdtree  GDTREE
-# define gdelet  GDELET
-# define gdclos  GDCLOS
-# define gdshow  GDSHOW
-# define gdopen  GDOPEN
 # define dzshow  DZSHOW
 # define gsatt   GSATT
 # define gfpara  GFPARA
@@ -545,37 +487,14 @@ Cleanup of code
 # define ertrak  ERTRAK
 # define ertrgo  ERTRGO
 
-# define setbomb SETBOMB
-# define setclip SETCLIP
 # define gcomad  GCOMAD
 
-# define gbrelm GBRELM
-# define gprelm GPRELM
+# define gbrelm  GBRELM
+# define gprelm  GPRELM
 
 # define rxgtrak RXGTRAK
 # define rxouth  RXOUTH
 # define rxinh   RXINH
-
-// From gdraw
-# define g3dinit  G3DINIT
-# define g3dopt   G3DOPT
-# define g3draw   G3DRAW
-# define g3drayt  G3DRAYT
-# define g3drawc  G3DRAWC
-# define g3drawx  G3DRAWX
-# define g3dhead  G3DHEAD
-# define g3dwmn1  G3DWMN1
-# define g3dwmn2  G3DWMN2
-# define g3dwmn3  G3DWMN3
-# define g3dxyz   G3DXYZ
-# define g3dcxyz  G3DCXYZ
-# define g3dman   G3DMAN
-# define g3dspec  G3DSPEC
-# define g3dtree  G3DTREE
-# define g3delet  G3DELET
-# define g3dclos  G3DCLOS
-# define g3dshow  G3DSHOW
-# define g3dopen  G3DOPEN
 
 #endif
 
@@ -756,36 +675,6 @@ extern "C"
   void type_of_call g3lvolu(Int_t&, Int_t*, Int_t*, Int_t&);
 
   void type_of_call g3print(DEFCHARD,const int& DEFCHARL);
-
-  // From gdraw
-  void type_of_call g3dinit();
-  void type_of_call g3dopt(DEFCHARD,DEFCHARD DEFCHARL DEFCHARL);
-
-  void type_of_call g3draw(DEFCHARD,Float_t &,Float_t &, Float_t &,Float_t &,
-			  Float_t &, Float_t &, Float_t & DEFCHARL);
-  void type_of_call g3drayt(DEFCHARD,Float_t &,Float_t &, Float_t &,Float_t &,
-			   Float_t &, Float_t &, Float_t & DEFCHARL);
-  void type_of_call g3drawc(DEFCHARD,Int_t &, Float_t &, Float_t &, Float_t &,
-                          Float_t &, Float_t & DEFCHARL);
-  void type_of_call g3drawx(DEFCHARD,Float_t &, Float_t &, Float_t &, Float_t &,
-			   Float_t &, Float_t &, Float_t &, Float_t &,
-			   Float_t & DEFCHARL);
-  void type_of_call g3dhead(Int_t &,DEFCHARD, Float_t & DEFCHARL);
-  void type_of_call g3dxyz(Int_t &);
-  void type_of_call g3dcxyz();
-  void type_of_call g3dman(Float_t &, Float_t &);
-  void type_of_call g3dwmn1(Float_t &, Float_t &);
-  void type_of_call g3dwmn2(Float_t &, Float_t &);
-  void type_of_call g3dwmn3(Float_t &, Float_t &);
-  void type_of_call g3dspec(DEFCHARD DEFCHARL);
-  void type_of_call g3dfspc(DEFCHARD, Int_t &, Int_t & DEFCHARL) {;}
-  void type_of_call g3dtree(DEFCHARD, Int_t &, Int_t & DEFCHARL);
-
-  void type_of_call g3dopen(Int_t &);
-  void type_of_call g3dclos();
-  void type_of_call g3delet(Int_t &);
-  void type_of_call g3dshow(Int_t &);
-
 
   void type_of_call dzshow(DEFCHARD,const int&,const int&,DEFCHARD,const int&,
 			   const int&, const int&, const int& DEFCHARL
@@ -1064,11 +953,6 @@ void TGeant3::DefaultRange()
   //
   // Set range of current drawing pad to 20x20 cm
   //
-  if (!gHigz) {
-    new THIGZ(kDefSize);
-    g3dinit();
-  }
-  gHigz->Range(0,0,20,20);
 }
 
 //______________________________________________________________________
@@ -1077,10 +961,6 @@ void TGeant3::InitHIGZ()
   //
   // Initialize HIGZ
   //
-  if (!gHigz) {
-    new THIGZ(kDefSize);
-    g3dinit();
-  }
 }
 
 //______________________________________________________________________
@@ -3625,7 +3505,6 @@ void  TGeant3::Gdxyz(Int_t it)
   //
   // Draw the points stored with Gsxyz relative to track it
   //
-  g3dxyz(it);
 }
 
 //______________________________________________________________________
@@ -3634,7 +3513,6 @@ void  TGeant3::Gdcxyz()
   //
   // Draw the position of the current track
   //
-  g3dcxyz();
 }
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -4244,7 +4122,7 @@ void TGeant3::Gsatt(const char *name, const char *att, Int_t val)
   //     DET   detector number associated to volume name
   //     DTYP  detector type (1,2)
   //
-//  InitHIGZ();
+
   char vname[5];
   Vname(name,vname);
   char vatt[5];
@@ -4315,7 +4193,6 @@ void TGeant3::Gdelete(Int_t iview)
   //
   //  It deletes a view bank from memory.
   //
-  g3delet(iview);
 }
 
 //______________________________________________________________________
@@ -4333,9 +4210,6 @@ void TGeant3::Gdopen(Int_t iview)
   //  zoomed many times in different ways. Please note that the pictures
   //  with solid colors can now be stored in a view bank or in 'PICTURE FILES'
   //
-  InitHIGZ();
-  gHigz->Clear();
-  g3dopen(iview);
 }
 
 //______________________________________________________________________
@@ -4345,7 +4219,6 @@ void TGeant3::Gdclose()
   //  It closes the currently open view bank; it must be called after the
   //  end of the drawing to be stored.
   //
-  g3dclos();
 }
 
 //______________________________________________________________________
@@ -4357,7 +4230,6 @@ void TGeant3::Gdshow(Int_t iview)
   //  It shows on the screen the contents of a view bank. It
   //  can be called after a view bank has been closed.
   //
-  g3dshow(iview);
 }
 
 //______________________________________________________________________
@@ -4391,13 +4263,13 @@ void TGeant3::Gdopt(const char *name,const char *value)
   //     USER    ON       User graphics options in the ray tracing.
   //             OFF (D)  Automatic graphics options.
   //
-  InitHIGZ();
+
   char vname[5];
   Vname(name,vname);
   char vvalue[5];
   Vname(value,vvalue);
-  g3dopt(PASSCHARD(vname), PASSCHARD(vvalue) PASSCHARL(vname)
-	PASSCHARL(vvalue));
+  //g3dopt(PASSCHARD(vname), PASSCHARD(vvalue) PASSCHARL(vname)
+  //	PASSCHARL(vvalue));
 }
 
 //______________________________________________________________________
@@ -4439,24 +4311,6 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi,
   //  Finally, some examples are given for the ray-tracing. (A possible
   //  string for the NAME of the volume can be found using the command DTREE).
   //
-
-  InitHIGZ();
-  gHigz->Clear();
-  char vname[5];
-  Vname(name,vname);
-  Float_t ftheta = theta;
-  Float_t fphi = phi;
-  Float_t fpsi = psi;
-  Float_t fu0 = u0;
-  Float_t fv0 = v0;
-  Float_t ful = ul;
-  Float_t fvl = vl;
-  if (fGcvdma->raytra != 1) {
-    g3draw(PASSCHARD(vname),ftheta,fphi,fpsi,fu0,fv0,ful,fvl PASSCHARL(vname));
-  } else {
-    g3drayt(PASSCHARD(vname),ftheta,fphi,fpsi,fu0,fv0,ful,
-            fvl PASSCHARL(vname));
-  }
 }
 
 //______________________________________________________________________
@@ -4479,12 +4333,6 @@ void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
   //  When HIDE Mode is ON, it is possible to get the same effect with
   //  the CVOL/BOX function.
   //
-
-  InitHIGZ();
-  gHigz->Clear();
-  char vname[5];
-  Vname(name,vname);
-  g3drawc(PASSCHARD(vname), axis,cut,u0,v0,ul,vl PASSCHARL(vname));
 }
 
 //______________________________________________________________________
@@ -4509,13 +4357,6 @@ void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
   //  cutthe and cutphi and placed at the distance cutval from the origin.
   //  The resulting picture is seen from the viewing angles theta,phi.
   //
-
-  InitHIGZ();
-  gHigz->Clear();
-  char vname[5];
-  Vname(name,vname);
-  g3drawx(PASSCHARD(vname), cutthe,cutphi,cutval,theta,phi,u0,v0,ul,vl
-	  PASSCHARL(vname));
 }
 
 //______________________________________________________________________
@@ -4539,9 +4380,6 @@ void TGeant3::Gdhead(Int_t isel, const char *name, Double_t chrsiz)
   //  NOTE that ISEL=x1xxx1 or ISEL=1xxxx1 are illegal choices,
   //  i.e. they generate overwritten text.
   //
-
-  Float_t fchrsiz = chrsiz;
-  g3dhead(isel,PASSCHARD(name),fchrsiz PASSCHARL(name));
 }
 
 //______________________________________________________________________
@@ -4559,19 +4397,6 @@ void TGeant3::Gdman(Double_t u, Double_t v, const char *type)
   //  three different ones, with the same scale factors as the detector
   //  in the current drawing.
   //
-
-  Float_t fu = u;
-  Float_t fv = v;
-  TString opt = type;
-  if (opt.Contains("WM1")) {
-    g3dwmn1(fu,fv);
-  } else if (opt.Contains("WM3")) {
-    g3dwmn3(fu,fv);
-  } else if (opt.Contains("WM2")) {
-    g3dwmn2(fu,fv);
-  } else {
-    g3dman(fu,fv);
-  }
 }
 
 //______________________________________________________________________
@@ -4586,12 +4411,6 @@ void TGeant3::Gdspec(const char *name)
   //  SHAD and according the current SetClipBox clipping parameters for that
   //  volume.
   //
-
-  InitHIGZ();
-  gHigz->Clear();
-  char vname[5];
-  Vname(name,vname);
-  g3dspec(PASSCHARD(vname) PASSCHARL(vname));
 }
 
 //______________________________________________________________________
@@ -4601,22 +4420,6 @@ void TGeant3::DrawOneSpec(const char *name)
   //  Function called when one double-clicks on a volume name
   //  in a TPavelabel drawn by Gdtree.
   //
-  THIGZ *higzSave = gHigz;
-  higzSave->SetName("higzSave");
-  THIGZ *higzSpec = (THIGZ*)gROOT->FindObject("higzSpec");
- //  printf("DrawOneSpec, gHigz=%x, higzSpec=%x\n",gHigz,higzSpec);
-  if (higzSpec) gHigz     = higzSpec;
-  else          higzSpec = new THIGZ(kDefSize);
-  higzSpec->SetName("higzSpec");
-  higzSpec->cd();
-  higzSpec->Clear();
-  char vname[5];
-  Vname(name,vname);
-  g3dspec(PASSCHARD(vname) PASSCHARL(vname));
-  higzSpec->Update();
-  higzSave->cd();
-  higzSave->SetName("higz");
-  gHigz = higzSave;
 }
 
 //______________________________________________________________________
@@ -4636,13 +4439,6 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
   //    - drawing tree
   //    - drawing tree of parent
   //
-
-  InitHIGZ();
-  gHigz->Clear();
-  char vname[5];
-  Vname(name,vname);
-  g3dtree(PASSCHARD(vname), levmax, isel PASSCHARL(vname));
-  gHigz->SetPname("");
 }
 
 //______________________________________________________________________
@@ -4655,28 +4451,6 @@ void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
   //
   //  This function draws the logical tree of the parent of name.
   //
-  InitHIGZ();
-  gHigz->Clear();
-  // Scan list of volumes in JVOLUM
-  char vname[5];
-  Int_t gname, i, jvo, in, nin, jin, num;
-  strncpy((char *) &gname, name, 4);
-  for(i=1; i<=fGcnum->nvolum; i++) {
-    jvo = fZlq[fGclink->jvolum-i];
-    nin = Int_t(fZq[jvo+3]);
-    if (nin == -1) nin = 1;
-    for (in=1;in<=nin;in++) {
-      jin = fZlq[jvo-in];
-      num = Int_t(fZq[jin+2]);
-      if(gname == fZiq[fGclink->jvolum+num]) {
-	strncpy(vname,(char*)&fZiq[fGclink->jvolum+i],4);
-	vname[4] = 0;
-	g3dtree(PASSCHARD(vname), levmax, isel PASSCHARL(vname));
-	gHigz->SetPname("");
-	return;
-      }
-    }
-  }
 }
 
 //______________________________________________________________________
@@ -4739,8 +4513,6 @@ void TGeant3::SetBOMB(Float_t /*boom*/)
   //  complex detectors. The following commands will make explode the
   //  detector:
   //
-//  InitHIGZ();
-//  setbomb(boom);
 }
 
 //______________________________________________________________________
@@ -4799,18 +4571,6 @@ void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
   //  NAME and a box placed in the MARS according the values of the given
   //  coordinates.
 
-//  InitHIGZ();
-
-  char vname[5];
-  Vname(name,vname);
-  Float_t fxmin = xmin;
-  Float_t fxmax = xmax;
-  Float_t fymin = ymin;
-  Float_t fymax = ymax;
-  Float_t fzmin = zmin;
-  Float_t fzmax = zmax;
-  setclip(PASSCHARD(vname),fxmin,fxmax,fymin,fymax,fzmin,
-          fzmax PASSCHARL(vname));
 }
 
 //______________________________________________________________________

@@ -8,40 +8,6 @@ void __attribute__ ((constructor))
 }
 void MAIN__()  {}
 #endif
-void izrtoc_() {}
-void igmess_() {}
-void igloc2_() {}
-void igpxmp_() {}
-void izitoc_() {}
-/*
-void ffinit_() {}
-void ffkey_() {}
-void ffgo_() {}
-*/
-void kuproi_() {}
-void kuproc_() {}
-void kupror_() {}
-void kualfa_() {}
-void umlog_() {}
-void czgeta_() {}
-void czputa_() {}
-/*======================= hbook dummies ================================
- *
- * From gplmat */
-void hdelet_() {}
-void hphist_() {}
-void hbookb_() {}
-void hfill_() {}
-void hidopt_() {}
-/*
- * From gbhsta */
-void hbook1_() {}
-void hbookn_() {}
-void hcopy_() {}
-/*
- * From AliRun */
-void hlimit_() {}
-
 
 
 

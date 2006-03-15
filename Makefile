@@ -1,9 +1,8 @@
-# $Id: Makefile,v 1.22 2005/07/13 09:36:17 brun Exp $
+# $Id: Makefile,v 1.23 2005/09/22 18:07:30 rdm Exp $
 
 ############################### geant321 Makefile #############################
 
 PACKAGE   = geant321
-PACKAGE2  = dummies
 
 ifeq ($(PLATFORM),)
 PLATFORM = $(shell root-config --arch)
@@ -57,7 +56,7 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 # Sources
 
-FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F TGeant3/rdummies.F
+FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
 ifeq ($(PLATFORM),linux)
 	  FSRC += minicern/lnxgs/rdmin.F
@@ -94,7 +93,7 @@ endif
 ifeq ($(PLATFORM),macosx)
 	  CSRC += minicern/lnblnk.c
 endif
-CSRC	:= $(filter-out added/dummies2.c,$(CSRC))
+CSRC	:= $(filter-out ,$(CSRC))
 
 CXXSRC	:= $(wildcard $(patsubst %,%/*.cxx,$(GDIRS))) \
            $(wildcard TGeant3/*.cxx)
@@ -111,12 +110,6 @@ FOBJ	:= $(patsubst %.F,$(BINDIR)/%.o,$(FSRC))
 COBJ	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC))
 CXXOBJ	:= $(patsubst %.cxx,$(BINDIR)/%.o,$(CXXSRC))
 OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
-
-# Dummies objects separated from geant321.so library
-
-CSRC2	:= added/dummies2.c
-COBJ2	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC2))
-OBJS2	:= $(COBJ2)
 
 
 # C++ compilation flags
@@ -139,8 +132,8 @@ DEPINC 		+= -I. -I$(ROOT_INCDIR)
 ############################### Targets #######################################
 
 
-SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/lib$(PACKAGE2).$(SL)
-ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a $(LIBDIR)/lib$(PACKAGE2).a
+SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL)
+ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a
 
 ifeq ($(PLATFORM),OSF1)
         default:	depend $(ALIBRARY) $(SLIBRARY) 
@@ -150,9 +143,6 @@ endif
 
 $(LIBDIR)/lib$(PACKAGE).$(SL):  $(OBJS)
 $(LIBDIR)/lib$(PACKAGE).a:  $(OBJS)
-
-$(LIBDIR)/lib$(PACKAGE2).$(SL):  $(OBJS2)
-$(LIBDIR)/lib$(PACKAGE2).a:  $(OBJS2)
 
 DICT:= $(GDICT) $(DDICT)
 
