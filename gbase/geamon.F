@@ -1,7 +1,10 @@
 *
-* $Id: geamon.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: geamon.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: geamon.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -93,4 +96,7 @@ C.
 10101 FORMAT('LOGOUT WTYP=',I6,' RT', I4,' min CP=',F9.3,' sec ',A5)
 *
   999 END
+      subroutine umlog(c1, c2)
+      character *(*) c1, c2
+      end
 #endif
