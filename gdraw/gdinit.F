@@ -1,5 +1,5 @@
 *
-* $Id: $
+* $Id: gdinit.F,v 1.2 2004/01/28 08:22:00 brun Exp $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -171,7 +171,7 @@ C
       CALL ISVP(1,0.,1.,0.,1.)
       CALL IGSET('TXFP',-61.)
       CALL IGRNG(PLTRNX,PLTRNY)
-      CALL IGSA(0)
+*      CALL IGSA(0)
 *JS
 *
 *  Setting the Viewing parameters to THETA =0., PHI=0., PSI=0.

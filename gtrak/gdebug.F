@@ -1,7 +1,10 @@
 *
-* $Id: gdebug.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id: gdebug.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gdebug.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 * initial import into CVS
 *
@@ -40,7 +43,7 @@
         IF (ISWIT(2).EQ.3) THEN
            IF(ISWIT(4).EQ.3.AND.CHARGE.EQ.0.)RETURN
            CALL GDCXYZ
-           CALL IGSA(0)
+*           CALL IGSA(0)
         ELSEIF(ISWIT(2).EQ.4) THEN
            IF(ISTOP.NE.0) CALL GDTRAK(' ')
         ENDIF
