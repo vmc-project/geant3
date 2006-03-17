@@ -1,7 +1,11 @@
 *
-* $Id: geamon.F,v 1.2 2003/11/28 11:23:55 brun Exp $
+* $Id: geamon.F,v 1.3 2006/03/16 10:03:56 brun Exp $
 *
 * $Log: geamon.F,v $
+* Revision 1.3  2006/03/16 10:03:56  brun
+* From Federico:
+* Add dummy routine umlog
+*
 * Revision 1.2  2003/11/28 11:23:55  brun
 * New version of geant321 with all geant3 routines renamed from G to G3
 *
@@ -96,7 +100,4 @@ C.
 10101 FORMAT('LOGOUT WTYP=',I6,' RT', I4,' min CP=',F9.3,' sec ',A5)
 *
   999 END
-      subroutine umlog(c1, c2)
-      character *(*) c1, c2
-      end
 #endif
