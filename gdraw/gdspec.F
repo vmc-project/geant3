@@ -1,5 +1,5 @@
 *
-* $Id: $
+* $Id: gdspec.F,v 1.3 2004/01/28 08:22:00 brun Exp $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 20/07/94  18.08.26  by  S.Ravndal
@@ -16,6 +16,7 @@ C.    *                 A.McPherson  *****                             *
 C.    *                                                                *
 C.    ******************************************************************
 C.
+#ifdef NEVER
 #include "geant321/gcbank.inc"
 #include "geant321/gcdraw.inc"
 #include "geant321/gcnum.inc"
@@ -393,4 +394,5 @@ C
       GZUC=SVGZUC
       GZVC=SVGZVC
       CALL ISELNT(1)
+#endif
   999 END

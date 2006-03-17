@@ -1,7 +1,10 @@
 *
-* $Id: gxscal.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gxscal.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gxscal.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -95,7 +98,7 @@ C.
          WRITE(CHTITL,2000)CHCASE(ICASE),CHLOC(ILOC),IHNAME
  2000    FORMAT('Number of ',A,' lengths ',A,1X,A)
       ENDIF
-      CALL HBOOK2(ID,CHTITL,NPHI,PHIMIN,PHIMAX,NTETA,TETMIN,TETMAX,0.)
+*      CALL HBOOK2(ID,CHTITL,NPHI,PHIMIN,PHIMAX,NTETA,TETMIN,TETMAX,0.)
 *
       DPHI=(PHIMAX-PHIMIN)/NPHI
       DTETA=(TETMAX-TETMIN)/NTETA
@@ -117,7 +120,7 @@ C.
             ELSE
                W=SABS
             ENDIF
-            CALL HFILL(ID,PHI,TETA,W)
+*            CALL HFILL(ID,PHI,TETA,W)
   20     CONTINUE
   50  CONTINUE
 *

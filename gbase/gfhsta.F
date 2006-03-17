@@ -1,7 +1,10 @@
 *
-* $Id: gfhsta.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: gfhsta.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: gfhsta.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -32,6 +35,7 @@ C.    *       Author    R.Brun  *********                              *
 C.    *                                                                *
 C.    ******************************************************************
 C.
+#ifdef NEVER
 #include "geant321/gcbank.inc"
 #include "geant321/gcnum.inc"
 #include "geant321/gclist.inc"
@@ -68,4 +72,5 @@ C.
          ENDIF
 *
       ENDIF
+#endif
       END
