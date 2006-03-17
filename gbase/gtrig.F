@@ -1,7 +1,10 @@
 *
-* $Id: gtrig.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
+* $Id: gtrig.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: gtrig.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:24  rdm
 * initial import into CVS
 *
@@ -45,8 +48,8 @@ C.
 #if defined(CERNLIB_USRJMP)
        CALL JUMPT0(JUKINE)
 #endif
-      ELSE
-       CALL GDKINE
+*      ELSE
+*       CALL GDKINE
       ENDIF
       IF (IEOTRI.NE.0)  GO TO  99
 C.
