@@ -16,6 +16,23 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.48  2006/03/15 08:12:11  brun
+-New Makefile.macosx
+
+-delete all TGeant3 GUI and graphics classes
+
+-Remove all references to GUI/Graphics classes from G3Volume.cxx and TGeant3.cxx
+
+-Remove TGeant3/galicef.F and rdummies.F
+
+-Remove references to GUI/Graphics classes from geant3LinkDef.h
+
+-delete added/dummies2.F
+
+-change added/dummies.c, keeping only __attribute__ and MAIN__
+
+-Change Makefile accordingly
+
 Revision 1.47  2005/11/18 21:25:22  brun
 From Bjorn, Andrei:
 Implemented new VMC functions for access to geometry;
@@ -572,7 +589,9 @@ extern "C"
 
   void type_of_call grndm(Float_t *r, const Int_t &n)
   {
-     gRandom->RndmArray(n,r);
+     //gRandom->RndmArray(n,r);
+     for(Int_t i=0; i<n; i++)
+       do r[i]=gRandom->Rndm(); while(0>=r[i] || r[i]>=1);
   }
 
   void type_of_call grndmq(Int_t &is1, Int_t &is2, const Int_t &,
