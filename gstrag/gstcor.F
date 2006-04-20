@@ -1,7 +1,10 @@
 *
-* $Id: gstcor.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstcor.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstcor.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,12 +18,12 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      SUBROUTINE GSTCOR(CC,POT,X,DENS,DELTA)
+      SUBROUTINE G3STCOR(CC,POT,X,DENS,DELTA)
  
 C.
 C.    *****************************************************************
 C.    *                                                               *
-C.    *      Sternheimer correction as computed in GDRELX             *
+C.    *      Sternheimer correction as computed in G3DRELX            *
 C.    *                                                               *
 C.    *    ==>Called by :                                             *
 C.    *       Author    L.Urban    *********                          *

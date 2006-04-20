@@ -30,17 +30,18 @@ G3Material::G3Material(char* name, char* title,
 }
 
 
-void G3Material::Dump()
+void G3Material::Dump() const
 {
-// Dump material information
+    // Dump material information (Attn: overrides TObject::Dump()).
+
     printf("\n *****************************************");
     printf("\n Material Number:   %10d", fId);
     printf("\n %s", GetName());
-    printf("\n Mass   Number:     %10.2f", fA);    
+    printf("\n Mass   Number:     %10.2f", fA);
     printf("\n Charge Number:     %10.2f", fZ);
     printf("\n Density:           %10.2f", fDensity);
     printf("\n Radiation  Length: %10.2f", fRadLength);
-    printf("\n Absorption Length: %10.2f", fInterLength);        	
+    printf("\n Absorption Length: %10.2f", fInterLength);        
 }
 
 

@@ -1,7 +1,10 @@
 *
-* $Id: gphsg2.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gphsg2.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gphsg2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GPHSG2(E)
+      FUNCTION G3PHSG2(E)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -25,7 +28,7 @@ C.    *                                                                *
 C.    *    ==>CALLED BY : special dE/dx                                *
 C.    *                                                                *
 C.    *    (1) Sandia parametrizsation is used;                        *
-C.    *    (2) GPHSG2 in Megabarns                                     *
+C.    *    (2) G3PHSG2 in Megabarns                                    *
 C.    *    (3) E in GeV                                                *
 C.    *                                                                *
 C.    *     J. Chwastowski 31.03.93                                    *
@@ -68,6 +71,6 @@ C Use Sandia data
    20 CONTINUE
 C RES value is in cm**2/g
 C Now in Megabarns
-   30 GPHSG2 = MAX(RES,ZERO)*A/AVO*1E-6
+   30 G3PHSG2 = MAX(RES,ZERO)*A/AVO*1E-6
 C
       END

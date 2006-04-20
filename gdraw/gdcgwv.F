@@ -1,16 +1,5 @@
 *
-* $Id: gdcgwv.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcgwv.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:21  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 #if defined(CERNLIB_CG)
@@ -73,7 +62,7 @@
 * 111  CONTINUE
 *      LINFIL=IBITS(LINATT,17,3)
 *      IF(LINFIL.GT.0)THEN
-*        CALL GDRAWV(TESTX,TESTY,-1)
+*        CALL G3DRAWV(TESTX,TESTY,-1)
 *      ENDIF
 *SG
       NT = Q(JCG+KHNT)
@@ -118,12 +107,12 @@
             AY(2) = YA + T2*YDELT
 *            JPNOW=LQ(LQ(JDRAW-3)-5)
 *            IF(JPNOW.NE.JPOLD) THEN
-*               PRINT*,'JPOLD, JPNEW before 1st GDRAWV ',JPOLD,JPNEW
+*               PRINT*,'JPOLD, JPNEW before 1st G3DRAWV ',JPOLD,JPNEW
 *               Q(JCG+100000000)=1.
 *            ENDIF
-            CALL GDRAWV(AX,AY,2)
+            CALL G3DRAWV(AX,AY,2)
 *            IF(JPNOW.NE.JPOLD) THEN
-*               PRINT*,'JPOLD, JPNEW after 1st GDRAWV ',JPOLD,JPNEW
+*               PRINT*,'JPOLD, JPNEW after 1st G3DRAWV ',JPOLD,JPNEW
 *               Q(JCG+100000000)=1.
 *            ENDIF
    20    CONTINUE
@@ -135,17 +124,17 @@
          AX(2) = BB(1)
          AY(2) = BB(2)
 *            IF(JPNOW.NE.JPOLD) THEN
-*               PRINT*,'JPOLD, JPNEW before 2nd GDRAWV ',JPOLD,JPNEW
+*               PRINT*,'JPOLD, JPNEW before 2nd G3DRAWV ',JPOLD,JPNEW
 *               Q(JCG+100000000)=1.
 *            ENDIF
-         CALL GDRAWV(AX,AY,2)
+         CALL G3DRAWV(AX,AY,2)
 *            IF(JPNOW.NE.JPOLD) THEN
-*               PRINT*,'JPOLD, JPNEW after 2nd GDRAWV ',JPOLD,JPNEW
+*               PRINT*,'JPOLD, JPNEW after 2nd G3DRAWV ',JPOLD,JPNEW
 *               Q(JCG+100000000)=1.
 *            ENDIF
    40 CONTINUE
 *SG
-*      IF(LINFIL.EQ.1)CALL GDRAWV(TESTX,TESTY,0)
+*      IF(LINFIL.EQ.1)CALL G3DRAWV(TESTX,TESTY,0)
 *   49 CONTINUE
 *SG
    50 RETURN

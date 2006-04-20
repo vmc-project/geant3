@@ -1,7 +1,10 @@
 *
-* $Id: guswim.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: guswim.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: guswim.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -22,7 +25,7 @@ C.    *                                                                *
 C.    *       User routine to control tracking of one track            *
 C.    *       in a magnetic field                                      *
 C.    *                                                                *
-C.    *    ==>Called by : GTELEC,GTHADR,GTMUON                         *
+C.    *    ==>Called by : G3TELEC,G3THADR,G3TMUON                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -32,11 +35,11 @@ C.
 C.    ------------------------------------------------------------------
 C.
          IF (IFIELD.EQ.3)THEN
-            CALL GHELX3(FIELDM*CHARGE,STEP,VECT,VOUT)
+            CALL G3HELX3(FIELDM*CHARGE,STEP,VECT,VOUT)
          ELSEIF(IFIELD.EQ.2)THEN
-            CALL GHELIX(CHARGE,STEP,VECT,VOUT)
+            CALL G3HELIX(CHARGE,STEP,VECT,VOUT)
          ELSE
-            CALL GRKUTA(CHARGE,STEP,VECT,VOUT)
+            CALL G3RKUTA(CHARGE,STEP,VECT,VOUT)
          ENDIF
 C
       END

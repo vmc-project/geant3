@@ -1,7 +1,10 @@
 *
-* $Id: q_sbit0.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id: q_sbit0.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: q_sbit0.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov
 * Separate distribution  of Geant3
 *
@@ -47,7 +50,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       MSBIT0 (IZW,IZP)   = LAND (IZW, LCOMPL(SHFTL(1,IZP-1)) )
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
       MSBIT0 (IZW,IZP)   = AND (IZW, NOT(LSHIFT(1,IZP-1)))
 
 #elif defined(CERNLIB_PDP)

@@ -1,7 +1,10 @@
 *
-* $Id: mzdiv.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id: mzdiv.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: mzdiv.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov
 * Separate distribution  of Geant3
 *
@@ -83,7 +86,12 @@ C--       option M, match mode of new division to neighbour
 
 #if defined(CERNLIB_QPRINT)
       IF (NQLOGL.GE.0)
+#if defined(__G95__)
+     +WRITE (IQLOG,9029) CHNAME(1:4),CHNAME(5:8),JQSTOR,NWALLO,
+     +NWMAX,MODE,KIND
+#else
      +WRITE (IQLOG,9029) NAME,JQSTOR,NWALLO,NWMAX,MODE,KIND
+#endif
  9029 FORMAT (1X/' MZDIV.   Initialize Division  ',2A4,'  in Store',I3
      F/10X,'NW/NWMAX=',2I7,',  MODE/KIND=',2I3)
 #endif

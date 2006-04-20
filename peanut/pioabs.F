@@ -1,7 +1,10 @@
 *
-* $Id: pioabs.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: pioabs.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: pioabs.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -497,7 +500,7 @@
          ELSE
             TAUEFF = 0.5D+00 * TAUFOR * AM (13) / AM (KPNUC)
             CALL GRNDM(RNDM,1)
-            TAUTAU = - TAUEFF / AM (KPNUC) * LOG ( 1.D+00 - RNDM
+            TAUTAU = - TAUEFF / AM (KPNUC) * LOG ( RNDM
      &             (1) )
             TAUTAU = MAX ( TAUTAU, RZNUCL / PNUCL (KP) )
          END IF

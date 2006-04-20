@@ -1,7 +1,10 @@
 *
-* $Id: gtnino.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtnino.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtnino.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 01/11/94  16.25.59  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GTNINO
+      SUBROUTINE G3TNINO
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Tracking routine for "GEANTINO" type tracks              *
 C.    *                                                                *
-C.    *    ==>Called by : GTRACK                                       *
+C.    *    ==>Called by : G3TRACK                                      *
 C.    *       Author    R.Brun, F.Bruyant                              *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,7 +1,10 @@
 *
-* $Id: gprela.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprela.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprela.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GPRELA
+      SUBROUTINE G3PRELA
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -44,7 +47,7 @@ C.    *                 be independent of energy. Value of 140 mubarns *
 C.    *                 calculated by averaging the results of Hesse   *
 C.    *                 et al(Phys. Rev. Lett 25(1970),613).           *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author    G.Patrick  *********                           *
 C.    *                                                                *
 C.    ******************************************************************
@@ -73,12 +76,12 @@ C.
 C
 C           Element
 C
-         DEDX = GPRELM(Z,T,PPCUTM)
+         DEDX = G3PRELM(Z,T,PPCUTM)
          DEDX = AVO*DENS*DEDX/A
 *
 * *** auxiliary integration point for Range tables
          IF(ICHAN.NE.NEK1) THEN
-            DEDX1 = GPRELM(Z,T1,PPCUTM)
+            DEDX1 = G3PRELM(Z,T1,PPCUTM)
             DEDX1 = AVO*DENS*DEDX1/A
          ENDIF
       ELSE
@@ -94,13 +97,13 @@ C
             AA   = Q(J-NLM)
             ZZ   = Q(J)
             WMAT = Q(J+NLM)
-            S    = GPRELM(ZZ,T,PPCUTM)
+            S    = G3PRELM(ZZ,T,PPCUTM)
             S    = WMAT*S/AA
             DEDX = DEDX+AVO*DENS*S
 *
 * *** auxiliary integration point for Range tables
             IF(ICHAN.NE.NEK1) THEN
-               S = GPRELM(ZZ,T1,PPCUTM)
+               S = G3PRELM(ZZ,T1,PPCUTM)
                S = WMAT*S/AA
                DEDX1 = DEDX1+AVO*DENS*S
             ENDIF

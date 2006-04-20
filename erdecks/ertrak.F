@@ -1,7 +1,10 @@
 *
-* $Id: ertrak.F,v 1.1.1.1 2002/06/16 15:18:35 hristov Exp $
+* $Id: ertrak.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ertrak.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:35  hristov
 * Separate distribution  of Geant3
 *
@@ -197,7 +200,7 @@
       GETOT = PVERT(4)
       GEKIN = GETOT - AMASS
       IF(GEKIN.LT.0.) GEKIN = 0.
-      CALL GEKBIN
+      CALL G3EKBIN
 *
 * *** Additional EMC initialization
 *

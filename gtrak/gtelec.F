@@ -1,14 +1,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 22/02/95  16.08.31  by  S.Giani
 *-- Author :
-      SUBROUTINE GTELEC
+      SUBROUTINE G3TELEC
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Electron type track. Computes step size and propagates       *
 C.    *    particle through step.                                      *
 C.    *                                                                *
-C.    *   ==> Called by : GTRACK                                       *
+C.    *   ==> Called by : G3TRACK                                      *
 C.    *       Authors    R.Brun, F.Bruyant, M.Maire L.Urban ********   *
 C.    *                                                                *
 C.    ******************************************************************
@@ -30,10 +30,6 @@ C.
 #include "geant321/gcjump.inc"
 #endif
  
-#if !defined(CERNLIB_OLD)
-#include "geant321/gcvolu.inc"
-#include "geant321/gcvdma.inc"
-#endif
 #if !defined(CERNLIB_SINGLE)
       PARAMETER (EPSMAC=1.E-6)
       DOUBLE PRECISION DEMEAN,STOPRG,STOPMX,STOPC
@@ -224,18 +220,8 @@ C.    ------------------------------------------------------------------
 *
 * *** otherwise, swim particle in magnetic field
 *
-#if !defined(CERNLIB_OLD)
-         if(mycoun.gt.1.and.nfmany.gt.0.and.step.ge.safety)then
-           nlevel=manyle(nfmany)
-           do 99 i=1,nlevel
-             names(i)=manyna(nfmany,i)
-             number(i)=manynu(nfmany,i)
- 99        continue
-           call glvolu(nlevel,names,number,ier)
-           if(ier.ne.0)print *,'Fatal error in GLVOLU'
-           ingoto=0
-         endif
-#endif
+         call gtmany(0)
+
          NMEC = NMEC +1
          LMEC(NMEC) = 4
 *
@@ -300,7 +286,7 @@ C.    ------------------------------------------------------------------
 *  **  Apply synchrotron radiation if required
 *
       IF(ISYNC*IFIELD.NE.0) THEN
-         CALL GSYNC
+         CALL G3SYNC
          NMEC = NMEC+1
          LMEC(NMEC) = 108
       ENDIF
@@ -308,7 +294,7 @@ C.    ------------------------------------------------------------------
 * *** Generate Cherenkov photons if required
 *
       IF(IMCKOV.EQ.1) THEN
-         CALL GGCKOV
+         CALL G3GCKOV
          IF(NGPHOT.NE.0) THEN
             NMEC = NMEC+1
             LMEC(NMEC)=105
@@ -356,7 +342,7 @@ C.    ------------------------------------------------------------------
             DESTEP = DEMEAN
          ELSE
             DEMS = DEMEAN
-            CALL GFLUCT (DEMS,DESTEP)
+            CALL G3FLUCT (DEMS,DESTEP)
          ENDIF
          DESTEP=MAX(DESTEP,0.)
          GEKINT = GEKIN -DESTEP
@@ -365,7 +351,7 @@ C.    ------------------------------------------------------------------
          GEKIN  = GEKINT
          GETOT  = GEKIN +AMASS
          VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
-         CALL GEKBIN
+         CALL G3EKBIN
 *
 *        IABAN = 1 does not distinguish between sensitive and
 *        non-sensitive volumes, and can stop particles above the CUTE
@@ -510,7 +496,7 @@ C.    ------------------------------------------------------------------
       IF (IMULL.NE.0) THEN
          NMEC = NMEC +1
          LMEC(NMEC) = 2
-         CALL GMULTS
+         CALL G3MULTS
       ENDIF
 *
 * *** Update time of flight
@@ -540,14 +526,14 @@ C.    ------------------------------------------------------------------
 *  **   Bremsstrahlung ?
 *
       IF (IPROC.EQ.9) THEN
-         CALL GBREME
+         CALL G3BREME
 *
 *  **   Delta ray ?
 *
       ELSE IF (IPROC.EQ.10) THEN
 *
        IF((IPART.EQ.2).OR.((IPART.EQ.3).AND.(GEKIN.GT.2.*DCUTE))) THEN
-         CALL GDRAY
+         CALL G3DRAY
        ELSE
          GOTO 98 
        ENDIF
@@ -555,7 +541,7 @@ C.    ------------------------------------------------------------------
 *  **   Positron annihilation ?
 *
       ELSE IF (IPROC.EQ.11) THEN
-         CALL GANNI
+         CALL G3ANNI
  
       ENDIF
       GO TO 999
@@ -576,7 +562,7 @@ C.    ------------------------------------------------------------------
       ELSE
          NMEC = NMEC +1
          LMEC(NMEC) = 11
-         CALL GANNIR
+         CALL G3ANNIR
       ENDIF
   999 IF(NGPHOT.GT.0) THEN
          IF(ITCKOV.EQ.2.AND.ISTOP.EQ.0) THEN

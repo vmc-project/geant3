@@ -1,7 +1,10 @@
 *
-* $Id: gxphys.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gxphys.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gxphys.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -182,7 +185,7 @@ C.
    50       CONTINUE
    60    CONTINUE
          CALL MZGARB (IXCONS, 0)
-         CALL GPHYSI
+         CALL G3PHYSI
       ENDIF
 *
   999 END

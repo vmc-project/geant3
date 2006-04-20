@@ -1,21 +1,10 @@
 *
-* $Id: gdraw.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdraw.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:24  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAW(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
+      SUBROUTINE G3DRAW(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -29,10 +18,10 @@ C.    *       is also rotated by an angle UPSI along the line of       *
 C.    *       projection (i.e. the normal to the 2-D view plane).      *
 C.    *                                                                *
 C.    *       If IDRNUM<>0 then /GCVOLU/ is already filled by GLVOLU   *
-C.    *       and a special case is handled (GDRAW called by GDRVOL).  *
+C.    *       and a special case is handled (G3DRAW called by GDRVOL). *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDPRTR, GDRAWC, GDRAWX,     *
-C.    *                   GDSPEC                                       *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DPRTR, G3DRAWC, G3DRAWX,  *
+C.    *                   G3DSPEC                                      *
 C.    *       Authors : R.Brun, A.McPherson, P.Zanarini,   *********   *
 C.    *                 J.Salt, S.Giani                                *
 C.    ******************************************************************
@@ -312,7 +301,7 @@ C.
             CALL MZBOOK(IXCG,IMPOIN,IMPOIN,1,'SHAFAC',0,0,JMEMT2,2,-1)
          ENDIF
 *    Resetting
-         CALL GDCGRS
+         CALL G3DCGRS
          NFILT=0
          NTCUR=0
          NTNEX=0
@@ -353,11 +342,11 @@ C
       ENDIF
       IF (NLEVEL.LT.0) NLEVEL=IABS(NLEVEL)
 C
-C             If in cut-mode then open the GDRAWV line buffer
-C             else reset ICUT that could have been set by GDRAWC/GDRAWX
+C             If in cut-mode then open the G3DRAWV line buffer
+C             else reset ICUT that could have been set by G3DRAWC/G3DRAWX
 C
       IF (ICUTFL.EQ.1) THEN
-         CALL GDRAWV(0.,0.,-1)
+         CALL G3DRAWV(0.,0.,-1)
       ELSE
          ICUT=0
       ENDIF
@@ -434,7 +423,7 @@ C
 C             Initialize for new geometry structure
 C
       IF (JGPAR.EQ.0) CALL GMEDIN
-      CALL GLMOTH(NAME,1,NLEV,LVOLS,LINDX)
+      CALL G3LMOTH(NAME,1,NLEV,LVOLS,LINDX)
       DO 50 J=1, NLEV
          LNAMES(J)=IQ(JVOLUM+LVOLS(J))
    50 CONTINUE
@@ -463,7 +452,7 @@ C
 C
       IF (IDRNUM.NE.0) GO TO 110
 C
-      CALL GFPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
+      CALL G3FPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
 C
       IF (NPAR.LE.0) GO TO 290
 C
@@ -502,7 +491,7 @@ C
 C
       IF (IDRNUM.NE.0.AND.JIN.EQ.0) THEN
          CALL UHTOC(NAMES(NLEVEL),4,NAMEE2,4)
-         CALL GFPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
+         CALL G3FPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
      +            NATT,GPAR(1,NLEVEL),ATT)
       ELSE
          NPAR=Q(JVO+5)
@@ -819,7 +808,7 @@ C
          IF (ICUTFL.EQ.1) THEN
             CALL GDRWSC(ISHAPE,GPAR(1,NLEVEL))
          ELSE
-            CALL GDRAWS(ISHAPE,GPAR(1,NLEVEL))
+            CALL G3DRAWS(ISHAPE,GPAR(1,NLEVEL))
          ENDIF
 *
       ENDIF
@@ -904,7 +893,7 @@ C
   290 CONTINUE
 C
 C             TOP OF THE TREE HAS PARAMETERS SET BY GSPOSP.
-C             BUT GDRAW DOES NOT HAVE ACCESS TO THE IN BANK
+C             BUT G3DRAW DOES NOT HAVE ACCESS TO THE IN BANK
 C             WHICH PLACED IT IN ITS MOTHER.
 C
       WRITE(CHMAIL,10100) NAME
@@ -959,7 +948,7 @@ C
             NWHS=0.6*MEMO
             NWWS=0.4*MEMO
             CALL MZBOOK(IXCG,JCG,JCG,1,'CG',0,0,MEMO,3,-1)
-            CALL GDCGRS
+            CALL G3DCGRS
 *
             IHS=1
             IHPOIN=JCG+1
@@ -1090,7 +1079,7 @@ C
          ICUT=0
          IF(JCG.NE.0)CALL MZDROP(IXSTOR,JCG,' ')
          IF(JCGOBJ.NE.0)CALL MZDROP(IXSTOR,JCGOBJ,' ')
-         CALL GDCGRS
+         CALL G3DCGRS
          IF(JCGCOL.NE.0)CALL MZDROP(IXSTOR,JCGCOL,' ')
          IF(JCOUNT.NE.0)CALL MZDROP(IXSTOR,JCOUNT,' ')
          IF(JCLIPS.NE.0)CALL MZDROP(IXSTOR,JCLIPS,' ')
@@ -1120,44 +1109,44 @@ C
          NLEVEL=0
       ENDIF
 C
-C             If in cut-mode then close the GDRAWV line buffer
+C             If in cut-mode then close the G3DRAWV line buffer
 C
-      IF (ICUTFL.EQ.1) CALL GDRAWV(0.,0.,0)
+      IF (ICUTFL.EQ.1) CALL G3DRAWV(0.,0.,0)
 C
 C             Restore permanent value of color and return
 C
-*      CALL GDCOL(0)
+*      CALL G3DCOL(0)
       IOBJ=0
 C
-10000 FORMAT(' *** GDRAW *** : Volume ',A4,' does not exist')
-10100 FORMAT(' *** GDRAW *** : Top of tree ',A4,' parameters defined',
-     +       '  by GSPOSP - info not available to GDRAW.')
-10200 FORMAT(' *** GDRAW *** : Illegal Transformation Matrix',
+10000 FORMAT(' *** G3DRAW *** : Volume ',A4,' does not exist')
+10100 FORMAT(' *** G3DRAW *** : Top of tree ',A4,' parameters defined',
+     +       '  by GSPOSP - info not available to G3DRAW.')
+10200 FORMAT(' *** G3DRAW *** : Illegal Transformation Matrix',
      +       ' Number NTRCG ')
-10300 FORMAT(' *** GDRAW *** :  >>> Det (T) = 0  ')
-10400 FORMAT(' *** GDRAW *** :  Warning! Volume is destroyed.')
+10300 FORMAT(' *** G3DRAW *** :  >>> Det (T) = 0  ')
+10400 FORMAT(' *** G3DRAW *** :  Warning! Volume is destroyed.')
 *SG
-10500 FORMAT(' *** GDRAW *** :  Internal error, please report to',
+10500 FORMAT(' *** G3DRAW *** :  Internal error, please report to',
      +       ' GEANT support team')
-10600 FORMAT(' *** GDRAW *** : Total memory used    =',I10,' words.')
-10700 FORMAT(' *** GDRAW *** : Total memory booked  =',I10,' words.')
-10800 FORMAT(' *** GDRAW *** : Memory used for CGOB =',I10,' words.')
-10900 FORMAT(' *** GDRAW *** : Memory used for LINE =',I10,' words.')
-11000 FORMAT(' *** GDRAW *** : Memory used for HIDE =',I10,' words.')
-11100 FORMAT(' *** GDRAW *** : Memory used for WIRE =',I10,' words.')
-11200 FORMAT(' *** GDRAW *** : Memory used for SHAD =',I10,' words.')
-11300 FORMAT(' *** GDRAW *** : Memory needed for the LINE attributes',
+10600 FORMAT(' *** G3DRAW *** : Total memory used    =',I10,' words.')
+10700 FORMAT(' *** G3DRAW *** : Total memory booked  =',I10,' words.')
+10800 FORMAT(' *** G3DRAW *** : Memory used for CGOB =',I10,' words.')
+10900 FORMAT(' *** G3DRAW *** : Memory used for LINE =',I10,' words.')
+11000 FORMAT(' *** G3DRAW *** : Memory used for HIDE =',I10,' words.')
+11100 FORMAT(' *** G3DRAW *** : Memory used for WIRE =',I10,' words.')
+11200 FORMAT(' *** G3DRAW *** : Memory used for SHAD =',I10,' words.')
+11300 FORMAT(' *** G3DRAW *** : Memory needed for the LINE attributes',
      +       ' =',I10,' words.')
-*10799 FORMAT(' *** GDRAW *** : HIDE/WIRE=',F4.2,'.')
-11400 FORMAT(' *** GDRAW *** : Please, increase size of Zebra store',
+*10799 FORMAT(' *** G3DRAW *** : HIDE/WIRE=',F4.2,'.')
+11400 FORMAT(' *** G3DRAW *** : Please, increase size of Zebra store',
      +       ' by',I10,' words to create WIRE structure.')
-11500 FORMAT(' *** GDRAW *** : Please, increase size of Zebra store',
+11500 FORMAT(' *** G3DRAW *** : Please, increase size of Zebra store',
      +       ' by',I10,' words to create HIDE structure.')
-11600 FORMAT(' *** GDRAW *** : Visible volumes      =',I10,'.')
-11700 FORMAT(' *** GDRAW *** : Total   volumes      =',I10,'.')
-11800 FORMAT(' *** GDRAW *** :',I2,'% of volumes analysed.')
-11900 FORMAT(' *** GDRAW *** : Now the drawing is starting !')
-12000 FORMAT(' *** GDRAW *** :',I2,'% of volumes drawn.')
+11600 FORMAT(' *** G3DRAW *** : Visible volumes      =',I10,'.')
+11700 FORMAT(' *** G3DRAW *** : Total   volumes      =',I10,'.')
+11800 FORMAT(' *** G3DRAW *** :',I2,'% of volumes analysed.')
+11900 FORMAT(' *** G3DRAW *** : Now the drawing is starting !')
+12000 FORMAT(' *** G3DRAW *** :',I2,'% of volumes drawn.')
 *
 *SG
       END

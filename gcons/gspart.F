@@ -1,7 +1,15 @@
 *
-* $Id: gspart.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gspart.F,v 1.2 2002/12/02 16:37:44 brun Exp $
 *
 * $Log: gspart.F,v $
+* Revision 1.2  2002/12/02 16:37:44  brun
+* Changes from Federico Carminati and Peter Hristov who ported the system
+* on the Ithanium processors.It is tested on HP, Sun, and Alpha, everything
+* seems to work. The optimisation is switched off in case of gcc2.xx.yyy
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GSPART(IPART,NAPART,ITRTYP,AMASS,CHARGE,TLIFE,
+      SUBROUTINE G3SPART(IPART,NAPART,ITRTYP,AMASS,CHARGE,TLIFE,
      +            UBUF,NWBUF)
 C.
 C.    ******************************************************************
@@ -31,6 +39,7 @@ C.
 #include "geant321/gcnum.inc"
 #include "geant321/gcmzfo.inc"
 #include "geant321/gcunit.inc"
+      COMMON / FIXIT / JPA
       DIMENSION UBUF(1)
       CHARACTER*(*) NAPART
       CHARACTER*20 NAME
@@ -51,7 +60,7 @@ C.
          IF(JPA1.GT.0) THEN
             WRITE(CHMAIL,10000)
             CALL GMAIL(1,0)
-            CALL GPPART(IPART)
+            CALL G3PPART(IPART)
             CALL MZDROP(IXCONS,LQ(JPART-IPART),' ')
          ENDIF
       ENDIF
@@ -71,7 +80,7 @@ C
       IF(NWBUF.GT.0)CALL UCOPY(UBUF,Q(JPA+10),NWBUF)
 C
       IF(JPA1.GT.0) THEN
-         CALL GPPART(-IPART)
+         CALL G3PPART(-IPART)
       ENDIF
 C
   99  RETURN

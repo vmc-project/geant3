@@ -1,7 +1,10 @@
 *
-* $Id: gtneut.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gtneut.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gtneut.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.24  by  S.Giani
 *-- Author :
-      SUBROUTINE GTNEUT
+      SUBROUTINE G3TNEUT
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *   Neutral hadron type track. Computes step size and propagates *
 C.    *    particle through step.                                      *
 C.    *                                                                *
-C.    *   ==>Called by : GTRACK                                        *
+C.    *   ==>Called by : G3TRACK                                       *
 C.    *      Authors     R.Brun, F.Bruyant  *********                  *
 C.    *                                                                *
 C.    ******************************************************************
@@ -74,7 +77,7 @@ C.    ------------------------------------------------------------------
                   NMEC = NMEC + 1
                   LMEC(NMEC) = 5
                   ISTOP =1
-                  CALL GDECAY
+                  CALL G3DECAY
                ENDIF
             ENDIF
             GO TO 999
@@ -224,7 +227,7 @@ C.    ------------------------------------------------------------------
 *
       ELSE IF (IPROC.EQ.5) THEN
          ISTOP = 1
-         CALL GDECAY
+         CALL G3DECAY
       ENDIF
 *                                                             END GTNEUT
   999 END

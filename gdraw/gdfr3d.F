@@ -1,16 +1,5 @@
 *
-* $Id: gdfr3d.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdfr3d.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -41,7 +30,7 @@ C.    *          for tracks/hits (IOBJ<>1) after GDRVOL with NRS<>0 :  *
 C.    *          transformation of the 3D point (x',y',z') in MARS     *
 C.    *          into the 3D point (x,y,z) in DRS;                     *
 C.    *                                                                *
-C.    *          for tracks/hits (IOBJ<>1) after GDRAW/GDRAWC :   *
+C.    *          for tracks/hits (IOBJ<>1) after G3DRAW/G3DRAWC :      *
 C.    *          nothing                                               *
 C.    *                                                                *
 C.    *       b) transformation of the 3D point (x,y,z) in MARS/DRS    *
@@ -59,8 +48,8 @@ C.    *          xx axis until it is onto the xx-yy plane and finally  *
 C.    *          u=xx (unchanged by the rotation) and v=yy             *
 C.    *                                                                *
 C.    *    ==>Called by : <USER>, GDAHIT, GDARC, GDAXIS, GDCIRC,       *
-C.    *                   GDCIRR, GDCIRY, GDCUT, GDCXYZ, GDLINE,       *
-C.    *                   GDPART, GDRECT, GDSURF, GDXYZ                *
+C.    *                   GDCIRR, GDCIRY, GDCUT, G3DCXYZ, GDLINE,      *
+C.    *                   GDPART, GDRECT, GDSURF, G3DXYZ               *
 C.    *       Authors : R.Brun, P.Zanarini   *********                 *
 C.    *                                                                *
 C.    ******************************************************************

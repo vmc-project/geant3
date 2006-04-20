@@ -1,7 +1,10 @@
 *
-* $Id: gprsgg.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gprsgg.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprsgg.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 24/02/95  14.49.53  by  S.Giani
 *-- Author :
-      FUNCTION GPRSGG(Z,E)
+      FUNCTION G3PRSGG(Z,E)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  To calculate cross-section for e+e- production                *
 C.    *  by photons (in barn/atom)                                     *
 C.    *                                                                *
-C.    *    ==>Called by : GPRSGA                                       *
+C.    *    ==>Called by : G3PRSGA                                      *
 C.    *       Author    L.Urban  *********                             *
 C.    *       Modified by: G.Battistoni                                *
 C.    *                                                                *
@@ -60,7 +63,7 @@ C
       SIG=Z*(Z+1.)*(CC(1)+CC(2)*Z+CC(3)/Z)
 C
   90  IF(SIG.LT.0.)SIG=0.
-      GPRSGG=SIG
+      G3PRSGG=SIG
 *
       E=ESAV
 *
