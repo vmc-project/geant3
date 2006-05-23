@@ -16,6 +16,11 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.13  2005/11/18 21:25:22  brun
+From Bjorn, Andrei:
+Implemented new VMC functions for access to geometry;
+added -Woverloaded-virtual to Makefile.linux
+
 Revision 1.12  2005/07/28 12:02:17  brun
 From Andrei:
 - Fixed problem of material indices when coming from FORTRAN code
@@ -615,6 +620,15 @@ const char* TGeant3TGeo::CurrentVolOffName(Int_t off) const
   TGeoNode *node = gGeoManager->GetMother(off);
   if (!node) return 0;
   return node->GetVolume()->GetName();
+}
+
+//______________________________________________________________________
+const char* TGeant3TGeo::CurrentVolPath()
+{
+// Return the path in geometry tree for the current volume
+// ---
+
+  return GetPath();
 }
 
 //_____________________________________________________________________________
