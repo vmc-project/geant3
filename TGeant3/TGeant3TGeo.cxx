@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.14  2006/05/23 15:53:11  brun
+From Ivana:
+ Adding CurrentVolPath() overloading TGeant3 implementation
+ which does not work correctly with longer volume names
+ (Oleg Yushchenko)
+
 Revision 1.13  2005/11/18 21:25:22  brun
 From Bjorn, Andrei:
 Implemented new VMC functions for access to geometry;
@@ -1369,11 +1375,6 @@ void  TGeant3TGeo::Gsdvn(const char *name, const char *mother, Int_t ndiv,
   //  X,Y,Z of CAXIS will be translated to 1,2,3 for IAXIS.
   //  It divides a previously defined volume.
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
   fMCGeo->Gsdvn(name, mother, ndiv, iaxis);
 }
 
@@ -1388,11 +1389,6 @@ void  TGeant3TGeo::Gsdvn2(const char *name, const char *mother, Int_t ndiv,
   // along axis iaxis starting at coordinate value c0.
   // the new volume created will be medium number numed.
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
   fMCGeo->Gsdvn2(name, mother, ndiv, iaxis, c0i, numed);
 }
 
@@ -1403,12 +1399,7 @@ void  TGeant3TGeo::Gsdvs(const char *name, const char *mother, Float_t step,
   //
   // Create a new volume by dividing an existing one
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
-  gGeoManager->Division(vname,vmother,iaxis,0,0,step,numed,"s");
+  gGeoManager->Division(name,mother,iaxis,0,0,step,numed,"s");
 }
 
 //_____________________________________________________________________________
@@ -1418,12 +1409,7 @@ void  TGeant3TGeo::Gsdvs2(const char *name, const char *mother, Float_t step,
   //
   // Create a new volume by dividing an existing one
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
-  gGeoManager->Division(vname,vmother,iaxis,0,c0,step,numed,"sx");
+  gGeoManager->Division(name,mother,iaxis,0,c0,step,numed,"sx");
 }
 
 //_____________________________________________________________________________
@@ -1441,11 +1427,6 @@ void  TGeant3TGeo::Gsdvt(const char *name, const char *mother, Double_t step,
   //       NDVMX is the expected maximum number of divisions
   //          (If 0, no protection tests are performed)
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
   fMCGeo->Gsdvt(name, mother, step, iaxis, numed, ndvmx);
 }
 
@@ -1464,11 +1445,6 @@ void  TGeant3TGeo::Gsdvt2(const char *name, const char *mother, Double_t step,
   //           NDVMX is the expected maximum number of divisions
   //             (If 0, no protection tests are performed)
   //
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
   fMCGeo->Gsdvt2(name, mother, step, iaxis, c0, numed, ndvmx);
 }
 
@@ -1509,16 +1485,6 @@ void  TGeant3TGeo::Gspos(const char *name, Int_t nr, const char *mother, Double_
   //
   //  It positions a previously defined volume in the mother.
   //
-
-  TString only = konly;
-  only.ToLower();
-  Bool_t isOnly = kFALSE;
-  if (only.Contains("only")) isOnly = kTRUE;
-  char vname[5];
-  Vname(name,vname);
-  char vmother[5];
-  Vname(mother,vmother);
-
   fMCGeo->Gspos(name, nr, mother, x, y, z, irot, konly);
 }
 
@@ -1763,11 +1729,7 @@ void TGeant3TGeo::Gsatt(const char *name, const char *att, Int_t val)
   //     DTYP  detector type (1,2)
   //
 //  InitHIGZ();
-  char vname[5];
-  Vname(name,vname);
-  char vatt[5];
-  Vname(att,vatt);
-  gGeoManager->SetVolumeAttribute(vname, vatt, val);
+  gGeoManager->SetVolumeAttribute(name, att, val);
 }
 
 //_____________________________________________________________________________
