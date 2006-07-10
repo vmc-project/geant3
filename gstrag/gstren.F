@@ -1,7 +1,10 @@
 *
-* $Id: gstren.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
+* $Id: gstren.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gstren.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:27  rdm
 * initial import into CVS
 *
@@ -73,7 +76,8 @@ C...
       DAN      = ANMAX-ANMIN
       AMU      = DAN*STEP
       CALL G3POISS(AMU,N,1)
-      NICOLL   = MAX(N,1)
+*      NICOLL   = MAX(N,1)
+      NICOLL = N
       DO 80  I  = 1,NICOLL
    50    K1 = 1
          K2 = NP

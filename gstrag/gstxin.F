@@ -1,7 +1,10 @@
 *
-* $Id: gstxin.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
+* $Id: gstxin.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gstxin.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:27  rdm
 * initial import into CVS
 *
@@ -53,7 +56,8 @@
 *   -----    physic constants
       EPPS=0.01
       EMIN=EM(1)-EPPS
-      EMAX=LOG(DCUTE*1.E9)
+      EMAX=LOG(1.E13)
+*     Integration up to infinity
 *
       NAV = AVO*1.E24
 *
@@ -96,6 +100,7 @@
          SFINT = SFINT+ G3OSCIN(EXP(E1),EXP(E2))
          FINT(IE)=SFINT
    10 CONTINUE
+
 *
 *   Normalization of the integrated cross-section
       DO 20  IE=1,NTAB
@@ -108,6 +113,6 @@
          E=EXP(EMM(IE))
          EPSI(IE)=LOG(WP2*PIBY2*G3PHSG2(E*1E-9)/(SFINT*E))
 *      scaled by
-         EPSR(IE)=WP2*G3KOKRI(E,EXP(EMIN),DCUTE*1E9)*E/SFINT
+         EPSR(IE)=WP2*G3KOKRI(E,EXP(EMIN),EXP(EMAX))*E/SFINT
    30 CONTINUE
       END
