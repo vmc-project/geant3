@@ -1,7 +1,10 @@
 *
-* $Id: gavrl2.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gavrl2.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gavrl2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      REAL FUNCTION GAVRL2(GAMA,BETA,XM)
+      REAL FUNCTION G3AVRL2(GAMA,BETA,XM)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -24,7 +27,7 @@ C.    *    Gama  - L2 shell photoelectron gama                         *
 C.    *    Beta  - L2 shell photoelectron beta                         *
 C.    *    XM    - ratio of the electron mass to the photon energy     *
 C.    *                                                                *
-C.    *    ==>CALLED BY : GPHOT                                        *
+C.    *    ==>CALLED BY : G3PHOT                                       *
 C.    *       AUTHOR    : J. Chwastowski                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -40,5 +43,5 @@ C.
       P2 = -(G2+3*G-8)
       P3 = 1
       IF(B.GT.0.0001) P3 = LOG(G*(1+B))/(B*G)
-      GAVRL2 = (P1+P2*P3)*B*G*XM**5
+      G3AVRL2 = (P1+P2*P3)*B*G*XM**5
       END

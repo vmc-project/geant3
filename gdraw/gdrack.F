@@ -1,21 +1,10 @@
 *
-* $Id: gdrack.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdrack.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRACK
+      SUBROUTINE G3DRACK
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -218,7 +207,7 @@ C.    ------------------------------------------------------------------
 *
 * *** Compute SET and DET number if volume is sensitive
 *
-      IF (JSET.GT.0) CALL GFINDS
+      IF (JSET.GT.0) CALL G3FINDS
 *
 *    Clear step dependent variables
 *
@@ -320,9 +309,9 @@ C.    ------------------------------------------------------------------
             CALL UHTOC(NAMES(NLEVEL),4,NAME,4)
 *            print *,NAME
            IF(IMYSE.EQ.1)THEN
-            CALL GFIND(NAME,'SEEN',ISSEEN)
-            CALL GFIND(NAME,'COLO',ISCOLO)
-            CALL GFIND(NAME,'LSTY',ISLSTY)
+            CALL G3FIND(NAME,'SEEN',ISSEEN)
+            CALL G3FIND(NAME,'COLO',ISCOLO)
+            CALL G3FIND(NAME,'LSTY',ISLSTY)
            ENDIF
 *            print *,isseen,iscolo,islsty
             GO TO 10

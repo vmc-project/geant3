@@ -1,7 +1,10 @@
 *
-* $Id: gukine.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gukine.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gukine.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -59,14 +62,14 @@ C
       PLAB(2) = PKINE(1)*SIN(THETA)*SIN(PHI)
       PLAB(3) = PKINE(1)*COS(THETA)
 C
-      CALL GSVERT(VERTEX,0,0,0,0,NVERT)
-      CALL GSKINE(PLAB,IK,NVERT,0,0,NT)
+      CALL G3SVERT(VERTEX,0,0,0,0,NVERT)
+      CALL G3SKINE(PLAB,IK,NVERT,0,0,NT)
 *
 *              Kinematic debug (controled by ISWIT(1))
 *
       IF(IDEBUG.EQ.1.AND.ISWIT(1).EQ.1) THEN
-        CALL GPRINT('VERT',0)
-        CALL GPRINT('KINE',0)
+        CALL G3PRINT('VERT',0)
+        CALL G3PRINT('KINE',0)
       ENDIF
 *
   99  END

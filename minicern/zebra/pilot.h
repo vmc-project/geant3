@@ -1,3 +1,11 @@
+#if defined(CERNLIB_LXIA64)
+*
+* Take normal LINUX as basis for Itanium
+#ifndef CERNLIB_LINUX
+#define CERNLIB_LINUX
+#endif
+#endif
+
 #if defined(CERNLIB_LINUX) || defined(CERNLIB_HPUX) || defined(CERNLIB_SUN)
 #if !defined(CERNLIB_UNIX)
 #define CERNLIB_UNIX

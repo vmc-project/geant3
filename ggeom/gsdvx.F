@@ -1,7 +1,10 @@
 *
-* $Id: gsdvx.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gsdvx.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsdvx.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.30  by  S.Giani
 *-- Author :
-      SUBROUTINE GSDVX (NAME,MOTHER,NDIV,IAXIS,STEP,C0,NUMED
+      SUBROUTINE G3SDVX (NAME,MOTHER,NDIV,IAXIS,STEP,C0,NUMED
      +                  ,NDVMX)
 C.
 C.    *******************************************************
@@ -37,13 +40,13 @@ C.    -------------------------------------------------------
 *
       IF (NDIV.GT.0) THEN
          IF (STEP.GT.0.) THEN
-            CALL GSDVT2 (NAME, MOTHER, STEP, IAXIS, C0, NUMED, -NDIV)
+            CALL G3SDVT2 (NAME, MOTHER, STEP, IAXIS, C0, NUMED, -NDIV)
          ELSE
-            CALL GSDVN2 (NAME, MOTHER, NDIV, IAXIS, C0, NUMED)
+            CALL G3SDVN2 (NAME, MOTHER, NDIV, IAXIS, C0, NUMED)
          ENDIF
       ELSE
          IF (STEP.GT.0.) THEN
-            CALL GSDVT2 (NAME, MOTHER, STEP, IAXIS, C0, NUMED, NDVMX)
+            CALL G3SDVT2 (NAME, MOTHER, STEP, IAXIS, C0, NUMED, NDVMX)
          ELSE
             WRITE (CHMAIL, 1001)
             CALL GMAIL (0, 0)

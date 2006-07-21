@@ -1,21 +1,10 @@
 *
-* $Id: gfind.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gfind.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:04  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:30  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GFIND(NAME,IAT,ISVALS)
+      SUBROUTINE G3FIND(NAME,IAT,ISVALS)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -33,7 +22,7 @@ C.    *    8:  'DET '   detector number associated to this volume      *
 C.    *    9:  'DTYP'   detector type (1,2)                            *
 C.    *   10:  'NODE'   <>0=a node is created for 3D (PIONS,GMR,etc.)  *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDPRTR,GDSPEC,GDTREE,GSDET, *
+C.    *  ==>Called by : <USER>, <GXINT>, GDPRTR,G3DSPEC,G3DTREE,GSDET, *
 C.    *                   GSDETV,GSDVN,GSDVN2,GSDVT,GSDVT2,GSVOLU      *
 C.    *          Author  S.Giani  *********                            *
 C.    *                                                                *

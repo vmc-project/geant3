@@ -1,7 +1,10 @@
 *
-* $Id: gfshls.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfshls.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfshls.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GFSHLS(Z,GSHPOT,NSHELL)
+      SUBROUTINE G3FSHLS(Z,GSHPOT,NSHELL)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Fetch the shells' potentials for e given Z               *
 C.    *       The potentials are in eV !!!                             *
 C.    *                                                                *
-C.    *    ==>Called by : GPHXSI,GFSHDC                                *
+C.    *    ==>Called by : G3PHXSI,G3FSHDC                              *
 C.    *       Author    J. Chwastowski                                 *
 C.    *                                                                *
 C.    ******************************************************************

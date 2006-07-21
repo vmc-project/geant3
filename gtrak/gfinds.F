@@ -1,7 +1,10 @@
 *
-* $Id: gfinds.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gfinds.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gfinds.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 *               Corrected inline function to prevent loss of address
 *               following conversion to real
 *-- Author :
-      SUBROUTINE GFINDS
+      SUBROUTINE G3FINDS
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -34,7 +37,7 @@ C.    *       IDTYPE detector type (1,2)                               *
 C.    *       NUMBV  detector volume numbers (array of length NVNAME)  *
 C.    *       NVNAME number of volume levels                           *
 C.    *                                                                *
-C.    *    ==>Called by : GTRACK                                       *
+C.    *    ==>Called by : G3TRACK                                      *
 C.    *       Author    R.Brun  *********                              *
 C.    *       Modified  V.Perev                                        *
 C.    *                                                                *

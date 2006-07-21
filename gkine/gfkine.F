@@ -1,7 +1,10 @@
 *
-* $Id: gfkine.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gfkine.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gfkine.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GFKINE(ITRA,VERT,PVERT,IPART,NVERT,UBUF,NWBUF)
+      SUBROUTINE G3FKINE(ITRA,VERT,PVERT,IPART,NVERT,UBUF,NWBUF)
 *
 ************************************************************************
 *                                                                      *

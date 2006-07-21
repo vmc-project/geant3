@@ -1,7 +1,10 @@
 *
-* $Id: gstint.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstint.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstint.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GSTINT(X,A,F,N)
+      FUNCTION G3STINT(X,A,F,N)
 *
 *       Simple linear interpolation
 *
@@ -29,7 +32,7 @@
 *       Skip Unless N>1
 *
          IF (N.LE.1) THEN
-            GSTINT=F(1)
+            G3STINT=F(1)
             GO TO 999
          ENDIF
          K1=1
@@ -51,6 +54,6 @@
       END IF
       X1=A(K1)
       X2=A(K2)
-      GSTINT=(F(K1)*(X-X2)+F(K2)*(X1-X))/(X1-X2)
+      G3STINT=(F(K1)*(X-X2)+F(K2)*(X1-X))/(X1-X2)
 *
  999  END

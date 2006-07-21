@@ -1,16 +1,5 @@
 *
-* $Id: gdrvol.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrvol.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:27  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -20,12 +9,12 @@ C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Draws the object NNAME(N),NNUMB(N) with its contents.    *
-C.    *       The parameters UTHET,UPHI,...,SV are the same of GDRAW.  *
+C.    *       The parameters UTHET,UPHI,...,SV are the same of G3DRAW.  *
 C.    *       NNAME(1),...,NNAME(N) contain the volume names and       *
 C.    *       NNUMB(1),...,NNUMB(N) the volume numbers defining the    *
 C.    *       path to go from the top volume to the one to be drawn.   *
 C.    *                                                                *
-C.    *       This routine differs from GDRAW in the following :       *
+C.    *       This routine differs from G3DRAW in the following :       *
 C.    *       - the object to be drawn is identified by a full path,   *
 C.    *         giving so the possibility to draw a particular copy    *
 C.    *         or division of a volume, or even a volume that has     *
@@ -34,7 +23,7 @@ C.    *       - the object can be drawn either with respect to the     *
 C.    *         MAster Reference System (NRS=0) or with respect to its *
 C.    *         Daugther Reference System; in the first case it is     *
 C.    *         drawn where it stands in the real world, while in      *
-C.    *         the second one it is drawn like GDRAW would do         *
+C.    *         the second one it is drawn like G3DRAW would do         *
 C.    *       - in this latter case, track and hit points will be      *
 C.    *         drawn with respect to the DRS of the volume last       *
 C.    *         drawn by this routine, and not with respect to the     *
@@ -112,13 +101,13 @@ C
 C
       ENDIF
 C
-C             NLEVEL < 0 to inform GDRAW that GSCVOL has already been ca
+C             NLEVEL < 0 to inform G3DRAW that GSCVOL has already been ca
 C
       IF (IFCVOL.EQ.1) NLEVEL=-NLEVEL
 C
       IDRNUM=1
       CALL UHTOC(NNAME(N),4,NAME,4)
-      CALL GDRAW(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
+      CALL G3DRAW(NAME,UTHET,UPHI,UPSI,UU0,UV0,SU,SV)
       IDRNUM=0
 C
    90 CONTINUE

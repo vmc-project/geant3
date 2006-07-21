@@ -1,7 +1,10 @@
 *
-* $Id: gmoli.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmoli.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmoli.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMOLI (AC,ZC,WMAT,NLM,DENS,OMC,CHC)
+      SUBROUTINE G3MOLI (AC,ZC,WMAT,NLM,DENS,OMC,CHC)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -27,7 +30,7 @@ C.    *      charge ZC and atomic weight AC for the mixture/compound   *
 C.    * DENS=density in gm/cm**3                                       *
 C.    * Warning : the beta and charge dependance of ZX is omitted      *
 C.    *                                                                *
-C.    *    ==>Called by : GPROBI                                       *
+C.    *    ==>Called by : G3PROBI                                      *
 C.    *         Author M.S. Dixit NRCC Ottawa    *********             *
 C.    *                                                                *
 C.    ******************************************************************

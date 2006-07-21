@@ -1,16 +1,5 @@
 *
-* $Id: gdaxis.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdaxis.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:20  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
@@ -24,7 +13,7 @@ C.    *       point (X0,Y0,Z0) with axis of length AXSIZ;              *
 C.    *       by this way the user can easily realize                  *
 C.    *       wich view is in effect in the picture                    *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC                     *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************

@@ -1,7 +1,10 @@
 *
-* $Id: gbreme.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbreme.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbreme.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -20,7 +23,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/03 02/08/94  19.37.36  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GBREME
+      SUBROUTINE G3BREME
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -40,7 +43,7 @@ C.    *  NOTE :                                                        *
 C.    *      BCUTE is the cut-off energy above which the photon energy *
 C.    *      spectrum is generated.                                    *
 C.    *                                                                *
-C.    *    ==>Called by : GTELEC                                       *
+C.    *    ==>Called by : G3TELEC                                      *
 C.    *       Authors    L.Urban    29/10/93 *********                 *
 C.    *                                                                *
 C.    *  13/11/97 bug corrected by L.Urban                             *
@@ -197,7 +200,7 @@ C             defined along parent track. PHI is generated isotropically
 C             and THETA is assigned a universal angular distribution
 C
       EMASS1 = EMASS
-      THETA  = GBTETH(EEL1, EMASS1, EP)*EMASS/EEL1
+      THETA  = G3BTETH(EEL1, EMASS1, EP)*EMASS/EEL1
       SINTH  = SIN(THETA)
       COSTH  = COS(THETA)
       CALL GRNDM(RNDM,1)
@@ -220,7 +223,7 @@ C
 C
 C             Rotate photon into GEANT system
 C
-      CALL GVROT(VECT(4),GKIN)
+      CALL G3VROT(VECT(4),GKIN)
 C
 C             Correct track for lost energy
 C
@@ -228,7 +231,7 @@ C
       GEKIN = GEKIN - EGAMMA
       GETOT = GEKIN + EMASS
       VECT(7)=SQRT (ABS((GETOT+EMASS)*GEKIN))
-      CALL GEKBIN
+      CALL G3EKBIN
 C
 C             Update probabilities
 C

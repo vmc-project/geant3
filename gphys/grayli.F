@@ -1,7 +1,10 @@
 *
-* $Id: grayli.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grayli.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: grayli.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GRAYLI
+      SUBROUTINE G3RAYLI
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -31,7 +34,7 @@ C.    *  NOTE:                                                         *
 C.    *  (1) Above 10 MeV a cut is imposed as the contribution of      *
 C.    *  Rayleigh effect is negligible                                 *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Author    G.Tromba (*), P.Bregant (**)                   *
 C.    *                                                                *
 C.    *  (*) now at: Sincrotrone Trieste, Padriciano 99, Trieste (I)   *

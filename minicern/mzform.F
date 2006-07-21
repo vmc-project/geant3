@@ -1,7 +1,10 @@
 *
-* $Id: mzform.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id: mzform.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: mzform.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov
 * Separate distribution  of Geant3
 *
@@ -23,6 +26,7 @@ C-    return in IXIOP the index to the characteristic
 #include "zebra/zkrakc.inc"
 #include "zebra/mqsys.inc"
 #include "zebra/eqlqform.inc"
+      COMMON / FIXIT / L, LIX, LID
 C--------------    END CDE                             --------------
       EQUIVALENCE (NW,IQUEST(1))
 
@@ -54,7 +58,7 @@ C--------------    END CDE                             --------------
       DATA  MMIX   / 0,      0, 0,  7, 2 /
       DATA  MMIO   / 0,      0, 0, 50, 1 /
 #endif
-
+     
 #include "zebra/q_sbyt.inc"
 
 #include "zebra/qtrace.inc"

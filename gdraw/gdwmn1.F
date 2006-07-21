@@ -1,27 +1,16 @@
 *
-* $Id: gdwmn1.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdwmn1.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDWMN1(U0,V0)
+      SUBROUTINE G3DWMN1(U0,V0)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Draw a 2D-girl at position (U0,V0)                       *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC                      *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC                     *
 C.    *       Source adapted from GDGIRL                               *
 C.    *       Author : H. Plothow-Besch/CERN-PPE                       *
 C.    *                                                                *
@@ -124,6 +113,6 @@ C
             U(J)=U(J)*PLTRNX/20.
             V(J)=V(J)*PLTRNY/20.
    10    CONTINUE
-         CALL GDRAWV(U,V,JMAX)
+         CALL G3DRAWV(U,V,JMAX)
    20 CONTINUE
       END

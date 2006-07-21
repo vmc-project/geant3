@@ -1,7 +1,10 @@
 *
-* $Id: gscanu.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gscanu.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gscanu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.31  by  S.Giani
 *-- Author :
-      SUBROUTINE GSCANU
+      SUBROUTINE G3SCANU
 *
 ************************************************************************
 *             SCAN utility called at the end of each tracking step     *
@@ -63,12 +66,12 @@
   20     CONTINUE
   30     CONTINUE
          IF(INWVOL.EQ.3.OR.ISL.NE.ISLOLD.OR.INEW.NE.0)THEN
-            CALL GSSCAN(ISLOLD,IDOLD)
+            CALL G3SSCAN(ISLOLD,IDOLD)
             IDOLD=IDNUM
             ISLOLD=ISL
          ENDIF
       ENDIF
 *
-      CALL GDEBUG
+      CALL G3DEBUG
 *
       END

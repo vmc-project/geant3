@@ -1,16 +1,5 @@
 *
-* $Id: gdcut.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdcut.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:22  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
@@ -182,7 +171,7 @@ C
 C
 CM             Short circuit in case of GMR
 C
-         IF ( IGMR .EQ. 0 ) CALL GDRAWV(U,V,2)
+         IF ( IGMR .EQ. 0 ) CALL G3DRAWV(U,V,2)
 CM
    70 CONTINUE
 C

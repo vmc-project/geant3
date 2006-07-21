@@ -1,7 +1,10 @@
 /*
- * $Id: locf.c,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+ * $Id: locf.c,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
  *
  * $Log: locf.c,v $
+ * Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+ * initial import into CVS
+ *
  * Revision 1.1.1.1  2002/06/16 15:18:46  hristov
  * Separate distribution  of Geant3
  *
@@ -23,6 +26,9 @@
  */
 #include "kerngen/pilot.h"
 #include "kerngen/fortranc.h"
+#if defined(CERNLIB_LXIA64)
+#include "stdio.h"
+#endif
 
 #if defined(CERNLIB_MSSTDCALL) && defined(CERNLIB_LOCF_CHARACTER)
 # define Dummy2LocPar  ,_dummy
@@ -54,10 +60,29 @@ unsigned int type_of_call LOCF(iadr Dummy2LocPar)
    DummyDef
 #endif
 {
-   return( ((unsigned) iadr) >> LADUPW );
+#if defined(CERNLIB_LXIA64)
+  const unsigned long long int mask=0x00000000ffffffff;
+  static unsigned long long int base=1;
+  unsigned long long int jadr=(unsigned long long int) iadr;
+  unsigned long long int jadrl = ((mask & jadr) >> LADUPW);
+
+  if (base == 1) {
+    base = (~mask & jadr);
+  } else if(base != (~mask & jadr)) {
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+    printf("locf_() Warning: changing base from %lx to %lx!!!\n",
+    	   base, (~mask & jadr));
+    printf("This may result in program crash or incorrect results\n");
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  }
+  return ((unsigned) jadrl);
+#else
+  return( ((unsigned) iadr) >> LADUPW );
+#endif
 }
 #undef Dummy2LocPar
 #undef DummyDef
 #undef CERNLIB_LOCF_CHARACTER
 /*> END <----------------------------------------------------------*/
 #endif
+

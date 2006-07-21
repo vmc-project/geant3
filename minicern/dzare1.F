@@ -1,7 +1,10 @@
 *
-* $Id: dzare1.F,v 1.1.1.1 2002/06/16 15:18:48 hristov Exp $
+* $Id: dzare1.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: dzare1.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:48  hristov
 * Separate distribution  of Geant3
 *
@@ -239,5 +242,5 @@
       ENDIF
 
   999 CQSTAK(MCQSIQ:) = CHSTAK
-      RETURN
+C      RETURN
       END

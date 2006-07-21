@@ -1,7 +1,13 @@
 *
-* $Id: gweucl.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gweucl.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gweucl.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -80,7 +86,7 @@
          NROTM = 0
       ENDIF
       NWTOT  = IADROT + NROTM
-      CALL GWORK (NWTOT)
+      CALL G3WORK (NWTOT)
       CALL VZERO (IWS(1),NWTOT)
       MLEVEL = NLEVEL
       IF (NLEVEL.LE.0) MLEVEL = 20
@@ -88,7 +94,7 @@
 * *** find the top volume and put it in the stak
       NUMBR = NUMBER
       IF (NUMBER.LE.0) NUMBR = 1
-      CALL GFPARA (TOPVOL,NUMBR,1,NPAR,NATT,PAR,ATT)
+      CALL G3FPARA (TOPVOL,NUMBR,1,NPAR,NATT,PAR,ATT)
       IF (NPAR.LE.0) THEN
          WRITE (CHMAIL,11100) TOPVOL,NUMBR
          CALL GMAIL (0,0)
@@ -317,19 +323,19 @@
       WRITE (CHMAIL,11200) FILEXT(1:IT+9)
       CALL GMAIL (1,1)
 *
-10000 FORMAT (1H!,/,A,/,1H!)
+10000 FORMAT ('!',/,A,/,'!')
 *
-10100 FORMAT ('TMED',2(1X,I3,1X,1H',A20,1H'))
+10100 FORMAT ('TMED',2(1X,I3,1X,''',A20,'''))
 10200 FORMAT ('ROTM',1X,I3,6(1X,F8.3))
-10300 FORMAT ('VOLU',2(1X,1H',A4,1H'),2(1X,I3))
+10300 FORMAT ('VOLU',2(1X,''',A4,'''),2(1X,I3))
 10400 FORMAT (      (5X,6(1X,F11.5)))
-10500 FORMAT ('DIVN',2(1X,1H',A4,1H'),2(1X,I3))
-10600 FORMAT ('DIVT',2(1X,1H',A4,1H'),1X,F11.5,3(1X,I3))
-10700 FORMAT ('DVT2',2(1X,1H',A4,1H'),1X,F11.5,1X,I3,1X,F11.5,2(1X,I3))
-10800 FORMAT ('POSI',1X,1H',A4,1H',1X,I3,1X,1H',A4,1H',3(1X,F11.5),1X,I3
-     &              ,1X,1H',A4,1H')
-10900 FORMAT ('POSP',1X,1H',A4,1H',1X,I3,1X,1H',A4,1H',3(1X,F11.5),1X,I3
-     &              ,1X,1H',A4,1H',1X,I3)
+10500 FORMAT ('DIVN',2(1X,''',A4,'''),2(1X,I3))
+10600 FORMAT ('DIVT',2(1X,''',A4,'''),1X,F11.5,3(1X,I3))
+10700 FORMAT ('DVT2',2(1X,''',A4,'''),1X,F11.5,1X,I3,1X,F11.5,2(1X,I3))
+10800 FORMAT ('POSI',1X,''',A4,''',1X,I3,1X,''',A4,''',3(1X,F11.5),1X,I3
+     &              ,1X,''',A4,''')
+10900 FORMAT ('POSP',1X,''',A4,''',1X,I3,1X,''',A4,''',3(1X,F11.5),1X,I3
+     &              ,1X,''',A4,''',1X,I3)
 11000 FORMAT ('END')
 *
 11100 FORMAT (' *** GWEUCL *** top volume : ',A4,' number :',I3,

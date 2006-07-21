@@ -1,7 +1,10 @@
 *
-* $Id: pfnclv.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id: pfnclv.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: pfnclv.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov
 * Separate distribution  of Geant3
 *
@@ -163,7 +166,7 @@
 *----------------------------------------------------------------------*
 *----------------------------------------------------------------------*
 *
-      ENTRY NCLVFX
+      ENTRY NCLVFX()
       NCLVFX = PIPIPI
       DO 5000 N=1,NPRNUC
          I = IPRNUC (N)

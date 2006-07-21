@@ -1,7 +1,10 @@
 *
-* $Id: genxpt.F,v 1.2 2002/07/10 09:45:00 morsch Exp $
+* $Id: genxpt.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: genxpt.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.2  2002/07/10 09:45:00  morsch
 * Gheisha corrections suggested by Gary Bower (FNAL).
 *
@@ -360,7 +363,7 @@ C**
       RAN=RNDM(1)
       BPP=BP(J)
       BPE=PTEX(J)
-      PT2=-LOG(1.-RAN)/BPP
+      PT2=-LOG(RAN)/BPP
       ASPAR=MASPAR(J)
       PT2=PT2**BPE
       PT =SQRT(PT2)
@@ -589,7 +592,7 @@ C
       IF(NPG.LT.2) GOTO 322
       CALL GRNDM(RNDM,1)
       RAN=RNDM(1)
-      RMB=-LOG(1.-RAN)
+      RMB=-LOG(RAN)
       GPAR=G1PAR(ITARG1)
       CPAR=C1PAR(ITARG1)
       RMB=RMB0+RMB**CPAR/GPAR

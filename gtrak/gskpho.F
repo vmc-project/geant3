@@ -1,7 +1,10 @@
 *
-* $Id: gskpho.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gskpho.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gskpho.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 03/07/94  19.07.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GSKPHO (IGK)
+      SUBROUTINE G3SKPHO (IGK)
 C.
 C.    ******************************************************************
 C.    *                                                                *

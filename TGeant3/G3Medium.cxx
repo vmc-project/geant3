@@ -13,7 +13,13 @@
  * provided "as is" without express or implied warranty.                  *
  **************************************************************************/
 /*
-$Log$
+$Log: G3Medium.cxx,v $
+Revision 1.3  2004/01/28 08:17:52  brun
+Reintroduce the Geant3 graphics classes (thanks Andreas Morsch)
+
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 */
 
 
@@ -28,14 +34,14 @@ $Log$
 ClassImp(G3Medium)
 
 G3Medium::G3Medium()
-{ 
+{
 // constructor
     fId=-1;
 }
 
-G3Medium::G3Medium(Int_t imed, Int_t imat, const char* name, 
+G3Medium::G3Medium(Int_t imed, Int_t imat, const char* name,
 			   Int_t isvol, Int_t ifield,
-			   Float_t fieldm, Float_t tmaxfd, 
+			   Float_t fieldm, Float_t tmaxfd,
 			   Float_t stemax, Float_t deemax,
 			   Float_t epsil, Float_t stmin)
     : TNamed(name, "Medium")
@@ -53,12 +59,6 @@ G3Medium::G3Medium(Int_t imed, Int_t imat, const char* name,
     fStmin=stmin;
 }
 
-void G3Medium::Dump()
-{
-// Dummy dump
-    ;
-}
-
 Int_t G3Medium::Id()
 {
 // return medium id
@@ -67,20 +67,20 @@ Int_t G3Medium::Id()
 
 
 Float_t G3Medium::GetPar(Int_t ipar)
-{ 
+{
 // Get parameter number ipar
     Float_t p;
     if (ipar < 23) {
-	p= fPars[ipar-1];   
+	p= fPars[ipar-1];
     } else if(ipar >=23 && ipar <27) {
-	p= fPars[ipar-1+3];   
+	p= fPars[ipar-1+3];
     } else {
-	p= fPars[ipar-1+4];   
+	p= fPars[ipar-1+4];
     }
-    
+
     return p;
 }
- 
+
 void G3Medium::Streamer(TBuffer &)
 {
 // dummy streamer

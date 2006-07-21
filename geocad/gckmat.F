@@ -1,7 +1,10 @@
 *
-* $Id: gckmat.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gckmat.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gckmat.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.32  by  S.Giani
 *-- Author :
-      SUBROUTINE GCKMAT (ITMED,NATMED)
+      SUBROUTINE G3CKMAT (ITMED,NATMED)
 *
 *
 *    This routine check the material table coming from a Cadd system.
@@ -34,7 +37,7 @@
          WRITE (CHMAIL,10200) ITMED
          CALL GMAIL (0,0)
          IMATE = 1
-         CALL GSTMED (ITMED,NATMED,IMATE, 0, 0, 1., 10.,
+         CALL G3STMED (ITMED,NATMED,IMATE, 0, 0, 1., 10.,
      +                100., 0.2, 0.005, 0.001, 0, 0)
       ELSE
          CALL UHTOC (IQ(JTM+1),4,NAME,20)

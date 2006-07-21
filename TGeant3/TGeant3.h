@@ -1,16 +1,31 @@
 #ifndef ROOT_TGeant3
-#define ROOT_TGeant3 
+#define ROOT_TGeant3
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.1 2002/07/09 16:30:01 alibrary Exp $ */
+/* $Id: TGeant3.h,v 1.23 2005/07/21 17:54:37 brun Exp $ */
 
-//////////////////////////////////////////////// 
-//  C++ interface to Geant3 basic routines    // 
-//////////////////////////////////////////////// 
+////////////////////////////////////////////////
+//  C++ interface to Geant3 basic routines    //
+////////////////////////////////////////////////
 
-#include "TVirtualMC.h" 
-#include "TMCProcess.h" 
+#define WITHG3
+#ifdef WITHROOT
+#undef WITHG3
+#endif
+#ifdef WITHBOTH
+#undef WITHG3
+#undef WITHROOT
+#endif
+
+#include "TVirtualMC.h"
+#include "TMCProcess.h"
+#include "TMCParticleType.h"
+#include "TGeoMCGeometry.h"
+
+class TGeoHMatrix;
+class TArrayD;
+class TString;
 
 //______________________________________________________________
 //
@@ -19,12 +34,12 @@
 //______________________________________________________________
 //
 
-//----------QUEST 
-//      COMMON/QUEST/IQUEST(100) 
-typedef struct { 
-  Int_t    iquest[100]; 
-} Quest_t; 
- 
+//----------QUEST
+//      COMMON/QUEST/IQUEST(100)
+typedef struct {
+  Int_t   iquest[100];
+} Quest_t;
+
 //----------GCBANK
 //      COMMON/GCBANK/NZEBRA,GVERSN,ZVERSN,IXSTOR,IXDIV,IXCONS,FENDQ(16)
 //     +             ,LMAIN,LR1,WS(KWBANK)
@@ -40,84 +55,84 @@ typedef struct {
   Int_t lr1;
 } Gcbank_t;
 
-//----------GCLINK 
-//      COMMON/GCLINK/JDIGI ,JDRAW ,JHEAD ,JHITS ,JKINE ,JMATE ,JPART 
-//     +      ,JROTM ,JRUNG ,JSET  ,JSTAK ,JGSTAT,JTMED ,JTRACK,JVERTX 
-//     +      ,JVOLUM,JXYZ  ,JGPAR ,JGPAR2,JSKLT 
-typedef struct { 
-  Int_t    jdigi; 
-  Int_t    jdraw; 
-  Int_t    jhead; 
-  Int_t    jhits; 
-  Int_t    jkine; 
-  Int_t    jmate; 
-  Int_t    jpart; 
-  Int_t    jrotm; 
-  Int_t    jrung; 
-  Int_t    jset; 
-  Int_t    jstak; 
-  Int_t    jgstat; 
-  Int_t    jtmed; 
-  Int_t    jtrack; 
-  Int_t    jvertx; 
-  Int_t    jvolum; 
-  Int_t    jxyz; 
-  Int_t    jgpar; 
-  Int_t    jgpar2; 
-  Int_t    jsklt; 
-} Gclink_t; 
- 
- 
-//----------GCFLAG 
-//      COMMON/GCFLAG/IDEBUG,IDEMIN,IDEMAX,ITEST,IDRUN,IDEVT,IEORUN 
-//     +        ,IEOTRI,IEVENT,ISWIT(10),IFINIT(20),NEVENT,NRNDM(2) 
-typedef struct { 
-  Int_t    idebug; 
-  Int_t    idemin; 
-  Int_t    idemax; 
-  Int_t    itest; 
-  Int_t    idrun; 
-  Int_t    idevt; 
-  Int_t    ieorun; 
-  Int_t    ieotri; 
-  Int_t    ievent; 
-  Int_t    iswit[10]; 
-  Int_t    ifinit[20]; 
-  Int_t    nevent; 
-  Int_t    nrndm[2]; 
-} Gcflag_t; 
- 
-//----------GCKINE 
-//      COMMON/GCKINE/IKINE,PKINE(10),ITRA,ISTAK,IVERT,IPART,ITRTYP 
-//     +      ,NAPART(5),AMASS,CHARGE,TLIFE,VERT(3),PVERT(4),IPAOLD 
-typedef struct { 
-  Int_t    ikine; 
-  Float_t  pkine[10]; 
-  Int_t    itra; 
-  Int_t    istak; 
-  Int_t    ivert; 
-  Int_t    ipart; 
-  Int_t    itrtyp; 
-  Int_t    napart[5]; 
-  Float_t  amass; 
-  Float_t  charge; 
-  Float_t  tlife; 
-  Float_t  vert[3]; 
-  Float_t  pvert[4]; 
-  Int_t    ipaold; 
-} Gckine_t; 
- 
-//----------GCKING 
-//      COMMON/GCKING/KCASE,NGKINE,GKIN(5,MXGKIN), 
-//     +                           TOFD(MXGKIN),IFLGK(MXGKIN) 
-#define MXGKIN 100 
-typedef struct  { 
-  Int_t    kcase; 
-  Int_t    ngkine; 
-  Float_t  gkin[MXGKIN][5]; 
-  Float_t  tofd[MXGKIN]; 
-  Int_t    iflgk[MXGKIN]; 
-} Gcking_t; 
+//----------GCLINK
+//      COMMON/GCLINK/JDIGI ,JDRAW ,JHEAD ,JHITS ,JKINE ,JMATE ,JPART
+//     +      ,JROTM ,JRUNG ,JSET  ,JSTAK ,JGSTAT,JTMED ,JTRACK,JVERTX
+//     +      ,JVOLUM,JXYZ  ,JGPAR ,JGPAR2,JSKLT
+typedef struct {
+  Int_t    jdigi;
+  Int_t    jdraw;
+  Int_t    jhead;
+  Int_t    jhits;
+  Int_t    jkine;
+  Int_t    jmate;
+  Int_t    jpart;
+  Int_t    jrotm;
+  Int_t    jrung;
+  Int_t    jset;
+  Int_t    jstak;
+  Int_t    jgstat;
+  Int_t    jtmed;
+  Int_t    jtrack;
+  Int_t    jvertx;
+  Int_t    jvolum;
+  Int_t    jxyz;
+  Int_t    jgpar;
+  Int_t    jgpar2;
+  Int_t    jsklt;
+} Gclink_t;
+
+
+//----------GCFLAG
+//      COMMON/GCFLAG/IDEBUG,IDEMIN,IDEMAX,ITEST,IDRUN,IDEVT,IEORUN
+//     +        ,IEOTRI,IEVENT,ISWIT(10),IFINIT(20),NEVENT,NRNDM(2)
+typedef struct {
+  Int_t    idebug;
+  Int_t    idemin;
+  Int_t    idemax;
+  Int_t    itest;
+  Int_t    idrun;
+  Int_t    idevt;
+  Int_t    ieorun;
+  Int_t    ieotri;
+  Int_t    ievent;
+  Int_t    iswit[10];
+  Int_t    ifinit[20];
+  Int_t    nevent;
+  Int_t    nrndm[2];
+} Gcflag_t;
+
+//----------GCKINE
+//      COMMON/GCKINE/IKINE,PKINE(10),ITRA,ISTAK,IVERT,IPART,ITRTYP
+//     +      ,NAPART(5),AMASS,CHARGE,TLIFE,VERT(3),PVERT(4),IPAOLD
+typedef struct {
+  Int_t    ikine;
+  Float_t  pkine[10];
+  Int_t    itra;
+  Int_t    istak;
+  Int_t    ivert;
+  Int_t    ipart;
+  Int_t    itrtyp;
+  Int_t    napart[5];
+  Float_t  amass;
+  Float_t  charge;
+  Float_t  tlife;
+  Float_t  vert[3];
+  Float_t  pvert[4];
+  Int_t    ipaold;
+} Gckine_t;
+
+//----------GCKING
+//      COMMON/GCKING/KCASE,NGKINE,GKIN(5,MXGKIN),
+//     +                           TOFD(MXGKIN),IFLGK(MXGKIN)
+#define MXGKIN 100
+typedef struct  {
+  Int_t    kcase;
+  Int_t    ngkine;
+  Float_t  gkin[MXGKIN][5];
+  Float_t  tofd[MXGKIN];
+  Int_t    iflgk[MXGKIN];
+} Gcking_t;
 
 //----------GCKIN2
 //      COMMON/GCKIN2/NGPHOT,XPHOT(11,MXPHOT)
@@ -127,153 +142,153 @@ typedef struct {
   Float_t xphot[MXPHOT][11];
 } Gckin2_t;
 
-//----------GCKIN3 
+//----------GCKIN3
 //      COMMON/GCKIN3/GPOS(3,MXGKIN)
 typedef struct {
   Float_t gpos[MXGKIN][3];
 } Gckin3_t;
 
-//----------GCMATE 
-//      COMMON/GCMATE/NMAT,NAMATE(5),A,Z,DENS,RADL,ABSL 
-typedef struct { 
-  Int_t    nmat; 
-  Int_t    namate[5]; 
-  Float_t  a; 
-  Float_t  z; 
-  Float_t  dens; 
-  Float_t  radl; 
-  Float_t  absl; 
-} Gcmate_t; 
- 
-//----------GCTMED 
-//      COMMON/GCTMED/NUMED,NATMED(5),ISVOL,IFIELD,FIELDM,TMAXFD,STEMAX 
-//     +      ,DEEMAX,EPSIL,STMIN,CFIELD,PREC,IUPD,ISTPAR,NUMOLD 
-typedef struct { 
-  Int_t    numed; 
-  Int_t    natmed[5]; 
-  Int_t    isvol; 
-  Int_t    ifield; 
-  Float_t  fieldm; 
-  Float_t  tmaxfd; 
-  Float_t  stemax; 
-  Float_t  deemax; 
-  Float_t  epsil; 
-  Float_t  stmin; 
-  Float_t  cfield; 
-  Float_t  prec; 
-  Int_t    iupd; 
-  Int_t    istpar; 
-  Int_t    numold; 
-} Gctmed_t; 
- 
-//----------GCTRAK 
-#define MAXMEC 30 
-//      PARAMETER (MAXMEC=30) 
-//      COMMON/GCTRAK/VECT(7),GETOT,GEKIN,VOUT(7),NMEC,LMEC(MAXMEC) 
-//     + ,NAMEC(MAXMEC),NSTEP ,MAXNST,DESTEP,DESTEL,SAFETY,SLENG 
-//     + ,STEP  ,SNEXT ,SFIELD,TOFG  ,GEKRAT,UPWGHT,IGNEXT,INWVOL 
-//     + ,ISTOP ,IGAUTO,IEKBIN, ILOSL, IMULL,INGOTO,NLDOWN,NLEVIN 
-//     + ,NLVSAV,ISTORY 
-typedef struct { 
-  Float_t  vect[7]; 
-  Float_t  getot; 
-  Float_t  gekin; 
-  Int_t    vout[7]; 
-  Int_t    nmec; 
-  Int_t    lmec[MAXMEC]; 
-  Int_t    namec[MAXMEC]; 
-  Int_t    nstep; 
-  Int_t    maxnst; 
-  Float_t  destep; 
-  Float_t  destel; 
-  Float_t  safety; 
-  Float_t  sleng; 
-  Float_t  step; 
-  Float_t  snext; 
-  Float_t  sfield; 
-  Float_t  tofg; 
-  Float_t  gekrat; 
-  Float_t  upwght; 
-  Int_t    ignext; 
-  Int_t    inwvol; 
-  Int_t    istop; 
-  Int_t    igauto; 
-  Int_t    iekbin; 
-  Int_t    ilosl; 
-  Int_t    imull; 
-  Int_t    ingoto; 
-  Int_t    nldown; 
-  Int_t    nlevin; 
-  Int_t    nlsav; 
-  Int_t    istory; 
-} Gctrak_t; 
- 
-//----------GCVOLU 
-//      COMMON/GCVOLU/NLEVEL,NAMES(15),NUMBER(15), 
-//     +LVOLUM(15),LINDEX(15),INFROM,NLEVMX,NLDEV(15),LINMX(15), 
-//     +GTRAN(3,15),GRMAT(10,15),GONLY(15),GLX(3) 
-typedef struct { 
-  Int_t    nlevel; 
-  Int_t    names[15]; 
-  Int_t    number[15]; 
-  Int_t    lvolum[15]; 
-  Int_t    lindex[15]; 
-  Int_t    infrom; 
-  Int_t    nlevmx; 
-  Int_t    nldev[15]; 
-  Int_t    linmx[15]; 
-  Float_t  gtran[15][3]; 
-  Float_t  grmat[15][10]; 
-  Float_t  gonly[15]; 
-  Float_t  glx[3]; 
-} Gcvolu_t; 
- 
-//----------GCSETS 
-//  COMMON/GCSETS/IHSET,IHDET,ISET,IDET,IDTYPE,NVNAME,NUMBV(20) 
-typedef struct { 
-  Int_t    ihset; 
-  Int_t    ihdet; 
-  Int_t    iset; 
-  Int_t    idet; 
-  Int_t    idtype; 
-  Int_t    nvname; 
-  Int_t    numbv[20]; 
-} Gcsets_t; 
- 
-//----------GCNUM 
-//   COMMON/GCNUM/NMATE ,NVOLUM,NROTM,NTMED,NTMULT,NTRACK,NPART 
-//  +            ,NSTMAX,NVERTX,NHEAD,NBIT 
-typedef struct { 
-  Int_t    nmate; 
-  Int_t    nvolum; 
-  Int_t    nrotm; 
-  Int_t    ntmed; 
-  Int_t    ntmult; 
-  Int_t    ntrack; 
-  Int_t    npart; 
-  Int_t    nstmax; 
-  Int_t    nvertx; 
-  Int_t    nhead; 
-  Int_t    nbit; 
-} Gcnum_t; 
- 
-//----------GCCUTS 
-//  COMMON/GCCUTS/CUTGAM,CUTELE,CUTNEU,CUTHAD,CUTMUO,BCUTE,BCUTM 
-//   +             ,DCUTE ,DCUTM ,PPCUTM,TOFMAX,GCUTS(5) 
-typedef struct { 
-  Float_t cutgam; 
-  Float_t cutele; 
-  Float_t cutneu; 
-  Float_t cuthad; 
-  Float_t cutmuo; 
-  Float_t bcute; 
-  Float_t bcutm; 
-  Float_t dcute; 
-  Float_t dcutm; 
-  Float_t ppcutm; 
-  Float_t tofmax; 
-  Float_t gcuts[5]; 
-} Gccuts_t; 
+//----------GCMATE
+//      COMMON/GCMATE/NMAT,NAMATE(5),A,Z,DENS,RADL,ABSL
+typedef struct {
+  Int_t    nmat;
+  Int_t    namate[5];
+  Float_t  a;
+  Float_t  z;
+  Float_t  dens;
+  Float_t  radl;
+  Float_t  absl;
+} Gcmate_t;
+
+//----------GCTMED
+//      COMMON/GCTMED/NUMED,NATMED(5),ISVOL,IFIELD,FIELDM,TMAXFD,STEMAX
+//     +      ,DEEMAX,EPSIL,STMIN,CFIELD,PREC,IUPD,ISTPAR,NUMOLD
+typedef struct {
+  Int_t    numed;
+  Int_t    natmed[5];
+  Int_t    isvol;
+  Int_t    ifield;
+  Float_t  fieldm;
+  Float_t  tmaxfd;
+  Float_t  stemax;
+  Float_t  deemax;
+  Float_t  epsil;
+  Float_t  stmin;
+  Float_t  cfield;
+  Float_t  prec;
+  Int_t    iupd;
+  Int_t    istpar;
+  Int_t    numold;
+} Gctmed_t;
+
+//----------GCTRAK
+#define MAXMEC 30
+//      PARAMETER (MAXMEC=30)
+//      COMMON/GCTRAK/VECT(7),GETOT,GEKIN,VOUT(7),NMEC,LMEC(MAXMEC)
+//     + ,NAMEC(MAXMEC),NSTEP ,MAXNST,DESTEP,DESTEL,SAFETY,SLENG
+//     + ,STEP  ,SNEXT ,SFIELD,TOFG  ,GEKRAT,UPWGHT,IGNEXT,INWVOL
+//     + ,ISTOP ,IGAUTO,IEKBIN, ILOSL, IMULL,INGOTO,NLDOWN,NLEVIN
+//     + ,NLVSAV,ISTORY
+typedef struct {
+  Float_t  vect[7];
+  Float_t  getot;
+  Float_t  gekin;
+  Float_t  vout[7];
+  Int_t    nmec;
+  Int_t    lmec[MAXMEC];
+  Int_t    namec[MAXMEC];
+  Int_t    nstep;
+  Int_t    maxnst;
+  Float_t  destep;
+  Float_t  destel;
+  Float_t  safety;
+  Float_t  sleng;
+  Float_t  step;
+  Float_t  snext;
+  Float_t  sfield;
+  Float_t  tofg;
+  Float_t  gekrat;
+  Float_t  upwght;
+  Int_t    ignext;
+  Int_t    inwvol;
+  Int_t    istop;
+  Int_t    igauto;
+  Int_t    iekbin;
+  Int_t    ilosl;
+  Int_t    imull;
+  Int_t    ingoto;
+  Int_t    nldown;
+  Int_t    nlevin;
+  Int_t    nlsav;
+  Int_t    istory;
+} Gctrak_t;
+
+//----------GCVOLU
+//      COMMON/GCVOLU/NLEVEL,NAMES(15),NUMBER(15),
+//     +LVOLUM(15),LINDEX(15),INFROM,NLEVMX,NLDEV(15),LINMX(15),
+//     +GTRAN(3,15),GRMAT(10,15),GONLY(15),GLX(3)
+typedef struct {
+  Int_t    nlevel;
+  Int_t    names[15];
+  Int_t    number[15];
+  Int_t    lvolum[15];
+  Int_t    lindex[15];
+  Int_t    infrom;
+  Int_t    nlevmx;
+  Int_t    nldev[15];
+  Int_t    linmx[15];
+  Float_t  gtran[15][3];
+  Float_t  grmat[15][10];
+  Float_t  gonly[15];
+  Float_t  glx[3];
+} Gcvolu_t;
+
+//----------GCSETS
+//  COMMON/GCSETS/IHSET,IHDET,ISET,IDET,IDTYPE,NVNAME,NUMBV(20)
+typedef struct {
+  Int_t    ihset;
+  Int_t    ihdet;
+  Int_t    iset;
+  Int_t    idet;
+  Int_t    idtype;
+  Int_t    nvname;
+  Int_t    numbv[20];
+} Gcsets_t;
+
+//----------GCNUM
+//   COMMON/GCNUM/NMATE ,NVOLUM,NROTM,NTMED,NTMULT,NTRACK,NPART
+//  +            ,NSTMAX,NVERTX,NHEAD,NBIT
+typedef struct {
+  Int_t    nmate;
+  Int_t    nvolum;
+  Int_t    nrotm;
+  Int_t    ntmed;
+  Int_t    ntmult;
+  Int_t    ntrack;
+  Int_t    npart;
+  Int_t    nstmax;
+  Int_t    nvertx;
+  Int_t    nhead;
+  Int_t    nbit;
+} Gcnum_t;
+
+//----------GCCUTS
+//  COMMON/GCCUTS/CUTGAM,CUTELE,CUTNEU,CUTHAD,CUTMUO,BCUTE,BCUTM
+//   +             ,DCUTE ,DCUTM ,PPCUTM,TOFMAX,GCUTS(5)
+typedef struct {
+  Float_t cutgam;
+  Float_t cutele;
+  Float_t cutneu;
+  Float_t cuthad;
+  Float_t cutmuo;
+  Float_t bcute;
+  Float_t bcutm;
+  Float_t dcute;
+  Float_t dcutm;
+  Float_t ppcutm;
+  Float_t tofmax;
+  Float_t gcuts[5];
+} Gccuts_t;
 
 //----------GCMULO
 //      COMMON/GCMULO/SINMUL(101),COSMUL(101),SQRMUL(101),OMCMOL,CHCMOL
@@ -309,7 +324,7 @@ typedef struct {
 //     +             ,ILOSS,SLOSS,SOLOSS,STLOSS,DPHYS2
 //     +             ,IMULS,SMULS,SOMULS,STMULS,DPHYS3
 //     +             ,IRAYL,SRAYL,SLRAYL,ZINTRA,STEPRA
-typedef struct { 
+typedef struct {
   Int_t    ipair;
   Float_t  spair;
   Float_t  slpair;
@@ -375,13 +390,13 @@ typedef struct {
   Float_t  slrayl;
   Float_t  zintra;
   Float_t  stepra;
-} Gcphys_t; 
+} Gcphys_t;
 
 //----------GCPHLT
 //      COMMON/GCPHLT/ILABS,SLABS,SLLABS,ZINTLA,STEPLA
 //     +             ,ISYNC
 //     +             ,ISTRA
-typedef struct { 
+typedef struct {
   Int_t ilabs;
   Float_t slabs;
   Float_t sllabs;
@@ -390,16 +405,16 @@ typedef struct {
   Int_t isync;
   Int_t istra;
 } Gcphlt_t;
- 
-//----------GCOPTI 
+
+//----------GCOPTI
 //      COMMON/GCOPTI/IOPTIM
-typedef struct { 
+typedef struct {
   Int_t   ioptim;
-} Gcopti_t; 
- 
-//----------GCTLIT 
+} Gcopti_t;
+
+//----------GCTLIT
 //      COMMON/GCTLIT/THRIND,PMIN,DP,DNDL,JMIN,ITCKOV,IMCKOV,NPCKOV
-typedef struct { 
+typedef struct {
   Float_t   thrind;
   Float_t   pmin;
   Float_t   dp;
@@ -408,24 +423,24 @@ typedef struct {
   Int_t     itckov;
   Int_t     imckov;
   Int_t     npckov;
-} Gctlit_t; 
- 
-//----------GCVDMA 
+} Gctlit_t;
+
+//----------GCVDMA
 //      COMMON/GCVDMA/NVMANY,MANYLE(20),MANYNA(20,15),
 //     +MANYNU(20,15),NFMANY,MYCOUN,IMYSE,RAYTRA,VECCOS(3)
-typedef struct { 
+typedef struct {
   Int_t     vdma[624];
   Float_t   raytra;
   Float_t   veccos[3];
-} Gcvdma_t; 
- 
-//----------GCTPOL 
-#define MAXME1 30 
-//      COMMON/GCTPOL/POLAR(3), NAMEC1(MAXME1) 
-typedef struct { 
-  Float_t polar[3]; 
-  Int_t   namec1[MAXME1]; 
-} Gctpol_t; 
+} Gcvdma_t;
+
+//----------GCTPOL
+#define MAXME1 30
+//      COMMON/GCTPOL/POLAR(3), NAMEC1(MAXME1)
+typedef struct {
+  Float_t polar[3];
+  Int_t   namec1[MAXME1];
+} Gctpol_t;
 
 /************************************************************************
  *                                                                      *
@@ -516,24 +531,28 @@ typedef struct {
   Float_t   tlrad;
 } Erwork_t;
 
+//----------GCCHAN
+//      COMMON/GCCHAN/LSAMVL
+typedef struct {
+  Bool_t    lsamvl;
+} Gcchan_t;
+
 /************************************************************************
  *                                                                      *
  *      Commons for GEANE                                               *
  *                                                                      *
  ************************************************************************/
 
-class TGeant3 : public TVirtualMC { 
+class TGeant3 : public TVirtualMC {
 
-public: 
-  TGeant3(); 
-  TGeant3(const char *title, Int_t nwgeant=0); 
-  virtual ~TGeant3() {if(fVolNames) {
-    delete [] fVolNames;
-    fVolNames=0;}
-  } 
+public:
+  TGeant3();
+  TGeant3(const char *title, Int_t nwgeant=0);
+  virtual ~TGeant3();
 
-  virtual void LoadAddress(); 
- 
+  virtual void LoadAddress();
+  virtual Bool_t  IsRootGeometrySupported() const {return kFALSE;}
+
 ///////////////////////////////////////////////////////////////////////
 //                                                                   //
 //                                                                   //
@@ -544,23 +563,30 @@ public:
 ///////////////////////////////////////////////////////////////////////
 
   void  GeomIter();
-  Int_t CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens, Float_t &radl, Float_t &absl) const;
+  Int_t CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens, 
+                        Float_t &radl, Float_t &absl) const;
   Int_t NextVolUp(Text_t *name, Int_t &copy);
   Int_t CurrentVolID(Int_t &copy) const;
   Int_t CurrentVolOffID(Int_t off, Int_t &copy) const;
   const char* CurrentVolName() const;
   const char *CurrentVolOffName(Int_t off) const;
+  const char* CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
-  void  DefineParticles();
   const char* VolName(Int_t id) const;
   Double_t Xsec(char* reac, Double_t energy, Int_t part, Int_t mate);
   void  TrackPosition(TLorentzVector &xyz) const;
-  void  TrackMomentum(TLorentzVector &xyz) const;  
+  void  TrackPosition(Double_t &x, Double_t &y, Double_t &z) const;
+  void  TrackMomentum(TLorentzVector &xyz) const;
+  void  TrackMomentum(Double_t &px, Double_t &py, Double_t &pz,
+                      Double_t &etot) const;
   Int_t NofVolumes() const;
-  Int_t VolId2Mate(Int_t id) const;
-  Double_t TrackTime() const;  
+  Int_t NofVolDaughters(const char* volName) const;
+  const char*  VolDaughterName(const char* volName, Int_t i) const;
+  Int_t        VolDaughterCopyNo(const char* volName, Int_t i) const;
+  Int_t    VolId2Mate(Int_t id) const;
+  Double_t TrackTime() const;
   Double_t TrackCharge() const;
   Double_t TrackMass() const;
   Double_t TrackStep() const;
@@ -578,56 +604,95 @@ public:
   Int_t  CurrentEvent() const;
   TMCProcess  ProdProcess(Int_t isec) const;
   Int_t  StepProcesses(TArrayI &proc) const;
-  void   GetSecondary(Int_t isec, Int_t& ipart, TLorentzVector &x, 
-		      TLorentzVector &p);
+  void   GetSecondary(Int_t isec, Int_t& ipart, TLorentzVector &x,
+                      TLorentzVector &p);
+  Bool_t SecondariesAreOrdered() const {return kTRUE;}
   void   StopTrack();
   void   StopEvent();
+  void   StopRun();
   Double_t MaxStep() const;
   void  SetMaxStep(Double_t maxstep);
   void  SetMaxNStep(Int_t maxnstp);
   Int_t GetMaxNStep() const;
-  void SetCut(const char* cutName, Double_t cutValue);
-  void SetProcess(const char* flagName, Int_t flagValue);
-  //  void GetParticle(const Int_t pdg, char *name, Float_t &mass) const;
+  void  ForceDecayTime(Float_t time);
+  Bool_t SetCut(const char* cutName, Double_t cutValue);
+  Bool_t SetProcess(const char* flagName, Int_t flagValue);
+  const char *GetPath();
+  const char *GetNodeName();
+  Bool_t DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+                   Double_t mass, Double_t charge, Double_t lifetime);
+  Bool_t DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
+                   Double_t excEnergy, Double_t mass);
+  virtual TString   ParticleName(Int_t pdg) const;
+  virtual Double_t  ParticleMass(Int_t pdg) const;
+  virtual Double_t  ParticleCharge(Int_t pdg) const;
+  virtual Double_t  ParticleLifeTime(Int_t pdg) const;
+  virtual TMCParticleType ParticleMCType(Int_t pdg) const;
 
+  virtual Int_t CurrentMedium() const;
   virtual Int_t GetMedium() const;
   virtual Double_t Edep() const;
   virtual Double_t Etot() const;
 
-  virtual void   Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
-			   Double_t dens, Double_t radl, Double_t absl, 
-			   Float_t* buf=0, Int_t nwbuf=0);
-  virtual void   Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
-			   Double_t dens, Double_t radl, Double_t absl, 
-			   Double_t* buf, Int_t nwbuf);
+  virtual void  Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
+                         Double_t dens, Double_t radl, Double_t absl,
+                         Float_t* buf=0, Int_t nwbuf=0);
+  virtual void  Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
+                         Double_t dens, Double_t radl, Double_t absl,
+                         Double_t* buf, Int_t nwbuf);
+  virtual void  Mixture(Int_t& kmat, const char* name, Float_t* a,Float_t* z,
+                        Double_t dens, Int_t nlmat, Float_t* wmat);
+  virtual void  Mixture(Int_t& kmat, const char* name, Double_t* a,Double_t* z,
+                        Double_t dens, Int_t nlmat, Double_t* wmat);
+  virtual void  Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
+                       Int_t ifield, Double_t fieldm, Double_t tmaxfd,
+                       Double_t stemax, Double_t deemax, Double_t epsil,
+                       Double_t stmin, Float_t* ubuf=0, Int_t nbuf=0);
+  virtual void  Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
+                       Int_t ifield, Double_t fieldm, Double_t tmaxfd,
+                       Double_t stemax, Double_t deemax, Double_t epsil,
+                       Double_t stmin, Double_t* ubuf, Int_t nbuf);
+  virtual void Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
+                      Double_t phiy, Double_t thez, Double_t phiz);
 
-  virtual void   Mixture(Int_t& kmat, const char* name, Float_t* a,Float_t* z,
-			  Double_t dens, Int_t nlmat, Float_t* wmat);
-  virtual void   Mixture(Int_t& kmat, const char* name, Double_t* a,Double_t* z,
-			  Double_t dens, Int_t nlmat, Double_t* wmat);
+  virtual void   SetRootGeometry();
 
-  virtual void   Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
-			Int_t ifield, Double_t fieldm, Double_t tmaxfd,
-			Double_t stemax, Double_t deemax, Double_t epsil,
-			Double_t stmin, Float_t* ubuf=0, Int_t nbuf=0);
-  virtual void   Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
-			Int_t ifield, Double_t fieldm, Double_t tmaxfd,
-			Double_t stemax, Double_t deemax, Double_t epsil,
-			Double_t stmin, Double_t* ubuf, Int_t nbuf);
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//      Here are the new functions to get geometry information        //
+//                        By: Bjorn S. Nilsen                         //
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
+  // Returns the Transformation maxtrix between the volume specified by
+  // the path volumePath and the Top or master volume.
+  Bool_t GetTransformation(const TString &volumePath,TGeoHMatrix &mat);
+  // Returns the name of the shape and its parameters for the volume
+  // specified by the volumePath and the Top or master volume.
+  Bool_t GetShape(const TString &volumePath,TString &shapeType,TArrayD &par);
+  // Returns the material parameters for the volume specified by
+  // the volume name.
+  Bool_t GetMaterial(const TString &volumeName,
+                     TString &name,Int_t &imat,
+                     Double_t &a,Double_t &z,Double_t &den,
+                     Double_t &radl,Double_t &inter,TArrayD &par);
+  // Returns the medium parameters for the volume specified by the
+  // volume name.
+  Bool_t GetMedium(const TString &volumeName,TString &name,Int_t &imed,
+                  Int_t &nmat,Int_t &isvol,Int_t &ifield,
+                  Double_t &fieldm,Double_t &tmaxfd,Double_t &stemax,
+                  Double_t &deemax,Double_t &epsil, Double_t &stmin,
+                  TArrayD &par);
 
-  virtual void   Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
-			Double_t phiy, Double_t thez, Double_t phiz);
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                         //
-//                                                                                         //
-//     Here are the interface functions with GEANT3.21                                     //
-//                                                                                         //
-//                                                                                         //
-/////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+//                                                                    //
+//                                                                    //
+//     Here are the interface functions with GEANT3.21                //
+//                                                                    //
+//                                                                    //
+////////////////////////////////////////////////////////////////////////
 
   // access functions to commons
- 
+
   virtual Quest_t* Quest() const {return fQuest;}
   virtual Gcbank_t* Gcbank() const {return fGcbank;}
   virtual Gclink_t* Gclink() const {return fGclink;}
@@ -664,122 +729,164 @@ public:
 
 
 
-      // functions from GBASE 
-   virtual  void  Gpcxyz(); 
-   virtual  void  Ggclos(); 
-   virtual  void  Gfile(const char *filename, const char *option="I"); 
-   virtual  void  Glast(); 
-   virtual  void  Gprint(const char *name); 
-   virtual  void  Grun(); 
-   virtual  void  Gtrig(); 
-   virtual  void  Gtrigc(); 
-   virtual  void  Gtrigi(); 
-   virtual  void  Gwork(Int_t nwork); 
-   virtual  void  Gzinit(); 
- 
-      // functions from GCONS 
-   virtual  void  Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z, Float_t &dens, 
-                         Float_t &radl, Float_t &absl, Float_t* ubuf, Int_t& nbuf); 
-   virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, Double_t &dens, 
-                         Double_t &radl, Double_t &absl, Double_t* ubuf, Int_t& nbuf); 
-   virtual  void  Gfpart(Int_t ipart, char *name, Int_t &itrtyp,  
-                         Float_t &amass, Float_t &charge, Float_t &tlife); 
-   virtual  void  Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,  
-                         Int_t &ifield, Float_t &fieldm, Float_t &tmaxfd, 
-                         Float_t &stemax, Float_t &deemax, Float_t &epsil, 
+      // functions from GBASE
+   virtual  void  Gpcxyz();
+   virtual  void  Ggclos();
+   virtual  void  Gfile(const char *filename, const char *option="I");
+   virtual  void  Glast();
+   virtual  void  Gprint(const char *name);
+   virtual  void  Grun();
+   virtual  void  Gtrig();
+   virtual  void  Gtrigc();
+   virtual  void  Gtrigi();
+   virtual  void  Gwork(Int_t nwork);
+   virtual  void  Gzinit();
+
+      // functions from GCONS
+   virtual  void  Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z, 
+                         Float_t &dens, Float_t &radl, Float_t &absl,
+                         Float_t* ubuf, Int_t& nbuf);
+   virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, 
+                         Double_t &dens, Double_t &radl, Double_t &absl,
+                         Double_t* ubuf, Int_t& nbuf);
+   virtual  void  Gfpart(Int_t ipart, char *name, Int_t &itrtyp,
+                         Float_t &amass,Float_t &charge,Float_t &tlife) const;
+   virtual  void  Gftmed(Int_t numed, char *name, Int_t &nmat, Int_t &isvol,
+                         Int_t &ifield, Float_t &fieldm, Float_t &tmaxfd,
+                         Float_t &stemax, Float_t &deemax, Float_t &epsil,
                          Float_t &stmin, Float_t *buf=0, Int_t *nbuf=0);
    virtual  void  Gftmat(Int_t imate, Int_t ipart, char *chmeca, Int_t kdim,
-			 Float_t* tkin, Float_t* value, Float_t* pcut,
-			 Int_t &ixst);
+                         Float_t* tkin, Float_t* value, Float_t* pcut,
+                         Int_t &ixst);
    virtual  Float_t Gbrelm(Float_t z, Float_t t, Float_t cut);
    virtual  Float_t Gprelm(Float_t z, Float_t t, Float_t cut);
-   virtual  void  Gmate(); 
-   virtual  void  Gpart(); 
+   virtual  void  Gmate();
+   virtual  void  Gpart();
    virtual  void  Gsckov(Int_t itmed, Int_t npckov, Float_t *ppckov,
-                       Float_t *absco, Float_t *effic, Float_t *rindex); 
-   virtual  void  Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode); 
-   virtual  void  Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,  
-                         Float_t dens, Float_t radl, Float_t absl); 
-   virtual  void  Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,  
-                         Float_t dens, Int_t nlmat, Float_t *wmat); 
-   virtual  void  Gspart(Int_t ipart, const char *name, Int_t itrtyp,  
-                         Double_t amass, Double_t charge, Double_t tlife); 
-   virtual  void  Gstmed(Int_t numed, const char *name, Int_t nmat, Int_t isvol,  
-                         Int_t ifield, Float_t fieldm, Float_t tmaxfd, 
-                         Float_t stemax, Float_t deemax, Float_t epsil, 
-                         Float_t stmin); 
-   virtual  void  Gstpar(Int_t itmed, const char *param, Double_t parval); 
- 
+                         Float_t *absco, Float_t *effic, Float_t *rindex);
+   virtual  void  Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode);
+   virtual  void  Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
+                         Float_t dens, Float_t radl, Float_t absl);
+   virtual  void  Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
+                         Float_t dens, Int_t nlmat, Float_t *wmat);
+   virtual  void  Gspart(Int_t ipart, const char *name, Int_t itrtyp,
+                         Double_t amass, Double_t charge, Double_t tlife);
+   virtual  void  Gstmed(Int_t numed,const char *name,Int_t nmat, Int_t isvol,
+                         Int_t ifield, Float_t fieldm, Float_t tmaxfd,
+                         Float_t stemax, Float_t deemax, Float_t epsil,
+                         Float_t stmin);
+   virtual  void  Gstpar(Int_t itmed, const char *param, Double_t parval);
+
    virtual void  SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov,
 			     Float_t *absco, Float_t *effic, Float_t *rindex);
    virtual void  SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov,
 			     Double_t *absco, Double_t *effic, Double_t *rindex);
-  // functions from GKINE 
-   virtual  void  Gfkine(Int_t itra, Float_t *vert, Float_t *pvert, 
-                         Int_t &ipart, Int_t &nvert); 
-   virtual  void  Gfvert(Int_t nvtx, Float_t *v, Int_t &ntbeam, Int_t &nttarg, Float_t &tofg); 
-   virtual  Int_t Gskine(Float_t *plab, Int_t ipart, Int_t nv, Float_t *ubuf=0, Int_t nwbuf=0); 
-   virtual  Int_t Gsvert(Float_t *v, Int_t ntbeam, Int_t nttarg, Float_t *ubuf=0, Int_t nwbuf=0); 
- 
-      // functions from GPHYS 
-   virtual  void  Gphysi(); 
- 
-      // functions from GTRAK 
-   virtual  void  Gdebug(); 
-   virtual  void  Gekbin(); 
-   virtual  void  Gfinds(); 
-   virtual  void  Gsking(Int_t igk); 
-   virtual  void  Gskpho(Int_t igk); 
-   virtual  void  Gsstak(Int_t iflag); 
-   virtual  void  Gsxyz(); 
-   virtual  void  Gtrack(); 
-   virtual  void  Gtreve(); 
-   virtual  void  GtreveRoot(); 
-   virtual  void  Grndm(Float_t *rvec, const Int_t len) const; 
-   virtual  void  Grndmq(Int_t &is1, Int_t &is2, const Int_t iseq, const Text_t *chopt); 
- 
-      // functions from GGEOM 
-   virtual  void  Gdxyz(Int_t it); 
-   virtual  void  Gdcxyz(); 
+    
+   // functions for definition of surfaces
+   // and material properties for optical physics
+   virtual void  DefineOpSurface(const char* name,
+                         EMCOpSurfaceModel model,
+                         EMCOpSurfaceType surfaceType,
+                         EMCOpSurfaceFinish surfaceFinish,
+                         Double_t sigmaAlpha);
+   virtual void  SetBorderSurface(const char* name,
+                         const char* vol1Name, int vol1CopyNo,
+                         const char* vol2Name, int vol2CopyNo,
+                         const char* opSurfaceName);
+   virtual void  SetSkinSurface(const char* name,
+                         const char* volName,
+                         const char* opSurfaceName);
+   virtual void  SetMaterialProperty(
+                         Int_t itmed, const char* propertyName, 
+                         Int_t np, Double_t* pp, Double_t* values);
+   virtual void  SetMaterialProperty(
+                         Int_t itmed, const char* propertyName,
+                         Double_t value);
+   virtual void  SetMaterialProperty(
+                         const char* surfaceName, const char* propertyName, 
+                         Int_t np, Double_t* pp, Double_t* values);
+			 
+  // functions from GKINE
+   virtual  void  Gfkine(Int_t itra, Float_t *vert, Float_t *pvert,
+                         Int_t &ipart, Int_t &nvert);
+   virtual  void  Gfvert(Int_t nvtx,Float_t *v,Int_t &ntbeam,Int_t &nttarg,
+                         Float_t &tofg);
+   virtual  Int_t Gskine(Float_t *plab, Int_t ipart, Int_t nv,
+                         Float_t *ubuf=0, Int_t nwbuf=0);
+   virtual  Int_t Gsvert(Float_t *v, Int_t ntbeam, Int_t nttarg,
+                         Float_t *ubuf=0, Int_t nwbuf=0);
 
-      // functions from GGEOM 
-   virtual  void  Gdtom(Float_t *xd, Float_t *xm, Int_t iflag); 
-   virtual  void  Gdtom(Double_t *xd, Double_t *xm, Int_t iflag); 
-   virtual  void  Glmoth(const char* iudet, Int_t iunum, Int_t &nlev, 
-                         Int_t *lvols, Int_t *lindx); 
-   virtual  void  Gmedia(Float_t *x, Int_t &numed); 
-   virtual  void  Gmtod(Float_t *xm, Float_t *xd, Int_t iflag); 
-   virtual  void  Gmtod(Double_t *xm, Double_t *xd, Int_t iflag); 
-   virtual  void  Gsdvn(const char *name, const char *mother, Int_t ndiv, Int_t iaxis); 
-   virtual  void  Gsdvn2(const char *name, const char *mother, Int_t ndiv, Int_t iaxis, Double_t c0i, Int_t numed); 
-   virtual  void  Gsdvs(const char *name, const char *mother, Float_t step, Int_t iaxis, Int_t numed); 
-   virtual  void  Gsdvs2(const char *name, const char *mother, Float_t step, Int_t iaxis, Float_t c0, Int_t numed); 
-   virtual  void  Gsdvt(const char *name, const char *mother, Double_t step, Int_t iaxis, Int_t numed, Int_t ndvmx); 
-   virtual  void  Gsdvt2(const char *name, const char *mother, Double_t step, Int_t iaxis,
-			 Double_t c0, Int_t numed, Int_t ndvmx); 
-   virtual  void  Gsord(const char *name, Int_t iax); 
-   virtual  void  Gspos(const char *name, Int_t nr, const char *mother,  
-                         Double_t x, Double_t y, Double_t z, Int_t irot, const char *konly="ONLY"); 
-   virtual  void  Gsposp(const char *name, Int_t nr, const char *mother,  
-                         Double_t x, Double_t y, Double_t z, Int_t irot, const char *konly, Float_t *upar, Int_t np); 
-   virtual  void  Gsposp(const char *name, Int_t nr, const char *mother,  
-                         Double_t x, Double_t y, Double_t z, Int_t irot, const char *konly, Double_t *upar, Int_t np); 
-   virtual  void  Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2, Float_t phi2, 
-                         Float_t theta3, Float_t phi3); 
-   virtual  void  Gprotm(Int_t nmat=0); 
-   virtual  Int_t Gsvolu(const char *name, const char *shape, Int_t nmed,  
-                         Float_t *upar, Int_t np); 
-   virtual  Int_t Gsvolu(const char *name, const char *shape, Int_t nmed,  
-                         Double_t *upar, Int_t np); 
-   virtual  void  Gsatt(const char *name, const char *att, Int_t val);
-   virtual  void  Gfpara(const char *name, Int_t number, Int_t intext, Int_t& npar,
-			 Int_t& natt, Float_t* par, Float_t* att);
+      // functions from GPHYS
+   virtual  void  Gphysi();
+
+      // functions from GTRAK
+   virtual  void  Gdebug();
+   virtual  void  Gekbin();
+   virtual  void  Gfinds();
+   virtual  void  Gsking(Int_t igk);
+   virtual  void  Gskpho(Int_t igk);
+   virtual  void  Gsstak(Int_t iflag);
+   virtual  void  Gsxyz();
+   virtual  void  Gtrack();
+   virtual  void  Gtreve();
+   virtual  void  GtreveRoot();
+   virtual  void  Grndm(Float_t *rvec, Int_t len) const;
+   virtual  void  Grndmq(Int_t &is1, Int_t &is2, Int_t iseq,
+                         const Text_t *chopt);
+
+      // functions from GGEOM
+   virtual  void  Gdxyz(Int_t it);
+   virtual  void  Gdcxyz();
+
+      // functions from GGEOM
+   virtual  void  Gdtom(Float_t *xd, Float_t *xm, Int_t iflag);
+   virtual  void  Gdtom(Double_t *xd, Double_t *xm, Int_t iflag);
+   virtual  void  Glmoth(const char* iudet, Int_t iunum, Int_t &nlev,
+                         Int_t *lvols, Int_t *lindx);
+   virtual  void  Gmedia(Float_t *x, Int_t &numed);
+   virtual  void  Gmtod(Float_t *xm, Float_t *xd, Int_t iflag);
+   virtual  void  Gmtod(Double_t *xm, Double_t *xd, Int_t iflag);
+   virtual  void  Gsdvn(const char *name, const char *mother,
+                        Int_t ndiv, Int_t iaxis);
+   virtual  void  Gsdvn2(const char *name, const char *mother,
+                         Int_t ndiv, Int_t iaxis, Double_t c0i, Int_t numed);
+   virtual  void  Gsdvs(const char *name, const char *mother,
+                        Float_t step, Int_t iaxis, Int_t numed);
+   virtual  void  Gsdvs2(const char *name, const char *mother,
+                         Float_t step, Int_t iaxis, Float_t c0, Int_t numed);
+   virtual  void  Gsdvt(const char *name, const char *mother,
+                        Double_t step, Int_t iaxis, Int_t numed, Int_t ndvmx);
+   virtual  void  Gsdvt2(const char *name, const char *mother,
+                         Double_t step, Int_t iaxis,
+                         Double_t c0, Int_t numed, Int_t ndvmx);
+   virtual  void  Gsord(const char *name, Int_t iax);
+   virtual  void  Gspos(const char *name, Int_t nr, const char *mother,
+                        Double_t x, Double_t y, Double_t z, Int_t irot,
+                        const char *konly="ONLY");
+   virtual  void  Gsposp(const char *name, Int_t nr, const char *mother,
+                         Double_t x, Double_t y, Double_t z, Int_t irot,
+                         const char *konly, Float_t *upar, Int_t np);
+   virtual  void  Gsposp(const char *name, Int_t nr, const char *mother,
+                         Double_t x, Double_t y, Double_t z, Int_t irot,
+                         const char *konly, Double_t *upar, Int_t np);
+   virtual  void  Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1,
+                         Float_t theta2, Float_t phi2,
+                         Float_t theta3, Float_t phi3);
+   virtual  void  Gprotm(Int_t nmat=0);
+   virtual  Int_t Gsvolu(const char *name, const char *shape, Int_t nmed,
+                         Float_t *upar, Int_t np);
+   virtual  Int_t Gsvolu(const char *name, const char *shape, Int_t nmed,
+                         Double_t *upar, Int_t np);
+   virtual  void Gsatt(const char *name, const char *att, Int_t val);
+   virtual  void Gfpara(const char *name,Int_t number,Int_t intext,Int_t& npar,
+                        Int_t& natt, Float_t* par, Float_t* att);
    virtual  void  Gckpar(Int_t ish, Int_t npar, Float_t *par);
    virtual  void  Gckmat(Int_t itmed, char *natmed);
    virtual  Int_t  Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum);
-   virtual  void  Gsbool(const char* onlyVolName, const char* manyVolName) {}
-    
-      // functions from GDRAW 
+   virtual  void  Gsbool(const char* /*onlyVolName*/,
+                         const char* /*manyVolName*/) {}
+
+      // functions from GDRAW
    virtual  void  DefaultRange();
    virtual  void  InitHIGZ();
    virtual  void  Gdopen(Int_t view);
@@ -787,18 +894,24 @@ public:
    virtual  void  Gdelete(Int_t view);
    virtual  void  Gdshow(Int_t view);
    virtual  void  Gdopt(const char *name,const char *value);
-   virtual  void  Gdraw(const char *name,Double_t theta=30, Double_t phi=30, Double_t psi=0,Double_t u0=10,Double_t v0=10,Double_t ul=0.01,Double_t vl=0.01);
-   virtual  void  Gdrawc(const char *name,Int_t axis=1, Float_t cut=0,Float_t u0=10,Float_t v0=10,Float_t ul=0.01,Float_t vl=0.01);
-   virtual  void  Gdrawx(const char *name,Float_t cutthe, Float_t cutphi, Float_t cutval,
-                         Float_t theta=30, Float_t phi=30,Float_t u0=10,Float_t v0=10,Float_t ul=0.01,Float_t vl=0.01);
-   virtual  void  Gdhead(Int_t isel, const char *name, Double_t chrsiz=0.6);   
+   virtual  void  Gdraw(const char *name,Double_t theta=30, Double_t phi=30,
+                        Double_t psi=0,Double_t u0=10,Double_t v0=10,
+                        Double_t ul=0.01,Double_t vl=0.01);
+   virtual  void  Gdrawc(const char *name,Int_t axis=1, Float_t cut=0,
+                         Float_t u0=10,Float_t v0=10,Float_t ul=0.01,
+                         Float_t vl=0.01);
+   virtual  void  Gdrawx(const char *name,Float_t cutthe, Float_t cutphi, 
+                         Float_t cutval, Float_t theta=30, Float_t phi=30,
+                         Float_t u0=10,Float_t v0=10,Float_t ul=0.01,
+                         Float_t vl=0.01);
+   virtual  void  Gdhead(Int_t isel, const char *name, Double_t chrsiz=0.6);
    virtual  void  Gdman(Double_t u0, Double_t v0, const char *type="MAN");
    virtual  void  Gdspec(const char *name);
    virtual  void  DrawOneSpec(const char *name);
    virtual  void  Gdtree(const char *name,Int_t levmax=15,Int_t ispec=0);
    virtual  void  GdtreeParent(const char *name,Int_t levmax=15,Int_t ispec=0);
 
-   virtual  void  WriteEuclid(const char* filnam, const char* topvol, 
+   virtual  void  WriteEuclid(const char* filnam, const char* topvol,
 			      Int_t number, Int_t nlevel);
 
    virtual  void  SetABAN(Int_t par=1);
@@ -807,20 +920,25 @@ public:
    virtual  void  SetBOMB(Float_t bomb=1);
    virtual  void  SetBREM(Int_t par=1);
    virtual  void  SetCKOV(Int_t par=1);
-   virtual  void  SetClipBox(const char *name,Double_t xmin=-9999,Double_t xmax=0, Double_t ymin=-9999,Double_t ymax=0,Double_t zmin=-9999,Double_t zmax=0);
+   virtual  void  SetClipBox(const char *name,Double_t xmin=-9999,
+                             Double_t xmax=0, Double_t ymin=-9999,
+                             Double_t ymax=0,Double_t zmin=-9999,
+                             Double_t zmax=0);
    virtual  void  SetCOMP(Int_t par=1);
-   virtual  void  SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,Float_t cuthad,
-                      Float_t cutmuo ,Float_t bcute ,Float_t bcutm ,Float_t dcute ,
-                      Float_t dcutm ,Float_t ppcutm, Float_t tofmax);
+   virtual  void  SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
+                          Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
+                          Float_t bcutm ,Float_t dcute ,
+                          Float_t dcutm ,Float_t ppcutm, Float_t tofmax);
    virtual  void  SetDCAY(Int_t par=1);
    virtual  void  SetDEBU(Int_t emin=1, Int_t emax=999, Int_t emod=1);
    virtual  void  SetDRAY(Int_t par=1);
    virtual  void  SetERAN(Float_t ekmin=1.e-5, Float_t ekmax=1.e4,
 			  Int_t nekbin=90);
    virtual  void  SetHADR(Int_t par=1);
-   virtual  void  SetKINE(Int_t kine, Float_t xk1=0, Float_t xk2=0, Float_t xk3=0, Float_t xk4=0,
-                         Float_t xk5=0, Float_t xk6=0, Float_t xk7=0, Float_t xk8=0, Float_t xk9=0,
-                         Float_t xk10=0);
+   virtual  void  SetKINE(Int_t kine, Float_t xk1=0, Float_t xk2=0, 
+                          Float_t xk3=0, Float_t xk4=0,
+                          Float_t xk5=0, Float_t xk6=0, Float_t xk7=0, 
+                          Float_t xk8=0, Float_t xk9=0, Float_t xk10=0);
    virtual  void  SetLOSS(Int_t par=2);
    virtual  void  SetMULS(Int_t par=1);
    virtual  void  SetMUNU(Int_t par=1);
@@ -837,36 +955,38 @@ public:
    virtual  void  Vname(const char *name, char *vname);
 
    virtual  void  InitLego();
-   virtual  TMCGeomType GetMCGeomType() const { return kGeant3; }
 
   // Routines from GEANE
 
     virtual void Ertrgo();
-    virtual void Ertrak(const Float_t *const x1, const Float_t *const p1, 
+    virtual void Ertrak(const Float_t *x1, const Float_t *p1,
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt);
-        
+
   // Control Methods
 
   virtual void FinishGeometry();
   virtual void BuildPhysics();
   virtual void Init();
   virtual void ProcessEvent();
-  virtual void ProcessRun(Int_t nevent);
+  virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
 
-  // 
+  //
   virtual void SetColors();
 
-  void  SetTrack(Int_t done, Int_t parent, Int_t pdg, 
-  	          Float_t *pmom, Float_t *vpos, Float_t *polar, 
+  void  SetTrack(Int_t done, Int_t parent, Int_t pdg,
+  	          Float_t *pmom, Float_t *vpos, Float_t *polar,
                   Float_t tof, TMCProcess mech, Int_t &ntr,
                   Float_t weight, Int_t is);
+private:
+  Int_t ConvertVolumePathString(const TString &volumeName,Int_t **lnam,
+                                Int_t **lnum);
 
 protected:
   Int_t fNextVol;    // Iterator for GeomIter
-
-//--------------Declarations for ZEBRA--------------------- 
+  char  fPath[512];  // Current path of G3
+//--------------Declarations for ZEBRA---------------------
   Int_t *fZiq;                //! Good Old IQ of Zebra
   Int_t *fZlq;                //! Good Old LQ of Zebra
   Float_t *fZq;               //! Good Old Q of Zebra
@@ -893,6 +1013,7 @@ protected:
   Gckin2_t *fGckin2;          //! GCKIN2 common structure
   Gckin3_t *fGckin3;          //! GCKIN3 common structure
   Gctrak_t *fGctrak;          //! GCTRAK common structure
+  Gcchan_t *fGcchan;          //! GCCHAN common structure
 
   // commons for GEANE
   Ertrio_t *fErtrio;          //! ERTRIO common structure
@@ -904,22 +1025,59 @@ protected:
 
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
 
-  enum {kMaxParticles = 100};
+  enum { kMaxParticles = 100};
 
+  Int_t fNG3Particles;            // Number of G3 particles
   Int_t fNPDGCodes;               // Number of PDG codes known by G3
 
   Int_t fPDGCode[kMaxParticles];  // Translation table of PDG codes
+  TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
+  Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
+                                        // (materials and medias are filled
+                                        // in FinishGeometry()
+  Bool_t           fStopRun;     // The flag for stopping run by a user
 
   TMCProcess G3toVMC(Int_t iproc) const;
 
-private:
-  TGeant3(const TGeant3 &) {}
+  void   DefineParticles();
+  Int_t  TransportMethod(TMCParticleType particleType) const;
+  TString  ParticleClass(TMCParticleType particleType) const;
+  TMCParticleType ParticleType(Int_t itrtyp) const;
+
+  enum {kTRIG = BIT(14),
+        kSWIT = BIT(15),
+        kDEBU = BIT(16),
+        kAUTO = BIT(17),
+        kABAN = BIT(18),
+        kOPTI = BIT(19),
+        kERAN = BIT(20)
+  };
+  TGeant3(const TGeant3 &) : TVirtualMC() {}
   TGeant3 & operator=(const TGeant3&) {return *this;}
-  
+
   // array conversion
+  Float_t* CreateFloatArray(Float_t*  array, Int_t size) const;
   Float_t* CreateFloatArray(Double_t* array, Int_t size) const;
-  
-  ClassDef(TGeant3,1)  //C++ interface to Geant basic routines 
-}; 
+  Int_t    NextKmat() const;
+
+  // functions for building geometry with different interface
+  // for double and single precision
+  void  G3Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
+	            Double_t dens, Double_t radl, Double_t absl,
+	            Float_t* buf=0, Int_t nwbuf=0);
+  void  G3Mixture(Int_t& kmat, const char* name, Float_t* a,Float_t* z,
+	            Double_t dens, Int_t nlmat, Float_t* wmat);
+  void  G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
+	            Int_t ifield, Double_t fieldm, Double_t tmaxfd,
+		    Double_t stemax, Double_t deemax, Double_t epsil,
+	            Double_t stmin, Float_t* ubuf=0, Int_t nbuf=0);
+  Int_t G3Gsvolu(const char *name, const char *shape, Int_t nmed,
+                    Float_t *upar, Int_t np);
+  void  G3Gsposp(const char *name, Int_t nr, const char *mother,
+                 Double_t x, Double_t y, Double_t z, Int_t irot, 
+                 const char *konly, Float_t *upar, Int_t np);
+
+  ClassDef(TGeant3,1)  //C++ interface to Geant basic routines
+};
 
 #endif //ROOT_TGeant3

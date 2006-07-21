@@ -15,6 +15,9 @@
 
 /*
 $Log: gcadd.cxx,v $
+Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+initial import into CVS
+
 Revision 1.1.1.1  2002/06/16 15:17:54  hristov
 Separate distribution  of Geant3
 
@@ -27,6 +30,7 @@ Introduction of the Copyright and cvs Log
 */
 
 #if defined(CERNLIB_WINNT)
+  #define gcaddb GCADDB
   #define gcaddc GCADDC
   #define gcaddf GCADDF
   #define gcaddd GCADDD
@@ -34,6 +38,7 @@ Introduction of the Copyright and cvs Log
   #define gcaddl GCADDL
   #define type_of_call _stdcall
 #else
+  #define gcaddb gcaddb_
   #define gcaddc gcaddc_
   #define gcaddf gcaddf_
   #define gcaddd gcaddd_
@@ -42,6 +47,10 @@ Introduction of the Copyright and cvs Log
   #define type_of_call
 #endif
 
+extern "C" bool* type_of_call gcaddb(bool *arg)
+{
+  return arg;
+}
 extern "C" char* type_of_call gcaddc(char *arg)
 {
   return arg;

@@ -1,7 +1,10 @@
 *
-* $Id: gpairg.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpairg.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gpairg.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -35,7 +38,7 @@
 #if defined(CERNLIB_HPUX)
 $OPTIMIZE OFF
 #endif
-      SUBROUTINE GPAIRG
+      SUBROUTINE G3PAIRG
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -53,7 +56,7 @@ C.    *  (2) The differential cross-section implicitly takes account   *
 C.    *      of pair production in both nuclear and atomic electron    *
 C.    *      fields. However, triplet production is not generated.     *
 C.    *                                                                *
-C.    *    ==>Called by : GTGAMA                                       *
+C.    *    ==>Called by : G3TGAMA                                      *
 C.    *       Authors    G.Patrick, L.Urban  *********                 *
 C.    *                                                                *
 C.    ******************************************************************
@@ -183,7 +186,7 @@ C             PHI is generated isotropically and THETA is assigned
 C             a universal angular distribution
 C
       EMASS1 = EMASS
-      THETA  = GBTETH(EEL1, EMASS1, X)*EMASS/EEL1
+      THETA  = G3BTETH(EEL1, EMASS1, X)*EMASS/EEL1
       SINTH  = SIN(THETA)
       COSTH  = COS(THETA)
       PHI    = TWOPI*RNDM(2)
@@ -192,7 +195,7 @@ C
 C
 C             Rotate tracks into GEANT system
 C
-      CALL GFANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
+      CALL G3FANG(VECT(4),COSAL,SINAL,COSBT,SINBT,ROTATE)
 C
 C            Polar co-ordinates to momentum components.
 C
@@ -211,10 +214,10 @@ C
          GPOS(2,NGKINE) = VECT(2)
          GPOS(3,NGKINE) = VECT(3)
          IF(ROTATE)
-     +   CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +   CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
       ELSE
          DESTEP = DESTEP + TEL1
-         IF(NTYPEL(1).EQ.2) CALL GANNI2
+         IF(NTYPEL(1).EQ.2) CALL G3ANNI2
       ENDIF
 C
 C             Momentum vector of second electron. Recoil momentum of
@@ -237,10 +240,10 @@ C
          GPOS(2,NGKINE) = VECT(2)
          GPOS(3,NGKINE) = VECT(3)
          IF(ROTATE)
-     +   CALL GDROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
+     +   CALL G3DROT(GKIN(1,NGKINE),COSAL,SINAL,COSBT,SINBT)
       ELSE
          DESTEP = DESTEP + TEL2
-         IF(NTYPEL(2).EQ.2) CALL GANNI2
+         IF(NTYPEL(2).EQ.2) CALL G3ANNI2
       ENDIF
       ISTOP = 1
       IF(NGKINE.EQ.0) ISTOP = 2

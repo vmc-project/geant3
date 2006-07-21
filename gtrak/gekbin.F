@@ -1,7 +1,10 @@
 *
-* $Id: gekbin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gekbin.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gekbin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,15 +21,15 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GEKBIN
+      SUBROUTINE G3EKBIN
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Routine to find bin number in kinetic energy table       *
 C.    *       stored in ELOW(NEKBIN)                                   *
 C.    *                                                                *
-C.    *    ==>Called by : GBREME,GBREMM,GCOMP,GDRAY,GHEISH,GPAIRM,     *
-C.    *                   GLTRAC,GTELEC,GTHADR,GTMUON                  *
+C.    *  ==>Called by : G3BREME,G3BREMM,G3COMP,G3DRAY,G3HEISH,G3PAIRM, *
+C.    *                   G3LTRAC,G3TELEC,G3THADR,G3TMUON              *
 C.    *       Author    R.Brun  *********                              *
 C.    *                                                                *
 C.    ******************************************************************
