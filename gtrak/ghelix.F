@@ -1,7 +1,10 @@
 *
-* $Id: ghelix.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id: ghelix.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: ghelix.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 * initial import into CVS
 *
@@ -44,7 +47,7 @@ C.
       DIMENSION      XYZ(3),H(4),HXP(3)
       PARAMETER      (IX=1,IY=2,IZ=3,IPX=4,IPY=5,IPZ=6,IPP=7)
       PARAMETER      (SIXTH = 1./6.)
-      PARAMETER      (EC=2.9979251E-4)
+      PARAMETER      (EC=2.99792458E-4)
 C.
 C.    ------------------------------------------------------------------
 C.
