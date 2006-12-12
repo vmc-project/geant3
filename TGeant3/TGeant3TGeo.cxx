@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.15  2006/05/30 13:39:07  brun
+From Andrei Gheata:
+a patch cleaning-up the usage of TGeant3::Vname method inside TGeant3TGeo.cxx. The truncation of names is not needed when working with TGeo. In most of the cases the names were truncated to 4 chars but the result was not used in the subsequent call to TGeoMCGeometry (this is why it still worked) but a cleanup is good anyway...
+
 Revision 1.14  2006/05/23 15:53:11  brun
 From Ivana:
  Adding CurrentVolPath() overloading TGeant3 implementation
@@ -651,6 +655,14 @@ Int_t TGeant3TGeo::VolId(const Text_t *name) const
   return fMCGeo->VolId(sname);
 }
 
+//______________________________________________________________________
+Int_t TGeant3TGeo::MediumId(const Text_t* medName) const
+{
+    // Return the unique numeric identifier for medium name                  
+
+  return fMCGeo->MediumId(medName);
+}      
+        
 //_____________________________________________________________________________
 Int_t TGeant3TGeo::NofVolumes() const
 {

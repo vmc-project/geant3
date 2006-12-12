@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3TGeo.h,v 1.5 2005/11/18 21:25:22 brun Exp $ */
+/* $Id: TGeant3TGeo.h,v 1.6 2006/05/23 15:53:11 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -58,6 +58,7 @@ public:
   const char *CurrentVolOffName(Int_t off) const;
   const char *CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
+  Int_t MediumId(const Text_t *name) const;
   const char* VolName(Int_t id) const;
   Int_t NofVolumes() const;
   Int_t NofVolDaughters(const char* volName) const;

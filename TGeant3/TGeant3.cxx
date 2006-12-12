@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.49  2006/04/20 10:14:55  brun
+From Peter Hristov:
+small change in TGeant3.cxx:
+to avoid some rare problems in glandz.F and probably in other places where the random number should not
+be equal to 0 and 1.
+
 Revision 1.48  2006/03/15 08:12:11  brun
 -New Makefile.macosx
 
@@ -339,6 +345,7 @@ Cleanup of code
 #include "TString.h"
 #include "TParameter.h"
 #include "TGeoMatrix.h"
+#include "TObjString.h"
 
 #include "TGeant3.h"
 
@@ -1575,6 +1582,21 @@ Int_t TGeant3::VolId(const Text_t *name) const
 }
 
 //______________________________________________________________________
+Int_t TGeant3::MediumId(const Text_t *medName) const
+{
+    // Return the unique numeric identifier for medium name                  
+
+  Int_t nmed = fMedNames.GetEntriesFast();
+  for ( Int_t imed = 1; imed < nmed; imed++ ) {
+  
+    TString name = ((TObjString*)fMedNames.At(imed))->GetString();
+    if ( name == TString(medName) )  return imed;
+  }
+  printf("MediumId: Medium %s not found\n", medName);
+  return 0;
+}      
+        
+//______________________________________________________________________
 Int_t TGeant3::NofVolumes() const
 {
   //
@@ -2524,6 +2546,8 @@ void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   Float_t fstmin =  stmin;
   g3stmed(kmed, PASSCHARD(name),nmat,isvol,ifield,ffieldm,ftmaxfd,fstemax,
           fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
+
+  fMedNames.AddAt(new TObjString(name), kmed);           
 }
 
 //______________________________________________________________________
@@ -2552,7 +2576,7 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
 
   G3Medium(kmed,name,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,epsil,
            stmin, ubuf, nbuf);
-
+  
 }
 
 //______________________________________________________________________
@@ -6202,6 +6226,7 @@ Bool_t TGeant3::GetMedium(const TString &volumeName,TString &name,
     stmin  = (Double_t) stminf;
     return kTRUE;
 }
+
 //____________________________private method____________________________
 Int_t TGeant3::ConvertVolumePathString(const TString &volumePath,
                                        Int_t **lnam,Int_t **lnum){
