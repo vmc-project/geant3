@@ -655,14 +655,6 @@ Int_t TGeant3TGeo::VolId(const Text_t *name) const
   return fMCGeo->VolId(sname);
 }
 
-//______________________________________________________________________
-Int_t TGeant3TGeo::MediumId(const Text_t* medName) const
-{
-    // Return the unique numeric identifier for medium name                  
-
-  return fMCGeo->MediumId(medName);
-}      
-        
 //_____________________________________________________________________________
 Int_t TGeant3TGeo::NofVolumes() const
 {

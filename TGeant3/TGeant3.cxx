@@ -345,7 +345,6 @@ Cleanup of code
 #include "TString.h"
 #include "TParameter.h"
 #include "TGeoMatrix.h"
-#include "TObjString.h"
 
 #include "TGeant3.h"
 
@@ -375,6 +374,7 @@ Cleanup of code
 # define g3part   g3part_
 # define g3sdk    g3sdk_
 # define g3smate  g3smate_
+# define g3fang   g3fang_ 
 # define g3smixt  g3smixt_
 # define g3spart  g3spart_
 # define g3stmed  g3stmed_
@@ -426,6 +426,13 @@ Cleanup of code
 
 # define ertrak  ertrak_
 # define ertrgo  ertrgo_
+# define eufill  eufill_
+# define eufilp  eufilp_
+# define eufilv  eufilv_
+# define trscsp  trscsp_
+# define trspsc  trspsc_
+# define trscsd  trscsd_
+# define trsdsc  trsdsc_
 
 # define gcomad gcomad_
 
@@ -510,6 +517,13 @@ Cleanup of code
 
 # define ertrak  ERTRAK
 # define ertrgo  ERTRGO
+# define eufill  EUFILL
+# define eufilp  EUFILP
+# define eufilv  EUFILV
+# define trscsp  TRSCSP
+# define trspsc  TRSPSC
+# define trscsd  TRSCSD
+# define trsdsc  TRSDSC
 
 # define gcomad  GCOMAD
 
@@ -519,6 +533,7 @@ Cleanup of code
 # define rxgtrak RXGTRAK
 # define rxouth  RXOUTH
 # define rxinh   RXINH
+# define gfang   GFANG 
 
 #endif
 
@@ -627,6 +642,10 @@ extern "C"
 			   Float_t &, Float_t &, Float_t &, Float_t *,
 			   Int_t& DEFCHARL);
 
+  void type_of_call g3fang( Float_t *, Float_t &,
+			    Float_t &, Float_t &, Float_t &,
+			    Int_t & ); 
+
   void type_of_call g3fpart(const Int_t&, DEFCHARD, Int_t &, Float_t &,
 			   Float_t &, Float_t &, Float_t *, Int_t & DEFCHARL);
 
@@ -705,20 +724,35 @@ extern "C"
   void type_of_call dzshow(DEFCHARD,const int&,const int&,DEFCHARD,const int&,
 			   const int&, const int&, const int& DEFCHARL
 			   DEFCHARL);
-
   void type_of_call mzdrop(Int_t&, Int_t&, DEFCHARD DEFCHARL);
 
   void type_of_call setbomb(Float_t &);
+
   void type_of_call setclip(DEFCHARD, Float_t &,Float_t &,Float_t &,Float_t &,
 			    Float_t &, Float_t & DEFCHARL);
+
   void type_of_call gcomad(DEFCHARD, Int_t*& DEFCHARL);
 
   void type_of_call ertrak(const Float_t *const x1, const Float_t *const p1,
 			   const Float_t *x2, const Float_t *p2,
 			   const Int_t &ipa, DEFCHARD DEFCHARL);
+  void type_of_call eufill(Int_t n, Float_t *ein,
+		       Float_t *xlf);
+  void type_of_call eufilp(const int n,Float_t *ein,
+			   Float_t *pli,Float_t *plf);
+  void type_of_call eufilv(Int_t n, Float_t *ein,
+			Char_t *namv, Int_t *numv,Int_t *iovl);
+  void type_of_call trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,
+                         Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+  void type_of_call trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,
+                         Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+  void type_of_call trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spx);
+  void type_of_call trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spx);
 
   void type_of_call ertrgo();
-
+ 
     float type_of_call g3brelm(const Float_t &z, const Float_t& t, 
                                const Float_t& cut);
     float type_of_call g3prelm(const Float_t &z, const Float_t& t, 
@@ -1581,21 +1615,6 @@ Int_t TGeant3::VolId(const Text_t *name) const
   return 0;
 }
 
-//______________________________________________________________________
-Int_t TGeant3::MediumId(const Text_t *medName) const
-{
-    // Return the unique numeric identifier for medium name                  
-
-  Int_t nmed = fMedNames.GetEntriesFast();
-  for ( Int_t imed = 1; imed < nmed; imed++ ) {
-  
-    TString name = ((TObjString*)fMedNames.At(imed))->GetString();
-    if ( name == TString(medName) )  return imed;
-  }
-  printf("MediumId: Medium %s not found\n", medName);
-  return 0;
-}      
-        
 //______________________________________________________________________
 Int_t TGeant3::NofVolumes() const
 {
@@ -2546,8 +2565,6 @@ void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   Float_t fstmin =  stmin;
   g3stmed(kmed, PASSCHARD(name),nmat,isvol,ifield,ffieldm,ftmaxfd,fstemax,
           fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
-
-  fMedNames.AddAt(new TObjString(name), kmed);           
 }
 
 //______________________________________________________________________
@@ -2576,7 +2593,7 @@ void TGeant3::Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
 
   G3Medium(kmed,name,nmat,isvol,ifield,fieldm,tmaxfd,stemax,deemax,epsil,
            stmin, ubuf, nbuf);
-  
+
 }
 
 //______________________________________________________________________
@@ -4990,6 +5007,236 @@ void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1,
   ertrak(x1,p1,x2,p2,ipa,PASSCHARD(chopt) PASSCHARL(chopt));
 }
 
+void TGeant3::Eufill(Int_t n,Float_t *ein,Float_t *xlf){
+
+// C.    ******************************************************************
+// C.    *                                                                *
+// C.    *    User routine to fill the input values of the commons :      *
+// C.    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'L'  *
+// C.    *         N     Number of predictions where to store results     *
+// C.    *         EIN   Input error matrix                               *
+// C.    *         XLF   Defines the tracklengths which if passed the     *
+// C.    *                      result should be stored                   *
+// C.    *                                                                *
+// C.    *                                                                *
+// C.    *    ==>Called by : USER (before calling ERTRAK)                 *
+// C.    *       Author    M.Maire, E.Nagy  *********                     *
+// C.    *                                                                *
+// C.    ******************************************************************
+   for(Int_t i=0;i<15;i++) fErtrio->errin[i]=ein[i]; 
+   const Int_t mxpred=10;
+   if (n<mxpred) {
+      fErtrio->nepred=n;
+    } else {
+     fErtrio->nepred=mxpred;
+   } 
+   for(Int_t i=0;i<15;i++) fErtrio->errin[i]=ein[i]; 
+   for(Int_t i=0;i<fErtrio->nepred;i++) fEropts->erleng[i]=xlf[i]; 
+//  eufill(n,ein,xlf);
+}
+
+void TGeant3::Eufilp(const Int_t n, Float_t *ein,
+			Float_t *pli, Float_t *plf)
+{
+  //    ******************************************************************
+  //    *                                                                *
+  //    *    User routine to fill the input values of the commons :      *
+  //    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'P'  *
+  //    *         N     Number of predictions where to store results     *
+  //    *         EIN   Input error matrix (in the 'Plane' system )      *
+  //    *         PLI   Defines the start plane                          *
+  //    *                      PLI(3,1) - and                            *
+  //    *                      PLI(3,2) - 2 unit vectors in the plane    *
+  //    *         PLF   Defines the end plane                            *
+  //    *                      PLF(3,1,I) - and                          *
+  //    *                      PLF(3,2,I) - 2 unit vectors in the plane  *
+  //    *                      PLF(3,3,I) - point on the plane           *
+  //    *                                   at intermediate point I      *
+  //    *                                                                *
+  //    *    ==>Called by : USER (before calling ERTRAK)                 *
+  //    *       Author    M.Maire, E.Nagy  *********                     *
+  //    *                                                                *
+  //    ******************************************************************
+   for(Int_t i=0;i<15;i++) fErtrio->errin[i]=ein[i]; 
+   const Int_t mxpred=10;
+   if (n<mxpred) {
+      fErtrio->nepred=n;
+    } else {
+     fErtrio->nepred=mxpred;
+   } 
+   for(Int_t i=0;i<6;i++) fEropts->erpli[i]=pli[i]; 
+
+   for (Int_t j=0;j<n;j++) {
+     for(Int_t i=0;i<9;i++) {
+       fEropts->erplo[i+12*j]=plf[i+12*j]; 
+     }
+     TVector3 v1(fEropts->erplo[0+12*j],fEropts->erplo[1+12*j],fEropts->erplo[2+12*j]);
+     TVector3 v2(fEropts->erplo[3+12*j],fEropts->erplo[4+12*j],fEropts->erplo[5+12*j]);
+     TVector3 v3=v1.Cross(v2);
+     fEropts->erplo[9]=v3(0);
+     fEropts->erplo[10]=v3(1);
+     fEropts->erplo[11]=v3(2);
+   }
+
+
+}
+void TGeant3::Eufilv(Int_t n, Float_t *ein,
+			Char_t *namv, Int_t *numv,Int_t *iovl)
+{
+
+  //    ******************************************************************
+  //    *                                                                *
+  //    *    User routine to fill the input values of the commons :      *
+  //    *               /EROPTS/, /EROPTC/ and /ERTRIO/ for CHOPT = 'V'  *
+  //    *         N     Number of predictions where to store results     *
+  //    *         EIN   Input error matrix                               *
+  //    *        CNAMV  Volume name of the prediction                    *
+  //    *        NUMV   Volume number (if 0 = all volumes)               *
+  //    *        IOVL   = 1  prediction when entering in the volume      *
+  //    *               = 2  prediction when leaving the volume          *
+  //    *                                                                *
+  //    *    ==>Called by : USER (before calling ERTRAK)                 *
+  //    *       Author    M.Maire, E.Nagy  *********                     *
+  //    *                                                                *
+  //    ******************************************************************
+
+  for(Int_t i=0;i<15;i++) fErtrio->errin[i]=ein[i]; 
+   const Int_t mxpred=15;
+   if (n<mxpred) {
+      fErtrio->nepred=n;
+    } else {
+     fErtrio->nepred=mxpred;
+   } 
+   
+   for(Int_t i=0;i<fErtrio->nepred;i++) {
+     fEropts->nameer[i]=*((int*)namv);
+     fEropts->iovler[i]=iovl[i];
+     fEropts->numver[i]=numv[i];
+   }
+}
+//______________________________________________________________________
+void TGeant3::Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk){
+
+//       SUBROUTINE TRSCSD(PC,RC,PD,RD,H,CH,IERR,SPU,DJ,DK)
+// ******************************************************************
+//  *** TRANSFORMS ERROR MATRIX
+//    FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+//       TO         VARIABLES (1/P,V',W',V,W)
+// 
+//      Authors: A. Haas and W. Wittek
+//  *** PC(3)     1/P,LAMBDA,PHI                          INPUT
+//      PD(3)     1/P,V',W'                              OUTPUT
+//      H(3)      MAGNETIC FIELD                          INPUT
+//      RC(15)    ERROR MATRIX IN   SC   VARIABLES        INPUT     (TRIANGLE)
+//      RD(15)    ERROR MATRIX IN 1/P,V',W',V,W          OUTPUT     (TRIANGLE)
+//      CH        CHARGE OF PARTICLE                      INPUT
+//                CHARGE AND MAGNETIC FIELD ARE NEEDED
+//                FOR CORRELATION TERMS (V',YT),(V',ZT),(W',YT),(W',ZT)
+//                THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+//                TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+//                AND RD FOR FIXED U
+//      DJ(3)     UNIT VECTOR IN V-DIRECTION
+//      DK(3)     UNIT VECTOR IN W-DIRECTION    OF DETECTOR SYSTEM
+// 
+//      IERR  =   1       PARTICLE MOVES PERPENDICULAR TO U-AXIS
+//                       ( V',W' ARE NOT DEFINED )
+//      SPU       SIGN OF U-COMPONENT OF PARTICLE MOMENTUM   OUTPUT
+// ******************************************************************
+  trscsd(pc,rc,pd,rd,h,ch,ierr,spu,dj,dk);
+}
+//______________________________________________________________________
+void TGeant3::Trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk) {
+// ******************************************************************
+//       SUBROUTINE TRSDSC(PD,RD,PC,RC,H,CH,IERR,SPU,DJ,DK)
+// 
+//  *** TRANSFORMS ERROR MATRIX
+//      FROM        VARIABLES (1/P,V',W',V,W)
+//       TO    SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+//      Authors: A. Haas and W. Wittek
+//  *** PD(3)     1/P,V',W'                               INPUT
+//      PC(3)     1/P,LAMBDA,PHI                         OUTPUT
+//      H(3)      MAGNETIC FIELD                          INPUT
+//      RD(15)    ERROR MATRIX IN 1/P,V',W',V,W           INPUT      (TRIANGLE)
+//      RC(15)    ERROR MATRIX IN   SC   VARIABLES       OUTPUT      (TRIANGLE)
+//      CH        CHARGE OF PARTICLE                      INPUT
+//                CHARGE AND MAGNETIC FIELD ARE NEEDED
+//                FOR CORRELATION TERMS (LAMBDA,V),(LAMBDA,W),(PHI,V),(PHI,W)
+//                THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+//                TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+//                AND RD FOR FIXED U
+//      DJ(3)     UNIT VECTOR IN V-DIRECTION
+//      DK(3)     UNIT VECTOR IN W-DIRECTION    OF DETECTOR SYSTEM
+// 
+//      IERR              NOT USED
+//      SPU       SIGN OF U-COMPONENT OF PARTICLE MOMENTUM    INPUT
+// ******************************************************************
+ trsdsc(pd,rd,pc,rc,h,ch,ierr,spu,dj,dk);
+}
+//______________________________________________________________________
+void TGeant3::Trscsp(Float_t *pc,Float_t *rc,Float_t *ps,Float_t *rs,Float_t *h,Float_t *ch,Int_t *ierr, Float_t *spx){
+// ******************************************************************
+//       SUBROUTINE TRSCSP(PC,RC,PS,RS,H,CH,IERR,SPX)
+// 
+//  *** TRANSFORMS ERROR MATRIX
+//      FROM   SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+//       TO  SPLINE VARIABLES (1/P,Y',Z',Y,Z)
+// 
+//      Authors: A. Haas and W. Wittek
+// 
+// 
+//  *** PC(3)     1/P,LAMBDA,PHI                          INPUT
+//      PS(3)     1/P,Y',Z'                              OUTPUT
+//      H(3)      MAGNETIC FIELD                          INPUT
+//      RC(15)    ERROR MATRIX IN   SC   VARIABLES        INPUT     (TRIANGLE)
+//      RS(15)    ERROR MATRIX IN SPLINE VARIABLES       OUTPUT     (TRIANGLE)
+//      CH        CHARGE OF PARTICLE                      INPUT
+//                CHARGE AND MAGNETIC FIELD ARE NEEDED
+//                FOR CORRELATION TERMS (Y',YT),(Y',ZT),(Z',YT),(Z',ZT)
+//                THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+//                TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+//                AND RS FOR FIXED X
+// 
+//      IERR  =   1       PARTICLE MOVES PERPENDICULAR TO X-AXIS
+//                       ( Y',Z' ARE NOT DEFINED )
+//      SPX       SIGN OF X-COMPONENT OF PARTICLE MOMENTUM   OUTPUT
+// ******************************************************************
+  trscsp(pc,rc,ps,rs,h,ch,ierr,spx);
+}
+//______________________________________________________________________
+void TGeant3::Trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spx) {
+
+//     ******************************************************************
+//       SUBROUTINE TRSPSC(PS,RS,PC,RC,H,CH,IERR,SPX)
+// 
+//  *** TRANSFORMS ERROR MATRIX
+//      FROM SPLINE VARIABLES (1/P,Y',Z',Y,Z)
+//       TO    SC   VARIABLES (1/P,LAMBDA,PHI,YT,ZT)
+// 
+//      Authors: A. Haas and W. Wittek
+// 
+// 
+//  *** PS(3)     1/P,Y',Z'                               INPUT
+//      PC(3)     1/P,LAMBDA,PHI                         OUTPUT
+//      H(3)      MAGNETIC FIELD                          INPUT
+//      RS(15)    ERROR MATRIX IN SPLINE VARIABLES        INPUT      (TRIANGLE)
+//      RC(15)    ERROR MATRIX IN   SC   VARIABLES       OUTPUT      (TRIANGLE)
+//      CH        CHARGE OF PARTICLE                      INPUT
+//                CHARGE AND MAGNETIC FIELD ARE NEEDED
+//                FOR CORRELATION TERMS (LAMBDA,Y),(LAMBDA,Z),(PHI,Y),(PHI,Z)
+//                THESE CORRELATION TERMS APPEAR BECAUSE RC IS ASSUMED
+//                TO BE THE ERROR MATRIX FOR FIXED S (PATH LENGTH)
+//                AND RS FOR FIXED X
+// 
+//      IERR              NOT USED
+//      SPX       SIGN OF X-COMPONENT OF PARTICLE MOMENTUM    INPUT
+// 
+//     ******************************************************************
+
+ trspsc(ps,rs,pc,rc,h,ch,ierr,spx);
+
+}
+
+
 //______________________________________________________________________
 void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 			  Int_t number, Int_t nlevel)
@@ -6226,7 +6473,6 @@ Bool_t TGeant3::GetMedium(const TString &volumeName,TString &name,
     stmin  = (Double_t) stminf;
     return kTRUE;
 }
-
 //____________________________private method____________________________
 Int_t TGeant3::ConvertVolumePathString(const TString &volumePath,
                                        Int_t **lnam,Int_t **lnum){
@@ -6305,3 +6551,12 @@ Int_t TGeant3::ConvertVolumePathString(const TString &volumePath,
     delete[] copies;
     return ireturn; // return the size of lnam and lnum. 
 }
+
+//__________________________________________________________________
+
+void TGeant3::Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
+                     Float_t& cosph, Float_t& sinph, Int_t& rotate) 
+{
+
+  g3fang(p, costh, sinth, cosph, sinph, rotate );
+} 

@@ -58,7 +58,6 @@ public:
   const char *CurrentVolOffName(Int_t off) const;
   const char *CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
-  Int_t MediumId(const Text_t *name) const;
   const char* VolName(Int_t id) const;
   Int_t NofVolumes() const;
   Int_t NofVolDaughters(const char* volName) const;

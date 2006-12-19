@@ -22,7 +22,6 @@
 #include "TMCProcess.h"
 #include "TMCParticleType.h"
 #include "TGeoMCGeometry.h"
-#include "TObjArray.h"
 
 class TGeoHMatrix;
 class TArrayD;
@@ -465,7 +464,7 @@ typedef struct {
 #define MXPRED 10
 typedef struct {
   Double_t erdtrp[MXPRED*5*5];
-  Float_t  errin[5];
+  Float_t  errin[15];
   Float_t  errout[MXPRED*15];
   Float_t  ertrsp[MXPRED*5*5];
   Float_t  erxin[3];
@@ -495,17 +494,36 @@ typedef struct {
   Int_t     nameer[MXPRED];
   Int_t     numver[MXPRED];
   Int_t     iovler[MXPRED];
-  Bool_t    leexac;
-  Bool_t    leleng;
-  Bool_t    leonly;
-  Bool_t    leplan;
-  Bool_t    lepoin;
-  Bool_t    levolu;
+  Int_t    leexac;
+  Int_t    leleng;
+  Int_t    leonly;
+  Int_t    leplan;
+  Int_t    lepoin;
+  Int_t    levolu;
 } Eropts_t;
 
 typedef struct {
   char chopti[8];
 } Eroptc_t;
+
+//-------TRCOM3: A. Panzarasa
+// COMMON /TRCOM3/ A(5,5),B(5,5),S(15),TN(3),T(5),
+//          COSL,SINL,COSP,SINP,COSLI,NEW
+//
+typedef struct {
+  Double_t a[5][5];
+  Double_t b[5][5];
+  Double_t s[15];
+  Double_t tn[3];
+  Double_t t[5];
+  Double_t cosl;
+  Double_t sinl;
+  Double_t cosp;
+  Double_t sinp;
+  Double_t cosl1;
+  Int_t NEW;
+} Trcom3_t;
+
 
 //-------ERWORK
 //    DOUBLE PRECISION EI, EF, ASDSC
@@ -535,7 +553,7 @@ typedef struct {
 //----------GCCHAN
 //      COMMON/GCCHAN/LSAMVL
 typedef struct {
-  Bool_t    lsamvl;
+  Int_t    lsamvl;
 } Gcchan_t;
 
 /************************************************************************
@@ -573,7 +591,6 @@ public:
   const char *CurrentVolOffName(Int_t off) const;
   const char* CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
-  Int_t MediumId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
   const char* VolName(Int_t id) const;
@@ -684,7 +701,6 @@ public:
                   Double_t &fieldm,Double_t &tmaxfd,Double_t &stemax,
                   Double_t &deemax,Double_t &epsil, Double_t &stmin,
                   TArrayD &par);
-                  
 
 ////////////////////////////////////////////////////////////////////////
 //                                                                    //
@@ -729,7 +745,7 @@ public:
   virtual Eropts_t* Eropts() const {return fEropts;}
   virtual Eroptc_t* Eroptc() const {return fEroptc;}
   virtual Erwork_t* Erwork() const {return fErwork;}
-
+  virtual Trcom3_t* Trcom3() const {return fTrcom3;}
 
 
       // functions from GBASE
@@ -770,6 +786,8 @@ public:
    virtual  void  Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode);
    virtual  void  Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
                          Float_t dens, Float_t radl, Float_t absl);
+ virtual  void  Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
+			 Float_t& cosph, Float_t& sinph, Int_t& rotate);
    virtual  void  Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
                          Float_t dens, Int_t nlmat, Float_t *wmat);
    virtual  void  Gspart(Int_t ipart, const char *name, Int_t itrtyp,
@@ -954,18 +972,28 @@ public:
    virtual  void  SetSWIT(Int_t sw, Int_t val=1);
    virtual  void  SetTRIG(Int_t nevents=1);
    virtual  void  SetUserDecay(Int_t ipart);
-
    virtual  void  Vname(const char *name, char *vname);
-
    virtual  void  InitLego();
 
   // Routines from GEANE
 
-    virtual void Ertrgo();
-    virtual void Ertrak(const Float_t *x1, const Float_t *p1,
+   virtual void Ertrgo();
+   virtual void Ertrak(const Float_t *x1, const Float_t *p1,
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt);
-
+   virtual void Eufill(Int_t n,Float_t *ein,Float_t *xlf);
+   virtual void Eufilp(const Int_t n, Float_t *ein,
+			Float_t *pli, Float_t *plf);
+   virtual void Eufilv(Int_t n, Float_t *ein,
+			Char_t *namv, Int_t *numv,Int_t *iovl);
+   virtual void Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+   virtual void Trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+   virtual void Trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spx);
+   virtual void Trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+			Float_t *ch,Int_t *ierr,Float_t *spx);
   // Control Methods
 
   virtual void FinishGeometry();
@@ -982,9 +1010,19 @@ public:
   	          Float_t *pmom, Float_t *vpos, Float_t *polar,
                   Float_t tof, TMCProcess mech, Int_t &ntr,
                   Float_t weight, Int_t is);
+
+  Ertrio_t *fErtrio;          //! ERTRIO common structure
+  Eropts_t *fEropts;          //! EROPTS common structure
+  Eroptc_t *fEroptc;          //! EROPTC common structure
+  Erwork_t *fErwork;          //! ERWORK common structure
+  Trcom3_t *fTrcom3;          //! TRCOM3 common structure
+
+
 private:
   Int_t ConvertVolumePathString(const TString &volumeName,Int_t **lnam,
                                 Int_t **lnum);
+
+
 
 protected:
   Int_t fNextVol;    // Iterator for GeomIter
@@ -1019,15 +1057,11 @@ protected:
   Gcchan_t *fGcchan;          //! GCCHAN common structure
 
   // commons for GEANE
-  Ertrio_t *fErtrio;          //! ERTRIO common structure
-  Eropts_t *fEropts;          //! EROPTS common structure
-  Eroptc_t *fEroptc;          //! EROPTC common structure
-  Erwork_t *fErwork;          //! ERWORK common structure
+ 
 
   //Put here all volume names
 
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
-  TObjArray fMedNames;            //! Names of geant medias as TObjString
 
   enum { kMaxParticles = 100};
 
