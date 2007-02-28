@@ -16,6 +16,51 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.51  2006/12/19 13:16:19  brun
+from Mohammad Al-Turany & Denis Bertini
+
+Changes in  TGeant3/TGeant3.cxx and TGeant3.h
+------------------------------------
+1. Geane interface functions are added:
+    void  eufill(Int_t n, Float_t *ein, Float_t *xlf);
+    void  eufilp(const int n,Float_t *ein,Float_t *pli,Float_t *plf);
+    void  eufilv(Int_t n, Float_t *ein,	Char_t *namv, Int_t *numv,Int_t *iovl);
+    void  trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,
+		 Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+    void  trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,
+                           Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+    void  trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+  			Float_t *ch,Int_t *ierr,Float_t *spx);
+    void  trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+  			Float_t *ch,Int_t *ierr,Float_t *spx);
+
+2. The Gfang function wrapper is added
+    void  g3fang( Float_t *, Float_t &,Float_t &, Float_t &, Float_t &,Int_t & );
+
+
+
+
+changes in TGeant3/TGeant3gu.cxx
+--------------------------
+Adding GCalor interface
+	1. function calsig() and gcalor() are added
+	2. setting ihadr=5 will call the GCalor routine
+
+
+
+
+changes in TGeant3/TGeant3.h
+-----------------------
+1. Structures for Geane output are setted as public so that the user can access them
+
+    Ertrio_t *fErtrio
+    Eropts_t *fEropts
+    Eroptc_t *fEroptc
+    Erwork_t *fErwork
+    Trcom3_t *fTrcom3
+
+2. The size of the error matrix errin is corrected to 15
+
 Revision 1.49  2006/04/20 10:14:55  brun
 From Peter Hristov:
 small change in TGeant3.cxx:
@@ -3560,7 +3605,7 @@ void  TGeant3::Grndmq(Int_t &is1, Int_t &is2, Int_t /*iseq*/,
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 //______________________________________________________________________
-void  TGeant3::Gdxyz(Int_t it)
+void  TGeant3::Gdxyz(Int_t /* it */)
 {
   //
   // Draw the points stored with Gsxyz relative to track it
@@ -4246,7 +4291,7 @@ Int_t TGeant3::Glvolu(Int_t nlev, Int_t *lnam,Int_t *lnum)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdelete(Int_t iview)
+void TGeant3::Gdelete(Int_t /* iview */)
 {
   //
   //  IVIEW  View number
@@ -4256,7 +4301,7 @@ void TGeant3::Gdelete(Int_t iview)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdopen(Int_t iview)
+void TGeant3::Gdopen(Int_t /* iview */)
 {
   //
   //  IVIEW  View number
@@ -4282,7 +4327,7 @@ void TGeant3::Gdclose()
 }
 
 //______________________________________________________________________
-void TGeant3::Gdshow(Int_t iview)
+void TGeant3::Gdshow(Int_t /* iview */)
 {
   //
   //  IVIEW  View number
@@ -4333,9 +4378,9 @@ void TGeant3::Gdopt(const char *name,const char *value)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi, 
-                    Double_t psi, Double_t u0,Double_t v0,Double_t ul,
-                    Double_t vl)
+void TGeant3::Gdraw(const char* /*name*/,Double_t /*theta*/, Double_t /*phi*/, 
+                    Double_t /*psi*/, Double_t /*u0*/, Double_t /*v0*/, Double_t /*ul*/,
+                    Double_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -4374,8 +4419,8 @@ void TGeant3::Gdraw(const char *name,Double_t theta, Double_t phi,
 }
 
 //______________________________________________________________________
-void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
-		     Float_t v0,Float_t ul,Float_t vl)
+void TGeant3::Gdrawc(const char* /*name*/,Int_t /*axis*/, Float_t /*cut*/, Float_t /*u0*/,
+		     Float_t /*v0*/, Float_t /*ul*/, Float_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -4396,9 +4441,9 @@ void TGeant3::Gdrawc(const char *name,Int_t axis, Float_t cut,Float_t u0,
 }
 
 //______________________________________________________________________
-void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
-		     Float_t cutval, Float_t theta, Float_t phi, Float_t u0,
-		     Float_t v0,Float_t ul,Float_t vl)
+void TGeant3::Gdrawx(const char* /*name*/, Float_t /*cutthe*/, Float_t /*cutphi*/,
+		     Float_t /*cutval*/, Float_t /*theta*/, Float_t /*phi*/, Float_t /*u0*/,
+		     Float_t /*v0*/,Float_t /*ul*/, Float_t /*vl*/)
 {
   //
   //  NAME   Volume name
@@ -4420,7 +4465,7 @@ void TGeant3::Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
 }
 
 //______________________________________________________________________
-void TGeant3::Gdhead(Int_t isel, const char *name, Double_t chrsiz)
+void TGeant3::Gdhead(Int_t /*isel*/, const char* /*name*/, Double_t /*chrsiz*/)
 {
   //
   //  Parameters
@@ -4443,7 +4488,7 @@ void TGeant3::Gdhead(Int_t isel, const char *name, Double_t chrsiz)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdman(Double_t u, Double_t v, const char *type)
+void TGeant3::Gdman(Double_t /*u*/, Double_t /*v*/, const char* /*type*/)
 {
   //
   //  Draw a 2D-man at position (U0,V0)
@@ -4460,7 +4505,7 @@ void TGeant3::Gdman(Double_t u, Double_t v, const char *type)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdspec(const char *name)
+void TGeant3::Gdspec(const char* /*name*/)
 {
   //
   //  NAME   Volume name
@@ -4474,7 +4519,7 @@ void TGeant3::Gdspec(const char *name)
 }
 
 //______________________________________________________________________
-void TGeant3::DrawOneSpec(const char *name)
+void TGeant3::DrawOneSpec(const char* /*name*/)
 {
   //
   //  Function called when one double-clicks on a volume name
@@ -4483,7 +4528,7 @@ void TGeant3::DrawOneSpec(const char *name)
 }
 
 //______________________________________________________________________
-void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
+void TGeant3::Gdtree(const char* /*name*/, Int_t /*levmax*/, Int_t /*isel*/)
 {
   //
   //  NAME   Volume name
@@ -4502,7 +4547,7 @@ void TGeant3::Gdtree(const char *name,Int_t levmax, Int_t isel)
 }
 
 //______________________________________________________________________
-void TGeant3::GdtreeParent(const char *name,Int_t levmax, Int_t isel)
+void TGeant3::GdtreeParent(const char* /*name*/, Int_t /*levmax*/, Int_t /*isel*/)
 {
   //
   //  NAME   Volume name
@@ -4602,8 +4647,8 @@ void TGeant3::SetCKOV(Int_t par)
 
 
 //______________________________________________________________________
-void  TGeant3::SetClipBox(const char *name,Double_t xmin,Double_t xmax,
-			  Double_t ymin,Double_t ymax,Double_t zmin,Double_t zmax)
+void  TGeant3::SetClipBox(const char* /*name*/, Double_t /*xmin*/, Double_t /*xmax*/,
+			  Double_t /*ymin*/, Double_t /*ymax*/, Double_t /*zmin*/, Double_t /*zmax*/)
 {
   //
   //  The hidden line removal technique is necessary to visualize properly
