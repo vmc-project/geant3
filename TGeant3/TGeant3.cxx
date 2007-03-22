@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.52  2007/02/28 16:25:14  brun
+From Federico:
+Suppress compiler warnings coming from unused arguments
+
 Revision 1.51  2006/12/19 13:16:19  brun
 from Mohammad Al-Turany & Denis Bertini
 
@@ -390,6 +394,7 @@ Cleanup of code
 #include "TString.h"
 #include "TParameter.h"
 #include "TGeoMatrix.h"
+#include "TObjString.h"
 
 #include "TGeant3.h"
 
@@ -1661,6 +1666,21 @@ Int_t TGeant3::VolId(const Text_t *name) const
 }
 
 //______________________________________________________________________
+Int_t TGeant3::MediumId(const Text_t *medName) const
+{
+    // Return the unique numeric identifier for medium name                  
+
+  Int_t nmed = fMedNames.GetEntriesFast();
+  for ( Int_t imed = 1; imed < nmed; imed++ ) {
+  
+    TString name = ((TObjString*)fMedNames.At(imed))->GetString();
+    if ( name == TString(medName) )  return imed;
+  }
+  printf("MediumId: Medium %s not found\n", medName);
+  return 0;
+}      
+        
+//______________________________________________________________________
 Int_t TGeant3::NofVolumes() const
 {
   //
@@ -2610,6 +2630,8 @@ void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   Float_t fstmin =  stmin;
   g3stmed(kmed, PASSCHARD(name),nmat,isvol,ifield,ffieldm,ftmaxfd,fstemax,
           fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
+
+  fMedNames.AddAt(new TObjString(name), kmed);           
 }
 
 //______________________________________________________________________

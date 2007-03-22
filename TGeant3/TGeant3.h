@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.24 2005/11/18 21:25:22 brun Exp $ */
+/* $Id: TGeant3.h,v 1.26 2006/12/19 13:16:19 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -22,6 +22,7 @@
 #include "TMCProcess.h"
 #include "TMCParticleType.h"
 #include "TGeoMCGeometry.h"
+#include "TObjArray.h"
 
 class TGeoHMatrix;
 class TArrayD;
@@ -591,6 +592,7 @@ public:
   const char *CurrentVolOffName(Int_t off) const;
   const char* CurrentVolPath();
   Int_t VolId(const Text_t *name) const;
+  Int_t MediumId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
   Int_t PDGFromId(Int_t pdg) const;
   const char* VolName(Int_t id) const;
@@ -1062,6 +1064,7 @@ protected:
   //Put here all volume names
 
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
+  TObjArray fMedNames;            //! Names of geant medias as TObjString
 
   enum { kMaxParticles = 100};
 
