@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.53  2007/03/22 08:58:41  brun
+From Ivana:
+Restore the function TGeant3::MediumId
+
 Revision 1.52  2007/02/28 16:25:14  brun
 From Federico:
 Suppress compiler warnings coming from unused arguments
@@ -4713,11 +4717,14 @@ void TGeant3::SetCOMP(Int_t par)
   fGcphys->icomp = par;
 }
 
+//modified by Andrea Fontana and Alberto Rotondi - march 2007
+//added array of 5 user definable cuts (like in old Geant)
 //______________________________________________________________________
 void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
 		      Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
 		      Float_t bcutm ,Float_t dcute ,Float_t dcutm ,
-		      Float_t ppcutm, Float_t tofmax)
+		      Float_t ppcutm, Float_t tofmax, Float_t *gcuts, Float_t
+		      gcalpha)
 {
   //
   //  CUTGAM   Cut for gammas              D=0.001
@@ -4750,6 +4757,12 @@ void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
   fGccuts->dcutm  = dcutm;
   fGccuts->ppcutm = ppcutm;
   fGccuts->tofmax = tofmax;
+  fGccuts->gcuts[0] = gcuts[0];
+  fGccuts->gcuts[1] = gcuts[1];
+  fGccuts->gcuts[2] = gcuts[2];
+  fGccuts->gcuts[3] = gcuts[3];
+  fGccuts->gcuts[4] = gcuts[4];
+  fGccuts->gcalpha = gcalpha;
 }
 
 //______________________________________________________________________

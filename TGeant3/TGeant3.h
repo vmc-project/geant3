@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.26 2006/12/19 13:16:19 brun Exp $ */
+/* $Id: TGeant3.h,v 1.27 2007/03/22 08:58:41 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -289,6 +289,7 @@ typedef struct {
   Float_t ppcutm;
   Float_t tofmax;
   Float_t gcuts[5];
+  Float_t gcalpha;
 } Gccuts_t;
 
 //----------GCMULO
@@ -948,10 +949,13 @@ public:
                              Double_t ymax=0,Double_t zmin=-9999,
                              Double_t zmax=0);
    virtual  void  SetCOMP(Int_t par=1);
+   //modified by Andrea Fontana and Alberto Rotondi - march 2007
+   //added array of 5 user definable cuts (like in old Geant)
    virtual  void  SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
                           Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
                           Float_t bcutm ,Float_t dcute ,
-                          Float_t dcutm ,Float_t ppcutm, Float_t tofmax);
+                          Float_t dcutm ,Float_t ppcutm, Float_t tofmax, Float_t
+			  *gcuts,Float_t gcalpha);
    virtual  void  SetDCAY(Int_t par=1);
    virtual  void  SetDEBU(Int_t emin=1, Int_t emax=999, Int_t emod=1);
    virtual  void  SetDRAY(Int_t par=1);
