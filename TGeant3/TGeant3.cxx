@@ -16,6 +16,10 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.54  2007/03/23 21:11:44  brun
+From Ivana Hrivnacova and Andrea Fontana:
+Reintroduce functionality in TGeant3::SetCuts that was removed in a previous patch.
+
 Revision 1.53  2007/03/22 08:58:41  brun
 From Ivana:
 Restore the function TGeant3::MediumId
@@ -2635,7 +2639,7 @@ void TGeant3::G3Medium(Int_t& kmed, const char* name, Int_t nmat, Int_t isvol,
   g3stmed(kmed, PASSCHARD(name),nmat,isvol,ifield,ffieldm,ftmaxfd,fstemax,
           fdeemax, fepsil, fstmin, ubuf, nbuf PASSCHARL(name));
 
-  fMedNames.AddAt(new TObjString(name), kmed);           
+  fMedNames.AddAtAndExpand(new TObjString(name), kmed);           
 }
 
 //______________________________________________________________________
