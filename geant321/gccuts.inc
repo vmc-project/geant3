@@ -1,7 +1,10 @@
 *
-* $Id: gccuts.inc,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gccuts.inc,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gccuts.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -20,10 +23,11 @@
 *
 #if !defined(CERNLIB_INCLUDE)
       COMMON/GCCUTS/CUTGAM,CUTELE,CUTNEU,CUTHAD,CUTMUO,BCUTE,BCUTM
-     +             ,DCUTE ,DCUTM ,PPCUTM,TOFMAX,GCUTS(5)
+     +             ,DCUTE ,DCUTM ,PPCUTM,TOFMAX,GCUTS(5),GCALPHA
 C
 #if defined(CERNLIB_TYPE)
 #include "geant321/gtcuts.inc"
+
 #endif
 #endif
 *
