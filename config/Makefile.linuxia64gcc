@@ -1,4 +1,4 @@
-# $Id: Makefile.Linux-ia64-gcc,v 1.1 2002/12/02 17:11:41 brun Exp $
+# $Id: Makefile.linuxia64gcc,v 1.1 2004/05/13 19:43:03 brun Exp $
 
 # Linux platform dependent definitions for GEANT321 Makefile
 
@@ -23,7 +23,7 @@ AWK	  = awk
 #
 CXXOPTS       = $(OPT) -Wall -fPIC -pipe
 COPT	      = $(OPT) -fPIC
-FOPT	      = $(OPT) -fno-second-underscore
+FOPT	      = $(OPT) -fno-second-underscore -fno-f2c
 
 # CERNLIB defines
 
