@@ -1,7 +1,10 @@
 *
-* $Id: gpgkin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gpgkin.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gpgkin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GPGKIN
+      SUBROUTINE G3PGKIN
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *        Print kinematics of secondary tracks at the current     *
 C.    *        interaction point.                                      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>,GUSTEP,GDEBUG                         *
+C.    *    ==>Called by : <USER>,GUSTEP,G3DEBUG                        *
 C.    *       Author    R.Brun  *********                              *
 C.    *                                                                *
 C.    ******************************************************************
@@ -44,14 +47,14 @@ C.
          EK=ET-Q(JP+7)
          SEK=SEK+EK
          SET=SET+ET
-         CALL GEVKEV(EK,EKU,UNITK)
-         CALL GEVKEV(ET,ETU,UNITE)
+         CALL G3EVKEV(EK,EKU,UNITK)
+         CALL G3EVKEV(ET,ETU,UNITE)
          IF(I.LT.NGKINE)THEN
             WRITE(CHMAIL,1000)I,(IQ(JP+J),J=1,4),EKU,UNITK,ETU,UNITE
      +                         ,TOFDN
          ELSE
-            CALL GEVKEV(SEK,SEKU,UNITSK)
-            CALL GEVKEV(SET,SETU,UNITSE)
+            CALL G3EVKEV(SEK,SEKU,UNITSK)
+            CALL G3EVKEV(SET,SETU,UNITSE)
             WRITE(CHMAIL,2000)I,(IQ(JP+J),J=1,4),EKU,UNITK,ETU,UNITE
      +                         ,TOFDN,SEKU,UNITSK,SETU,UNITSE
          ENDIF

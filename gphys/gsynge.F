@@ -1,7 +1,10 @@
 *
-* $Id: gsynge.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsynge.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsynge.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSYNGE (GAMMA,AM,HKGAUS,STEP,NTR,ETR,STR)
+      SUBROUTINE G3SYNGE (GAMMA,AM,HKGAUS,STEP,NTR,ETR,STR)
 C
 C.    ******************************************************************
 C.    *                                                                *
@@ -38,7 +41,7 @@ C.    *   NTR        - number of the synchrotron photons,              *
 C.    *   ETR(k)     - photon energy,                                  *
 C.    *   STR(k)     - photon coordinate.                              *
 C.    *                                                                *
-C.    *   ==> Called by : GSYNC                                        *
+C.    *   ==> Called by : G3SYNC                                       *
 C.    *       Authors   : Igor Gavrilenko                              *
 C.    *                                                                *
 C.    ******************************************************************
@@ -84,7 +87,7 @@ C...
       EC          = 2.96E-8*GAMMA**3/RAD
 C...
       AN          = .01053*GAMMA/RAD*STEP
-      CALL GPOISS(AN,N,1)
+      CALL G3POISS(AN,N,1)
       N=MIN(N,100)
       IF(N.LE.0) GO TO 999
 C...

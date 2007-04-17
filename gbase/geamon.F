@@ -1,7 +1,17 @@
 *
-* $Id: geamon.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: geamon.F,v 1.3 2006/03/16 10:03:56 brun Exp $
 *
 * $Log: geamon.F,v $
+* Revision 1.3  2006/03/16 10:03:56  brun
+* From Federico:
+* Add dummy routine umlog
+*
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -16,7 +26,7 @@
 #if defined(CERNLIB_MONITOR)
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GEAMON(ICASE,CHINFO)
+      SUBROUTINE G3EAMON(ICASE,CHINFO)
 C.
 C.    ******************************************************************
 C.    *                                                                *

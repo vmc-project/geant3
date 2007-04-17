@@ -1,7 +1,10 @@
 *
-* $Id: ggperp.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: ggperp.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: ggperp.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -21,7 +24,7 @@
 *               not implemented
 *CMZ :  3.21/02 29/03/94  15.41.28  by  S.Giani
 *-- Author :
-      SUBROUTINE GGPERP (X,U,IERR)
+      SUBROUTINE G3GPERP (X,U,IERR)
 C.
 C.    ****************************************************************
 C.    *                                                              *
@@ -73,7 +76,7 @@ C.
       LNTFOU = .FALSE.
 *
 * *** Transform current point into local reference system
-      CALL GMTOD(X,XL,1)
+      CALL G3MTOD(X,XL,1)
       DXL(1) = XL(1)
       DXL(2) = XL(2)
       DXL(3) = XL(3)
@@ -708,7 +711,7 @@ C.
       ELSE
 *
 * *** Transform back into the MCS
-        CALL GDTOM(UL,U,2)
+        CALL G3DTOM(UL,U,2)
         IERR = 0
       ENDIF
  

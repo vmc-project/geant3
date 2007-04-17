@@ -1,7 +1,10 @@
 *
-* $Id: gbrsge.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrsge.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrsge.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 24/02/95  14.50.31  by  S.Giani
 *-- Author :
-      FUNCTION GBRSGE(ZZ,T,BCUT)
+      FUNCTION G3BRSGE(ZZ,T,BCUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -97,7 +100,7 @@ C.
       DATA THIGH,CHIGH/100.,50./
 C.    ------------------------------------------------------------------
 C.
-      GBRSGE=0.
+      G3BRSGE=0.
 *
       IF(BCUT.LE.0.) GOTO 99
       IF(BCUT.GE.T) GOTO 99
@@ -175,7 +178,7 @@ C
       FAC=ZZ*(ZZ+AKSI)*E*E*(LOG(TT/EC))**ALFA/(TT*(E+EMASS))
       IF(FAC.LE.0.) GOTO 99
 C
-      GBRSGE=FAC*S
+      G3BRSGE=FAC*S
 *
       IF(T.GT.THIGH) THEN
 
@@ -191,7 +194,7 @@ C
         S=S/(-LOG(RAT)-2./3.+RAT-RAT*RAT/3.)
        ENDIF
 
-        GBRSGE=GBRSGE*S
+        G3BRSGE=G3BRSGE*S
       ENDIF
 *
 99    RETURN

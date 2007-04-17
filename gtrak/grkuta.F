@@ -1,7 +1,13 @@
 *
-* $Id: grkuta.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grkuta.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: grkuta.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GRKUTA (CHARGE,STEP,VECT,VOUT)
+      SUBROUTINE G3RKUTA (CHARGE,STEP,VECT,VOUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -49,7 +55,7 @@ C.
      +            (XT,XYZT(1)),(YT,XYZT(2)),(ZT,XYZT(3))
 *
       PARAMETER (MAXIT = 1992, MAXCUT = 11)
-      PARAMETER (EC=2.9979251D-4,DLT=1D-4,DLT32=DLT/32)
+      PARAMETER (EC=2.99792458D-4,DLT=1D-4,DLT32=DLT/32)
       PARAMETER (ZERO=0, ONE=1, TWO=2, THREE=3)
       PARAMETER (THIRD=ONE/THREE, HALF=ONE/TWO)
       PARAMETER (PISQUA=.986960440109D+01)

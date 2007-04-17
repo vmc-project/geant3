@@ -1,7 +1,10 @@
 *
-* $Id: glandr.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: glandr.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glandr.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      FUNCTION GLANDR(X)
+      FUNCTION G3LANDR(X)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Copy of the CERN library routine RANLAN for restricted        *
 C.    *  Landau distribution.                                          *
 C.    *                                                                *
-C.    *    ==>Called by : GLANDO                                       *
+C.    *    ==>Called by : G3LANDO                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -219,9 +222,9 @@ C.
       U=1000.0*X
       I=U
       U=U-FLOAT(I)
-      GLANDR=F(I)+U*(F(I+1)-F(I))
+      G3LANDR=F(I)+U*(F(I+1)-F(I))
       IF(I .GE. 70 .AND. I .LE. 800) RETURN
-      GLANDR=GLANDR-0.25*U*(1.0-U)*(F(I+2)-F(I+1)-F(I)+F(I-1))
+      G3LANDR=G3LANDR-0.25*U*(1.0-U)*(F(I+2)-F(I+1)-F(I)+F(I-1))
       IF(I .GE.  7 .AND. I .LE. 980) RETURN
       IF(I. LT. 7) THEN
          IF(X.LT.1.E-10)THEN
@@ -230,17 +233,17 @@ C.
             V=LOG(X)
          ENDIF
          U=1.0/V
-         GLANDR=((0.99858950+(3.45213058E1+1.70854528E1*U)*U)/
+         G3LANDR=((0.99858950+(3.45213058E1+1.70854528E1*U)*U)/
      1           (1.0       +(3.41760202E1+4.01244582  *U)*U))*
      2           (-LOG(-0.91893853-V)-1.0)
       ELSE
          U=1.0-X
          V=U**2
          IF(X .LE. 0.999) THEN
-            GLANDR=(1.00060006+2.63991156E2*U+4.37320068E3*V)/
+            G3LANDR=(1.00060006+2.63991156E2*U+4.37320068E3*V)/
      1             ((1.0       +2.57368075E2*U+3.41448018E3*V)*U)
          ELSE
-            GLANDR=(1.00001538+6.07514119E3*U+7.34266409E5*V)/
+            G3LANDR=(1.00001538+6.07514119E3*U+7.34266409E5*V)/
      1             ((1.0       +6.06511919E3*U+6.94021044E5*V)*U)
          ENDIF
       ENDIF

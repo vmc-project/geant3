@@ -1,7 +1,10 @@
 *
-* $Id: gxpick.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gxpick.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gxpick.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -161,7 +164,7 @@ C.
 *  determine medium
 *
       NUMED=0
-      CALL GMEDIA(XC,NUMED)
+      CALL G3MEDIA(XC,NUMED)
 *
       IF(NUMED.EQ.0)THEN
          WRITE(CHMAIL,10300)

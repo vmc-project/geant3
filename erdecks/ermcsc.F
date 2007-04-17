@@ -1,7 +1,10 @@
 *
-* $Id: ermcsc.F,v 1.1.1.1 2002/06/16 15:18:35 hristov Exp $
+* $Id: ermcsc.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: ermcsc.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:35  hristov
 * Separate distribution  of Geant3
 *
@@ -37,14 +40,28 @@ C.    ******************************************************************
 #include "geant321/gctrak.inc"
 *
       DOUBLE PRECISION E(15)
+      REAL*4 RADLOCAL
 *
       PBETA = VECT(7)*VECT(7)/GETOT
-      RI    = STEP/RADL
-*
+      
       CRLOG = 1.
 CC      CRLOG = 1. + 0.201*LOG(RI)
 CC      IF (CRLOG.LE.0.) CRLOG = 0.
-      D     = 1.8496E-4*RI*((CHARGE*CRLOG/PBETA)**2)
+CC      D     = 1.8496E-4*RI*((CHARGE*CRLOG/PBETA)**2)
+*
+* modified by Andrea Fontana and Alberto Rotondi to include 
+* the correct variance for Coulomb multiple scattering
+* (see Fruhwirth and Regler, NIM A 456 (2001) 369)
+* march 2007
+*
+* begin of change
+*
+      RADLOCAL = (Z+1)*LOG(287.*Z**(-0.5))/(Z*LOG(159.*Z**(-0.333333)))
+      RI    = STEP/(RADL*RADLOCAL)
+      D     = 2.25E-4*RI*((CHARGE*CRLOG/PBETA)**2)
+*
+* end of change
+*
       S1    = D*STEP**2/3.
       S2    = D
       S3    = D*STEP/2.

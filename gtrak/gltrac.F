@@ -1,7 +1,10 @@
 *
-* $Id: gltrac.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gltrac.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gltrac.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,16 +18,16 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 13/12/94  15.36.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GLTRAC
+      SUBROUTINE G3LTRAC
 C.
 C.    ******************************************************************
 C.    *                                                                *
-C.    *    SUBR. GLTRAC                                                *
+C.    *    SUBR. G3LTRAC                                               *
 C.    *                                                                *
 C.    *   Extracts next track from stack JSTAK and prepares commons    *
 C.    *    /GCTRAK/, /GCKINE/ and /GCVOLU/                             *
 C.    *                                                                *
-C.    *   Called by : GTREVE                                           *
+C.    *   Called by : G3TREVE                                          *
 C.    *   Authors   : R.Brun, F.Bruyant                                *
 C.    *                                                                *
 C.    ******************************************************************
@@ -52,7 +55,7 @@ C.    ------------------------------------------------------------------
       IF(ISTORD.EQ.1) THEN
 *
 * *** User ordering of tracks if requested
-         CALL GSTORD
+         CALL G3STORD
       ENDIF
       ISTAK = IQ(JSTAK+1)
       IQ(JSTAK+1) = ISTAK -1
@@ -129,7 +132,7 @@ C.    ------------------------------------------------------------------
          POLAR(2) = Q(JPO+2)
          POLAR(3) = Q(JPO+3)
       ELSE
-         CALL GEKBIN
+         CALL G3EKBIN
       ENDIF
 *
       SLENG  = 0.
@@ -186,10 +189,9 @@ C.    ------------------------------------------------------------------
 *
 *   * Prepare common /GCVOLU/ and structure JGPAR, if needed
 *
-      IF (NJTMAX.LE.0) THEN
-        IF (GONLY(NLEVEL).EQ.0.) NLEVEL=0
-        CALL GMEDIA (VECT, NUMED)
-      ENDIF
+c      IF (NJTMAX.LE.0) THEN
+        CALL GMEDIA (VECT, NUMED, 1)
+c      ENDIF
       INFROM = 0
 *                                                             END GLTRAC
       END

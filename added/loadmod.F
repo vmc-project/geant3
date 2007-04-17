@@ -1,6 +1,6 @@
       subroutine loadmod
-      call gtreve
-      call gtrigi
+      call g3treve
+      call g3trigi
       call gudcay
       call gudigi
       call gufld
@@ -21,4 +21,22 @@
       call gupara
       call gudtim
       call guplsh
+      end
+      subroutine gdcol(i)
+      end
+      subroutine gdkine
+      end
+      subroutine gdcxyz
+      end
+      subroutine gdshad
+      end
+      subroutine gdtrak
+      end
+      subroutine gdrack
+      end
+      subroutine gdcgrs
+      end
+      subroutine gfind
+      end      
+      subroutine gviewf
       end

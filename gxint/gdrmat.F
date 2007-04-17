@@ -1,7 +1,10 @@
 *
-* $Id: gdrmat.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gdrmat.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gdrmat.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -64,7 +67,7 @@ C.    ******************************************************************
       ENDIF
       IMATE=ABS(IMATES)
       IDM=-1
-      CALL IGSA(0)
+*      CALL IGSA(0)
       DO 10 JMEC=1,MMEC
          CALL GPLMAT(IMATES,IPART,CHMECA(JMEC),NEKBIN,ELOW,IDM)
    10 CONTINUE
@@ -127,7 +130,7 @@ C.    ******************************************************************
       CALL ITX(XCTT,YCTT,TITLE)
       CALL ISELNT(NT)
 *
-      CALL IGSA(0)
+*      CALL IGSA(0)
       NSHIF=0
       NPLOT=0
       HSYM = 20

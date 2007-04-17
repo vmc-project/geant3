@@ -4,7 +4,7 @@
 *CMZ :          12/09/95  11.07.14  by  S.Ravndal
 *CMZ :  3.21/04 13/12/94  15.17.13  by  S.Giani
 *-- Author :
-      SUBROUTINE GTCKOV
+      SUBROUTINE G3TCKOV
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -19,7 +19,7 @@ C.    *   For each of these there is a continuum of reflectivity       *
 C.    *   and of surface quality from mirror finish to matte. The      *
 C.    *   surface model is contained in routine GHSURF.                *
 C.    *                                                                *
-C.    *   ==>Called by : GTRACK                                        *
+C.    *   ==>Called by : G3TRACK                                       *
 C.    *      Authors    F.Carminati, R.Jones ************              *
 C.    *                                                                *
 C.    ******************************************************************
@@ -33,13 +33,9 @@ C.
 #include "geant321/gctmed.inc"
 #include "geant321/gctrak.inc"
 #include "geant321/gcvolu.inc"
-#include "geant321/gcnum.inc"
 #include "geant321/gcvol1.inc"
+#include "geant321/gcnum.inc"
 #include "geant321/gcunit.inc"
-
-#if !defined(CERNLIB_OLD)
-#include "geant321/gcvdma.inc"
-#endif
 
 *
 * ** The following common is in GTMEDI. LSAMVL is set to true if
@@ -154,24 +150,8 @@ C.    ------------------------------------------------------------------
 * **    boundary effects and to know what is on the other side.
 * **    For the moment save the current vector in the geometry tree.
 *
-#if !defined(CERNLIB_OLD)
-         if(mycoun.gt.1.and.nfmany.gt.0)then
-           nlevel=manyle(nfmany)
-           do 99 i=1,nlevel
-             names(i)=manyna(nfmany,i)
-             number(i)=manynu(nfmany,i)
- 99        continue
-           call glvolu(nlevel,names,number,ier)
-           if(ier.ne.0)print *,'Fatal error in GLVOLU'
-           ingoto=0
-         endif
-#endif
-            NLEVL1 = NLEVEL
-            DO 20   I=1,NLEVEL
-               NAMES1(I) = NAMES(I)
-               NUMBR1(I) = NUMBER(I)
-               LVOLU1(I) = LVOLUM(I)
-   20       CONTINUE
+
+            call gtmany(1)
 *
 * *** This is different from the other tracking routines.
 * *** We get to the boundary and then we just jump over it
@@ -232,6 +212,7 @@ C
       VIN(1) = VECT(1)
       VIN(2) = VECT(2)
       VIN(3) = VECT(3)
+      
       IF (INWVOL.EQ.2) THEN
          NBPUSH = 0
    50    DO 60 I = 1,3
@@ -270,8 +251,12 @@ C
             VECT(3) = VOUT(3)
             GO TO 110
          ENDIF
-         JVO=LQ(JVOLUM-LVOLUM(NLEVEL))
-         IF(LSAMVL.AND.Q(JVO+2).NE.12.) THEN
+         ISH = 0
+         IF(JVOLUM.GT.0) THEN
+            JVO = LQ(JVOLUM-LVOLUM(NLEVEL))
+            ISH = Q(JVO+2)
+         ENDIF    
+         IF(LSAMVL.AND.ISH.NE.12) THEN
 *
 * *** In spite of our efforts we have not crossed the boundary
 * *** we increase the step size and try again
@@ -428,7 +413,7 @@ C
 *
 * *** Photon is reflected (no polarization effects)
 *
-               CALL GLISUR(VECT,VBOU,NUMED1,NUMED2,U,PDOTU,IERR)
+               CALL G3LISUR(VECT,VBOU,NUMED1,NUMED2,U,PDOTU,IERR)
                IF (IERR.NE.0) THEN
                   WRITE(CHMAIL,10200) IERR
                   CALL GMAIL(0,0)
@@ -477,7 +462,7 @@ C
 *
 *  case dielectric-dielectric:
 *
-            CALL GLISUR(VECT,VBOU,NUMED1,NUMED2,U,PDOTU,IERR)
+            CALL G3LISUR(VECT,VBOU,NUMED1,NUMED2,U,PDOTU,IERR)
             IF (IERR.NE.0) THEN
                WRITE(CHMAIL,10200) IERR
                CALL GMAIL(0,0)

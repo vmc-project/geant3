@@ -1,7 +1,10 @@
 *
-* $Id: gprotx.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gprotx.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gprotx.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.30  by  S.Giani
 *-- Author :
-      SUBROUTINE GPROTX(NUMB)
+      SUBROUTINE G3PROTX(NUMB)
 C.
 C.    ******************************************************************
 C.    *                                                                *

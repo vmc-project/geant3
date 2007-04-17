@@ -1,7 +1,10 @@
 *
-* $Id: sverl2.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: sverl2.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: sverl2.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,8 @@
       SUBROUTINE SVERL2(M,X)
       DIMENSION U(2)
       CALL GRNDM(U,2)
-      X=0.62666*LOG((1.+U(1))/(1.-U(1)))
+C PH      X=0.62666*LOG((1.+U(1))/(1.-U(1)))
+      X=0.62666*LOG( (2.-U(1))/U(1) )
       IF(U(2).LT.0.5) X=-X
       X=M+X*SQRT(M*1.)
       RETURN

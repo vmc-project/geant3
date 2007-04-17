@@ -1,7 +1,10 @@
 *
-* $Id: fkimpu.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: fkimpu.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: fkimpu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -45,7 +48,7 @@ C*****HPS,HPZ ARE THE TRANSVERSAL AND LONGITUDINAL MOMENTUM
 *  |
 *  | only transversal momentum!
 *  |
-         HPS = SQRT(HE**2 - HMA**2)
+         HPS = SQRT(DABS(HE**2 - HMA**2))
          HPZ = 0.D0
       ELSE
 *  |

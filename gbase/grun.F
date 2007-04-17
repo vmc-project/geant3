@@ -1,6 +1,6 @@
 *CMZ :          03/11/94  15.43.38  by  John Apostolakis CERN GP-MIMD 2
 *-- Author :
-      SUBROUTINE GRUN
+      SUBROUTINE G3RUN
 *.
 *.    ******************************************************************
 *.    *                                                                *
@@ -38,7 +38,7 @@
 *                 For programs that have no input file, gprun should
 *                   divide the total number of events evenly between tasks.
 *
-      call gprun
+      call g3prun
 *
 #endif
    10 IF(IEVENT.LT.NEVENT) THEN
@@ -46,15 +46,15 @@
 *
 *             Initialises event partition
 *
-         CALL GTRIGI
+         CALL G3TRIGI
 *
 *             Process one event (trigger)
 *
-         CALL GTRIG
+         CALL G3TRIG
 *
 *             Clear event partition
 *
-         CALL GTRIGC
+         CALL G3TRIGC
 *
          IF(IEORUN.EQ.0) THEN
 *

@@ -1,7 +1,10 @@
 *
-* $Id: gmols.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gmols.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmols.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +22,7 @@
 #if defined(CERNLIB_VER314)
 *CMZ :  3.21/02 29/03/94  15.41.22  by  S.Giani
 *-- Author :
-      SUBROUTINE GMOLS (OMEGA,CHIC,COSTH,SINTH)
+      SUBROUTINE G3MOLS (OMEGA,CHIC,COSTH,SINTH)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -46,7 +49,7 @@ C.    * ARG= argument values of the table (arg,val)                    *
 C.    * VAL= function values of the table (arg,val)                    *
 C.    * THRI= the resulting interpolated function value                *
 C.    *                                                                *
-C.    *    ==>Called by : GMOLIE                                       *
+C.    *    ==>Called by : G3MOLIE                                      *
 C.    *         Author M.S. Dixit NRCC Ottawa    *********             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -143,7 +146,7 @@ C.
          VAL(M)=THRED(NA3M)**2
    70 CONTINUE
       F=THRED(NA)/50.
-      CALL GMOL4(THRI,XINT,VAL,ARG,F,IER)
+      CALL G3MOL4(THRI,XINT,VAL,ARG,F,IER)
  200  CONTINUE
       TH=CHIC*SQRT(ABS(B*THRI))
       IF(TH.GT.3.141593)GO TO 31

@@ -1,7 +1,10 @@
 *
-* $Id: gutrev.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gutrev.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gutrev.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -28,6 +31,6 @@ C.
 C.
 C.    ------------------------------------------------------------------
 C.
-      CALL GTREVE
+      CALL G3TREVE
 C
       END

@@ -1,7 +1,10 @@
 *
-* $Id: q_shiftl.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id: q_shiftl.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: q_shiftl.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov
 * Separate distribution  of Geant3
 *
@@ -34,7 +37,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       ISHFTL (IZW,NZB) = SHFTL (IZW, NZB)
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
       ISHFTL (IZW,NZB) = LSHIFT (IZW,NZB)
 
 #elif (defined(CERNLIB_SUN))&&(!defined(CERNLIB_BUGLRSHFT))

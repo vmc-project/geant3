@@ -1,16 +1,5 @@
 *
-* $Id: gdxzoo.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdxzoo.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
@@ -79,7 +68,7 @@ C.
          GZVC=VV0-VVZ0*ZOOMFV
          CALL IOPWK(II+1,1,II+1)
          CALL IACWK(II+1)
-         CALL GDSHOW(ISEL1)
+         CALL G3DSHOW(ISEL1)
          CALL IRQLC(II+1,2,ISTA2,NT,PX,PY)
          IF(ISTA2.EQ.0)THEN
           CALL IDAWK(II+1)

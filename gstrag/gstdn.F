@@ -1,7 +1,10 @@
 *
-* $Id: gstdn.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gstdn.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gstdn.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GSTDN(LGE)
+      FUNCTION G3STDN(LGE)
 *   ********************************************************************
 *   *                                                                  *
 *   *    dN^2/dxdE function for the preparation of the table as in     *
 *   *    Grishin,Ermilova,Kotelnikov,NIM A307(1991),273                *
 *   *                                                                  *
-*   *    ==> Called by : GSTTAB                                        *
+*   *    ==> Called by : G3STTAB                                       *
 *   *        Author    : P. Nevski                                     *
 *   *                                                                  *
 *   ********************************************************************
@@ -39,10 +42,10 @@
 *    Epsilon-1
       E0     = MAX(LGE,EMIN)
       E2INV  = 1/E**2
-      CEPS1  =  CMPLX(GSTINT(LGE,EMM,EPSR,NTAB)*E2INV,
-     +       SEXP(GSTINT(E0,EMM,EPSI,NTAB)))
+      CEPS1  =  CMPLX(G3STINT(LGE,EMM,EPSR,NTAB)*E2INV,
+     +       SEXP(G3STINT(E0,EMM,EPSI,NTAB)))
       C1     = 1/GAMMA2-CEPS1*BETA2
       C2     = C1/(1+CEPS1)*LOG(2*BETA2*MEEV/(E*C1))
-      GSTDN  = S2/BETA2 * (-2*AIMAG(C2)/(WP2*PI) + (1-SEXP(GSTINT(E0
+      G3STDN = S2/BETA2 * (-2*AIMAG(C2)/(WP2*PI) + (1-SEXP(G3STINT(E0
      +, EMM,FINT,NTAB)))*E2INV) * E
       END

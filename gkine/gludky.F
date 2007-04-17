@@ -1,7 +1,13 @@
 *
-* $Id: gludky.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gludky.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gludky.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +24,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 09/01/95  16.20.45  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GLUDKY
+      SUBROUTINE G3LUDKY
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -49,6 +55,7 @@ C
 #include "geant321/gconsp.inc"
 #include "geant321/lujets.inc"
 #include "geant321/ludat3.inc"
+      INTEGER PYCOMP
       PARAMETER (NSEL=44)
       DIMENSION IPLUND(NSEL)
       DATA IPLUND/

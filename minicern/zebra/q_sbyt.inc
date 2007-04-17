@@ -1,7 +1,10 @@
 *
-* $Id: q_sbyt.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id: q_sbyt.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: q_sbyt.inc,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov
 * Separate distribution  of Geant3
 *
@@ -49,7 +52,7 @@ C     +        , ISHFTR (LSHIFT(MZ,32-NZB), 33-IZP-NZB) )
      +            LAND (IZW, LCOMPL(SHFTL (SHFTR(-1,32-NZB), IZP-1)))
      +          , SHFTR (SHFTL(MZ,32-NZB), 33-IZP-NZB) )
 
-#elif defined(CERNLIB_LINUX)
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
       MSBYT (MZ,IZW,IZP,NZB) = OR (
      +       AND (IZW, NOT(LSHIFT (ISHFTR(NOT(0),32-NZB),IZP-1)))
      +      ,ISHFTR (LSHIFT(MZ,32-NZB), 33-IZP-NZB) )

@@ -1,7 +1,10 @@
 *
-* $Id: glvolu.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: glvolu.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glvolu.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 18/01/95  19.56.13  by  S.Giani
 *-- Author :
-      SUBROUTINE GLVOLU (NLEV, LNAM, LNUM, IER)
+      SUBROUTINE G3LVOLU (NLEV, LNAM, LNUM, IER)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -112,7 +115,7 @@ C.    ------------------------------------------------------------------
          LQ(JGPAR-NLEVEL) = JVO + 6
       ELSE
          CALL UHTOC(NAMES,4,KNAME,4)
-         CALL GLMOTH (KNAME, NUMBER, NLDM, LVOLS, LINDX)
+         CALL G3LMOTH (KNAME, NUMBER, NLDM, LVOLS, LINDX)
          IF (NLDM.GT.0) THEN
             JVOM = LQ(JVOLUM-LVOLS(NLDM))
             NIN  = Q(JVOM+3)
@@ -206,7 +209,7 @@ C.    ------------------------------------------------------------------
          NLDM = 0
       ELSE
          CALL UHTOC(NAMES,4,KNAME,4)
-         CALL GLMOTH (KNAME, NUMBER, NLDM, LVOLS, LINDX)
+         CALL G3LMOTH (KNAME, NUMBER, NLDM, LVOLS, LINDX)
       ENDIF
 *
 *  ** Next level

@@ -1,21 +1,10 @@
 *
-* $Id: gdhead.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdhead.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDHEAD(ISEL,NAME,CHRSIZ)
+      SUBROUTINE G3DHEAD(ISEL,NAME,CHRSIZ)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -34,12 +23,12 @@ C.    *       =1xxxxx to add the text 'Run NR x' on top of header      *
 C.    *                                                                *
 C.    *       A negative value of ISEL means special headers, i.e.     *
 C.    *       directly used by GEANT3 routines :                       *
-C.    *       =-1 : GDSPEC header                                      *
+C.    *       =-1 : G3DSPEC header                                     *
 C.    *       =-3 : VIEWXY header                                      *
 C.    *       =-4 : VIEWYZ header                                      *
 C.    *       =-5 : VIEWXZ header                                      *
 C.    *                                                                *
-C.    *    ==>Called by : <USER>, <GXINT>, GDSPEC, GDTREE              *
+C.    *    ==>Called by : <USER>, <GXINT>, G3DSPEC, G3DTREE            *
 C.    *       Author : P.Zanarini   *********                          *
 C.    *                                                                *
 C.    ******************************************************************
@@ -90,21 +79,21 @@ C
          ISEL0=ISEL0-ISEL0/2*2
       ENDIF
 C
-      CALL GDCOL(1)
+      CALL G3DCOL(1)
       CALL GDLW(2)
-      CALL GDRAWV(UH,VH,5)
+      CALL G3DRAWV(UH,VH,5)
       IF (ISEL.EQ.0) THEN
          CALL GDLW(0)
          GO TO 30
       ENDIF
-      CALL GDRAWV(UHH,VHH,2)
+      CALL G3DRAWV(UHH,VHH,2)
       CALL GDLW(0)
       IF (ISEL.LT.0.OR.ISEL1.NE.0) THEN
          CALL UHTOC(IQ(JVOLUM+1),4,CHTEXT,4)
          XTEXT=1.*PLTRNX/20.
          YTEXT=19.*PLTRNY/20.
          CSIZE=0.3*MIN(PLTRNX,PLTRNY)/20.
-         CALL GDRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
+         CALL G3DRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
       ENDIF
       IF (ISEL3.NE.0) THEN
          LWDTH=2
@@ -112,80 +101,80 @@ C
          LWDTH=1
       ENDIF
       IF (ISEL0.NE.0) THEN
-         CALL GDCOL(4)
+         CALL G3DCOL(4)
          XTEXT=10.*PLTRNX/20.
          YTEXT=19.*PLTRNY/20.
          CSIZE=CHRSIZ*MIN(PLTRNX,PLTRNY)/20.
-         CALL GDRAWT(XTEXT,YTEXT,NAME,CSIZE,0.,LWDTH,0)
-         CALL GDCOL(1)
+         CALL G3DRAWT(XTEXT,YTEXT,NAME,CSIZE,0.,LWDTH,0)
+         CALL G3DCOL(1)
       ENDIF
       IF (ISEL.GT.0) THEN
          IF (ISEL4.NE.0) THEN
             XTEXT=7.*PLTRNX/20.
             YTEXT=18.7*PLTRNY/20.
             CSIZE=0.3*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,'EVENT',CSIZE,0.,LWDTH,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,'EVENT',CSIZE,0.,LWDTH,-1)
             XTEXT=9.*PLTRNX/20.
-            CALL GDRAWT(XTEXT,YTEXT,'NR',CSIZE,0.,LWDTH,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,'NR',CSIZE,0.,LWDTH,-1)
 *
             CHDATE=' '
             WRITE (CHDATE,'(I6)') IDEVT
             XTEXT=12.*PLTRNX/20.
             YTEXT=18.7*PLTRNY/20.
             CSIZE=0.3*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,LWDTH,1)
+            CALL G3DRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,LWDTH,1)
          ENDIF
          IF (ISEL5.NE.0) THEN
             XTEXT=7.*PLTRNX/20.
             YTEXT=19.2*PLTRNY/20.
             CSIZE=0.3*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,'RUN',CSIZE,0.,LWDTH,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,'RUN',CSIZE,0.,LWDTH,-1)
             XTEXT=9.*PLTRNX/20.
-            CALL GDRAWT(XTEXT,YTEXT,'NR',CSIZE,0.,LWDTH,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,'NR',CSIZE,0.,LWDTH,-1)
 *
             CHDATE=' '
             WRITE (CHDATE,'(I6)') IDRUN
             XTEXT=12.*PLTRNX/20.
             YTEXT=19.2*PLTRNY/20.
             CSIZE=0.3*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,LWDTH,1)
+            CALL G3DRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,LWDTH,1)
          ENDIF
       ELSE
          IF (ISEL.EQ.-1) THEN
-            CALL GDCOL(4)
+            CALL G3DCOL(4)
             XTEXT=8.5*PLTRNX/20.
             YTEXT=19.*PLTRNY/20.
             CSIZE=0.6*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,NAME,CSIZE,0.,2,1)
-            CALL GDCOL(1)
+            CALL G3DRAWT(XTEXT,YTEXT,NAME,CSIZE,0.,2,1)
+            CALL G3DCOL(1)
             XTEXT=9.*PLTRNX/20.
             YTEXT=19.*PLTRNY/20.
             CSIZE=0.4*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT,'<SPECIFICATIONS',CSIZE,0.,1,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,'<SPECIFICATIONS',CSIZE,0.,1,-1)
          ELSE IF (ISEL.EQ.-3) THEN
-            CALL GDCOL(4)
+            CALL G3DCOL(4)
             XTEXT=10.*PLTRNX/20.
             YTEXT=19.*PLTRNY/20.
             CSIZE=0.5*MIN(PLTRNX,PLTRNY)/20.
-            CALL GDRAWT(XTEXT,YTEXT, 'C<ROSS - >S<ECTION> (<Z >=< >0)',
+            CALL G3DRAWT(XTEXT,YTEXT, 'C<ROSS - >S<ECTION> (<Z >=< >0)',
      +      CSIZE,0.,2,0)
-            CALL GDCOL(1)
+            CALL G3DCOL(1)
          ELSE IF (ISEL.EQ.-4) THEN
-            CALL GDCOL(4)
+            CALL G3DCOL(4)
             XTEXT=10.*PLTRNX/20.
             YTEXT=19.*PLTRNY/20.
             CSIZE=0.5*MIN(PLTRNX,PLTRNY)/20.
-          CALL GDRAWT(XTEXT,YTEXT,
+          CALL G3DRAWT(XTEXT,YTEXT,
      +      'V<ERTICAL> S<ECTION> (<X >=< >0.5)',CSIZE,0.,2,0)
-            CALL GDCOL(1)
+            CALL G3DCOL(1)
          ELSE IF (ISEL.EQ.-5) THEN
-            CALL GDCOL(4)
+            CALL G3DCOL(4)
             XTEXT=10.*PLTRNX/20.
             YTEXT=19.*PLTRNY/20.
             CSIZE=0.5*MIN(PLTRNX,PLTRNY)/20.
-          CALL GDRAWT(XTEXT,YTEXT,
+          CALL G3DRAWT(XTEXT,YTEXT,
      +      'H<ORIZONTAL> S<ECTION> (<Y >=< >5)',CSIZE,0.,2,0)
-            CALL GDCOL(1)
+            CALL G3DCOL(1)
          ENDIF
       ENDIF
       IF (ISEL.LT.0.OR.ISEL2.NE.0) THEN
@@ -197,7 +186,7 @@ C
          XTEXT=19.*PLTRNX/20.
          YTEXT=19.*PLTRNY/20.
          CSIZE=0.25*MIN(PLTRNX,PLTRNY)/20.
-         CALL GDRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,1,1)
+         CALL G3DRAWT(XTEXT,YTEXT,CHDATE,CSIZE,0.,1,1)
       ENDIF
-   30 CALL GDCOL(0)
+   30 CALL G3DCOL(0)
       END
