@@ -1,7 +1,17 @@
 *
-* $Id: erland.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id: erland.F,v 1.2 2007/03/31 13:47:09 brun Exp $
 *
 * $Log: erland.F,v $
+* Revision 1.2  2007/03/31 13:47:09  brun
+*  From Andrea Fontana and Alberto Rotondi
+* Added new calculation for sigma of straggling in energy loss to include
+* in Geane the Urban/Landau approximation, as explained in the Geant
+* manual and related papers.
+* The model parametrization can be controlled with a new user variable
+* (GCALPHA) in GCCUTS common block: 1 is for old gaussian model valid for
+* dense materials, other values (see the enclosed report) are for gaseous
+* materials.
+*
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm
 * initial import into CVS
 *
@@ -42,14 +52,13 @@ C.    ******************************************************************
 C.
 #include "geant321/gconst.inc"
 #include "geant321/gccuts.inc"
+#include "geant321/gcmore.inc"
 *
       REAL*4 CMED, DE, ION, RU, FU1, FU2, EU1, EU2, EU2F, DEDX
       REAL*4 EUMED,SIG1, SIG2, SIG3, SIG4,CN1, CN2, CN3, XUMASS 
       REAL*4 EUMED2, E99, A99 
       REAL*4 SALPHA
 *
-      DATA GCALPHA/1./
-*      
       IF (STEP.LT.1.E-7) THEN
          DEDX2=0.
          RETURN
@@ -72,7 +81,7 @@ C.
       A99 = GCALPHA    
       IF (A99.EQ.1.) THEN  
           DEDX2 = XI*EMAX*(1.-(BETA*BETA/2.))*1.E-12
-          PRINT *,XI/EMAX,A99,A,Z,RHO,DEDX2
+c          PRINT *,XI/EMAX,A99,A,Z,RHO,DEDX2
           RETURN           	   		   
       ENDIF
       
@@ -137,7 +146,7 @@ C         sigma^2(E) in  GeV^2
          DEDX2 = DEDX2*1.E-12
       END IF
 C      PRINT *,XI/EMAX,A,Z,RHO
-      PRINT *, SALPHA, A99, CN1+CN2+CN3, SQRT(DEDX2)
+c      PRINT *, SALPHA, A99, CN1+CN2+CN3, SQRT(DEDX2)
 *
       END
  

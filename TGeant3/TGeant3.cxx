@@ -16,6 +16,9 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.55  2007/03/26 10:15:04  brun
+Fix a problem when adding a new tracking medium to the TObjArray.
+
 Revision 1.54  2007/03/23 21:11:44  brun
 From Ivana Hrivnacova and Andrea Fontana:
 Reintroduce functionality in TGeant3::SetCuts that was removed in a previous patch.
@@ -38,7 +41,7 @@ Changes in  TGeant3/TGeant3.cxx and TGeant3.h
     void  eufilp(const int n,Float_t *ein,Float_t *pli,Float_t *plf);
     void  eufilv(Int_t n, Float_t *ein,	Char_t *namv, Int_t *numv,Int_t *iovl);
     void  trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,
-		 Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+		 Float_t *h,Float_t ch,Int_t ierr,Float_t spu,Float_t *dj,Float_t *dk);
     void  trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,
                            Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
     void  trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
@@ -801,7 +804,7 @@ extern "C"
   void type_of_call eufilv(Int_t n, Float_t *ein,
 			Char_t *namv, Int_t *numv,Int_t *iovl);
   void type_of_call trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,
-                         Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+                         Float_t *h,Float_t ch,Int_t ierr,Float_t spu,Float_t *dj,Float_t *dk);
   void type_of_call trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,
                          Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
   void type_of_call trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
@@ -1039,6 +1042,8 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   fglvolu = g3lvolu;
   fgtnext = g3tnext;
   fggperp = g3gperp;
+
+  InitGEANE();
 }
 
 //______________________________________________________________________
@@ -1082,6 +1087,24 @@ void TGeant3::InitHIGZ()
 }
 
 //______________________________________________________________________
+void TGeant3::InitGEANE()
+{
+  //
+  // Initialize GEANE for default use
+  //
+  Float_t pf[3]={0.,0.,0.};
+  Float_t w1[3]={0.,0.,0.};
+  Float_t w2[3]={0.,0.,0.};
+  Float_t p1[3]={0.,0.,0.};
+  Float_t p2[3]={0.,0.,0.};
+  Float_t p3[3]={0.,0.,0.};
+  Float_t cl[3]={0.,0.,0.};
+  geant3 = this;
+  geant3->SetECut(1.);
+  geant3->SetClose(0,pf,999.,w1,w2,p1,p2,p3,cl);
+}
+
+//______________________________________________________________________
 void TGeant3::LoadAddress()
 {
   //
@@ -1093,6 +1116,7 @@ void TGeant3::LoadAddress()
    gcomad(PASSCHARD("GCBANK"),(int*&) fGcbank  PASSCHARL("GCBANK"));
    gcomad(PASSCHARD("GCLINK"),(int*&) fGclink  PASSCHARL("GCLINK"));
    gcomad(PASSCHARD("GCCUTS"),(int*&) fGccuts  PASSCHARL("GCCUTS"));
+   gcomad(PASSCHARD("GCMORE"),(int*&) fGcmore  PASSCHARL("GCMORE"));
    gcomad(PASSCHARD("GCMULO"),(int*&) fGcmulo  PASSCHARL("GCMULO"));
    gcomad(PASSCHARD("GCFLAG"),(int*&) fGcflag  PASSCHARL("GCFLAG"));
    gcomad(PASSCHARD("GCKINE"),(int*&) fGckine  PASSCHARL("GCKINE"));
@@ -4727,8 +4751,7 @@ void TGeant3::SetCOMP(Int_t par)
 void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
 		      Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
 		      Float_t bcutm ,Float_t dcute ,Float_t dcutm ,
-		      Float_t ppcutm, Float_t tofmax, Float_t *gcuts, Float_t
-		      gcalpha)
+		      Float_t ppcutm, Float_t tofmax, Float_t *gcuts)
 {
   //
   //  CUTGAM   Cut for gammas              D=0.001
@@ -4766,7 +4789,42 @@ void TGeant3::SetCUTS(Float_t cutgam,Float_t cutele,Float_t cutneu,
   fGccuts->gcuts[2] = gcuts[2];
   fGccuts->gcuts[3] = gcuts[3];
   fGccuts->gcuts[4] = gcuts[4];
-  fGccuts->gcalpha = gcalpha;
+}
+
+//added by Andrea Fontana and Alberto Rotondi - april 2007
+//______________________________________________________________________
+void TGeant3::SetECut(Float_t gcalpha)
+{
+  fGcmore->gcalpha = gcalpha;
+}
+
+void TGeant3::SetClose(Int_t iclose,Float_t *pf,Float_t dstrt,
+                       Float_t *w1, Float_t *w2,
+		       Float_t *p1,Float_t *p2,Float_t *p3,Float_t *clen)
+{
+  fGcmore->iclose = iclose;
+  fGcmore->pfinal[0] = pf[0];
+  fGcmore->pfinal[1] = pf[1];
+  fGcmore->pfinal[2] = pf[2];
+  fGcmore->dstrt = dstrt;
+  fGcmore->wire1[0] = w1[0];
+  fGcmore->wire1[1] = w1[1];
+  fGcmore->wire1[2] = w1[2];
+  fGcmore->wire2[0] = w2[0];
+  fGcmore->wire2[1] = w2[1];
+  fGcmore->wire2[2] = w2[2];
+  fGcmore->p1[0] = p1[0];
+  fGcmore->p1[1] = p1[1];
+  fGcmore->p1[2] = p1[2];
+  fGcmore->p2[0] = p2[0];
+  fGcmore->p2[1] = p2[1];
+  fGcmore->p2[2] = p2[2];
+  fGcmore->p3[0] = p3[0];
+  fGcmore->p3[1] = p3[1];
+  fGcmore->p3[2] = p3[2];
+  fGcmore->cleng[0] = clen[0];
+  fGcmore->cleng[1] = clen[1];
+  fGcmore->cleng[2] = clen[2];
 }
 
 //______________________________________________________________________
@@ -5199,7 +5257,7 @@ void TGeant3::Eufilv(Int_t n, Float_t *ein,
    }
 }
 //______________________________________________________________________
-void TGeant3::Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk){
+void TGeant3::Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,Float_t ch,Int_t ierr,Float_t spu,Float_t *dj,Float_t *dk){
 
 //       SUBROUTINE TRSCSD(PC,RC,PD,RD,H,CH,IERR,SPU,DJ,DK)
 // ******************************************************************
@@ -5226,6 +5284,7 @@ void TGeant3::Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,
 //                       ( V',W' ARE NOT DEFINED )
 //      SPU       SIGN OF U-COMPONENT OF PARTICLE MOMENTUM   OUTPUT
 // ******************************************************************
+  printf("%d\n",ierr);
   trscsd(pc,rc,pd,rd,h,ch,ierr,spu,dj,dk);
 }
 //______________________________________________________________________

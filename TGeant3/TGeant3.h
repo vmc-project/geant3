@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.27 2007/03/22 08:58:41 brun Exp $ */
+/* $Id: TGeant3.h,v 1.28 2007/03/23 21:11:44 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -289,8 +289,23 @@ typedef struct {
   Float_t ppcutm;
   Float_t tofmax;
   Float_t gcuts[5];
-  Float_t gcalpha;
 } Gccuts_t;
+
+//----------GCMORE
+//      COMMON/GCMORE/GCALPHA,ICLOSE,PFINAL(3),DSTRT,WIRE1(3),WIRE2(3),
+//     +              P1(3),P2(3),P3(3),CLENG(3)
+typedef struct {
+  Float_t  gcalpha;
+  Int_t    iclose;
+  Float_t  pfinal[3];
+  Float_t  dstrt;
+  Float_t  wire1[3];
+  Float_t  wire2[3];
+  Float_t  p1[3];
+  Float_t  p2[3];
+  Float_t  p3[3];
+  Float_t  cleng[3];
+} Gcmore_t;
 
 //----------GCMULO
 //      COMMON/GCMULO/SINMUL(101),COSMUL(101),SQRMUL(101),OMCMOL,CHCMOL
@@ -719,6 +734,7 @@ public:
   virtual Gcbank_t* Gcbank() const {return fGcbank;}
   virtual Gclink_t* Gclink() const {return fGclink;}
   virtual Gccuts_t* Gccuts() const {return fGccuts;}
+  virtual Gcmore_t* Gcmore() const {return fGcmore;}
   virtual Gcmulo_t* Gcmulo() const {return fGcmulo;}
   virtual Gcmate_t* Gcmate() const {return fGcmate;}
   virtual Gctpol_t* Gctpol() const {return fGctpol;}
@@ -955,7 +971,12 @@ public:
                           Float_t cuthad,Float_t cutmuo ,Float_t bcute ,
                           Float_t bcutm ,Float_t dcute ,
                           Float_t dcutm ,Float_t ppcutm, Float_t tofmax, Float_t
-			  *gcuts,Float_t gcalpha);
+			  *gcuts);
+   virtual  void  InitGEANE();
+   virtual void SetClose(Int_t iclose,Float_t *pf,Float_t dstrt,
+                         Float_t *w1,Float_t *w2,
+			 Float_t *p1,Float_t *p2,Float_t *p3,Float_t *cl);
+   virtual void SetECut(Float_t gcalpha);
    virtual  void  SetDCAY(Int_t par=1);
    virtual  void  SetDEBU(Int_t emin=1, Int_t emax=999, Int_t emod=1);
    virtual  void  SetDRAY(Int_t par=1);
@@ -993,7 +1014,7 @@ public:
    virtual void Eufilv(Int_t n, Float_t *ein,
 			Char_t *namv, Int_t *numv,Int_t *iovl);
    virtual void Trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,Float_t *h,
-			Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+			Float_t ch,Int_t ierr,Float_t spu,Float_t *dj,Float_t *dk);
    virtual void Trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,Float_t *h,
 			Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
    virtual void Trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
@@ -1042,6 +1063,7 @@ protected:
   Gcbank_t *fGcbank;          //! GCBANK common structure
   Gclink_t *fGclink;          //! GCLINK common structure
   Gccuts_t *fGccuts;          //! GCCUTS common structure
+  Gcmore_t *fGcmore;          //! GCMORE common structure
   Gcmulo_t *fGcmulo;          //! GCMULO common structure
   Gcmate_t *fGcmate;          //! GCMATE common structure
   Gctpol_t *fGctpol;          //! GCTPOL common structure
