@@ -16,6 +16,51 @@
 
 /*
 $Log: TGeant3TGeo.cxx,v $
+Revision 1.17  2006/12/19 13:16:19  brun
+from Mohammad Al-Turany & Denis Bertini
+
+Changes in  TGeant3/TGeant3.cxx and TGeant3.h
+------------------------------------
+1. Geane interface functions are added:
+    void  eufill(Int_t n, Float_t *ein, Float_t *xlf);
+    void  eufilp(const int n,Float_t *ein,Float_t *pli,Float_t *plf);
+    void  eufilv(Int_t n, Float_t *ein,	Char_t *namv, Int_t *numv,Int_t *iovl);
+    void  trscsd(Float_t *pc,Float_t *rc,Float_t *pd,Float_t *rd,
+		 Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+    void  trsdsc(Float_t *pd,Float_t *rd,Float_t *pc,Float_t *rc,
+                           Float_t *h,Float_t *ch,Int_t *ierr,Float_t *spu,Float_t *dj,Float_t *dk);
+    void  trscsp(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+  			Float_t *ch,Int_t *ierr,Float_t *spx);
+    void  trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
+  			Float_t *ch,Int_t *ierr,Float_t *spx);
+
+2. The Gfang function wrapper is added
+    void  g3fang( Float_t *, Float_t &,Float_t &, Float_t &, Float_t &,Int_t & );
+
+
+
+
+changes in TGeant3/TGeant3gu.cxx
+--------------------------
+Adding GCalor interface
+	1. function calsig() and gcalor() are added
+	2. setting ihadr=5 will call the GCalor routine
+
+
+
+
+changes in TGeant3/TGeant3.h
+-----------------------
+1. Structures for Geane output are setted as public so that the user can access them
+
+    Ertrio_t *fErtrio
+    Eropts_t *fEropts
+    Eroptc_t *fEroptc
+    Erwork_t *fErwork
+    Trcom3_t *fTrcom3
+
+2. The size of the error matrix errin is corrected to 15
+
 Revision 1.15  2006/05/30 13:39:07  brun
 From Andrei Gheata:
 a patch cleaning-up the usage of TGeant3::Vname method inside TGeant3TGeo.cxx. The truncation of names is not needed when working with TGeo. In most of the cases the names were truncated to 4 chars but the result was not used in the subsequent call to TGeoMCGeometry (this is why it still worked) but a cleanup is good anyway...
@@ -2048,6 +2093,8 @@ void TGeant3TGeo::FinishGeometry()
     gGeoManager->CloseGeometry();
   }
 
+  if (gDebug > 0) printf("FinishGeometry, calling MisalignGeometry()\n");
+  TVirtualMCApplication::Instance()->MisalignGeometry();
   //  gROOT->GetListOfBrowsables()->Add(gGeoManager);
   if (gDebug > 0) printf("FinishGeometry, calling SetColors\n");
 
