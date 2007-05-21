@@ -1,7 +1,10 @@
 *
-* $Id: grayl.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id: grayl.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: grayl.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -86,6 +89,8 @@ C
 C
 C            Find out cos(theta)
       COSTH=1.-0.5*(QNEW*GEKIN1)**2
+      IF (COSTH.LT.-1.) COSTH=-1.
+      IF (COSTH.GT.1.)  COSTH=1.
       IF(RNDM(2).GT.0.5*(1.+COSTH**2)) GO TO 5
       SINTH=SQRT((1.-COSTH)*(1.+COSTH))
 C
