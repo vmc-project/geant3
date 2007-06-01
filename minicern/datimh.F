@@ -1,7 +1,10 @@
 *
-* $Id: datimh.F,v 1.1.1.1 2002/06/16 15:18:47 hristov Exp $
+* $Id: datimh.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: datimh.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:47  hristov
 * Separate distribution  of Geant3
 *
@@ -29,10 +32,17 @@ C-    DUMMY FOR NON-ESSENTIAL ROUTINE STILL MISSING ON YOUR MACHINE
       DIMENSION ND(9), NT(9)
       DIMENSION M(8)
 
+#if defined(__GNUC__) && __GNUC__ >= 4
+      CALL UBLOW  ('29/09/79', M, 8)
+      CALL UBUNCH (M, ND, 8)
+      CALL UBLOW  ('12.00.00',M,8)
+      CALL UBUNCH (M,NT,8)
+#else
       CALL UBLOW (8H29/09/79,M,8)
       CALL UBUNCH           (M,ND,8)
       CALL UBLOW (8H12.00.00,M,8)
       CALL UBUNCH           (M,NT,8)
+#endif
       RETURN
       END
 #endif

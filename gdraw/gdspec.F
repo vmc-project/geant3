@@ -1,30 +1,10 @@
 *
-* $Id: gdspec.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdspec.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.2  2001/03/20 06:36:25  alibrary
-* 100 parameters now allowed for geant shapes
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.3  1996/10/01 14:12:05  ravndal
-* right units for SPHE specs.
-*
-* Revision 1.2  1996/09/30 14:54:13  ravndal
-* Right units for the spec of PARA
-*
-* Revision 1.1.1.1  1995/10/24 10:20:28  cernlib
-* Geant
-*
+* $Id: gdspec.F,v 1.3 2004/01/28 08:22:00 brun Exp $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 20/07/94  18.08.26  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GDSPEC(NAME)
+      SUBROUTINE G3DSPEC(NAME)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -36,6 +16,7 @@ C.    *                 A.McPherson  *****                             *
 C.    *                                                                *
 C.    ******************************************************************
 C.
+#ifdef NEVER
 #include "geant321/gcbank.inc"
 #include "geant321/gcdraw.inc"
 #include "geant321/gcnum.inc"
@@ -105,7 +86,7 @@ C
       XMAN=XMAN1*PLTRNX/20.
       YMAN=YMAN1*PLTRNY/20.
 C
-C             Save GDRAW calling parameters
+C             Save G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
       SAVTHE=GTHETA
@@ -158,7 +139,7 @@ C
 C
 C             Draw header
 C
-      CALL GDHEAD(-1,NAME,0.)
+      CALL G3DHEAD(-1,NAME,0.)
 C
 C             Draw parameters list
 C
@@ -317,14 +298,14 @@ C
             YTEXT=16.5*PLTRNY/20.
             CSIZE=DY*MIN(PLTRNX,PLTRNY)/20.
             CALL UHTOC(ISHT,4,CHTEXT,12)
-            CALL GDRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
+            CALL G3DRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
          ENDIF
          Y=16.5-(I+0.5)*DY
          XTEXT=3.*PLTRNX/20.
          YTEXT=Y*PLTRNY/20.
          CSIZE=H*MIN(PLTRNX,PLTRNY)/20.
          CALL UHTOC(ISPAR,4,CHTEXT,12)
-         CALL GDRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
+         CALL G3DRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
          CALL HBCDF(PAR(I),8,IPAR)
          IF (PAR(I).EQ.0.) CALL UCTOH('0',IPAR(1),1,1)
          CALL UCTOH('$',IPAR(9),1,1)
@@ -333,7 +314,7 @@ C
          YTEXT=Y*PLTRNY/20.
          CSIZE=H*MIN(PLTRNX,PLTRNY)/20.
          CALL UHTOC(IPA,4,CHTEXT,12)
-         CALL GDRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
+         CALL G3DRAWT(XTEXT,YTEXT,CHTEXT,CSIZE,0.,1,-1)
   210 CONTINUE
 C
 C             Draw views
@@ -344,9 +325,9 @@ C             Add local value SEEN 1 to starting node of tree
 C
       KSEEN=KSEEN+110
       ISEEN=KSEEN
-      CALL GSATT(NAME,'SEEN',ISEEN)
+      CALL G3SATT(NAME,'SEEN',ISEEN)
 C
-      CALL GSATT(NAME,'COLO',2)
+      CALL G3SATT(NAME,'COLO',2)
       CALL GDNSON(NAME,NSON,IDIV)
       DO 220 N=1,NSON
          CALL GDSON(N,NAME,ISON)
@@ -361,26 +342,26 @@ C             Add local value SEEN -2 to each one-level-down node
 C
          KSEEN=KSEEN+80
          ISEEN=KSEEN
-         CALL GSATT(ISON,'SEEN',ISEEN)
+         CALL G3SATT(ISON,'SEEN',ISEEN)
 C
-         CALL GSATT(ISON,'COLO',4)
+         CALL G3SATT(ISON,'COLO',4)
   220 CONTINUE
 C
-      CALL GDCOL(3)
+      CALL G3DCOL(3)
       XSCAL=PLTRNX/4.
       YSCAL=PLTRNY/2.
       CALL GDSCAL(XSCAL,YSCAL)
-**    IF (GSCU.LE.0.05) CALL GDMAN(XMAN,YMAN)
-      IF (GSCU.LE.0.05) CALL GDWMN1(XMAN,YMAN)
+**    IF (GSCU.LE.0.05) CALL G3DMAN(XMAN,YMAN)
+      IF (GSCU.LE.0.05) CALL G3DWMN1(XMAN,YMAN)
 C
-      CALL GDRAW(NAME,THE(1),PHI(1),0.,U0(1),V0(1),GSCU,GSCV)
+      CALL G3DRAW(NAME,THE(1),PHI(1),0.,U0(1),V0(1),GSCU,GSCV)
       CALL GDAXIS(0.,0.,0.,AXSIZ)
-      CALL GDRAWC(NAME,3,0.005,U0(2),V0(2),GSCU,GSCV)
+      CALL G3DRAWC(NAME,3,0.005,U0(2),V0(2),GSCU,GSCV)
       CALL GDAXIS(0.,0.,0.,AXSIZ)
-      CALL GDRAWC(NAME,1,0.005,U0(3),V0(3),GSCU,GSCV)
+      CALL G3DRAWC(NAME,1,0.005,U0(3),V0(3),GSCU,GSCV)
       CALL GDAXIS(0.,0.,0.,AXSIZ)
 C
-  230 CALL GDCOL(0)
+  230 CALL G3DCOL(0)
 C
 C             Reset global SEEN values
 C
@@ -390,12 +371,12 @@ C
          IF (KSEEN.LT.50) GO TO 240
          ISEENL=KSEEN/10.+0.5
          ISEENG=KSEEN-ISEENL*10.
-         CALL GSATT(NAMSEE,'SEEN',ISEENG)
+         CALL G3SATT(NAMSEE,'SEEN',ISEENG)
   240 CONTINUE
 C
   250 CONTINUE
 C
-C             Restore GDRAW calling parameters
+C             Restore G3DRAW calling parameters
 C             and ZOOM internal parameters
 C
       GTHETA=SAVTHE
@@ -413,4 +394,5 @@ C
       GZUC=SVGZUC
       GZVC=SVGZVC
       CALL ISELNT(1)
+#endif
   999 END

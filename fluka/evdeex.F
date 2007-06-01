@@ -1,7 +1,10 @@
 *
-* $Id: evdeex.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id: evdeex.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: evdeex.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov
 * Separate distribution  of Geant3
 *
@@ -205,6 +208,7 @@
             PCMSZ = PCMS * COSGAM (3)
             ETAPCM = PCMSX * ETAX + PCMSY * ETAY + PCMSZ * ETAZ
             ENERG = GAMCM * EEGCM + ETAPCM
+            IF ( ENERG .EQ. 0 ) ENERG = ENERG + 1.D-10
             PHELP = ETAPCM / ( GAMCM + 1.D+00 ) + EEGCM
             PLBGX = PCMSX + ETAX * PHELP
             PLBGY = PCMSY + ETAY * PHELP

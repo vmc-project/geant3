@@ -1,7 +1,18 @@
 *
-* $Id: gvaviv.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gvaviv.F,v 1.3 2005/08/10 20:02:58 brun Exp $
 *
 * $Log: gvaviv.F,v $
+* Revision 1.3  2005/08/10 20:02:58  brun
+* From Peter Hristov:
+* Add a  small protection below to avoid some (rare) floating point
+* exceptions.
+*
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +26,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      FUNCTION GVAVIV(RKAPPA,BETA2,RAN)
+      FUNCTION G3VAVIV(RKAPPA,BETA2,RAN)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *                                                                *
-C.    *  GVAVIV                                                        *
-C.    *  ------                                                        *
+C.    *  G3VAVIV                                                       *
+C.    *  -------                                                       *
 C.    *                                                                *
 C.    *  Initializes the parameters for a Vavilov distribution         *
 C.    *                                                                *
@@ -38,7 +49,7 @@ C.    *    Fast calculation of Vavilov distribution NIMB 1990          *
 C.    *                                                                *
 C.    *       Author    K.S.Koelbig     ********                       *
 C.    *                                                                *
-C.    *   ==> Called by : GLANDO                                       *
+C.    *   ==> Called by : G3LANDO                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
@@ -200,8 +211,12 @@ C.
      2  0.           , -0.14540925E+1, -0.39529833E+0,
      3 -0.44293243E-1,  0.88741049E-1/
  
-      GVAVIV=0
+      G3VAVIV=0
       IF(RKAPPA .LT. 0.01 .OR. RKAPPA .GT. 12) RETURN
+       HC(0)=LOG(RKAPPA)+BETA2+0.42278434
+       DSIGM(1)=SQRT(RKAPPA/(1-0.5*BETA2))
+       HC(1)=DSIGM(1)
+       HC(8)=0.39894228*HC(1)
       IF(RKAPPA .GE. 0.29) THEN
        ITYPE=1
        NPT=100
@@ -211,14 +226,11 @@ C.
        AC(8)=(-0.013483*BETA2-0.048801)*RKAPPA+
      1   (-1.6921*BETA2+8.3656)*WK+(-0.73275*BETA2-3.5226)
        DRK(1)=WK**2
-       DSIGM(1)=SQRT(RKAPPA/(1-0.5*BETA2))
        DO 1 J = 1,4
        DRK(J+1)=DRK(1)*DRK(J)
        DSIGM(J+1)=DSIGM(1)*DSIGM(J)
     1  ALFA(J+1)=(FNINV(J)-BETA2*FNINV(J+1))*DRK(J)
  
-       HC(0)=LOG(RKAPPA)+BETA2+0.42278434
-       HC(1)=DSIGM(1)
        HC(2)=ALFA(3)*DSIGM(3)
        HC(3)=(3*ALFA(2)**2+ALFA(4))*DSIGM(4)-3
        HC(4)=(10*ALFA(2)*ALFA(3)+ALFA(5))*DSIGM(5)-10*HC(2)
@@ -227,7 +239,6 @@ C.
        HC(7)=HC(2)*HC(5)
        DO 2 J = 2,7
     2  HC(J)=EDGEC(J)*HC(J)
-       HC(8)=0.39894228*HC(1)
       ELSEIF(RKAPPA .GE. 0.22) THEN
        ITYPE=2
        NPT=150
@@ -332,14 +343,18 @@ C.
       AC(9)=(AC(8)-AC(0))/NPT
       IF(ITYPE .EQ. 3) THEN
        X=(AC(7)-AC(8))/(AC(7)*AC(8))
-       Y=1/LOG(AC(8)/AC(7))
+       IF(AC(7) .NE. AC(8)) THEN
+          Y=1/LOG(AC(8)/AC(7))
+       ELSE
+          Y=1.E10
+       ENDIF
        P2=AC(7)**2
        AC(11)=P2*(AC(1)*EXP(-AC(2)*(AC(7)+AC(5)*P2)-
      1            AC(3)*EXP(-AC(4)*(AC(7)+AC(6)*P2)))-0.045*Y/AC(7))/
      2            (1+X*Y*AC(7))
        AC(12)=(0.045+X*AC(11))*Y
       ENDIF
-      IF(ITYPE .EQ. 4) AC(10)=0.995/GLANDS(AC(8))
+      IF(ITYPE .EQ. 4) AC(10)=0.995/G3LANDS(AC(8))
  
       T=2*RAN/AC(9)
       RLAM=AC(0)
@@ -373,14 +388,14 @@ C.
         FU=(AC(11)*X+AC(12))*X
        ENDIF
       ELSE
-       FU=AC(10)*GLANDE(RLAM)
+       FU=AC(10)*G3LANDE(RLAM)
       ENDIF
       S=S+FL+FU
       IF(S .GT. T) GO TO 22
    21 FL=FU
  
    22 S0=S-FL-FU
-      GVAVIV=RLAM-AC(9)
-      IF(S .GT. S0) GVAVIV=GVAVIV+AC(9)*(T-S0)/(S-S0)
+      G3VAVIV=RLAM-AC(9)
+      IF(S .GT. S0) G3VAVIV=G3VAVIV+AC(9)*(T-S0)/(S-S0)
       RETURN
       END

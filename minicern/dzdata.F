@@ -1,7 +1,10 @@
 *
-* $Id: dzdata.F,v 1.1.1.1 2002/06/16 15:18:48 hristov Exp $
+* $Id: dzdata.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
 *
 * $Log: dzdata.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:28  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:48  hristov
 * Separate distribution  of Geant3
 *
@@ -40,7 +43,12 @@
 
       CHARACTER CHROUT*(*),CHSTAK*6              ,CTEXT1*1,CSTART*3
       PARAMETER (CHROUT = 'DZDATA')
+#if defined(__GNUC__) && __GNUC__ >= 4
+      CHARACTER IHOLE*4, IQID*4
+      DATA      IHOLE  /'****'/
+#else
       DATA      IHOLE  /4H*HO*/
+#endif
 
 #if (defined(CERNLIB_DEBUGON))&&(defined(CERNLIB_VFORT))
 #include "zebra/debugvf2.inc"

@@ -1,7 +1,10 @@
 *
-* $Id: gwork.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gwork.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gwork.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GWORK(NWORK)
+      SUBROUTINE G3WORK(NWORK)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -31,7 +34,7 @@ C.    *                                                                *
 C.    *     If NWORK<0 reset the working space to be NWORK words       *
 C.    *     irrespective of its value.                                 *
 C.    *                                                                *
-C.    *    ==>Called by :USER,GZINIT,GPHYSI,GDRAWC,GDRAWX,GDSHOW,GKXYZ *
+C.    *    ==>Called by :USER,G3ZINIT,G3PHYSI,GDRAWC,GDRAWX,GDSHOW,GKXYZ *
 C.    *                                                                *
 C.    *       Author    R.Brun  *********                              *
 C.    *                                                                *

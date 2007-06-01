@@ -1,7 +1,10 @@
 *
-* $Id: gdeca3.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdeca3.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdeca3.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDECA3(XM0,XM1,XM2,XM3,PCM)
+      SUBROUTINE G3DECA3(XM0,XM1,XM2,XM3,PCM)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -30,7 +33,7 @@ C.    *   There is code in the routine to properly treat K decays (V-A)*
 C.    *   but it is not used. (Requires an additional parameter        *
 C.    *   in the call, to tell which type of decay.)                   *
 C.    *                                                                *
-C.    *    ==>Called by : GDECAY                                       *
+C.    *    ==>Called by : G3DECAY                                      *
 C.    *       Author    S. Johansson  *********                        *
 C.    *                                                                *
 C.    ******************************************************************

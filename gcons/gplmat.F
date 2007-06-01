@@ -1,7 +1,13 @@
 *
-* $Id: gplmat.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gplmat.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: gplmat.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 10/01/95  17.36.36  by  S.Ravndal
 *-- Author :
-      SUBROUTINE GPLMAT(IMATES,IPART,MECAN,KDIN,TKIN,IDM)
+      SUBROUTINE G3PLMAT(IMATES,IPART,MECAN,KDIN,TKIN,IDM)
 C.
 C     ******************************************************************
 C.    *                                                                *
@@ -74,6 +80,7 @@ C.
       DIMENSION   KI(NCOL),EK(NCOL)
       LOGICAL     LXBARN
 *
+#ifdef NEVER
 #include "geant321/gcnmec.inc"
 *
 *     ------------------------------------------------------------------
@@ -122,7 +129,7 @@ C.
                IKB = IR + (IC-1)*NROW
                IF (IKB.GT.KDIM) IKB=KDIM
                KI(IC) = IKB
-               CALL GEVKEV(TKIN(IKB),EK(IC),KU(IC))
+               CALL G3EVKEV(TKIN(IKB),EK(IC),KU(IC))
    10       CONTINUE
             WRITE(CHMAIL,10200) (KI(IC),EK(IC),KU(IC),IC=1,NCOL)
             CALL GMAIL(0,0)
@@ -160,7 +167,7 @@ C
 C
          IF(CHNMEC(IMEC).NE.'NULL') THEN
             MECA = CHNMEC(IMEC)
-            CALL GFTMAT(IMATE,IPART,MECA,KDIM,TKIN,VALUE,PCUT,IXST)
+            CALL G3FTMAT(IMATE,IPART,MECA,KDIM,TKIN,VALUE,PCUT,IXST)
             IF(IXST.EQ.0) GO TO 60
 *
 * ***    Book histogram
@@ -256,4 +263,5 @@ C
      +             'DCUTE =',F6.2,A4,3X,'DCUTM =',F6.2,A4,3X,
      +            'PPCUTM =',F6.2,A4 )
 10200 FORMAT(1X,5('   bin ',I3,' =',F7.2,A4))
+#endif
   999 END

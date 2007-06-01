@@ -1,7 +1,10 @@
 *
-* $Id: gmusig.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gmusig.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gmusig.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -20,7 +23,7 @@ C
 C *** CALCULATION OF MUON-NUCLEUS CROSS SECTIONS IN CURRENT MATERIAL ***
 C *** NVE 16-MAR-1988 CERN GENEVA ***
 C
-C CALLED BY : GMUNUI
+C CALLED BY : G3MUNUI
 C ORIGIN : F.CARMINATI, H.FESEFELDT
 C
 #include "geant321/gcbank.inc"

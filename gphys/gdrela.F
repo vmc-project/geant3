@@ -1,7 +1,10 @@
 *
-* $Id: gdrela.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gdrela.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gdrela.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRELA
+      SUBROUTINE G3DRELA
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -32,7 +35,7 @@ C.    *                                                                *
 C.    *  For mixtures    W(i) = fractional wght of each element.       *
 C.    *  For molecules   W(i) = No. atoms*atomic wght/molecular wght.  *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Authors    R.Brun, G.Patrick  *********                  *
 C.    *                                                                *
 C.    ******************************************************************
@@ -65,12 +68,12 @@ C==========>  A,Ionisation losses for particles other than electrons
 C            Simple element.
 C
       IF (NLMAT.EQ.1) THEN
-         CALL GDRELP(A,Z,DENS,T,DEDX)
+         CALL G3DRELP(A,Z,DENS,T,DEDX)
          IF(DEDX.LT.0.)DEDX=0.
 *
 * *** auxiliary integration point for Range tables
          IF(ICHAN.NE.NEK1) THEN
-            CALL GDRELP(A,Z,DENS,T1,DEDX1)
+            CALL G3DRELP(A,Z,DENS,T1,DEDX1)
             IF(DEDX1.LT.0.)DEDX1=0.
          ENDIF
       ELSE
@@ -83,13 +86,13 @@ C
             AA = Q(JMIXT+L)
             ZZ = Q(JMIXT+NLMAT+L)
             WGHT = Q(JMIXT+2*NLMAT+L)
-            CALL GDRELP(AA,ZZ,DENS*WGHT,T,DEDXC)
+            CALL G3DRELP(AA,ZZ,DENS*WGHT,T,DEDXC)
             IF(DEDXC.LT.0.)DEDXC=0.
             DEDX = DEDX + WGHT*DEDXC
 *
 * *** auxiliary integration point for Range tables
             IF(ICHAN.NE.NEK1) THEN
-               CALL GDRELP(AA,ZZ,DENS*WGHT,T1,DEDXC1)
+               CALL G3DRELP(AA,ZZ,DENS*WGHT,T1,DEDXC1)
                IF(DEDXC1.LT.0.)DEDXC1=0.
                DEDX1 = DEDX1 + WGHT*DEDXC1
             ENDIF
@@ -105,12 +108,12 @@ C===========>  B, Ionisation losses for muons
 C
 C     Simple element
       IF(NLMAT.EQ.1) THEN
-         CALL GDRELM(A,Z,DENS,T,DEDX)
+         CALL G3DRELM(A,Z,DENS,T,DEDX)
          IF(DEDX.LT.0.)DEDX=0.
 *
 * *** auxiliary integration point for Range tables
          IF(ICHAN.NE.NEK1) THEN
-            CALL GDRELM(A,Z,DENS,T1,DEDX1)
+            CALL G3DRELM(A,Z,DENS,T1,DEDX1)
             IF(DEDX1.LT.0.)DEDX1=0.
          ENDIF
       ELSE
@@ -123,13 +126,13 @@ C
             AA=Q(JMIXT+L)
             ZZ=Q(JMIXT+NLMAT+L)
             WGHT=Q(JMIXT+2*NLMAT+L)
-            CALL GDRELM(AA,ZZ,DENS*WGHT,T,DEDXC)
+            CALL G3DRELM(AA,ZZ,DENS*WGHT,T,DEDXC)
             IF(DEDXC.LT.0.)DEDXC=0.
             DEDX=DEDX+WGHT*DEDXC
 *
 * *** auxiliary integration point for Range tables
             IF(ICHAN.NE.NEK1) THEN
-               CALL GDRELM(AA,ZZ,DENS*WGHT,T1,DEDXC1)
+               CALL G3DRELM(AA,ZZ,DENS*WGHT,T1,DEDXC1)
                IF(DEDXC1.LT.0.)DEDXC1=0.
                DEDX1 = DEDX1 + WGHT*DEDXC1
             ENDIF
@@ -143,16 +146,16 @@ C
 C
 C===========>  C, Ionisation losses for electrons/positrons
 C
-      CALL GDRELE(T,-1.,JMA,DEDX)
+      CALL G3DRELE(T,-1.,JMA,DEDX)
       Q(JEL1+ICHAN)=Q(JEL1+ICHAN)+DEDX
-      CALL GDRELE(T,+1.,JMA,DEDX)
+      CALL G3DRELE(T,+1.,JMA,DEDX)
       Q(JEL1+ICHAN+NEK1)=Q(JEL1+ICHAN+NEK1)+DEDX
 *
 * *** auxiliary integration point for Range tables
       IF(ICHAN.NE.NEK1) THEN
-         CALL GDRELE(T1,-1.,JMA,DEDX1)
+         CALL G3DRELE(T1,-1.,JMA,DEDX1)
          WS(ICHAN)=WS(ICHAN)+DEDX1
-         CALL GDRELE(T1,+1.,JMA,DEDX1)
+         CALL G3DRELE(T1,+1.,JMA,DEDX1)
          WS(NEKBIN+ICHAN)=WS(NEKBIN+ICHAN)+DEDX1
       ENDIF
 C

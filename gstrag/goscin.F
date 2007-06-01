@@ -1,7 +1,10 @@
 *
-* $Id: goscin.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: goscin.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: goscin.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.25  by  S.Giani
 *-- Author :
-      FUNCTION GOSCIN(EIN1EV,EIN2EV)
+      FUNCTION G3OSCIN(EIN1EV,EIN2EV)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -72,7 +75,7 @@ C Use Sandia data
    20    REST = REST+WEIGHT*RES
    30 CONTINUE
 C RES value is in cm**2/(g keV)
-      GOSCIN = REST*1E-3*A/AVO
+      G3OSCIN = REST*1E-3*A/AVO
 C Now in Megabarns/eV
 C
       END

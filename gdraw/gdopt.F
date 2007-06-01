@@ -1,7 +1,13 @@
 *
-* $Id: gdopt.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gdopt.F,v 1.2 2003/11/28 11:23:55 brun Exp $
 *
 * $Log: gdopt.F,v $
+* Revision 1.2  2003/11/28 11:23:55  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDOPT(IOPTC,IVALC)
+      SUBROUTINE G3DOPT(IOPTC,IVALC)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -128,14 +134,14 @@ C.
       ELSE IF (IOPTC.EQ.'USER') THEN
          IF (IVALC.EQ.'ON  ') THEN
              IMYSE=1
-             CALL GSATT('*   ','SEEN',-10)
-             CALL GSATT('*   ','COLO',-10)
-             CALL GSATT('*   ','LSTY',-10)
+             CALL G3SATT('*   ','SEEN',-10)
+             CALL G3SATT('*   ','COLO',-10)
+             CALL G3SATT('*   ','LSTY',-10)
          ELSE IF (IVALC.EQ.'OFF ') THEN
              IMYSE=0
-             CALL GSATT('*   ','SEEN',1)
-             CALL GSATT('*   ','COLO',1)
-             CALL GSATT('*   ','LSTY',1)
+             CALL G3SATT('*   ','SEEN',1)
+             CALL G3SATT('*   ','COLO',1)
+             CALL G3SATT('*   ','LSTY',1)
          ENDIF
 **SG
       ELSE
@@ -145,13 +151,13 @@ C.
          CALL GMAIL(0,0)
       ENDIF
 C
-10000 FORMAT(' GDOPT: ',A4,' is not a valid option')
+10000 FORMAT(' G3DOPT: ',A4,' is not a valid option')
 *JS
 10100 FORMAT('    Valid options : THRZ , PROJ , TRAK , HIDE , SHAD')
 *JS
-10200 FORMAT(' GDOPT: Option ',A4,' is ',A4)
+10200 FORMAT(' G3DOPT: Option ',A4,' is ',A4)
 *SG
-10300 FORMAT(' GDOPT: Option ',A4,' is ',A4)
+10300 FORMAT(' G3DOPT: Option ',A4,' is ',A4)
 10400 FORMAT(' Please, compute and set the right size of Zebra',
      +       ' store, needed for your drawing, with LHC option',
      +       ' OFF. If it is done, good luck !!!')

@@ -1,44 +1,52 @@
-# $ Id:  $
+# $Id: Makefile,v 1.23 2005/09/22 18:07:30 rdm Exp $
 
 ############################### geant321 Makefile #############################
 
 PACKAGE   = geant321
 
 ifeq ($(PLATFORM),)
-PLATFORM = $(shell uname)
+PLATFORM = $(shell root-config --arch)
 endif
 
 BINDIR  = tgt_$(PLATFORM)
 LIBDIR  = $(shell pwd)/lib/tgt_$(PLATFORM)
+CONFDIR = $(shell pwd)/config
 
-include config/Makefile.$(PLATFORM)
+ifeq ($(ROOTSYS),)
+ROOT_INCDIR = $(shell root-config --incdir)
+ROOT_BINDIR = $(shell root-config --prefix)/bin
+else
+ROOT_INCDIR = $(ROOTSYS)/include
+ROOT_BINDIR = $(ROOTSYS)/bin
+endif
+
+include $(CONFDIR)/Makefile.$(PLATFORM)
+
+ifneq ($(findstring gcc,$(CC)),)
+GCC_MAJOR    := $(shell $(CC) -dumpversion 2>&1 | cut -d'.' -f1)
+GCC_MINOR    := $(shell $(CC) -dumpversion 2>&1 | cut -d'.' -f2)
+GCC_VERS     := gcc-$(GCC_MAJOR).$(GCC_MINOR)
+endif
+
 
 ############################### Sources #######################################
 
-GDIRS:=	added gbase gcons gdraw geocad ggeom gheisha ghits ghrout ghutils \
+GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	giface giopa gkine gparal gphys gscan gstrag gtrak matx55 miface \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
-        minicern
+        minicern gdraw
 
-include config/MakeRules
+include $(CONFDIR)/MakeRules
 
-# Dummy library (should be avoidable!)
-
-DSRCS          = TGeant3/TGeant3Dummy.cxx
 
 # C++ Headers
 
-DHDRS          = TGeant3/TGeant3.h TGeant3/geant3LinkDef.h
+DHDRS          = TGeant3/TGeant3.h 
 
-# Dummy library dictionary
-
-DDICT          = $(BINDIR)/TGeant3/geant3DummyCint.cxx
-DDICTH         = $(DDICT:.cxx=.h)
-DDICTO         = $(patsubst %.cxx,%.o,$(DDICT))
 
 # Dummy Geant Objects
 
-DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS)) $(DDICTO)
+DOBJS          = $(patsubst %.cxx,$(BINDIR)/%.o,$(DSRCS))
 
 # Library dictionary
 
@@ -48,26 +56,47 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 # Sources
 
-FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F TGeant3/galicef.F
+FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
-ifeq ($(PLATFORM),Linux)
+ifeq ($(PLATFORM),linux)
 	  FSRC += minicern/lnxgs/rdmin.F
 endif
-ifneq ($(PLATFORM),SunOS)
+ifneq ($(PLATFORM),solarisCC5)
 	  FSRC := $(filter-out minicern/uset.F,$(FSRC))
 endif
 CSRC	:= $(wildcard $(patsubst %,%/*.c,$(GDIRS))) 
-ifeq ($(PLATFORM),Linux)
+CSRC     := $(filter-out minicern/lnblnk.c,$(CSRC)) 
+ifeq ($(PLATFORM),linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
-ifeq ($(PLATFORM),HP-UX)
+ifeq ($(PLATFORM),macosx)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),linuxicc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),linuxia64ecc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),linuxx8664gcc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),linuxia64gcc)
+          CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),hpuxacc)
 	  CSRC += minicern/hpxgs/traceqc.c
 endif
-ifneq ($(PLATFORM),HP-UX)
-	  CSRC := $(filter-out minicern/lnblnk.c,$(CSRC)) 
+ifeq ($(PLATFORM),hpuxacc)
+	  CSRC += minicern/lnblnk.c
 endif
+ifeq ($(PLATFORM),macosx)
+	  CSRC += minicern/lnblnk.c
+endif
+CSRC	:= $(filter-out ,$(CSRC))
+
 CXXSRC	:= $(wildcard $(patsubst %,%/*.cxx,$(GDIRS))) \
-           $(filter-out TGeant3/TGeant3Dummy.cxx,$(wildcard TGeant3/*.cxx))
+           $(wildcard TGeant3/*.cxx)
 SRCS	:= $(FSRC) $(CSRC) $(CXXSRC)
 
 # C++ Headers
@@ -82,28 +111,28 @@ COBJ	:= $(patsubst %.c,$(BINDIR)/%.o,$(CSRC))
 CXXOBJ	:= $(patsubst %.cxx,$(BINDIR)/%.o,$(CXXSRC))
 OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
 
+
 # C++ compilation flags
 
-CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) $(CLIBDEFS) -I. \
-			-I$(ROOTSYS)/include -ITGeant3
+CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. -I$(ROOT_INCDIR) -ITGeant3
 
 # C compilation flags
 
-CFLAGS      := $(COPT) $(CLIBCOPT) $(CLIBDEFS) -I. -Iminicern
+CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
 
 # FORTRAN compilation flags
 
-FFLAGS      := $(FOPT) $(CLIBFOPT) $(CLIBDEFS) -I. -Iminicern
-ifeq ($(PLATFORM),Linux)
-   FFLAGS      := $(filter-out -O%,$(FFLAGS))  
-endif
+FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern
+# ifeq ($(PLATFORM),linux)
+#    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
+# endif
 
-DEPINC 		+= -I. -I$(ROOTSYS)/include
+DEPINC 		+= -I. -I$(ROOT_INCDIR)
 
 ############################### Targets #######################################
 
 
-SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL) $(LIBDIR)/libG3mcDummy.$(SL) 
+SLIBRARY	= $(LIBDIR)/lib$(PACKAGE).$(SL)
 ALIBRARY	= $(LIBDIR)/lib$(PACKAGE).a
 
 ifeq ($(PLATFORM),OSF1)
@@ -115,9 +144,6 @@ endif
 $(LIBDIR)/lib$(PACKAGE).$(SL):  $(OBJS)
 $(LIBDIR)/lib$(PACKAGE).a:  $(OBJS)
 
-$(LIBDIR)/libG3mcDummy.$(SL):	$(DOBJS)
-$(LIBDIR)/libG3mcDummy.a:	$(DOBJS)
-
 DICT:= $(GDICT) $(DDICT)
 
 $(GDICT): $(HDRS)
@@ -127,9 +153,12 @@ $(DDICT): $(DHDRS)
 depend:		$(SRCS)
 
 TOCLEAN		= $(BINDIR)
-TOCLEANALL		= $(BINDIR) $(LIBDIR)
+TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-include config/MakeMacros
+MAKEDIST	= $(CONFDIR)/makedist.sh $(GCC_VERS) lib
+MAKEDISTSRC	= $(CONFDIR)/makedist.sh $(GCC_VERS)
+
+include $(CONFDIR)/MakeMacros
 
 ############################### Dependencies ##################################
 

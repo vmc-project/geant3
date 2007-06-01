@@ -1,7 +1,10 @@
 *
-* $Id: gmedia.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id: gmedia.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gmedia.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov
 * Separate distribution  of Geant3
 *
@@ -22,7 +25,7 @@
 #if !defined(CERNLIB_OLD)
 *CMZ :  3.21/02 29/03/94  15.24.17  by  S.Giani
 *-- Author :
-      SUBROUTINE GMEDIA (X, NUMED)
+      SUBROUTINE G3MEDIA (X, NUMED, check)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -59,12 +62,16 @@ C.
       REAL       XC(6)
       LOGICAL    BTEST
       CHARACTER*4 NAME
+      integer check
 C.
 C.    ------------------------------------------------------------------
 *
       nvmany=0
       nfmany=0
       new2fl=0
+      if (check.ne.0) then
+        IF (GONLY(NLEVEL).EQ.0.) NLEVEL=0
+      endif         
 *
       IF (NLEVEL.EQ.0) CALL GMEDIN
 *

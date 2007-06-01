@@ -4,7 +4,7 @@
 *CMZ :          12/09/95  11.22.49  by  S.Ravndal
 *CMZ :  3.21/02 03/07/94  19.08.44  by  S.Giani
 *-- Author :
-      SUBROUTINE GLISUR(X0,X1,MEDI0,MEDI1,U,PDOTU,IERR)
+      SUBROUTINE G3LISUR(X0,X1,MEDI0,MEDI1,U,PDOTU,IERR)
 C.
 C.    ******************************************************************
 C.    *                                                                *

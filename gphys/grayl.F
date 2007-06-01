@@ -1,7 +1,13 @@
 *
-* $Id: grayl.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: grayl.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: grayl.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -18,13 +24,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GRAYL
+      SUBROUTINE G3RAYL
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Generates COHERENT SCATTERING mechanism                       *
 C.    *                                                                *
-C.    *    ==>Called by : GTGAMA                                       *
+C.    *    ==>Called by : G3TGAMA                                      *
 C.    *       Author    G.Tromba, P.Bregant                             *
 C.    *                                                                *
 C.    ******************************************************************
@@ -83,6 +89,8 @@ C
 C
 C            Find out cos(theta)
       COSTH=1.-0.5*(QNEW*GEKIN1)**2
+      IF (COSTH.LT.-1.) COSTH=-1.
+      IF (COSTH.GT.1.)  COSTH=1.
       IF(RNDM(2).GT.0.5*(1.+COSTH**2)) GO TO 5
       SINTH=SQRT((1.-COSTH)*(1.+COSTH))
 C
@@ -99,8 +107,8 @@ C            Set new VECT(I), i=4,5,6
 C
 C             Rotate scattered photon into GEANT system
 C
-      CALL GFANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
-      IF (ROTATE) CALL GDROT(VROT,COSTH,SINTH,COSPH,SINPH)
+      CALL G3FANG(VECT(4),COSTH,SINTH,COSPH,SINPH,ROTATE)
+      IF (ROTATE) CALL G3DROT(VROT,COSTH,SINTH,COSPH,SINPH)
  
       VMROT=1./SQRT(VROT(1)*VROT(1)+VROT(2)*VROT(2)+VROT(3)*VROT(3))
       VECT(4)=VROT(1)*VMROT

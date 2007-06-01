@@ -1,21 +1,10 @@
 *
-* $Id: gdinit.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
-*
-* $Log: gdinit.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:37  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:23  cernlib
-* Geant
-*
+* $Id: gdinit.F,v 1.2 2004/01/28 08:22:00 brun Exp $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.26  by  S.Giani
 *-- Author :
-      SUBROUTINE GDINIT
+      SUBROUTINE G3DINIT
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -51,18 +40,18 @@ C             NGVIEW = Flag for GDFR3D, set to 0 if one wants GDFR3D to
 C                      compute new transformation matrix
 C             NKVIEW = Total number of view banks
 C             IDVIEW = Actual view bank (0 means screen)
-C             GTHETA,GPHI,...,GSCV = Initial values for GDRAW calling parameters
+C             GTHETA,GPHI,...,GSCV = Initial values for G3DRAW calling parameters
 C             GZUA,GZVA,GZUB,GZVB,GZUC,GZVC = Zoom parameters
 C             DPERS  = Distance from the center of projection
 C                      (i.e. viewing position) at Z=-DPERS
 C                      and the projection plane at Z=0
-C             LINBUF = Flag to determine if GDRAWV has to perform
+C             LINBUF = Flag to determine if G3DRAWV has to perform
 C                      line buffering logic (LINBUF=1) or not
 C             IPIONS = Flag for GDFR3D, set to 1 if PIONS is used
 C             IGMR   = Flag for GDFR3D, set to 1 if APOLLO-GMR is used
 C             IPKHIT = Flag for GPHITS (normally 0); if >0 then print only
 C                      hit nr. IPKHIT
-C             IDRNUM = Flag for GDRAW, set to 1 when called by GDRVOL
+C             IDRNUM = Flag for G3DRAW, set to 1 when called by GDRVOL
 C             PLTRNX = Screen and plotter X range, PLTRNX x PLTRNY cm.
 C             PLTRNY = Screen and plotter Y range, PLTRNX x PLTRNY cm.
 ***           RNGU1,RNGU2,RNGV1,RNGV2 = Limits of user coordinates (2D window)
@@ -130,7 +119,7 @@ C                      (refer to the header comments of GDFR3D
 C                      to have a detailed explanation of the steps
 C                      from 3D to 2D)
 C
-C             ITHRZ  = Flag for GDHITS/GDCXYZ/GDXYZ : if not set to 'OFF ' all t
+C             ITHRZ = Flag for GDHITS/G3DCXYZ/G3DXYZ: if not set to 'OFF' all t
 C                      hits and tracks drawing routines will apply an R-Z
 C                      projection in case of SIDE or TOP view
 C
@@ -146,7 +135,7 @@ C
 C                      'PARA' : Ortographic parallel projection (default)
 C                      'PERS' : Perspective projection
 C
-C             ITRKOP = Flag for GDXYZ :
+C             ITRKOP = Flag for G3DXYZ :
 C
 C                      'LINE' : Lines joining track points are drawn
 C                      'POIN' : Only the track points are drawn
@@ -182,7 +171,7 @@ C
       CALL ISVP(1,0.,1.,0.,1.)
       CALL IGSET('TXFP',-61.)
       CALL IGRNG(PLTRNX,PLTRNY)
-      CALL IGSA(0)
+*      CALL IGSA(0)
 *JS
 *
 *  Setting the Viewing parameters to THETA =0., PHI=0., PSI=0.

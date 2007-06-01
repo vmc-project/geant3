@@ -1,7 +1,10 @@
 *
-* $Id: gbrsga.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrsga.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrsga.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,14 +18,14 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GBRSGA
+      SUBROUTINE G3BRSGA
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *  Calculates cross-section in current material                  *
 C.    *  for discrete(hard) electron BREMSSTRAHLUNG.                   *
 C.    *                                                                *
-C.    *    ==>Called by : GPHYSI                                       *
+C.    *    ==>Called by : G3PHYSI                                      *
 C.    *       Authors    G.Patrick, L.Urban  *********                 *
 C.    *                                                                *
 C.    ******************************************************************
@@ -50,7 +53,7 @@ C
 C
 C           element
 C
-         SIG=GBRSGE(Z,T,BCUTE)
+         SIG=G3BRSGE(Z,T,BCUTE)
          SIG=AVO*DENS*SIG/A
       ELSE
 C
@@ -64,7 +67,7 @@ C
             AA  = Q(J-NLM)
             ZZ  = Q(J)
             WMAT= Q(J+NLM)
-            S   = GBRSGE(ZZ,T,BCUTE)
+            S   = G3BRSGE(ZZ,T,BCUTE)
             S   = WMAT*S/AA
             SIG = SIG+AVO*DENS*S
   10     CONTINUE
@@ -72,7 +75,7 @@ C
 C
   20  IF(SIG.GT.0.)THEN
          Q(JBREM+IEKBIN)=1./SIG
-         Q(JBREM+NEK1+IEKBIN)=1./(SIG*GBFSIG(T,BCUTE))
+         Q(JBREM+NEK1+IEKBIN)=1./(SIG*G3BFSIG(T,BCUTE))
       ELSE
          Q(JBREM+IEKBIN)=BIG
          Q(JBREM+NEK1+IEKBIN)=BIG
@@ -91,7 +94,7 @@ C
 C
 C           element
 C
-         SIG=GBRSGM(Z,T,BCUTM)
+         SIG=G3BRSGM(Z,T,BCUTM)
          SIG=AVO*DENS*SIG/A
       ELSE
 C
@@ -105,7 +108,7 @@ C
             AA  = Q(J-NLM)
             ZZ  = Q(J)
             WMAT= Q(J+NLM)
-            S   = GBRSGM(ZZ,T,BCUTM)
+            S   = G3BRSGM(ZZ,T,BCUTM)
             S   = WMAT*S/AA
             SIG = SIG+AVO*DENS*S
   30     CONTINUE

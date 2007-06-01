@@ -1,7 +1,10 @@
 *
-* $Id: glund.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: glund.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: glund.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -18,7 +21,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      SUBROUTINE GLUND
+      SUBROUTINE G3LUND
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -31,7 +34,7 @@ C.    *  2. THE LUND MONTE CARLO FOR E+E- JET PHYSICS  - T.SJOSTRAND   *
 C.    *     LU TP 82-7 and COMPUTER PHYSICS COMMUNICATION 28(1983)229  *
 C.    *                                                                *
 C.    *    The parameters to use the LUND interface are set in GLUNDI  *
-C.    *    They can be changed by data cards (see GLUNDI)              *
+C.    *    They can be changed by data cards (see G3LUNDI)             *
 C.    *                                                                *
 C.    *    ==>Called by : <USER>, GUKINE                               *
 C.    *       Author    R.Hemingway  *********                         *
@@ -59,7 +62,7 @@ C.
 *.
 *.    ------------------------------------------------------------------
 *.
-      IF (IFINIT(3).EQ.0)  CALL GLUNDI
+      IF (IFINIT(3).EQ.0)  CALL G3LUNDI
 *
       CALL PYEEVT(IFLUND,ECLUND)
 *
@@ -74,7 +77,7 @@ C.
       VERT(2)   = 0.
       VERT(3)   = 0.
       NWBUF=2+10*N
-      CALL GSVERT(V,0,0,BUF,NWBUF,NVTX)
+      CALL G3SVERT(V,0,0,BUF,NWBUF,NVTX)
       IF (NVTX.GT.0) THEN
          DO 20 I = 1,N
             IF(K(I,1).GE.1.AND.K(I,1).LE.10) THEN
@@ -83,7 +86,7 @@ C.
                      PGEANT(1)=P(I,1)
                      PGEANT(2)=P(I,2)
                      PGEANT(3)=P(I,3)
-                     CALL GSKINE(PGEANT,IGE,NVTX,BUF,0,NT)
+                     CALL G3SKINE(PGEANT,IGE,NVTX,BUF,0,NT)
                      GOTO 20
                   ENDIF
    10          CONTINUE

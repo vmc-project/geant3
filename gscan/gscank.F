@@ -1,7 +1,10 @@
 *
-* $Id: gscank.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gscank.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gscank.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.31  by  S.Giani
 *-- Author :
-      SUBROUTINE GSCANK
+      SUBROUTINE G3SCANK
 *
 ************************************************************************
 *             Generates Kinematics for the SCAN utility                *
@@ -35,7 +38,7 @@
 *
 *     -----------------------------------------------------------------
 *
-      IF(LSCAN.EQ.0)CALL GSCANI
+      IF(LSCAN.EQ.0)CALL G3SCANI
 *
       VERTEX(1)=VSCAN(1)
       VERTEX(2)=VSCAN(2)
@@ -43,7 +46,7 @@
       IKSCAN = 48
       DPHI   = (PHIMAX-PHIMIN)/NPHI
       DTETA  = (TETMAX-TETMIN)/NTETA
-      CALL GSVERT(VERTEX,0,0,UBUF,0,NVERT)
+      CALL G3SVERT(VERTEX,0,0,UBUF,0,NVERT)
 *
       DO 20  IPHI=IPHI1,IPHIL
          IF(LQ(LSCAN-IPHI).NE.0)GO TO 20
@@ -60,7 +63,7 @@
             PLAB(1) = SIN(THETA)*COS(PHI)
             PLAB(2) = SIN(THETA)*SIN(PHI)
             PLAB(3) = COS(THETA)
-            CALL GSKINE(PLAB,IKSCAN,NVERT,BUF,0,NT)
+            CALL G3SKINE(PLAB,IKSCAN,NVERT,BUF,0,NT)
    10    CONTINUE
          GO TO 30
    20 CONTINUE
@@ -76,8 +79,8 @@
 *              Kinematic debug (controled by ISWIT(1))
 *
       IF(IDEBUG.EQ.1.AND.ISWIT(1).EQ.1) THEN
-         CALL GPRINT('VERT',0)
-         CALL GPRINT('KINE',0)
+         CALL G3PRINT('VERT',0)
+         CALL G3PRINT('KINE',0)
       ENDIF
 *
       END

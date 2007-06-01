@@ -1,21 +1,10 @@
 *
-* $Id: gdxyz.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdxyz.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.1.1.1  1995/10/24 10:20:29  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDXYZ(IT)
+      SUBROUTINE G3DXYZ(IT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -34,7 +23,7 @@ C.
       INTEGER COLO(NTRTYP), MODE(NTRTYP)
       DIMENSION U(50),V(50)
 C
-C             MODE(ITRTYP) and COLO(ITRTYP) are used by ISLN and GDCOL
+C             MODE(ITRTYP) and COLO(ITRTYP) are used by ISLN and G3DCOL
 C             ITRTYP (the track type) correspond to :
 C
 C             ITRTYP  PARTICLE  |       HIGZ         |
@@ -86,8 +75,8 @@ C
          IMOD=MODE(ITRTYP)
          ICOL=COLO(ITRTYP)
 C
-         CALL GDCOL(ICOL)
-         CALL GDCOL1(ICOL)
+         CALL G3DCOL(ICOL)
+         CALL G3DCOL1(ICOL)
 C
          IPF=1
    20    IIPL=IPF+49
@@ -122,7 +111,7 @@ C
          ELSE
 C
             CALL IGPID(1,'Kine',I,' ')
-            CALL GDRAWP(U,V,NP)
+            CALL G3DRAWP(U,V,NP)
 C
          ENDIF
 C
@@ -135,8 +124,8 @@ C
 C
    60 CONTINUE
 C
-      CALL GDCOL(0)
-      CALL GDCOL1(IBITS(LINATP,16,4))
+      CALL G3DCOL(0)
+      CALL G3DCOL1(IBITS(LINATP,16,4))
 C
    70 CONTINUE
 C

@@ -14,7 +14,17 @@
  **************************************************************************/
 
 /*
-$Log$
+$Log: G3Volume.cxx,v $
+Revision 1.4  2005/07/21 17:50:46  brun
+From Frederico
+Use MakeCopy instead of Copy
+
+Revision 1.3  2004/01/28 08:17:52  brun
+Reintroduce the Geant3 graphics classes (thanks Andreas Morsch)
+
+Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+initial import into CVS
+
 */
 
 //
@@ -156,8 +166,6 @@ void G3Volume::Draw(Option_t *)
     
 
     gMC->Gdraw(fName, fTheta, fPhi, fPsi, fU, fV, fUscale, fVscale);
-    THIGZ *higz = (THIGZ*)gROOT->GetListOfCanvases()->FindObject("higz");
-    if (higz) higz->Update();
 }
 
 void G3Volume::DrawSpec()
@@ -187,8 +195,6 @@ void G3Volume::DrawSpec()
     
 
     ((TGeant3*) gMC)->DrawOneSpec(fName);
-    THIGZ *higz = (THIGZ*)gROOT->GetListOfCanvases()->FindObject("higz");
-    if (higz) higz->Update();
 }
 
 void G3Volume::SetParam(Int_t ip, Float_t param)
@@ -305,7 +311,7 @@ void  G3Volume::AddCopy(G3Volume* volume)
     fNCopies++;
 }
 
-G3Volume* G3Volume::Copy(Int_t i)
+G3Volume* G3Volume::MakeCopy(Int_t i)
 {
     return (G3Volume*) fCopies->At(i);
 }

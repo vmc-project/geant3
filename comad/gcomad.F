@@ -18,6 +18,7 @@ C
 #include "geant321/gcbank.inc"
 #include "geant321/gccurs.inc"
 #include "geant321/gccuts.inc"
+#include "geant321/gcmore.inc"
 #include "geant321/gcdraw.inc"
 #include "geant321/gcfdim.inc"
 #include "geant321/gcflag.inc"
@@ -75,6 +76,8 @@ C
      +              RMAX1,RMAX2,JPORJJ,ITSTCU,IOLDCU,ISCOP,
      +              NTIM,NTFLAG,LPASS,JSC
 *
+      COMMON/GCCHAN/LSAMVL
+      LOGICAL LSAMVL
 
 #include "geant321/gcstak.inc"
 #include "geant321/gcstra.inc"
@@ -100,10 +103,10 @@ C
       COMMON / QUEST / IQUEST(100)
 *
       CHARACTER *(*) CHCOMM
-#if defined(CERNLIB_DECS)
-      INTEGER*8 GCADDI, GCADDF, GCADDL, GCADDC, GCADDD, IADD
+#if defined(CERNLIB_DECS) || defined(CERNLIB_LXIA64)
+      INTEGER*8 GCADDB, GCADDI, GCADDF, GCADDL, GCADDC, GCADDD, IADD
 #else          
-      INTEGER GCADDI, GCADDF, GCADDL, GCADDC, GCADDD
+      INTEGER GCADDB, GCADDI, GCADDF, GCADDL, GCADDC, GCADDD
 #endif
 *
       IF(CHCOMM.EQ.'GCASHO') THEN
@@ -116,6 +119,8 @@ C
          IADD=GCADDI(INTFLA)
       ELSE IF(CHCOMM.EQ.'GCCUTS') THEN
          IADD=GCADDF(CUTGAM)
+      ELSE IF(CHCOMM.EQ.'GCMORE') THEN
+         IADD=GCADDF(GCALPHA)
       ELSE IF(CHCOMM.EQ.'GCDRAW') THEN
          IADD=GCADDI(NUMNOD)
       ELSE IF(CHCOMM.EQ.'GCFDIM') THEN
@@ -256,6 +261,8 @@ C
          IADD=GCADDD(EI)
       ELSE IF(CHCOMM.EQ.'GCBANK') THEN
          IADD=GCADDI(NZEBRA)
+      ELSE IF(CHCOMM.EQ.'GCCHAN') THEN
+         IADD=GCADDB(LSAMVL)
       ELSE
          WRITE(6,123) CHCOMM
          IADD=0

@@ -1,7 +1,10 @@
 *
-* $Id: gsynit.F,v 1.1.1.1 2002/06/16 15:18:41 hristov Exp $
+* $Id: gsynit.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gsynit.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:41  hristov
 * Separate distribution  of Geant3
 *
@@ -19,7 +22,7 @@
 #if defined(CERNLIB_NEVER)
 *CMZ :  3.21/02 29/03/94  15.41.23  by  S.Giani
 *-- Author :
-      SUBROUTINE GSYNIT
+      SUBROUTINE G3SYNIT
 C
 C  Preperation of synchrotron radiation tables.
 C  This routine can be used to compute the YT and FTI used

@@ -1,7 +1,10 @@
 *
-* $Id: glast.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: glast.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: glast.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GLAST
+      SUBROUTINE G3LAST
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -56,12 +59,12 @@ C
 C
 C             Print statistics
 C
-      IF(JGSTAT.NE.0)CALL GPSTAT
+      IF(JGSTAT.NE.0)CALL G3PSTAT
 #if defined(CERNLIB_MONITOR)
 C
 C             Call monitoring routine
 C
-      CALL GEAMON(2,'GLAST')
+      CALL G3EAMON(2,'GLAST')
 #endif
 C
  1000 FORMAT('1',9X,'**** NUMBER OF EVENTS PROCESSED =',I10)

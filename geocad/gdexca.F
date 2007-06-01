@@ -1,7 +1,10 @@
 *
-* $Id: gdexca.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id: gdexca.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
 *
 * $Log: gdexca.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:27  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
 * Separate distribution  of Geant3
 *
@@ -105,7 +108,7 @@ C
 C             Initialize for new geometry structure
 C
       IF (JGPAR.EQ.0) CALL GMEDIN
-      CALL GLMOTH(NAME,1,NLEV,LVOLS,LINDX)
+      CALL G3LMOTH(NAME,1,NLEV,LVOLS,LINDX)
       DO 20 J=1, NLEV
          LNAMES(J)=IQ(JVOLUM+LVOLS(J))
    20 CONTINUE
@@ -123,7 +126,7 @@ C
 C
       IF (IDRNUM.NE.0) GO TO 70
 C
-      CALL GFPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
+      CALL G3FPARA(NAME,1,1,NPAR,NATT,GPAR(1,NLEVEL),ATT)
 C
       IF (NPAR.LE.0) GO TO 220
 C
@@ -159,7 +162,7 @@ C
 C
       IF (IDRNUM.NE.0.AND.JIN.EQ.0) THEN
          CALL UHTOC(NAMES(NLEVEL),4,NAMEE2,4)
-         CALL GFPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
+         CALL G3FPARA(NAMEE2,NUMBER(NLEVEL),1,NPAR,
      +            NATT,GPAR(1,NLEVEL),ATT)
       ELSE
          NPAR=Q(JVO+5)
@@ -253,7 +256,7 @@ C-----------------------JV----Mod NH---------------------------
 C        Get positioning variables
 C
       IF(NLEVEL.LT.JLEVEL)THEN
-         CALL GSATT(JVVOLU,'SEEN',MYSEEN)
+         CALL G3SATT(JVVOLU,'SEEN',MYSEEN)
          Q(JBUF1+MYIVO)=0
       ENDIF
       JVO=LQ(JVOLUM-IVO)
@@ -297,7 +300,7 @@ C
             JVVOLD=JVVOLU
             CALL UHTOC(IVOLNA,4,JVVOLU,4)
             IF(JVVOLD.NE.JVVOLU)MYSEEN=ATT(2)
-            CALL GSATT(JVVOLU,'SEEN',-1)
+            CALL G3SATT(JVVOLU,'SEEN',-1)
             JLEVEL=NLEVEL
             MYIVO=IVO
             GOTO 200

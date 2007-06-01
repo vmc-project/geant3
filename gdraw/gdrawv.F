@@ -1,31 +1,17 @@
 *
-* $Id: gdrawv.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
-*
-* $Log: gdrawv.F,v $
-* Revision 1.1.1.1  2002/06/16 15:18:38  hristov
-* Separate distribution  of Geant3
-*
-* Revision 1.1.1.1  1999/05/18 15:55:03  fca
-* AliRoot sources
-*
-* Revision 1.2  1996/09/30 13:37:24  ravndal
-* Backward compatibility for view banks
-*
-* Revision 1.1.1.1  1995/10/24 10:20:27  cernlib
-* Geant
-*
+* $Id: $
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani
 *-- Author :
-      SUBROUTINE GDRAWV(U,V,NP)
+      SUBROUTINE G3DRAWV(U,V,NP)
 C.
 C.    ******************************************************************
 C.    *                                                                *
-C.    *       GDRAWV stores sparse segments ( NP = 2 ) in a buffer.    *
+C.    *       G3DRAWV stores sparse segments ( NP = 2 ) in a buffer.   *
 C.    *       When the buffer is full it is scanned to collect         *
 C.    *       segments into polylines ( NP > 2 ), that will be         *
-C.    *       drawn by the GDRAWP routine.                             *
+C.    *       drawn by the G3DRAWP routine.                            *
 C.    *                                                                *
 C.    *       Variables used in the routine :                          *
 C.    *                                                                *
@@ -62,13 +48,13 @@ C.    *       ISTF   = Flag for statistics printout;                   *
 C.    *                if ISTF=1 a statistics of polylines length      *
 C.    *                will be done (to be printed interactively)      *
 C.    *                                                                *
-C.    *       LINBUF = Flag to determine if GDRAWV has to perform      *
+C.    *       LINBUF = Flag to determine if G3DRAWV has to perform     *
 C.    *                line buffering logic (LINBUF=1) or not          *
 C.    *                                                                *
 C.    *    ==>Called by : <USER>, <GXINT>, GDAHIT, GDARC, GDARR,       *
-C.    *                   GDCIRC, GDCIRR, GDCIRY, GDCUT, GDHEAD,       *
-C.    *                   GDLINE, GDMAN, GDPRTR, GDRAW, GDRECT,        *
-C.    *                   GDSCAL, GDSHOW, GDSURF, GDTREE               *
+C.    *                   GDCIRC, GDCIRR, GDCIRY, GDCUT, G3DHEAD,      *
+C.    *                   GDLINE, G3DMAN, GDPRTR, G3DRAW, GDRECT,      *
+C.    *                   GDSCAL, G3DSHOW, GDSURF, G3DTREE             *
 C.    *       Author : P.Zanarini   S.Giani 1992  *********            *
 C.    *                                                                *
 C.    ******************************************************************
@@ -113,17 +99,17 @@ C
 C
       ELSE IF (NP.GT.2) THEN
 C
-C             Call directly GDRAWP
+C             Call directly G3DRAWP
 C
-         CALL GDRAWP(U,V,NP)
+         CALL G3DRAWP(U,V,NP)
          GO TO 999
 C
 C
       ELSE IF (LINBUF.EQ.0) THEN
 C
-C             Call directly GDRAWP
+C             Call directly G3DRAWP
 C
-         CALL GDRAWP(U,V,NP)
+         CALL G3DRAWP(U,V,NP)
          GO TO 999
 C
       ENDIF
@@ -131,7 +117,7 @@ C
       LTY=IBITS(LINATT,10,3)
       CALL UCTOH('ON  ',IFLH,4,4)
       IF(LTY.NE.6.AND.IHIDEN.EQ.IFLH)THEN
-         CALL GDRAWP(U,V,NP)
+         CALL G3DRAWP(U,V,NP)
          GO TO 999
       ENDIF
 C             Fill the line buffer
@@ -223,9 +209,9 @@ C
    70 CONTINUE
 C
       IF (INEW.GT.3) THEN
-         CALL GDRAWP(XNEW,YNEW,INEW)
+         CALL G3DRAWP(XNEW,YNEW,INEW)
       ELSE
-         IF (INEW.EQ.3) CALL GDRAWP(XNEW,YNEW,INEW)
+         IF (INEW.EQ.3) CALL G3DRAWP(XNEW,YNEW,INEW)
          IF (LUDEB.GE.0) THEN
             WRITE (CHMAIL,10100) NAMES(NLEVEL),INEW
             CALL GMAIL(0,0)
@@ -312,7 +298,7 @@ C
       ENDIF
 C
       IF (I0.EQ.1) THEN
-         CALL GDRAWP(XNEW,YNEW,INEW)
+         CALL G3DRAWP(XNEW,YNEW,INEW)
          IF (LUDEB.GE.0) THEN
             WRITE (CHMAIL,10200) NAMES(NLEVEL),INEW
             CALL GMAIL(0,0)
@@ -321,7 +307,7 @@ C
          GO TO 80
       ENDIF
 C
-C             Reset flag : next call to GDRAWV will re-process
+C             Reset flag : next call to G3DRAWV will re-process
 C             the points now forming an open polyline, trying then
 C             (with the new points stored) to form a closed polyline
 C
@@ -357,7 +343,7 @@ C
          LINATT=IATTL(1)
          DO 200 I=1,NSEG
             J=I*2-1
-            CALL GDRAWP(X(J),Y(J),2)
+            CALL G3DRAWP(X(J),Y(J),2)
   200    CONTINUE
          INEW=0
          GO TO 30
@@ -385,17 +371,17 @@ C
 C
   230 CONTINUE
 C
-C             If last call to GDRAWV (NP=0, i.e. close the buffer)
+C             If last call to G3DRAWV (NP=0, i.e. close the buffer)
 C             and some lines have still to be processed (NSEG>0)
-C             then don't RETURN but re-execute the body of GDRAWV
+C             then don't RETURN but re-execute the body of G3DRAWV
 C
       IF (NP.EQ.0.AND.NSEG.GT.0) GO TO 10
 C
-10000 FORMAT (' *** GDRAWV: ERROR 1 -  NAME = ',A4,' INEW = ',I3)
-10100 FORMAT (' *** GDRAWV: ERROR 2 -  NAME = ',A4,' INEW = ',I3)
-10200 FORMAT (' *** GDRAWV: ERROR 3 -  NAME = ',A4,' INEW = ',I3)
-10300 FORMAT (' *** GDRAWV: ERROR 4 -  NAME = ',A4)
-10400 FORMAT (' *** GDRAWV: GDRAWP called for ',A4,' (',I2,' segments)')
+10000 FORMAT (' *** G3DRAWV: ERROR 1 -  NAME = ',A4,' INEW = ',I3)
+10100 FORMAT (' *** G3DRAWV: ERROR 2 -  NAME = ',A4,' INEW = ',I3)
+10200 FORMAT (' *** G3DRAWV: ERROR 3 -  NAME = ',A4,' INEW = ',I3)
+10300 FORMAT (' *** G3DRAWV: ERROR 4 -  NAME = ',A4)
+10400 FORMAT (' **G3DRAWV: G3DRAWP called for ',A4,' (',I2,' segments)')
 10500 FORMAT (' LOOP : I0=',I3,' - I1=',I3,' - I2=',I3,
      +        ' - INEW=',I3,' - NSEG=',I3)
 10600 FORMAT (1X,A)

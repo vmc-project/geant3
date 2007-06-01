@@ -1,7 +1,10 @@
 *
-* $Id: gevkev.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id: gevkev.F,v 1.1.1.1 2002/07/24 15:56:24 rdm Exp $
 *
 * $Log: gevkev.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:24  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov
 * Separate distribution  of Geant3
 *
@@ -15,13 +18,13 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.19  by  S.Giani
 *-- Author :
-      SUBROUTINE GEVKEV(EGEV,ENERU,KUNIT)
+      SUBROUTINE G3EVKEV(EGEV,ENERU,KUNIT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
 C.    *       Convert energy from GeV to more appropriate units        *
 C.    *                                                                *
-C.    *    ==>Called by : GPLMAT,GPRMAT,GPHYSI,GPCXYZ                  *
+C.    *    ==>Called by : G3PLMAT,G3PRMAT,G3PHYSI,G3PCXYZ              *
 C.    *       Author     M.Maire    *********                          *
 C.    *                                                                *
 C.    ******************************************************************

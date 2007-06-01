@@ -1,7 +1,10 @@
 *
-* $Id: gbrsgm.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id: gbrsgm.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
 *
 * $Log: gbrsgm.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:25  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov
 * Separate distribution  of Geant3
 *
@@ -15,7 +18,7 @@
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.21  by  S.Giani
 *-- Author :
-      FUNCTION GBRSGM(Z,T,BCUT)
+      FUNCTION G3BRSGM(Z,T,BCUT)
 C.
 C.    ******************************************************************
 C.    *                                                                *
@@ -23,7 +26,7 @@ C.    *  Calculates cross-section in current material                  *
 C.    *  for discrete(hard) muon BREMSSTRAHLUNG.                       *
 C.    *         (SIG in barn/atom)                                     *
 C.    *                                                                *
-C.    *    ==>Called by : GBRSGA                                       *
+C.    *    ==>Called by : G3BRSGA                                      *
 C.    *       Author  L.Urban  *********                               *
 C.    *                                                                *
 C.    ******************************************************************
@@ -51,7 +54,7 @@ C       CONMX=0.75*SQRT(2.7182...)*EMMU
 C.
 C.    ------------------------------------------------------------------
 C.
-      GBRSGM=0.
+      G3BRSGM=0.
       IF(BCUT.GE.T) GOTO 99
 C
       E=T+EMMU
@@ -88,7 +91,7 @@ C
       FAC=LOG(ECMAX/BCUT)
       IF(FAC.LE.0.) GOTO 99
       FAC=Z*(Z+AKSI*(1.+GAM*LOG(Z)))*FAC**ALFA
-      GBRSGM=FAC*S
+      G3BRSGM=FAC*S
 C
   99  RETURN
       END

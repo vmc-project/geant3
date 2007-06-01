@@ -1,7 +1,10 @@
 *
-* $Id: gudcay.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id: gudcay.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
 *
 * $Log: gudcay.F,v $
+* Revision 1.1.1.1  2002/07/24 15:56:26  rdm
+* initial import into CVS
+*
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov
 * Separate distribution  of Geant3
 *
@@ -21,7 +24,7 @@ C.    ******************************************************************
 C.    *                                                                *
 C.    *       User routine to decay particles                          *
 C.    *                                                                *
-C.    *    ==>Called by : GDECAY                                       *
+C.    *    ==>Called by : G3DECAY                                      *
 C.    *                                                                *
 C.    ******************************************************************
 C.
