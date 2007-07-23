@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.28 2007/03/23 21:11:44 brun Exp $ */
+/* $Id: TGeant3.h,v 1.29 2007/05/18 08:44:16 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -1143,6 +1143,9 @@ protected:
   void  G3Gsposp(const char *name, Int_t nr, const char *mother,
                  Double_t x, Double_t y, Double_t z, Int_t irot, 
                  const char *konly, Float_t *upar, Int_t np);
+                 
+  Int_t GetIonPdg(Int_t z, Int_t a, Int_t i = 0) const;                
+  Int_t GetSpecialPdg(Int_t number) const;                
 
   ClassDef(TGeant3,1)  //C++ interface to Geant basic routines
 };

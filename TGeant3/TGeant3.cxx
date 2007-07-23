@@ -16,6 +16,102 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.56  2007/05/18 08:44:15  brun
+A major update of GEANTE by Andrea Fontana and Alberto Rotondi
+
+
+1) update of the Coulomb multiple scattering parametrization;
+2) update of the straggling of energy loss for thin materials;
+3) new options to extrapolate the track parameters to the point
+   of closest approach to a point or to a wire (straight line).
+
+Details on the physical motivation behind this work can be found
+in our report for the Panda Collaboration, available at:
+
+http://www.pv.infn.it/~fontana/tracking.pdf
+
+Feel free to contact us for questions and discussions about these
+topics by using the following email addresses:
+
+alberto.rotondi@pv.infn.it
+andrea.fontana@pv.infn.it
+
+---
+
+List of changes in the fortran and C++ routines of the geant3
+VMC directory:
+
+- gcmore.inc
+  gtmore.inc
+  geant3LinkDef.h
+  gcomad.F
+
+ Added a new common that contains all the new variables:
+      COMMON/GCMORE/GCALPHA,ICLOSE,PFINAL(3),DSTRT,WIRE1(3),WIRE2(3),
+     +              P1(3),P2(3),P3(3),CLENG(3)
+
+     input to ERLAND:
+      GCALPHA: energy cut parameter for energy loss fluctuations
+
+     input to EUSTEP:
+      ICLOSE: = 1 the use of the common is enabled for the closest
+                  approach to a point PFINAL(3)
+              = 2 the use of the common is enabled for the closest
+                  approach to a wire of extremes WIRE1(3) and WIRE2(3)
+              = 0 the common is empty and disabled
+      PFINAL(3): assigned point
+      DSTRT: assigned distance between initial point in ERTRAK
+             and PFINAL along straight line (currently noy used)
+      WIRE1(3): first point of a wire
+      WIRE2(3): second point of a wire
+
+     output from EUSTEP:
+      P1(3): point previous to the point of closest approach to
+             PFINAL() or wire
+      P2(3): point of closest approach to PFINAL() or wire
+      P3(3): point next to the point of closest approach to
+             PFINAL() or wire
+      CLENG(3): track length to the previous 3 points
+
+      Important note: the calculated points of closest approach are
+      depending on the GEANE steps. For calculating the true point
+      of closest approach the last 3 points of the extrapolation, i.e.
+      the previous to closest, the closest and the next to closest are
+      returned to the user. Different algorithms can be implemented, but
+      we decided to leave this to the users in the C++ interface to GEANE.
+
+- ermcsc.F
+ new expression for the variance of the Coulomb multiple scattering
+ according to Fruhwirth and Regler, NIM A 456 (2001) 369
+
+- ertrch.F
+ added DESTEP in the calling string of ERLAND for calculation with
+ Urban model. Added and saved previous step PRSTEP.
+
+- erland.F
+ added new calculation for sigma of straggling in energy loss
+ to include in Geane the Urban/Landau approximation, as explained
+ in the Geant manual and related papers.
+ The model parametrization can be controlled with a user variable (GCALPHA)
+ in the new GCMORE common block: 1 is for old gaussian model valid
+ for dense materials, other values (see the report) are for gaseous
+ materials.
+
+- eustep.F
+ added the calculation to the distance of closest approach to a point
+ or to a wire.
+
+- TGeant3.h
+- TGeant3.cxx
+ added the possibility to define user cuts (already present in the gccuts
+ struct but not in the TGeant3::SetCUTS method) and to define the new
+ variables of the GCMORE common with two new methods SetECut() and
+ SetClose().
+ Added new method InitGEANE() to initialize GEANE to the old behaviour
+ (default) for backward compatibility. Only the multiple scattering has
+ been updated to a more correct formula.
+ Corrected a typo in the call to the routine Trscsd().
+
 Revision 1.55  2007/03/26 10:15:04  brun
 Fix a problem when adding a new tracking medium to the TObjArray.
 
@@ -1199,9 +1295,6 @@ void TGeant3::AddParticlesToPdgDataBase() const
 
     TDatabasePDG *pdgDB = TDatabasePDG::Instance();
 
-    const Int_t kion=10000000;
-    const Int_t kspe=50000000;
-
     const Double_t kAu2Gev=0.9314943228;
     const Double_t khSlash = 1.0545726663e-27;
     const Double_t kErg2Gev = 1/1.6021773349e-3;
@@ -1218,20 +1311,20 @@ void TGeant3::AddParticlesToPdgDataBase() const
 //
 
   pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
-                     0,3,"Ion",kion+10020);
+                     0,3,"Ion",GetIonPdg(1,2));
   pdgDB->AddParticle("Triton","Triton",3*kAu2Gev+14.931e-3,kFALSE,
-                     khShGev/(12.33*kYear2Sec),3,"Ion",kion+10030);
+                     khShGev/(12.33*kYear2Sec),3,"Ion",GetIonPdg(1,3));
   pdgDB->AddParticle("Alpha","Alpha",4*kAu2Gev+2.424e-3,kTRUE,
-                     khShGev/(12.33*kYear2Sec),6,"Ion",kion+20040);
+                     khShGev/(12.33*kYear2Sec),6,"Ion",GetIonPdg(2,4));
   pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
-                     0,6,"Ion",kion+20030);
+                     0,6,"Ion",GetIonPdg(2,3));
 
 // Special particles
 //
   pdgDB->AddParticle("Cherenkov","Cherenkov",0,kFALSE,
-                     0,0,"Special",kspe+50);
+                     0,0,"Special",GetSpecialPdg(50));
   pdgDB->AddParticle("FeedbackPhoton","FeedbackPhoton",0,kFALSE,
-                     0,0,"Special",kspe+51);
+                     0,0,"Special",GetSpecialPdg(51));
 
 }
 
@@ -1432,39 +1525,29 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "RHO 0", 3, 0.768, 0., 4.353e-24);  // 44 = Rho0
   fPDGCode[fNPDGCodes++]=113;   //  44 = RHO0
 
-  //
-  // Use ENDF-6 mapping for ions = 10000*z+10*a+iso
-  // and add 1 000 000
-  // and numbers above 5 000 000 for special applications
-  //
-
-  const Int_t kion=10000000;
-
-  const Int_t kspe=50000000;
-
 //
 // Ions
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=kion+10020;   // 45 = Deuteron
+  fPDGCode[fNPDGCodes++]=GetIonPdg(1, 2); // 45 = Deuteron
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=kion+10030;   // 46 = Triton
+  fPDGCode[fNPDGCodes++]=GetIonPdg(1, 3); // 46 = Triton
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=kion+20040;   // 47 = Alpha
+  fPDGCode[fNPDGCodes++]=GetIonPdg(2, 4); // 47 = Alpha
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=0;            // 48 = geantino mapped to rootino
+  fPDGCode[fNPDGCodes++]=0;               // 48 = geantino mapped to rootino
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=kion+20030;   // 49 = HE3
+  fPDGCode[fNPDGCodes++]=GetIonPdg(2, 3); // 49 = HE3
 
   fNG3Particles++;
-  fPDGCode[fNPDGCodes++]=kspe+50;      // 50 = Cherenkov
+  fPDGCode[fNPDGCodes++]=GetSpecialPdg(50); // 50 = Cherenkov
 // special
   Gspart(fNG3Particles++, "FeedbackPhoton", 7, 0., 0.,1.e20 );
-  fPDGCode[fNPDGCodes++]=kspe+51;      // 51 = FeedbackPhoton
+  fPDGCode[fNPDGCodes++]=GetSpecialPdg(51); // 51 = FeedbackPhoton
 //
   Gspart(fNG3Particles++, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
   fPDGCode[fNPDGCodes++]=4122;         //52 = Lambda_c+
@@ -1929,7 +2012,7 @@ Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
 
   // Define pdgEncoding
   //
-  Int_t pdg = 10000000 + 10000*Z + 10*A;
+  Int_t pdg = GetIonPdg(Z, A);
   Int_t pdgMax = pdg + 9;
 
   // Find isomer number which is not yet used
@@ -6696,10 +6779,26 @@ Int_t TGeant3::ConvertVolumePathString(const TString &volumePath,
 }
 
 //__________________________________________________________________
-
 void TGeant3::Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
                      Float_t& cosph, Float_t& sinph, Int_t& rotate) 
 {
 
   g3fang(p, costh, sinth, cosph, sinph, rotate );
 } 
+
+//__________________________________________________________________
+Int_t TGeant3::GetIonPdg(Int_t z, Int_t a, Int_t i) const
+{
+// Acording to
+// http://cepa.fnal.gov/psm/stdhep/pdg/montecarlorpp-2006.pdf
+
+  return 1000000000 + 10*1000*z + 10*a + i;
+}  
+                
+//__________________________________________________________________
+Int_t TGeant3::GetSpecialPdg(Int_t number) const
+{
+// Numbering for special particles
+
+  return 50000000 + number;
+}                
