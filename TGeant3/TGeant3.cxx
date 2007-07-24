@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.57  2007/07/23 20:04:03  brun
+From Ivana:
+Implemented the new pdg "standard" codes for ions
+defined in pdg-2006, thanks to Susan Kasahara
+for this suggestion.
+
 Revision 1.56  2007/05/18 08:44:15  brun
 A major update of GEANTE by Andrea Fontana and Alberto Rotondi
 
@@ -1310,21 +1316,31 @@ void TGeant3::AddParticlesToPdgDataBase() const
 // Ions
 //
 
-  pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
-                     0,3,"Ion",GetIonPdg(1,2));
-  pdgDB->AddParticle("Triton","Triton",3*kAu2Gev+14.931e-3,kFALSE,
-                     khShGev/(12.33*kYear2Sec),3,"Ion",GetIonPdg(1,3));
-  pdgDB->AddParticle("Alpha","Alpha",4*kAu2Gev+2.424e-3,kTRUE,
-                     khShGev/(12.33*kYear2Sec),6,"Ion",GetIonPdg(2,4));
-  pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
-                     0,6,"Ion",GetIonPdg(2,3));
+  if ( !pdgDB->GetParticle(GetIonPdg(1,2)) )
+    pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
+                       0,3,"Ion",GetIonPdg(1,2));
+
+  if ( !pdgDB->GetParticle(GetIonPdg(1,3)) )
+    pdgDB->AddParticle("Triton","Triton",3*kAu2Gev+14.931e-3,kFALSE,
+                       khShGev/(12.33*kYear2Sec),3,"Ion",GetIonPdg(1,3));
+
+  if ( !pdgDB->GetParticle(GetIonPdg(2,4)) )
+    pdgDB->AddParticle("Alpha","Alpha",4*kAu2Gev+2.424e-3,kTRUE,
+                       khShGev/(12.33*kYear2Sec),6,"Ion",GetIonPdg(2,4));
+
+  if ( !pdgDB->GetParticle(GetIonPdg(2,3)) )
+    pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
+                       0,6,"Ion",GetIonPdg(2,3));
 
 // Special particles
 //
-  pdgDB->AddParticle("Cherenkov","Cherenkov",0,kFALSE,
-                     0,0,"Special",GetSpecialPdg(50));
-  pdgDB->AddParticle("FeedbackPhoton","FeedbackPhoton",0,kFALSE,
-                     0,0,"Special",GetSpecialPdg(51));
+  if ( !pdgDB->GetParticle(GetSpecialPdg(50)) )
+    pdgDB->AddParticle("Cherenkov","Cherenkov",0,kFALSE,
+                       0,0,"Special",GetSpecialPdg(50));
+
+  if ( !pdgDB->GetParticle(GetSpecialPdg(51)) )
+    pdgDB->AddParticle("FeedbackPhoton","FeedbackPhoton",0,kFALSE,
+                       0,0,"Special",GetSpecialPdg(51));
 
 }
 
