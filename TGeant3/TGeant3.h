@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.29 2007/05/18 08:44:16 brun Exp $ */
+/* $Id: TGeant3.h,v 1.30 2007/07/23 20:04:03 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -23,6 +23,7 @@
 #include "TMCParticleType.h"
 #include "TGeoMCGeometry.h"
 #include "TObjArray.h"
+#include "TArrayI.h"
 
 class TGeoHMatrix;
 class TArrayD;
@@ -1092,13 +1093,11 @@ protected:
   char (*fVolNames)[5];           //! Names of geant volumes as C++ chars
   TObjArray fMedNames;            //! Names of geant medias as TObjString
 
-  enum { kMaxParticles = 100};
-
   Int_t fNG3Particles;            // Number of G3 particles
   Int_t fNPDGCodes;               // Number of PDG codes known by G3
 
-  Int_t fPDGCode[kMaxParticles];  // Translation table of PDG codes
-  TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
+  TArrayI          fPDGCode;// Translation table of PDG codes
+  TGeoMCGeometry*  fMCGeo;  // Implementation of TVirtualMCGeometry for TGeo
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled
                                         // in FinishGeometry()

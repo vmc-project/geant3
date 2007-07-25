@@ -16,6 +16,12 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.58  2007/07/24 19:43:24  brun
+From Ivana:
+Do not add particles in TDatabasePDG if they
+are were already aded;
+(thanks to Susan Kasahara for this suggestion)
+
 Revision 1.57  2007/07/23 20:04:03  brun
 From Ivana:
 Implemented the new pdg "standard" codes for ions
@@ -1085,6 +1091,7 @@ TGeant3::TGeant3()
   : TVirtualMC(),
     fNG3Particles(0),
     fNPDGCodes(0),
+    fPDGCode(),
     fMCGeo(0),
     fImportRootGeometry(kFALSE),
     fStopRun(kFALSE)
@@ -1097,9 +1104,13 @@ TGeant3::TGeant3()
 
 //______________________________________________________________________
 TGeant3::TGeant3(const char *title, Int_t nwgeant)
-       : TVirtualMC("TGeant3",title, kFALSE),
-         fImportRootGeometry(kFALSE),
-         fStopRun(kFALSE)
+  : TVirtualMC("TGeant3",title, kFALSE),
+    fNG3Particles(0),
+    fNPDGCodes(0),
+    fPDGCode(),
+    fMCGeo(0),
+    fImportRootGeometry(kFALSE),
+    fStopRun(kFALSE)
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialization
@@ -1134,6 +1145,9 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   // Zero number of particles
   fNG3Particles = 0;
   fNPDGCodes=0;
+  
+  // Set initial size to fPDGCode table
+  fPDGCode.Set(100);
 
   //set pointers to tracker functions
   fginvol = g3invol;
@@ -2013,6 +2027,11 @@ Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
     TDatabasePDG::Instance()
       ->AddParticle(name, name, mass, kTRUE, 0, charge*3,
                     ParticleClass(type).Data(), pdg);
+                    
+  // Resize fPDGCode table if needed
+  if ( fNPDGCodes >= fPDGCode.GetSize() ) 
+    fPDGCode.Set( fPDGCode.GetSize() + 100);                 
+
   fPDGCode[fNPDGCodes++] = pdg;
 
   return kTRUE;
@@ -6250,13 +6269,15 @@ void TGeant3::Streamer(TBuffer &R__b)
     TVirtualMC::Streamer(R__b);
     R__b >> fNextVol;
     R__b >> fNPDGCodes;
-    R__b.ReadStaticArray(fPDGCode);
+    //R__b.ReadStaticArray(fPDGCode);
+    fPDGCode.Streamer(R__b);
   } else {
     R__b.WriteVersion(TGeant3::IsA());
     TVirtualMC::Streamer(R__b);
     R__b << fNextVol;
     R__b << fNPDGCodes;
-    R__b.WriteArray(fPDGCode, fNPDGCodes);
+    //R__b.WriteArray(fPDGCode, fNPDGCodes);
+    fPDGCode.Streamer(R__b);
   }
 }
 
