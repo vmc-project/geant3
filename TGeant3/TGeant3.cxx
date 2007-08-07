@@ -16,6 +16,11 @@
 
 /*
 $Log: TGeant3.cxx,v $
+Revision 1.59  2007/07/25 20:06:49  brun
+From Ivana:
+Changed the fPDGCode type to TArrayI to allow
+its dynamic size (thanks to Susan Kasahara).
+
 Revision 1.58  2007/07/24 19:43:24  brun
 From Ivana:
 Do not add particles in TDatabasePDG if they
@@ -4943,6 +4948,22 @@ void TGeant3::SetClose(Int_t iclose,Float_t *pf,Float_t dstrt,
   fGcmore->cleng[0] = clen[0];
   fGcmore->cleng[1] = clen[1];
   fGcmore->cleng[2] = clen[2];
+}
+
+void TGeant3::GetClose(Float_t *p1,Float_t *p2,Float_t *p3,Float_t *len)
+{
+  p1[0] = fGcmore->p1[0];
+  p1[1] = fGcmore->p1[1];
+  p1[2] = fGcmore->p1[2];
+  p2[0] = fGcmore->p2[0];
+  p2[1] = fGcmore->p2[1];
+  p2[2] = fGcmore->p2[2];
+  p3[0] = fGcmore->p3[0];
+  p3[1] = fGcmore->p3[1];
+  p3[2] = fGcmore->p3[2];
+  len[0] = fGcmore->cleng[0];
+  len[1] = fGcmore->cleng[1];
+  len[2] = fGcmore->cleng[2];
 }
 
 //______________________________________________________________________

@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TGeant3.h,v 1.30 2007/07/23 20:04:03 brun Exp $ */
+/* $Id: TGeant3.h,v 1.31 2007/07/25 20:06:49 brun Exp $ */
 
 ////////////////////////////////////////////////
 //  C++ interface to Geant3 basic routines    //
@@ -974,10 +974,11 @@ public:
                           Float_t dcutm ,Float_t ppcutm, Float_t tofmax, Float_t
 			  *gcuts);
    virtual  void  InitGEANE();
-   virtual void SetClose(Int_t iclose,Float_t *pf,Float_t dstrt,
-                         Float_t *w1,Float_t *w2,
-			 Float_t *p1,Float_t *p2,Float_t *p3,Float_t *cl);
-   virtual void SetECut(Float_t gcalpha);
+   virtual void   SetClose(Int_t iclose,Float_t *pf,Float_t dstrt,
+                           Float_t *w1,Float_t *w2,
+			   Float_t *p1,Float_t *p2,Float_t *p3,Float_t *cl);
+   virtual void   GetClose(Float_t *p1,Float_t *p2,Float_t *p3, Float_t *len);
+   virtual void   SetECut(Float_t gcalpha);
    virtual  void  SetDCAY(Int_t par=1);
    virtual  void  SetDEBU(Int_t emin=1, Int_t emax=999, Int_t emod=1);
    virtual  void  SetDRAY(Int_t par=1);
