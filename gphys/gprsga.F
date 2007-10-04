@@ -1,5 +1,5 @@
 *
-* $Id: gprsga.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id$
 *
 * $Log: gprsga.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm

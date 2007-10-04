@@ -1,5 +1,5 @@
 /*
- * $Id: lnblnk.c,v 1.1.1.1 1999/05/18 15:55:28 fca Exp $
+ * $Id$
  *
  * $Log: lnblnk.c,v $
  * Revision 1.1.1.1  1999/05/18 15:55:28  fca

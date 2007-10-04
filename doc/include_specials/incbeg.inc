@@ -1,5 +1,5 @@
 *
-* $Id: incbeg.inc,v 1.1.1.1 2002/06/16 15:18:35 hristov Exp $
+* $Id$
 *
 * $Log: incbeg.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:35  hristov

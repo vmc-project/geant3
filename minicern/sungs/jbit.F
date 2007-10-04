@@ -1,5 +1,5 @@
 *
-* $Id: jbit.F,v 1.1.1.1 1999/05/18 15:55:32 fca Exp $
+* $Id$
 *
 * $Log: jbit.F,v $
 * Revision 1.1.1.1  1999/05/18 15:55:32  fca

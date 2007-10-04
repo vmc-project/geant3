@@ -1,5 +1,5 @@
 *
-* $Id: finpar2.inc,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id$
 *
 * $Log: finpar2.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov

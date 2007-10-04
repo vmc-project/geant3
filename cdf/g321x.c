@@ -1,5 +1,5 @@
 /*
- * $Id: g321x.c,v 1.1.1.1 2002/06/16 15:17:53 hristov Exp $
+ * $Id$
  *
  * $Log: g321x.c,v $
  * Revision 1.1.1.1  2002/06/16 15:17:53  hristov

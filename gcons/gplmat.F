@@ -1,5 +1,5 @@
 *
-* $Id: gplmat.F,v 1.2 2003/11/28 11:23:55 brun Exp $
+* $Id$
 *
 * $Log: gplmat.F,v $
 * Revision 1.2  2003/11/28 11:23:55  brun

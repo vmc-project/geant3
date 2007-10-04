@@ -1,5 +1,5 @@
 *
-* $Id: q_sbyt.inc,v 1.1.1.1 2002/06/16 15:18:46 hristov Exp $
+* $Id$
 *
 * $Log: q_sbyt.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:46  hristov

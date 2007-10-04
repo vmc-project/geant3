@@ -1,5 +1,5 @@
 *
-* $Id: ublow.F,v 1.1 2003/06/30 07:42:34 brun Exp $
+* $Id$
 *
 * $Log: ublow.F,v $
 * Revision 1.1  2003/06/30 07:42:34  brun

@@ -1,5 +1,5 @@
 *
-* $Id: sihael.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id$
 *
 * $Log: sihael.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov

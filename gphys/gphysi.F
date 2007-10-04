@@ -1,5 +1,5 @@
 *
-* $Id: gphysi.F,v 1.2 2002/12/02 16:37:45 brun Exp $
+* $Id$
 *
 * $Log: gphysi.F,v $
 * Revision 1.2  2002/12/02 16:37:45  brun

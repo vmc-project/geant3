@@ -1,4 +1,4 @@
-// $Id: TG3Application.cxx,v 1.2 2003/11/28 18:09:41 brun Exp $
+// $Id$
 //
 // Class TG3Application
 // ----------------------- 

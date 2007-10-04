@@ -1,5 +1,5 @@
 *
-* $Id: $
+* $Id$
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/04 13/12/94  17.13.38  by  S.Giani

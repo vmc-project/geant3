@@ -1,5 +1,5 @@
 *
-* $Id: greucl.F,v 1.1.1.1 2002/07/24 15:56:27 rdm Exp $
+* $Id$
 *
 * $Log: greucl.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:27  rdm

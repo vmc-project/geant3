@@ -1,5 +1,5 @@
 *
-* $Id: twob.F,v 1.2 2002/07/10 09:45:00 morsch Exp $
+* $Id$
 *
 * $Log: twob.F,v $
 * Revision 1.2  2002/07/10 09:45:00  morsch

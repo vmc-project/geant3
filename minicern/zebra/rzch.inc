@@ -1,5 +1,5 @@
 *
-* $Id: rzch.inc,v 1.1.1.1 2002/06/16 15:18:50 hristov Exp $
+* $Id$
 *
 * $Log: rzch.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:50  hristov

@@ -1,5 +1,5 @@
 *
-* $Id: q_shiftl.inc,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
+* $Id$
 *
 * $Log: q_shiftl.inc,v $
 * Revision 1.1.1.1  2002/07/24 15:56:28  rdm

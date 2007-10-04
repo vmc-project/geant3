@@ -1,5 +1,5 @@
 *
-* $Id: $
+* $Id$
 *
 #include "geant321/pilot.h"
 #if defined(CERNLIB_CG)

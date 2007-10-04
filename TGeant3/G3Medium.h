@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: G3Medium.h,v 1.3 2004/01/28 08:17:52 brun Exp $ */
+/* $Id$ */
 
 #include "TNamed.h"
 

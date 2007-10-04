@@ -1,5 +1,5 @@
 *
-* $Id: gannii.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id$
 *
 * $Log: gannii.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm

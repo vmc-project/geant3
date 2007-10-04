@@ -1,5 +1,5 @@
 *
-* $Id: trscpt.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id$
 *
 * $Log: trscpt.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov

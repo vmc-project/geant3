@@ -1,5 +1,5 @@
 *
-* $Id: gdopt.F,v 1.2 2003/11/28 11:23:55 brun Exp $
+* $Id$
 *
 * $Log: gdopt.F,v $
 * Revision 1.2  2003/11/28 11:23:55  brun

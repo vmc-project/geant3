@@ -3,7 +3,7 @@
 /* Copyright(c) 1998-1999, ALICE Experiment at CERN, All rights reserved. *
  * See cxx source for full Copyright notice                               */
 
-/* $Id: TCallf77.h,v 1.1 2002/07/09 16:30:01 alibrary Exp $ */
+/* $Id$ */
 
 #ifndef WIN32
 # define type_of_call

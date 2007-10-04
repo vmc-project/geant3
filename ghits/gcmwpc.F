@@ -1,5 +1,5 @@
 *
-* $Id: gcmwpc.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id$
 *
 * $Log: gcmwpc.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov

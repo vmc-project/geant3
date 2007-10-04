@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: makedist.sh,v 1.1 2002/10/08 08:21:36 brun Exp $
+# $Id$
 # ---------------------------------------------------------------------
 # Script to produce source and optionally binary distribution of geant3.
 # Called by main Makefile.

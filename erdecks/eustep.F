@@ -1,5 +1,5 @@
 *
-* $Id: eustep.F,v 1.2 2007/05/18 08:44:16 brun Exp $
+* $Id$
 *
 * $Log: eustep.F,v $
 * Revision 1.2  2007/05/18 08:44:16  brun

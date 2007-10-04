@@ -1,5 +1,5 @@
 *
-* $Id: mzlift.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id$
 *
 * $Log: mzlift.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov

@@ -1,5 +1,5 @@
 *
-* $Id: randc.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id$
 *
 * $Log: randc.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov

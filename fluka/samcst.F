@@ -1,5 +1,5 @@
 *
-* $Id: samcst.F,v 1.1.1.1 2002/06/16 15:18:37 hristov Exp $
+* $Id$
 *
 * $Log: samcst.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:37  hristov

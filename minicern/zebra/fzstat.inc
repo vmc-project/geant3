@@ -1,5 +1,5 @@
 *
-* $Id: fzstat.inc,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id$
 *
 * $Log: fzstat.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov

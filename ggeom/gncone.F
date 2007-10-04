@@ -1,5 +1,5 @@
 *
-* $Id: gncone.F,v 1.1.1.1 2002/06/16 15:18:39 hristov Exp $
+* $Id$
 *
 * $Log: gncone.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:39  hristov

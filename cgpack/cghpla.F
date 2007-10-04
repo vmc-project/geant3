@@ -1,5 +1,5 @@
 *
-* $Id: cghpla.F,v 1.1.1.1 2002/06/16 15:17:54 hristov Exp $
+* $Id$
 *
 * $Log: cghpla.F,v $
 * Revision 1.1.1.1  2002/06/16 15:17:54  hristov

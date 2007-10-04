@@ -1,5 +1,5 @@
 *
-* $Id: q_or.inc,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id$
 *
 * $Log: q_or.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov

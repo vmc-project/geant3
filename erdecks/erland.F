@@ -1,5 +1,5 @@
 *
-* $Id: erland.F,v 1.2 2007/03/31 13:47:09 brun Exp $
+* $Id$
 *
 * $Log: erland.F,v $
 * Revision 1.2  2007/03/31 13:47:09  brun

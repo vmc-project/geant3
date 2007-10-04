@@ -1,5 +1,5 @@
 *
-* $Id: svgam7.F,v 1.2 2005/08/11 13:34:26 brun Exp $
+* $Id$
 *
 * $Log: svgam7.F,v $
 * Revision 1.2  2005/08/11 13:34:26  brun

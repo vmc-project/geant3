@@ -1,4 +1,4 @@
-// $Id: E02_g3Config.C,v 1.1 2003/11/28 12:00:25 brun Exp $
+// $Id$
 //
 // Configuration macro for Geant3 VirtualMC for Example01 
 

@@ -1,5 +1,5 @@
 *
-* $Id: izbcdt.F,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id$
 *
 * $Log: izbcdt.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov

@@ -1,5 +1,5 @@
 *
-* $Id: gpairm.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id$
 *
 * $Log: gpairm.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm

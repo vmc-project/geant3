@@ -1,5 +1,5 @@
 *
-* $Id: beta.F,v 1.2 2003/06/10 16:12:15 brun Exp $
+* $Id$
 *
 * $Log: beta.F,v $
 * Revision 1.2  2003/06/10 16:12:15  brun

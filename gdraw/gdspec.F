@@ -1,5 +1,5 @@
 *
-* $Id: gdspec.F,v 1.3 2004/01/28 08:22:00 brun Exp $
+* $Id$
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 20/07/94  18.08.26  by  S.Ravndal

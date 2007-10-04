@@ -1,4 +1,4 @@
-# $Id: $
+# $Id$
 #
 # Makefile for building Geant3 examples
 # 

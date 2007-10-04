@@ -1,5 +1,5 @@
 *
-* $Id: guxcs.F,v 1.1.1.1 2002/06/16 15:18:42 hristov Exp $
+* $Id$
 *
 * $Log: guxcs.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:42  hristov

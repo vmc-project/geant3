@@ -1,5 +1,5 @@
 *
-* $Id: cevap.F,v 1.1.1.1 2002/06/16 15:18:43 hristov Exp $
+* $Id$
 *
 * $Log: cevap.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:43  hristov

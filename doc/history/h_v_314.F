@@ -1,5 +1,5 @@
 *
-* $Id: h_v_314.F,v 1.1.1.1 2002/06/16 15:18:35 hristov Exp $
+* $Id$
 *
 * $Log: h_v_314.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:35  hristov

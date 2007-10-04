@@ -1,5 +1,5 @@
 *
-* $Id: q_shiftr.inc,v 1.2 2002/12/02 16:37:45 brun Exp $
+* $Id$
 *
 * $Log: q_shiftr.inc,v $
 * Revision 1.2  2002/12/02 16:37:45  brun

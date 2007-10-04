@@ -1,5 +1,5 @@
 *
-* $Id: abbrch.F,v 1.2 2004/02/24 15:50:29 brun Exp $
+* $Id$
 *
 * $Log: abbrch.F,v $
 * Revision 1.2  2004/02/24 15:50:29  brun

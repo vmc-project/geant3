@@ -1,5 +1,5 @@
 *
-* $Id: gmorin.F,v 1.1.1.1 2002/07/24 15:56:28 rdm Exp $
+* $Id$
 *
 * $Log: gmorin.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:28  rdm

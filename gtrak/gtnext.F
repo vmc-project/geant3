@@ -1,5 +1,5 @@
 *
-* $Id: gtnext.F,v 1.3 2004/01/28 08:20:11 brun Exp $
+* $Id$
 *
 * $Log: gtnext.F,v $
 * Revision 1.3  2004/01/28 08:20:11  brun

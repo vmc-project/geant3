@@ -1,5 +1,5 @@
 *
-* $Id: bimsel.F,v 1.4 2004/12/17 11:46:46 brun Exp $
+* $Id$
 *
 * $Log: bimsel.F,v $
 * Revision 1.4  2004/12/17 11:46:46  brun

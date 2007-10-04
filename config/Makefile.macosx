@@ -1,4 +1,4 @@
-# $Id: Makefile.macosx,v 1.5 2006/03/15 08:12:11 brun Exp $
+# $Id$
 
 # MacOSX platform dependent definitions for GEANT321 Makefile
 

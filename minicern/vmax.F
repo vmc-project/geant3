@@ -1,5 +1,5 @@
 *
-* $Id: vmax.F,v 1.1.1.1 2002/06/16 15:18:47 hristov Exp $
+* $Id$
 *
 * $Log: vmax.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:47  hristov

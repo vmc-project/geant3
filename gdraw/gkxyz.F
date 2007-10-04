@@ -1,5 +1,5 @@
 *
-* $Id: gkxyz.F,v 1.2 2003/11/28 11:23:55 brun Exp $
+* $Id$
 *
 #include "geant321/pilot.h"
 *CMZ :  3.21/02 29/03/94  15.41.27  by  S.Giani

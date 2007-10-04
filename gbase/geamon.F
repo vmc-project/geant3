@@ -1,5 +1,5 @@
 *
-* $Id: geamon.F,v 1.3 2006/03/16 10:03:56 brun Exp $
+* $Id$
 *
 * $Log: geamon.F,v $
 * Revision 1.3  2006/03/16 10:03:56  brun

@@ -1,4 +1,4 @@
-// $Id: TG3Application.h,v 1.1.1.1 2002/12/30 10:00:02 brun Exp $
+// $Id$
 //
 // Class TG3Application
 // ----------------------- 

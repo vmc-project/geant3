@@ -1,5 +1,5 @@
 *
-* $Id: gccuts.inc,v 1.2 2007/03/31 13:48:01 brun Exp $
+* $Id$
 *
 * $Log: gccuts.inc,v $
 * Revision 1.2  2007/03/31 13:48:01  brun

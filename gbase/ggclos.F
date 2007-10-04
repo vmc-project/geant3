@@ -1,5 +1,5 @@
 *
-* $Id: ggclos.F,v 1.2 2002/12/02 16:37:44 brun Exp $
+* $Id$
 *
 * $Log: ggclos.F,v $
 * Revision 1.2  2002/12/02 16:37:44  brun

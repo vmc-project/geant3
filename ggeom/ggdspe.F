@@ -1,5 +1,5 @@
 *
-* $Id: ggdspe.F,v 1.1.1.1 1999/05/18 15:55:17 fca Exp $
+* $Id$
 *
 * $Log: ggdspe.F,v $
 * Revision 1.1.1.1  1999/05/18 15:55:17  fca

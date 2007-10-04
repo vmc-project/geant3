@@ -1,5 +1,5 @@
 *
-* $Id: gvaviv.F,v 1.3 2005/08/10 20:02:58 brun Exp $
+* $Id$
 *
 * $Log: gvaviv.F,v $
 * Revision 1.3  2005/08/10 20:02:58  brun

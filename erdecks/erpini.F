@@ -1,5 +1,5 @@
 *
-* $Id: erpini.F,v 1.1.1.1 2002/06/16 15:18:35 hristov Exp $
+* $Id$
 *
 * $Log: erpini.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:35  hristov

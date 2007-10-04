@@ -1,5 +1,5 @@
 *
-* $Id: betarn.F,v 1.2 2004/12/17 11:46:46 brun Exp $
+* $Id$
 *
 * $Log: betarn.F,v $
 * Revision 1.2  2004/12/17 11:46:46  brun

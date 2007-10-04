@@ -1,5 +1,5 @@
 *
-* $Id: grkuta.F,v 1.2 2003/11/28 11:23:56 brun Exp $
+* $Id$
 *
 * $Log: grkuta.F,v $
 * Revision 1.2  2003/11/28 11:23:56  brun

@@ -1,5 +1,5 @@
 *
-* $Id: debugvf2.inc,v 1.1.1.1 2002/06/16 15:18:49 hristov Exp $
+* $Id$
 *
 * $Log: debugvf2.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:49  hristov

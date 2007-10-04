@@ -1,5 +1,5 @@
 *
-* $Id: gausscod.inc,v 1.1.1.1 2002/06/16 15:18:45 hristov Exp $
+* $Id$
 *
 * $Log: gausscod.inc,v $
 * Revision 1.1.1.1  2002/06/16 15:18:45  hristov

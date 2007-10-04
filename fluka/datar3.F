@@ -1,5 +1,5 @@
 *
-* $Id: datar3.F,v 1.1.1.1 2002/06/16 15:18:36 hristov Exp $
+* $Id$
 *
 * $Log: datar3.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:36  hristov

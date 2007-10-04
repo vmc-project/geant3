@@ -1,4 +1,4 @@
-# $Id: MakeExe,v 1.1 2003/12/08 12:20:21 brun Exp $
+# $Id$
 # 
 # Makefile for building Geant3 example
 # The example name has to be provided in TARGET variable

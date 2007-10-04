@@ -1,5 +1,5 @@
 *
-* $Id: gfkine.F,v 1.1.1.1 2002/07/24 15:56:25 rdm Exp $
+* $Id$
 *
 * $Log: gfkine.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm

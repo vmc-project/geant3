@@ -1,4 +1,4 @@
-// $Id: E02.C,v 1.3 2003/12/08 14:20:11 brun Exp $
+// $Id$
 //
 // Macro for running Example02 with Geant3 
 // Before running this macro, the libexampl02.so library

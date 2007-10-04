@@ -1,5 +1,5 @@
 /*
- * $Id: traceqc.c,v 1.1.1.1 1999/05/18 15:55:33 fca Exp $
+ * $Id$
  *
  * $Log: traceqc.c,v $
  * Revision 1.1.1.1  1999/05/18 15:55:33  fca

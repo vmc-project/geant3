@@ -1,5 +1,5 @@
 *
-* $Id: iumode.F,v 1.1.1.1 1999/05/18 15:55:30 fca Exp $
+* $Id$
 *
 * $Log: iumode.F,v $
 * Revision 1.1.1.1  1999/05/18 15:55:30  fca

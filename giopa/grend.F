@@ -1,5 +1,5 @@
 *
-* $Id: grend.F,v 1.1.1.1 2002/06/16 15:18:40 hristov Exp $
+* $Id$
 *
 * $Log: grend.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:40  hristov

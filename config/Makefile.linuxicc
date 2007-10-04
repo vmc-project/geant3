@@ -1,4 +1,4 @@
-# $Id: Makefile.linuxicc,v 1.4 2004/06/09 13:47:00 brun Exp $
+# $Id$
 
 # Linux (with icc) platform dependent definitions for GEANT321 Makefile
 

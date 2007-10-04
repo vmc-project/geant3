@@ -1,5 +1,5 @@
 *
-* $Id: gphal2.F,v 1.1.1.1 2002/07/24 15:56:26 rdm Exp $
+* $Id$
 *
 * $Log: gphal2.F,v $
 * Revision 1.1.1.1  2002/07/24 15:56:26  rdm

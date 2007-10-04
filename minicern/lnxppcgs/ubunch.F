@@ -1,5 +1,5 @@
 *
-* $Id: ubunch.F,v 1.1 2003/06/30 07:42:34 brun Exp $
+* $Id$
 *
 * $Log: ubunch.F,v $
 * Revision 1.1  2003/06/30 07:42:34  brun

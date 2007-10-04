@@ -1,5 +1,5 @@
 *
-* $Id: fdevap.F,v 1.1.1.1 2002/06/16 15:17:52 hristov Exp $
+* $Id$
 *
 * $Log: fdevap.F,v $
 * Revision 1.1.1.1  2002/06/16 15:17:52  hristov

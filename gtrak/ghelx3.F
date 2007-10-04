@@ -1,5 +1,5 @@
 *
-* $Id: ghelx3.F,v 1.2 2003/11/28 11:23:56 brun Exp $
+* $Id$
 *
 * $Log: ghelx3.F,v $
 * Revision 1.2  2003/11/28 11:23:56  brun

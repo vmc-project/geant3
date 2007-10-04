@@ -1,5 +1,5 @@
 *
-* $Id: gpcset.F,v 1.1.1.1 2002/06/16 15:18:38 hristov Exp $
+* $Id$
 *
 * $Log: gpcset.F,v $
 * Revision 1.1.1.1  2002/06/16 15:18:38  hristov
