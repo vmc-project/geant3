@@ -1506,12 +1506,12 @@ void TGeant3::DefineParticles()
   fPDGCode[fNPDGCodes++]=3322;  // 22 = Xi0
   fPDGCode[fNPDGCodes++]=3312;  // 23 = Xi-
   fPDGCode[fNPDGCodes++]=3334;  // 24 = Omega-
-  fPDGCode[fNPDGCodes++]=-2112; // 25 = Anti Proton
-  fPDGCode[fNPDGCodes++]=-3122; // 26 = Anti Proton
+  fPDGCode[fNPDGCodes++]=-2112; // 25 = Anti Neutron
+  fPDGCode[fNPDGCodes++]=-3122; // 26 = Anti Lambda
   fPDGCode[fNPDGCodes++]=-3222; // 27 = Anti Sigma -
   fPDGCode[fNPDGCodes++]=-3212; // 28 = Anti Sigma 0
-  fPDGCode[fNPDGCodes++]=-3112; // 29 = Anti Sigma 0
-  fPDGCode[fNPDGCodes++]=-3322; // 30 = Anti Xi 0
+  fPDGCode[fNPDGCodes++]=-3112; // 29 = Anti Sigma +
+  fPDGCode[fNPDGCodes++]=-3322; // 30 = Anti Xi 0      
   fPDGCode[fNPDGCodes++]=-3312; // 31 = Anti Xi +
   fPDGCode[fNPDGCodes++]=-3334; // 32 = Anti Omega +
 
@@ -1529,16 +1529,16 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++,"PHI(1020)",3,1.019,0.,1.486e-22);// 34 = PHI(1020)
   fPDGCode[fNPDGCodes++]=333;   // 34 = PHI (1020)
 
-  Gspart(fNG3Particles++, "D +", 4, 1.87, 1., 1.066e-12);        // 35 = D+
+  Gspart(fNG3Particles++, "D +", 4, 1.8693, 1., 1.040e-12);      // 35 = D+        // G4DMesonPlus
   fPDGCode[fNPDGCodes++]=411;   // 35 = D+
 
-  Gspart(fNG3Particles++, "D -", 4, 1.87, -1., 1.066e-12);       // 36 = D-
+  Gspart(fNG3Particles++, "D -", 4, 1.8693, -1., 1.040e-12);     // 36 = D-        // G4DMesonMinus
   fPDGCode[fNPDGCodes++]=-411;  // 36 = D-
 
-  Gspart(fNG3Particles++, "D 0", 3, 1.865, 0., 4.2e-13);         // 37 = D0
+  Gspart(fNG3Particles++, "D 0", 3, 1.8645, 0., 0.415e-12);      // 37 = D0        // G4DMesonZero
   fPDGCode[fNPDGCodes++]=421;   // 37 = D0
 
-  Gspart(fNG3Particles++,"ANTI D 0",3,1.865,0.,4.2e-13);    // 38 = Anti D0
+  Gspart(fNG3Particles++,"ANTI D 0",3,1.8645,0.,0.415e-12);      // 38 = Anti D0   // G4AntiDMesonZero
   fPDGCode[fNPDGCodes++]=-421;  // 38 = D0 bar
 
 
@@ -1584,40 +1584,43 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "FeedbackPhoton", 7, 0., 0.,1.e20 );
   fPDGCode[fNPDGCodes++]=GetSpecialPdg(51); // 51 = FeedbackPhoton
 //
-  Gspart(fNG3Particles++, "Lambda_c+", 4, 2.2849, +1., 2.06e-13);
+
+  Gspart(fNG3Particles++, "Lambda_c-", 4, 2.28646, +1., 2.06e-13);
+  // Gspart(fNG3Particles++, "Lambda_c+", 4, 2.28646, +1., 0.200e-12); // G4LambdacPlus
   fPDGCode[fNPDGCodes++]=4122;         //52 = Lambda_c+
 
-  Gspart(fNG3Particles++, "Lambda_c-", 4, 2.2849, -1., 2.06e-13);
+  Gspart(fNG3Particles++, "Lambda_c-", 4, 2.28646, -1., 2.06e-13);
+  // Gspart(fNG3Particles++, "Lambda_c-", 4, 2.2849, -1., 0.200e-12);  // G4AntiLamdacPlus
   fPDGCode[fNPDGCodes++]=-4122;        //53 = Lambda_c-
 
-  Gspart(fNG3Particles++, "D_s+", 4, 1.9685, +1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s+", 4, 1.9682, +1., 0.490e-12);       // G4DsMesonPlus * booklet (July 2006): lifetime=0.500e-12  
   fPDGCode[fNPDGCodes++]=431;          //54 = D_s+
 
-  Gspart(fNG3Particles++, "D_s-", 4, 1.9685, -1., 4.67e-13);
+  Gspart(fNG3Particles++, "D_s-", 4, 1.9682, -1., 0.490e-12);       // G4DsMesonMinus * booklet: lifetime=0.500e-12
   fPDGCode[fNPDGCodes++]=-431;         //55 = D_s-
 
-  Gspart(fNG3Particles++, "Tau+", 5, 1.77705, +1., 2.9e-13);
+  Gspart(fNG3Particles++, "Tau+", 5, 1.77699, +1., 290.6e-15);      // G4TauPlus *
   fPDGCode[fNPDGCodes++]=-15;          //56 = Tau+
 
-  Gspart(fNG3Particles++, "Tau-", 5, 1.77705, -1., 2.9e-13);
+  Gspart(fNG3Particles++, "Tau-", 5, 1.77699, -1., 290.6e-15);      // G4TauMinus *
   fPDGCode[fNPDGCodes++]= 15;          //57 = Tau-
 
-  Gspart(fNG3Particles++, "B0",     3, 5.2792, +0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0",     3, 5.2794, +0., 1.532e-12);     // G4BMesonZero
   fPDGCode[fNPDGCodes++]=511;          //58 = B0
 
-  Gspart(fNG3Particles++, "B0 bar", 3, 5.2792, -0., 1.56e-12);
+  Gspart(fNG3Particles++, "B0 bar", 3, 5.2794, -0., 1.532e-12);     // G4AntiBMesonZero
   fPDGCode[fNPDGCodes++]=-511;         //58 = B0bar
 
-  Gspart(fNG3Particles++, "B+",     4, 5.2789, +1., 1.65e-12);
+  Gspart(fNG3Particles++, "B+",     4, 5.2790, +1., 1.638e-12);     // G4BMesonPlus *
   fPDGCode[fNPDGCodes++]=521;          //60 = B+
 
-  Gspart(fNG3Particles++, "B-",     4, 5.2789, -1., 1.65e-12);
+  Gspart(fNG3Particles++, "B-",     4, 5.2790, -1., 1.638e-12);     // G4BMesonMinus *
   fPDGCode[fNPDGCodes++]=-521;         //61 = B-
 
-  Gspart(fNG3Particles++, "Bs",     3, 5.3693, +0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs",     3, 5.3675, +0., 1.466e-12);     // G4BsMesonZero
   fPDGCode[fNPDGCodes++]=531;          //62 = B_s
 
-  Gspart(fNG3Particles++, "Bs bar", 3, 5.3693, -0., 1.54e-12);
+  Gspart(fNG3Particles++, "Bs bar", 3, 5.3675, -0., 1.466e-12);     // G4AntiBsMesonZero
   fPDGCode[fNPDGCodes++]=-531;         //63 = B_s bar
 
   Gspart(fNG3Particles++, "Lambda_b",     3, 5.624, +0., 1.24e-12);
@@ -1626,7 +1629,7 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "Lambda_b bar", 3, 5.624, -0., 1.24e-12);
   fPDGCode[fNPDGCodes++]=-5122;        //65 = Lambda_b bar
 
-  Gspart(fNG3Particles++, "J/Psi",       3, 3.09688, 0., 7.6e-21);
+  Gspart(fNG3Particles++, "J/Psi",       3, 3.096916, 0., 7.6e-21);   // G4JPsi
   fPDGCode[fNPDGCodes++]=443;          // 66 = J/Psi
 
   Gspart(fNG3Particles++, "Psi Prime",   3, 3.686,   0., 0.);
