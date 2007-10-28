@@ -2353,21 +2353,37 @@ TMCProcess TGeant3::ProdProcess(Int_t ) const
   //
   // Name of the process that has produced the secondary particles
   // in the current step
-  //
-  const TMCProcess kIpProc[13] = { kPDecay, kPPair, kPCompton,
-			      kPPhotoelectric, kPBrem, kPDeltaRay,
-			      kPAnnihilation, kPHadronic,
-			      kPMuonNuclear, kPPhotoFission,
-			      kPRayleigh, kPCerenkov, kPSynchrotron};
-  Int_t km, im;
-  //
-  if(fGcking->ngkine>0)
-    for (km = 0; km < fGctrak->nmec; ++km)
-      for (im = 0; im < 13; ++im)
-	if (G3toVMC(fGctrak->lmec[km]) == kIpProc[im])
-	    return kIpProc[im];
-  //
-  return kPNoProcess;
+
+  //  Modified: to make use of GCKING/KCASE variable for determining the production
+  //  mechanism of the secondaries.  The old method was to pick the first 
+  //  active process from the current step's list of active processes 
+  //  that had the capability of generating secondaries.  This occasionally 
+  //  picked the wrong secondary production mechanism.
+
+  if ( fGcking->ngkine <= 0 ) return kPNoProcess;
+
+  // Secondaries generated, determine production mechanism hollerith 
+  std::string casestr((const char*)(&(fGcking->kcase)));
+  casestr.resize(4);
+
+  int imech = 0;
+  for (Int_t km = 0; km < MAXMEC; ++km) {
+    std::string namestr((const char*)(&(fGctrak->namec[km])));
+    namestr.resize(4);
+    if ( casestr == namestr ) {
+      imech = km;
+      break;
+    }
+  }
+
+  TMCProcess vmcmech = G3toVMC(imech+1);
+  if ( vmcmech == kPNoProcess ) {
+    // failure to find matching process
+    printf(
+    "* TGeant3::ProdProcess secondaries present,but no matching process!* \n");
+  }
+
+  return vmcmech;
 }
 
 //______________________________________________________________________
@@ -2378,6 +2394,14 @@ Int_t TGeant3::StepProcesses(TArrayI &proc) const
   //
   Int_t i;
   Int_t nproc=Gctrak()->nmec;
+  
+  // Set no active process if there are no processes
+  if (nproc==0) {
+    proc.Set(1);
+    proc[0] = kPNull;
+    return 1;
+  }  
+  
   //
   proc.Set(nproc);
   Int_t nvproc=0;
@@ -2398,10 +2422,10 @@ TMCProcess TGeant3::G3toVMC(Int_t iproc) const
   //
 
   const TMCProcess kPG2MC1[30] = {
-    kPNoProcess, kPMultipleScattering, kPEnergyLoss, kPMagneticFieldL, kPDecay,
+    kPTransportation, kPMultipleScattering, kPEnergyLoss, kPMagneticFieldL, kPDecay,
     kPPair, kPCompton, kPPhotoelectric, kPBrem, kPDeltaRay,
-    kPAnnihilation, kPHadronic, kPNoProcess, kPEvaporation, kPNuclearFission,
-    kPNuclearAbsorption, kPPbarAnnihilation, kPNCapture, kPHElastic, 
+    kPAnnihilation, kPHadronic, kPHCElastic, kPEvaporation, kPNuclearFission,
+    kPNuclearAbsorption, kPPbarAnnihilation, kPNCapture, kPHIElastic, 
     kPHInhelastic, kPMuonNuclear, kPTOFlimit, kPPhotoFission, kPNoProcess, 
     kPRayleigh, kPNoProcess, kPNoProcess, kPNoProcess, kPNull, kPStop};
 
@@ -2410,7 +2434,7 @@ TMCProcess TGeant3::G3toVMC(Int_t iproc) const
       kPLightReflection, kPLightRefraction, kPSynchrotron, kPNoProcess};
 
   TMCProcess proc=kPNoProcess;
-  if(1<iproc && iproc<=30) proc= kPG2MC1[iproc-1];
+  if(0<iproc && iproc<=30) proc= kPG2MC1[iproc-1];
   else if(101<=iproc && iproc<=109) proc= kPG2MC2[iproc-100-1];
   return proc;
 }
