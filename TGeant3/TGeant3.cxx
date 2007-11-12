@@ -14,6 +14,8 @@
  * provided "as is" without express or implied warranty.                  *
  **************************************************************************/
 
+/* $Id$ */
+
 /*
 $Log: TGeant3.cxx,v $
 Revision 1.59  2007/07/25 20:06:49  brun
@@ -2006,6 +2008,26 @@ Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
 Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
                       Double_t mass, Double_t charge, Double_t lifetime)
 {
+// Old function definition, now replaced with more arguments
+
+  TVirtualMC::DefineParticle(pdg, name, type, mass, charge, lifetime);
+  
+  return false;
+}                        
+                      
+
+//______________________________________________________________________
+Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name, TMCParticleType mcType,
+                      Double_t mass, Double_t charge, Double_t lifetime,
+                      const TString& /*pType*/, Double_t /*width*/, 
+                      Int_t /*iSpin*/, Int_t /*iParity*/, Int_t /*iConjugation*/, 
+                      Int_t /*iIsospin*/, Int_t /*iIsospinZ*/, Int_t /*gParity*/,
+                      Int_t /*lepton*/, Int_t /*baryon*/,
+                      Bool_t /*stable*/, Bool_t /*shortlived*/,
+                      const TString& /*subType*/,
+                      Int_t /*antiEncoding*/, Double_t /*magMoment*/,
+                      Double_t /*excitation*/)
+{
 //
 // Set a user defined particle
 // Function is ignored if particle with specified pdg
@@ -2020,7 +2042,7 @@ Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
   }
 
   // Check if particle type is known to Geant3
-  Int_t itrtyp = TransportMethod(type);
+  Int_t itrtyp = TransportMethod(mcType);
   if (itrtyp < 0) {
     Error("SetParticle", "Unknown particle transport.");
     return kFALSE;
@@ -2034,7 +2056,7 @@ Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
   if (!TDatabasePDG::Instance()->GetParticle(pdg))
     TDatabasePDG::Instance()
       ->AddParticle(name, name, mass, kTRUE, 0, charge*3,
-                    ParticleClass(type).Data(), pdg);
+                    ParticleClass(mcType).Data(), pdg);
                     
   // Resize fPDGCode table if needed
   if ( fNPDGCodes >= fPDGCode.GetSize() ) 
@@ -2076,7 +2098,9 @@ Bool_t  TGeant3::DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
   Double_t lifetime = 1.e20;
 
   // Call DefineParticle now
-  return DefineParticle(pdg, name, partType, mass, charge, lifetime);
+  return DefineParticle(
+           pdg, name, partType, mass, charge, lifetime,
+           "nucleus", 0.0, 1, 1, 0, 1, 1, 0, 0, 1, kTRUE);
 }
 
 //______________________________________________________________________
@@ -5250,6 +5274,59 @@ void TGeant3::SetUserDecay(Int_t pdg)
       mzdrop(fGcbank->ixcons,jpa2,PASSCHARD(" ") PASSCHARL(" "));
   }
 }
+//______________________________________________________________________
+Bool_t TGeant3::SetDecayMode(Int_t pdg, Float_t bratio[6], Int_t mode[6][3])
+{
+  //
+  // Set user decay modes by calling Gsdk
+  //
+   if ( pdg == 0 ) {
+     printf("Cannot define decay mode for particle with PDG=0");
+     return false;
+   }
+
+   if ( IdFromPDG(pdg) < 0 ) {
+     printf("Particle %d not in geant\n",pdg);
+     return false;
+   }
+
+   Int_t g3mode[6];
+   Int_t id1,id2,id3;
+   for (Int_t k1=0; k1<6; k1++) g3mode[k1]=0;
+   for (Int_t k=0; k<6; k++) {
+
+      if(mode[k][0]!=0) {
+        id1= IdFromPDG(mode[k][0]);
+        if ( id1 < 0 ) {
+          printf("Particle %d not in geant\n",mode[k][0]);
+          return false;
+        }
+      }  
+      else id1=0;
+
+      if(mode[k][1]!=0) {
+        id2= IdFromPDG(mode[k][1]);
+        if ( id2 < 0 ) {
+          printf("Particle %d not in geant\n",mode[k][1]);
+          return false;
+        }
+      }  
+      else id2=0;
+      
+      if(mode[k][2]!=0) {
+        id3= IdFromPDG(mode[k][2]);
+        if ( id3 < 0 ) {
+          printf("Particle %d not in geant\n",mode[k][1]);
+          return false;
+        }
+      }  
+      else id3=0;
+      g3mode[k]=id1 + id2* 100+ id3 * 10000 ;
+      
+   }                                      
+   Gsdk(IdFromPDG(pdg), bratio, g3mode);  
+   return kTRUE;
+}                                
 
 //______________________________________________________________________
 void TGeant3::Vname(const char *name, char *vname)
@@ -6122,6 +6199,7 @@ void TGeant3::Init()
 
     DefineParticles();
     fApplication->AddParticles();
+    fApplication->AddIons();
     fApplication->ConstructGeometry();
     FinishGeometry();
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,01,1)

@@ -657,8 +657,20 @@ public:
   Bool_t SetProcess(const char* flagName, Int_t flagValue);
   const char *GetPath();
   const char *GetNodeName();
-  Bool_t DefineParticle(Int_t pdg, const char* name, TMCParticleType type,
+  Bool_t DefineParticle(Int_t pdg, const char* name, 
+                   TMCParticleType mcType,
                    Double_t mass, Double_t charge, Double_t lifetime);
+  Bool_t DefineParticle(Int_t pdg, const char* name, 
+                   TMCParticleType mcType,
+                   Double_t mass, Double_t charge, Double_t lifetime,
+                   const TString& /*pType*/, Double_t /*width*/, 
+                   Int_t /*iSpin*/, Int_t /*iParity*/, Int_t /*iConjugation*/, 
+                   Int_t /*iIsospin*/, Int_t /*iIsospinZ*/, Int_t /*gParity*/,
+                   Int_t /*lepton*/, Int_t /*baryon*/,
+                   Bool_t /*stable*/, Bool_t /*shortlived*/ = kFALSE,
+                   const TString& /*subType*/ = "",
+                   Int_t /*antiEncoding*/ = 0, Double_t /*magMoment*/ = 0.0,
+                   Double_t /*excitation*/ = 0.0);
   Bool_t DefineIon(const char* name, Int_t Z, Int_t A, Int_t Q,
                    Double_t excEnergy, Double_t mass);
   virtual TString   ParticleName(Int_t pdg) const;
@@ -1001,6 +1013,7 @@ public:
    virtual  void  SetSWIT(Int_t sw, Int_t val=1);
    virtual  void  SetTRIG(Int_t nevents=1);
    virtual  void  SetUserDecay(Int_t ipart);
+   virtual  Bool_t  SetDecayMode(Int_t pdg, Float_t bratio[6], Int_t mode[6][3]);
    virtual  void  Vname(const char *name, char *vname);
    virtual  void  InitLego();
 
@@ -1144,6 +1157,7 @@ protected:
                  Double_t x, Double_t y, Double_t z, Int_t irot, 
                  const char *konly, Float_t *upar, Int_t np);
                  
+  // particles definition
   Int_t GetIonPdg(Int_t z, Int_t a, Int_t i = 0) const;                
   Int_t GetSpecialPdg(Int_t number) const;                
 
