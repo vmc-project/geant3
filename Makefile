@@ -8,19 +8,21 @@ ifeq ($(PLATFORM),)
 PLATFORM = $(shell root-config --arch)
 endif
 
-BINDIR  = tgt_$(PLATFORM)
-LIBDIR  = $(shell pwd)/lib/tgt_$(PLATFORM)
-CONFDIR = $(shell pwd)/config
+TOPDIR  = $(shell pwd)
+BINDIR  = $(TOPDIR)/tgt_$(PLATFORM)
+LIBDIR  = $(TOPDIR)/lib/tgt_$(PLATFORM)
 
 ifeq ($(ROOTSYS),)
 ROOT_INCDIR = $(shell root-config --incdir)
 ROOT_BINDIR = $(shell root-config --prefix)/bin
+ROOT_ETCDIR = $(shell root-config --prefix)/etc/vmc
 else
 ROOT_INCDIR = $(ROOTSYS)/include
 ROOT_BINDIR = $(ROOTSYS)/bin
+ROOT_ETCDIR = $(ROOTSYS)/etc/vmc
 endif
 
-include $(CONFDIR)/Makefile.$(PLATFORM)
+include $(ROOT_ETCDIR)/Makefile.$(PLATFORM)
 
 ifneq ($(findstring gcc,$(CC)),)
 GCC_MAJOR    := $(shell $(CC) -dumpversion 2>&1 | cut -d'.' -f1)
@@ -36,7 +38,7 @@ GDIRS:=	added gbase gcons geocad ggeom gheisha ghits ghrout ghutils \
 	miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc \
         minicern gdraw
 
-include $(CONFDIR)/MakeRules
+include $(ROOT_ETCDIR)/MakeRules
 
 
 # C++ Headers
@@ -155,10 +157,10 @@ depend:		$(SRCS)
 TOCLEAN		= $(BINDIR)
 TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-MAKEDIST	= $(CONFDIR)/makedist.sh $(GCC_VERS) lib
-MAKEDISTSRC	= $(CONFDIR)/makedist.sh $(GCC_VERS)
+MAKEDIST	= $(ROOT_ETCDIR)/g3_makedist.sh $(GCC_VERS) lib
+MAKEDISTSRC	= $(ROOT_ETCDIR)/g3_makedist.sh $(GCC_VERS)
 
-include $(CONFDIR)/MakeMacros
+include $(ROOT_ETCDIR)/MakeMacros
 
 ############################### Dependencies ##################################
 
