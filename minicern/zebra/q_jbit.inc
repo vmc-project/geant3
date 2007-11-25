@@ -61,7 +61,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       JBIT (IZW,IZP)    = SHFTR (SHFTL(IZW,32-IZP), 31)
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))&&(!defined(CERNLIB_GFORTRAN))
       JBIT(IZW,IZP)     = AND(RSHIFT(IZW,IZP-1),1)
 
 #elif defined(CERNLIB_OS9)
