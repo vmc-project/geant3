@@ -256,7 +256,7 @@ C.    ------------------------------------------------------------------
 *
    90 NSTEP = NSTEP +1
  
-      IF (NSTEP.GT.MAXNST) THEN
+      IF (NSTEP.GT.ABS(MAXNST)) THEN
          IF (ISTOP.EQ.0) THEN
             ISTOP = 99
             NMEC  = NMEC +1

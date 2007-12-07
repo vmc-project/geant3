@@ -266,20 +266,23 @@ C.    ------------------------------------------------------------------
 *     Check for possible endless loop
 *
    90 NSTEP = NSTEP +1
-      IF (NSTEP.GT.MAXNST) THEN
+      IF (NSTEP.GT.ABS(MAXNST)) THEN
          IF (ISTOP.EQ.0) THEN
             ISTOP = 99
             NMEC  = NMEC +1
             LMEC(NMEC) = 30
-            WRITE(CHMAIL,10200) MAXNST
-            CALL GMAIL(1,0)
-            CALL G3PCXYZ
-            WRITE(CHMAIL,10250) IEVENT,IDEVT,(NRNDM(I),I=1,2),TOFG*1.E9
-            CALL GMAIL(0,1)
-10200       FORMAT(' *** GTRACK *** More than ',I6,
-     +             ' steps, tracking abandoned!')
-10250       FORMAT(' IEVENT ',I7,' IDEVT ',I7,' Random Seeds ',I10,2X
-     $           ,I10,' Time of flight ',F10.3,' ns')
+            IF(MAXNST.GT.0) THEN
+               WRITE(CHMAIL,10200) MAXNST
+               CALL GMAIL(1,0)
+               CALL G3PCXYZ
+               WRITE(CHMAIL,10250) IEVENT,IDEVT,
+     +              (NRNDM(I),I=1,2),TOFG*1.E9
+               CALL GMAIL(0,1)
+10200          FORMAT(' *** GTRACK *** More than ',I6,
+     +              ' steps, tracking abandoned!')
+10250          FORMAT(' IEVENT ',I7,' IDEVT ',I7,' Random Seeds ',I10,2X
+     $              ,I10,' Time of flight ',F10.3,' ns')
+            ENDIF
          ENDIF
       ENDIF
 *
