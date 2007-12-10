@@ -395,6 +395,7 @@ Cleanup of code
 #include "TGeant3TGeo.h"
 
 #include "TGeoManager.h"
+#include "TGeoMatrix.h"
 #include "TGeoMCGeometry.h"
 
 #include "TCallf77.h"
