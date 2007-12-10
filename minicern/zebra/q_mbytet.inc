@@ -60,7 +60,7 @@
       MBYTET (MZ,IZW,IZP,NZB) = LAND (IZW, LCOMPL(SHFTR (
      +                       SHFTL(LCOMPL(MZ),32-NZB), 33-IZP-NZB)) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       MBYTET (MZ,IZW,IZP,NZB) = AND (IZW,
      +           NOT(ISHFTR (LSHIFT(NOT(MZ),32-NZB),33-IZP-NZB)) )
 

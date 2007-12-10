@@ -61,7 +61,7 @@
       JBYTET (MZ,IZW,IZP,NZB) = LAND (MZ,
      +                        SHFTR (SHFTL(IZW,33-IZP-NZB), 32-NZB) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       JBYTET (MZ,IZW,IZP,NZB) = AND (MZ,
      +                        ISHFTR (LSHIFT(IZW,33-IZP-NZB),32-NZB) )
 

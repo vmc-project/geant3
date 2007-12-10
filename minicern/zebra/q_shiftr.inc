@@ -46,7 +46,7 @@ C       ISHFT(IZW,NZB)  = LSHIFT(IZW,NZB)
 #elif defined(CERNLIB_QF_SIEM)
       ISHFTR (IZW,NZB) = SHFTR (IZW, NZB)
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       ISHFTR (IZW,NZB) = RSHIFT (IZW,NZB)
 
 #elif (defined(CERNLIB_SUN))&&(!defined(CERNLIB_BUGLRSHFT))

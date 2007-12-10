@@ -50,7 +50,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       MSBIT0 (IZW,IZP)   = LAND (IZW, LCOMPL(SHFTL(1,IZP-1)) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       MSBIT0 (IZW,IZP)   = AND (IZW, NOT(LSHIFT(1,IZP-1)))
 
 #elif defined(CERNLIB_PDP)

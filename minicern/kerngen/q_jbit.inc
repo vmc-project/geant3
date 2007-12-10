@@ -21,7 +21,7 @@
 *
 * q_jbit.inc
 *
-#if defined(CERNLIB_QMLNX)
+#if (defined(CERNLIB_QMLNX)&&!defined(CERNLIB_GFORTRAN))
       JBIT(IZW,IZP)     = AND(ISHFTR(IZW,IZP-1),1)
       JBYT(IZW,IZP,NZB) = ISHFTR(LSHIFT(IZW,33-IZP-NZB),32-NZB)
 #elif defined(CERNLIB_QMDOS)&&defined(CERNLIB_QF_F2C)

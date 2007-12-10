@@ -52,7 +52,7 @@ C     +        , ISHFTR (LSHIFT(MZ,32-NZB), 33-IZP-NZB) )
      +            LAND (IZW, LCOMPL(SHFTL (SHFTR(-1,32-NZB), IZP-1)))
      +          , SHFTR (SHFTL(MZ,32-NZB), 33-IZP-NZB) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       MSBYT (MZ,IZW,IZP,NZB) = OR (
      +       AND (IZW, NOT(LSHIFT (ISHFTR(NOT(0),32-NZB),IZP-1)))
      +      ,ISHFTR (LSHIFT(MZ,32-NZB), 33-IZP-NZB) )

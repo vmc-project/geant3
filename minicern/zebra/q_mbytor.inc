@@ -60,7 +60,7 @@
       MBYTOR (MZ,IZW,IZP,NZB) = LOR (IZW, SHFTR (
      +                               SHFTL(MZ,32-NZB), 33-IZP-NZB) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       MBYTOR (MZ,IZW,IZP,NZB) = OR (IZW,
      +       ISHFTR (LSHIFT(MZ,32-NZB),33-IZP-NZB))
 

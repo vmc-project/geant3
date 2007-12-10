@@ -32,7 +32,7 @@ C
        ISHFTL(IZW,NZB) = LSHIFT(IZW,NZB)
 C       ISHFTR(IZW,NZB) = RSHIFT(IZW,NZB)
 C       ISHFT(IZW,NZB)  = LSHIFT(IZW,NZB)
-#elif defined(CERNLIB_QMLNX)
+#elif (defined(CERNLIB_QMLNX)&&!defined(CERNLIB_GFORTRAN))
       ISHFTL (IZW,NZB) = LSHIFT (IZW,NZB)
 #elif 1
       ISHFTL (IZW,NZB) = ISHFT (IZW,  NZB)

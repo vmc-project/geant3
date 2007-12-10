@@ -55,7 +55,7 @@
       MSBIT (MZ,IZW,IZP) = LOR (LAND (IZW, LCOMPL(SHFTL(1,IZP-1)) )
      +                                 , SHFTL(LAND(MZ,1),IZP-1) )
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       MSBIT (MZ,IZW,IZP) = OR (AND (IZW, NOT(LSHIFT(1,IZP-1)))
      +                              ,LSHIFT(AND(MZ,1),IZP-1))
 

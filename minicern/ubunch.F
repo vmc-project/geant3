@@ -31,10 +31,12 @@
 #include "dosgs/ubunch.F"
 #elif defined(CERNLIB_QMVAOS)||defined(CERNLIB_QMVMI)
 #include "allgs/ubunch.F"
-#elif (defined(CERNLIB_QMLNX) && !defined(CERNLIB_PPC))
+#elif (defined(CERNLIB_QMLNX) && !defined(CERNLIB_GFORTRAN))
+#if !defined(CERNLIB_PPC)
 #include "lnxgs/ubunch.F"
-#elif (defined(CERNLIB_QMLNX) && defined(CERNLIB_PPC))
+#else
 #include "lnxppcgs/ubunch.F"
+#endif
 #elif defined(CERNLIB_QMSUN)
 #include "sungs/ubunch.F"
 #elif defined(CERNLIB_QMVAX)

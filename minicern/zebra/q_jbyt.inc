@@ -59,7 +59,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       JBYT (IZW,IZP,NZB)= SHFTR (SHFTL(IZW,33-IZP-NZB), 32-NZB)
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       JBYT(IZW,IZP,NZB) = RSHIFT(LSHIFT(IZW,33-IZP-NZB),32-NZB)
 
 #elif defined(CERNLIB_OS9)

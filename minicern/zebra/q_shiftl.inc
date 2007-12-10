@@ -37,7 +37,7 @@
 #elif defined(CERNLIB_QF_SIEM)
       ISHFTL (IZW,NZB) = SHFTL (IZW, NZB)
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       ISHFTL (IZW,NZB) = LSHIFT (IZW,NZB)
 
 #elif (defined(CERNLIB_SUN))&&(!defined(CERNLIB_BUGLRSHFT))

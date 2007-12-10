@@ -50,7 +50,7 @@ C       ISHFT(IZW,NZB)  = LSHIFT(IZW,NZB)
       ISHFTL (IZW,NZB) = SHFTL (IZW, NZB)
       ISHFTR (IZW,NZB) = SHFTR (IZW, NZB)
 
-#elif (defined(CERNLIB_LINUX))&&(!defined(__G95__))
+#elif (defined(CERNLIB_LINUX))&&(!(defined(__G95__)||defined(CERNLIB_GFORTRAN)))
       ISHFTL (IZW,NZB) = LSHIFT (IZW,NZB)
       ISHFTR (IZW,NZB) = RSHIFT (IZW,NZB)
 
