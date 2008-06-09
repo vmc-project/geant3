@@ -125,6 +125,7 @@
 #include "geant321/gconst.inc"
 #include "geant321/gccuts.inc"
 #include "geant321/gcmore.inc"
+#include "geant321/gcjump.inc"
 *
       INTEGER*4 ICC,CFLAG
       SAVE ICC, ICONT
@@ -206,5 +207,6 @@
             ENDIF
          ENDIF
       ENDIF
+      CALL GUSTEP
 *     
       END
