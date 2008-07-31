@@ -15,7 +15,7 @@ LIBDIR  = $(TOPDIR)/lib/tgt_$(PLATFORM)
 ifeq ($(ROOTSYS),)
 ROOT_INCDIR = $(shell root-config --incdir)
 ROOT_BINDIR = $(shell root-config --prefix)/bin
-ROOT_ETCDIR = $(shell root-config --prefix)/etc/vmc
+ROOT_ETCDIR = $(shell root-config --etcdir)/vmc
 else
 ROOT_INCDIR = $(ROOTSYS)/include
 ROOT_BINDIR = $(ROOTSYS)/bin
