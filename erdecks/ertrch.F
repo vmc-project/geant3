@@ -269,12 +269,7 @@ C.    ------------------------------------------------------------------
       IF (ILOSS*DEEMAX.GT.0) THEN
          NMEC = NMEC +1
          LMEC(NMEC) = 3
-* modified by A.Rotondi & A.Fontana 
-* march 2007
-* (added DESTEP in the calling string for calculation with Urban model 
-* using the previous step PRSTEP)
-         CALL ERLAND (STEP,Z,A,DENS,VECT(7),GETOT,AMASS,PRSTEP,DEDX2)
-         DEDX2  = DEDX2*CHARG2*CHARG2
+
          STOPRG = STOPP1 - BACKTR*STEP*RMASS*CHARG2
          IKF = IEKBIN
          IF (BACKTR.LE.0.) THEN
@@ -307,6 +302,12 @@ C.    ------------------------------------------------------------------
             NMEC = NMEC + 1
             LMEC(NMEC) = 30
          ENDIF
+*         modified by A.Rotondi & A.Fontana 
+*         october 2008 correcting a bug in the march 2007 version
+*         (added DESTEP in the calling string for 
+*         calculation with Urban model) 
+         CALL ERLAND (STEP,Z,A,DENS,VECT(7),GETOT,AMASS,DESTEP,DEDX2)
+         DEDX2  = DEDX2*CHARG2*CHARG2
 	 PRSTEP = DESTEP
       ENDIF
 *
