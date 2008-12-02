@@ -116,15 +116,15 @@ OBJS	:= $(FOBJ) $(COBJ) $(CXXOBJ) $(GDICTO)
 
 # C++ compilation flags
 
-CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. -I$(ROOT_INCDIR) -ITGeant3
+CXXFLAGS := $(CXXOPTS) $(CLIBCXXOPTS) -I. -I$(ROOT_INCDIR) -ITGeant3 -fPIC
 
 # C compilation flags
 
-CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern
+CFLAGS      := $(COPT) $(CLIBCOPT) -I. -Iminicern -fPIC
 
 # FORTRAN compilation flags
 
-FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern
+FFLAGS      := $(FOPT) $(CLIBFOPT) -I. -Iminicern -fPIC
 # ifeq ($(PLATFORM),linux)
 #    FFLAGS      := $(filter-out -O%,$(FFLAGS))  
 # endif
