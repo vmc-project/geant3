@@ -3811,7 +3811,7 @@ void  TGeant3::Grndm(Float_t *rvec, Int_t len) const
   //  To set/retrieve the seed of the random number generator
   //
   TRandom* r=gMC->GetRandom();
-  for(Int_t i=0; i<len; rvec[i++]=r->Rndm());
+  for(Int_t i=0; i<len; rvec[i++]=r->Rndm()) {};
 }
 
 //______________________________________________________________________

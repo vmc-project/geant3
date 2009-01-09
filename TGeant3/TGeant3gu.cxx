@@ -575,7 +575,6 @@ void gutrev()
   gtreveroot();
 }
 
-
 //______________________________________________________________________
 void gufld(Float_t *x, Float_t *b)
 {
@@ -583,7 +582,19 @@ void gufld(Float_t *x, Float_t *b)
   Double_t bdouble[3];
   for (Int_t i=0; i<3; i++) xdouble[i] = x[i]; 
 
-  TVirtualMCApplication::Instance()->Field(xdouble,bdouble);
+  if ( gMC->GetMagField() ) {
+    gMC->GetMagField()->Field(xdouble,bdouble);
+  }
+  else {  
+    static Bool_t warn = true;   
+    if (warn) { 
+      Warning("gufld", "Using deprecated function TVirtualMCApplication::Field().");
+      Warning("gufld", "New TVirtualMagField interface should be used instead.");
+      warn = false;
+    }        
+
+    TVirtualMCApplication::Instance()->Field(xdouble,bdouble);
+  }  
 
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
 }
