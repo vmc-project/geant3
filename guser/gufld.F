@@ -27,6 +27,16 @@ C.    *       at space point X                                         *
 C.    *                                                                *
 C.    *    ==>Called by : G3HELIX,G3RKUTA                              *
 C.    *                                                                *
+C.    *    Please note that starting from svn revision 232, the        *
+C.    *    argument of this routine have been moved from single to     *
+C.    *    double precision. The corresponding changes have been       *
+C.    *    done to the calling routines. This change is backward       *
+C.    *    incompatible and to continue working with single precision  *
+C.    *    arguments, the compilation flag -DSINGLEFIELD should be     *
+C.    *    added to the compilation, both FORTRAN and C++.             *
+C.    *                                                                *
+C.    *    F.Carminati, January 20, 2009                               *
+C.    *                                                                *
 C.    ******************************************************************
 C.
 #ifdef SINGLEFIELD
