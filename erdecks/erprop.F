@@ -34,6 +34,9 @@ C.
 #include "geant321/ertrio.inc"
 #include "geant321/trcom3.inc"
 *
+#ifndef SINGLEFIELD
+      DOUBLE PRECISION VECTD(3), HFD(3)
+#endif
       DIMENSION DUM(15)
 *
 * *** Prepares the end-point
@@ -47,7 +50,17 @@ C.
       IF (IFIELD.EQ.3) THEN
          HF(3) = FIELDM
       ELSEIF (IFIELD.NE.0) THEN
+#ifdef SINGLEFIELD
          CALL GUFLD (VECT, HF)
+#else
+         DO J=1,3
+            VECTD(J)=VECT(J)
+         END DO
+         CALL GUFLD(VECTD, HFD)
+         DO J=1,3
+            HF(J)=HFD(J)
+         END DO
+#endif
       ENDIF
 *
 * *** Propagates the error (in SC-variables)

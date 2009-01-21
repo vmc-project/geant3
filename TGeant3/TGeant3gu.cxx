@@ -576,12 +576,16 @@ void gutrev()
 }
 
 //______________________________________________________________________
+#ifdef SINGLEFIELD
 void gufld(Float_t *x, Float_t *b)
 {
   Double_t xdouble[3];
   Double_t bdouble[3];
   for (Int_t i=0; i<3; i++) xdouble[i] = x[i]; 
-
+#else
+void gufld(Double_t *xdouble, Double_t *bdouble)
+{
+#endif
   if ( gMC->GetMagField() ) {
     gMC->GetMagField()->Field(xdouble,bdouble);
   }
@@ -596,7 +600,9 @@ void gufld(Float_t *x, Float_t *b)
     TVirtualMCApplication::Instance()->Field(xdouble,bdouble);
   }  
 
+#ifdef SINGLEFIELD
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
+#endif
 }
 
 //______________________________________________________________________

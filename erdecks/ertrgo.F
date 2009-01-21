@@ -47,6 +47,9 @@ C.
       LOGICAL LSAMVL
 *
 *
+#ifndef SINGLEFIELD
+      DOUBLE PRECISION VECTD(3), HID(3)
+#endif
       DIMENSION CUTS(10),MECA(5,12)
       EQUIVALENCE (CUTS(1),CUTGAM),(MECA(1,1),IPAIR)
       DIMENSION NAMIN(15),NUMIN(15),NAMOUT(15),NUMOUT(15)
@@ -169,7 +172,17 @@ C.    ------------------------------------------------------------------
       IF (IFIELD.EQ.3) THEN
          HI(3) = FIELDM
       ELSEIF (IFIELD.NE.0) THEN
+#ifdef SINGLEFIELD
          CALL GUFLD (VECT, HI)
+#else
+         DO J=1,3
+            VECTD(J)=VECT(J)
+         END DO
+         CALL GUFLD(VECTD,HID)
+         DO J=1,3
+            HI(J)=HID(J)
+         ENDDO
+#endif
       ENDIF
 *
 * *** Control given to user at entrance of volume (INWVOL=1)

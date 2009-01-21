@@ -64,6 +64,9 @@
 #include "geant321/erwork.inc"
 #include "geant321/trcom3.inc"
 *
+#ifndef SINGLEFIELD
+      DOUBLE PRECISION X1D(3), HID(3)
+#endif
       DIMENSION      P1(3), P2(3), X1(3), X2(3), DUM(15), IOPT(30)
       EQUIVALENCE    (IOPT(1),IOPTB), (IOPT(2),IOPTE), (IOPT(3),IOPTL),
      ,               (IOPT(4),IOPTM), (IOPT(5),IOPTO), (IOPT(6),IOPTP),
@@ -157,7 +160,17 @@
          IF (IFIELD.EQ.3) THEN
             HI(3) = FIELDM
          ELSEIF (IFIELD.NE.0) THEN
+#ifdef SINGLEFIELD
             CALL GUFLD (X1, HI)
+#else
+            DO J=1,3
+               X1D(J)=X1(J)
+            END DO
+            CALL GUFLD(X1D, HID)
+            DO J=1,3
+               HI(J)=HID(J)
+            END DO
+#endif
          ENDIF
          CALL VZERO (DUM,15)
          CALL TRSCSD (ERPIN(1), DUM(1),   ERPIN(1), DUM(1),   HI(1),

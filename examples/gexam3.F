@@ -510,6 +510,9 @@ C.    ******************************************************************
 C.
       COMMON/DLSFLD/ISWFLD,FLDVAL
 C
+#ifndef SINGLEFIELD
+      DOUBLE PRECISION X, F
+#endif
       DIMENSION X(3),F(3)
 C.
 C.    ------------------------------------------------------------------

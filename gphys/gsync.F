@@ -36,6 +36,9 @@ C
 #include "geant321/gctmed.inc"
 #include "geant321/gccuts.inc"
 C...
+#ifndef SINGLEFIELD
+      DOUBLE PRECISION FLD, VECTD(3), FLDS2
+#endif
       DIMENSION ETR(100),STR(100),VECTS(7),VECTN(7),FLD(3)
 C...
       IF(ABS(CHARGE).NE.1..OR.STEP.LE.0.) GO TO 999
@@ -47,7 +50,14 @@ C...
           FLD(2) = 0.
           FLD(3) = FIELDM
       ELSE
+#ifdef SINGLEFIELD
           CALL GUFLD(VECT,FLD)
+#else
+          DO J=1,3
+             VECTD(J)=VECT(J)
+          END DO
+          CALL GUFLD(VECTD,FLD)
+#endif
       END IF
       FLDS2  = FLD(1)**2+FLD(2)**2+FLD(3)**2
       IF(FLDS2.LE.1E-10) GO TO 999

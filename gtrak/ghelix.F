@@ -43,7 +43,13 @@ C.    *       Modified  V.Perevoztchikov
 C.    *                                                                *
 C.    ******************************************************************
 C.
-      DIMENSION      VECT(7),VOUT(7)
+#if !defined(CERNLIB_SINGLE)
+      IMPLICIT DOUBLE PRECISION(A-H,O-Z)
+#endif
+      REAL CHARGE, STEP, VECT(*), VOUT(*)
+#ifdef SINGLEFIELD
+      REAL XYZ, H
+#endif
       DIMENSION      XYZ(3),H(4),HXP(3)
       PARAMETER      (IX=1,IY=2,IZ=3,IPX=4,IPY=5,IPZ=6,IPP=7)
       PARAMETER      (SIXTH = 1./6.)
@@ -65,7 +71,7 @@ C
       H(4) = H(3)**2 + H2XY
       IF (H(4).LE.1.E-12)       GO TO 10
       IF (H2XY.LE.1.E-12*H(4))  THEN
-         CALL G3HELX3 (CHARGE*H(3), STEP, VECT, VOUT)
+         CALL G3HELX3 (SNGL(CHARGE*H(3)), STEP, VECT, VOUT)
          GO TO 999
       ENDIF
       H(4) = SQRT(H(4))
