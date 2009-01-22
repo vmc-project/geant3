@@ -48,11 +48,11 @@ C.
 #if !defined(CERNLIB_SINGLE)
       IMPLICIT DOUBLE PRECISION(A-H,O-Z)
 #endif
-      REAL CHARGE, STEP, VECT(*), VOUT(*), F(4)
+      REAL CHARGE, STEP, VECT(*), VOUT(*)
 #ifdef SINGLEFIELD
-      REAL XYZT, XT, YT, ZT
+      REAL XYZT, XT, YT, ZT, F(4)
 #else
-      DIMENSION VD(3)
+      DIMENSION VD(3), F(4) 
 #endif
       DIMENSION XYZT(3)
       DIMENSION SECXS(4),SECYS(4),SECZS(4),HXP(3)

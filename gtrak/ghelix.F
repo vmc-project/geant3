@@ -71,7 +71,11 @@ C
       H(4) = H(3)**2 + H2XY
       IF (H(4).LE.1.E-12)       GO TO 10
       IF (H2XY.LE.1.E-12*H(4))  THEN
+#ifdef SINGLEFIELD
+         CALL G3HELX3 (CHARGE*(H(3)), STEP, VECT, VOUT)
+#else         
          CALL G3HELX3 (SNGL(CHARGE*H(3)), STEP, VECT, VOUT)
+#endif        
          GO TO 999
       ENDIF
       H(4) = SQRT(H(4))
