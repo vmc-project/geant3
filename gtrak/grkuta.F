@@ -51,6 +51,8 @@ C.
       REAL CHARGE, STEP, VECT(*), VOUT(*), F(4)
 #ifdef SINGLEFIELD
       REAL XYZT, XT, YT, ZT
+#else
+      DIMENSION VD(3)
 #endif
       DIMENSION XYZT(3)
       DIMENSION SECXS(4),SECYS(4),SECZS(4),HXP(3)
@@ -79,7 +81,14 @@ C.
 *
    20 REST  = STEP-TL
       IF (ABS(H).GT.ABS(REST)) H = REST
+#ifdef SINGLEFIELD
       CALL GUFLD(VOUT,F)
+#else
+      DO J=1,3
+         VD(J)=VOUT(J)
+      END DO
+      CALL GUFLD(VD,F)
+#endif
 *
 *             Start of integration
 *
