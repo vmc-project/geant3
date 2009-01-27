@@ -5290,6 +5290,8 @@ Bool_t TGeant3::SetDecayMode(Int_t pdg, Float_t bratio[6], Int_t mode[6][3])
      return false;
    }
 
+   SetUserDecay(pdg);
+
    Int_t g3mode[6];
    Int_t id1,id2,id3;
    for (Int_t k1=0; k1<6; k1++) g3mode[k1]=0;
