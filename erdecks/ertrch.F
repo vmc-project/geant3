@@ -1,3 +1,4 @@
+*CMZ :          31/07/2008  08.02.14  by  Alessandra Filippi / Stefano Piano
 *CMZ :          24/11/95  16.28.16  by  S.Ravndal
 *CMZ :  3.21/02 29/03/94  15.41.49  by  S.Giani
 *-- Author :
@@ -45,11 +46,23 @@ C.
 * (added and saved previous step PRSTEP for use with Urban model)
       REAL VNEXT(6),PRSTEP
       SAVE CFLD,CHARG2,RMASS,CUTPRO,IKCUT,STOPC,PRSTEP
+*
+*
+** part modified by A.Filippi & S.Piano to comply with GTHADR (3.21) algorhytm 
+** february09
+* --->
+      REAL THRESH
+      REAL CUTEN
+      LOGICAL ISHAD
+      PARAMETER(THRESH=0.7, ONE = 1.)
+      DATA ISHAD/.FALSE./
+* <---------------------------------------------------------------------
 C.
 C.    ------------------------------------------------------------------
 *
 *
 * *** Update local pointers if medium has changed
+*
 *
       IF (IUPD.EQ.0) THEN
          IUPD  = 1
@@ -57,15 +70,35 @@ C.    ------------------------------------------------------------------
          IF (IPART.LE.3) THEN
             CUTEK  = CUTELE
             RMASS  = 1.
-            JRANG  = LQ(JMA-15)
+*
+** part modified by A.Filippi & S.Piano to comply with GTHADR (3.21) algorhytm 
+** february09
+* --->
+            ISHAD = .FALSE.
+            IF(IPART.EQ.3) THEN    ! electrons
+              JRANG  = LQ(JMA-15)
+              JCOEF  = LQ(JMA-17)
+              JLOSS  = LQ(JMA-1)
+            ELSEIF(IPART.EQ.2) then   ! positrons
+              JRANG  = LQ(JMA-15) + NEK1
+              JLOSS  = LQ(JMA-1)  + NEK1
+              JCOEF  = LQ(JMA-17) + 3*NEK1
+            ENDIF
          ELSE IF (IPART.LE.6) THEN
             CUTEK  = CUTMUO
             RMASS  = 1.
+            ISHAD = .FALSE.
             JRANG  = LQ(JMA-16)
+            JLOSS  = LQ(JMA-2)
+            JCOEF  = LQ(JMA-18)
          ELSE
             CUTEK  = CUTHAD
             RMASS  = PMASS/AMASS
+            ISHAD = .TRUE.
             JRANG  = LQ(JMA-16) + NEK1
+            JLOSS  = LQ(JMA-3)
+            JCOEF  = LQ(JMA-18) + 3*NEK1
+* <--------------------------------------------------------------------
          ENDIF
          CUTPRO = MAX(CUTEK*RMASS,ELOW(1))
          IKCUT = GEKA*LOG10(CUTPRO) + GEKB
@@ -83,17 +116,83 @@ C.    ------------------------------------------------------------------
 * *** Step limitation due to energy loss (stopping range) ?
 *
       IF (ILOSS*DEEMAX.GT.0.) THEN
-         STOPP1 = GEKRT1*Q(JRANG+IEKBIN) + GEKRAT*Q(JRANG+IEKBIN+1)
-         STOPMX = (STOPP1 - STOPC)/(RMASS*CHARG2)
-         EKF  = (1. - BACKTR*DEEMAX)*GEKIN*RMASS
-         IF (EKF.LT.ELOW(1))    EKF = ELOW(1)
-         IF (EKF.GE.ELOW(NEK1)) EKF = ELOW(NEK1)*0.99
-         IKF=GEKA*LOG10(EKF)+GEKB
+*
+** part modified by A.Filippi & S.Piano to comply with GTHADR (3.21) algorhytm 
+** february09
+* --->
+         IF(GEKRAT.LT.THRESH) THEN
+            I1 = MAX(IEKBIN-1,1)
+         ELSE
+            I1 = MIN(IEKBIN,NEKBIN-1)
+         ENDIF
+         I1 = 3*(I1-1)+1
+         XCOEF1 = Q(JCOEF+I1)
+         XCOEF2 = Q(JCOEF+I1+1)
+         XCOEF3 = Q(JCOEF+I1+2)
+         IF(XCOEF1.NE.0) THEN
+            STOPP = -XCOEF2+SIGN(ONE,XCOEF1)* SQRT(XCOEF2
+     +      **2 -(XCOEF3-GEKIN*RMASS/XCOEF1))
+         ELSE
+            STOPP = - (XCOEF3-GEKIN*RMASS)/XCOEF2
+         ENDIF
+         STOPMX = (STOPP - STOPC)/(RMASS*CHARG2)
+         IF (STOPMX.LT.MIN(STEP,STMIN)) THEN
+            STEP = STOPMX
+            IPROC = 0
+            IF(STEP.LE.0.)THEN
+               DESTEP = GEKIN
+               GEKIN  = 0.
+               GETOT  = AMASS
+               VECT(7)= 0.
+               INWVOL = 0
+               ISTOP  = 2
+               NMEC = NMEC + 1
+               LMEC(NMEC) = 30
+               GO TO 100
+            ENDIF
+            GO TO 10
+         ENDIF
+
+         EKF = (1. - BACKTR*DEEMAX)*GEKIN*RMASS
+         IF (EKF.LT.ELOW(1)) THEN
+            EKF = ELOW(1)
+            IKF = 1
+         ELSEIF (EKF.GE.ELOW(NEKBIN)) THEN
+            IKF = NEKBIN
+            IF (EKF.GE.ELOW(NEK1)) THEN
+               IKF = NEK1-1
+               EKF = ELOW(NEK1)*0.99
+            ENDIF
+         ELSE
+            IKF=GEKA*LOG10(EKF)+GEKB
+         ENDIF
          GKR=(EKF-ELOW(IKF))/(ELOW(IKF+1)-ELOW(IKF))
-         STOPP2 = (1.-GKR)*Q(JRANG+IKF) + GKR*Q(JRANG+IKF+1)
-         SLOSP  = ABS (STOPP1 - STOPP2)
-         STEP   = SLOSP/(RMASS*CHARG2)
+         IF(GKR.LT.THRESH) THEN
+            IK1 = MAX(IKF-1,1)
+         ELSE
+            IK1 = MIN(IKF,NEKBIN-1)
+         ENDIF
+         IK1 = 3*(IK1-1)+1
+         YCOEF1=Q(JCOEF+IK1)
+         YCOEF2=Q(JCOEF+IK1+1)
+         YCOEF3=Q(JCOEF+IK1+2)
+         IF(YCOEF1.NE.0.) THEN
+            SLOSP = -YCOEF2+SIGN(ONE,YCOEF1)*SQRT(YCOEF2**2- (YCOEF3-
+     +      EKF/YCOEF1))
+         ELSE
+            SLOSP = - (YCOEF3-EKF)/YCOEF2
+         ENDIF
+         SLOSP = ABS(STOPP - SLOSP)
+         SLOSS = MAX(STMIN, SLOSP/(RMASS*CHARG2) )
+         IF (SLOSS.LT.STEP) THEN
+            STEP = SLOSS
+            IPROC = 0
+         ENDIF
+
       ENDIF
+
+   10 CONTINUE
+* <--------------------------------------------------------------------
 *
 * *** Step limitation due to energy loss in magnetic field ?
 *
@@ -180,8 +279,8 @@ C.    ------------------------------------------------------------------
         DO 35 I = 4,6
           VOUT(I)  = VECT(I)
    35   CONTINUE
-        GOTO 74
-      END IF
+	GOTO 74
+      ENDIF
 *
 * *** otherwise, swim particle in magnetic field
 *
@@ -211,7 +310,7 @@ C.    ------------------------------------------------------------------
            IF ((INEAR.NE.0).OR.(STEP.LT.EPSIL)) THEN
              INWVOL = 2
              NMEC = NMEC +1
-             LMEC(NMEC) = 1
+             LMEC(NMEC) = 1	
              LNEXT = 1
            ELSE
 *              Cut step
@@ -223,6 +322,7 @@ C.    ------------------------------------------------------------------
              GOTO 50
            ENDIF
          ENDIF
+*
       ENDIF
 *
 *
@@ -246,9 +346,9 @@ C.    ------------------------------------------------------------------
          ENDIF
       ENDIF
 *
-      DO 75 I=1,6
+        DO 75 I=1,6
            VECT(I) = VOUT(I)
-   75 CONTINUE
+   75   CONTINUE
 *
       IF (LELENG.AND.(STEP.GE.STEPER)) LERST = 1
 *
@@ -264,36 +364,47 @@ C.    ------------------------------------------------------------------
 *
 * *** apply energy loss : find the kinetic energy corresponding
 *      to the new stopping range = stopmx -/+ step
-*      (take care of the back tracking !)
+*      (take care of the backtracking !)
 *
       IF (ILOSS*DEEMAX.GT.0) THEN
          NMEC = NMEC +1
          LMEC(NMEC) = 3
-
-         STOPRG = STOPP1 - BACKTR*STEP*RMASS*CHARG2
-         IKF = IEKBIN
-         IF (BACKTR.LE.0.) THEN
-   95       IF (STOPRG.LT.Q(JRANG+IKF)) THEN
-               IKF = IKF - 1
-               IF (IKF.GT.1) GO TO 95
-            ENDIF
+*
+** part modified by A.Filippi & S.Piano to comply with GTHADR (3.21) algorhytm 
+** february09
+*  --->
+         STOPRG = STOPP - BACKTR*STEP*RMASS*CHARG2
+	 IFK = IEKBIN
+	 IF(XCOEF1.NE.0.) THEN
+            EKIPR = XCOEF1*(XCOEF3+STOPRG*(2.*XCOEF2+STOPRG))
          ELSE
-   96       IF (STOPRG.GE.Q(JRANG+IKF+1)) THEN
-               IKF = IKF + 1
-               IF (IKF.LT.NEK1) GO TO 96
-            ENDIF
+            EKIPR = XCOEF2*STOPRG+XCOEF3
          ENDIF
-         GKR = (STOPRG - Q(JRANG+IKF)) / (Q(JRANG+IKF+1) - Q(JRANG+IKF))
-         EKIPR = (1. -GKR)*ELOW(IKF) + GKR*ELOW(IKF+1)
-         GEKINT =  EKIPR/RMASS
-         IF (GEKINT.GT.CUTEK) THEN
-            DESTEP = ABS (GEKIN - GEKINT)
-            GEKIN  = GEKINT
-            GETOT  = GEKIN + AMASS
-            VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
-            CALL G3EKBIN
+
+         DEMEAN=GEKIN - EKIPR/RMASS
+         IF(DEMEAN.LE.5.*GEKIN*EPSMAC) THEN
+            DEMEAN=(GEKRT1*Q(JLOSS+IEKBIN)+GEKRAT*Q(JLOSS+IEKBIN+1))
+     +      *STEP*CHARG2
+         ENDIF
+c
+         DESTEP = DEMEAN
+         DESTEP=MAX(DESTEP,0.)
+         GEKINT = GEKIN -BACKTR*DESTEP
+
+         IF(ISHAD) THEN
+            CUTEN = 1.*CUTEK      ! was 1.01 in GTHADR AF aug08
+         ELSE
+            CUTEN = CUTEK
+         ENDIF
+	 IF(GEKINT.GT.CUTEN) THEN
+           DESTEL = DESTEP
+           GEKIN  = GEKINT	
+           GETOT  = GEKIN +AMASS
+           VECT(7)= SQRT((GETOT+AMASS)*GEKIN)
+           CALL G3EKBIN
          ELSE
             DESTEP = GEKINT
+            DESTEL = DESTEP
             GEKIN  = 0.
             GETOT  = AMASS
             VECT(7)= 0.
@@ -302,14 +413,16 @@ C.    ------------------------------------------------------------------
             NMEC = NMEC + 1
             LMEC(NMEC) = 30
          ENDIF
-*         modified by A.Rotondi & A.Fontana 
-*         october 2008 correcting a bug in the march 2007 version
-*         (added DESTEP in the calling string for 
-*         calculation with Urban model) 
+*---------------------------------------------------------------------
+*     modified by A.Rotondi & A.Fontana 
+*     october 2008 correcting a bug in the march 2007 version
+*     (added DESTEP in the calling string for 
+*     calculation with Urban model) 
          CALL ERLAND (STEP,Z,A,DENS,VECT(7),GETOT,AMASS,DESTEP,DEDX2)
          DEDX2  = DEDX2*CHARG2*CHARG2
 	 PRSTEP = DESTEP
       ENDIF
+ 100  CONTINUE
 *
 * *** Propagate error matrix
 *
