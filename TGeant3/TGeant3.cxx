@@ -2977,6 +2977,15 @@ void  TGeant3::SetRootGeometry()
 }  
 
 //______________________________________________________________________
+void TGeant3::SetUserParameters(Bool_t isUserParameters)
+{
+// Activate the parameters defined in tracking media
+// (DEEMAX, STMIN, STEMAX), which are, be default, ignored.
+
+  SetAUTO(!isUserParameters);
+}  
+
+//______________________________________________________________________
 const char *TGeant3::GetPath()
 {
 // Get current path inside G3 geometry

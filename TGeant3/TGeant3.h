@@ -705,7 +705,8 @@ public:
   virtual void Matrix(Int_t& krot, Double_t thex, Double_t phix, Double_t they,
                       Double_t phiy, Double_t thez, Double_t phiz);
 
-  virtual void   SetRootGeometry();
+  virtual void SetRootGeometry();
+  virtual void SetUserParameters(Bool_t isUserParameters);
 
 ////////////////////////////////////////////////////////////////////////
 //                                                                    //
