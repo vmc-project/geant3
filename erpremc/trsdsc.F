@@ -73,6 +73,13 @@ C
     5 CONTINUE
 C
       PC(1)=PD(1)
+C     Check on TN(3) value
+      IF((ABS(TN(3))-1).GT.0.01) GOTO 99
+      IF(TN(3).GT.1) THEN 
+         TN(3)=1
+      ELSE IF(TN(3).LT.-1) THEN 
+         TN(3)=-1
+      ENDIF
       PC(2)=ASIN(TN(3))
       IF (ABS (TN(1)) .LT. 1.E-30) TN(1) = 1.E-30
       PC(3) = ATAN2 (TN(2),TN(1))
@@ -135,6 +142,7 @@ C
       DO 25 I=1,5
          DO 20 K=I,5
             J=J+1
+            IF(ABS(S(J)).GT.1E30) GOTO 99
             RC(J)=S(J)
    20    CONTINUE
    25 CONTINUE
@@ -143,5 +151,8 @@ C
 C
 C *** ERROR EXITS
 C
+ 99   IERR=1
+      RETURN
+*
       END
 *

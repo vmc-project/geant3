@@ -73,7 +73,9 @@
      ,               (IOPT(7),IOPTV), (IOPT(8),IOPTX)
       CHARACTER      CHOPT*(*)
 *
-*
+      IERTR=0
+*     
+*     
 * *** Decode character option
 *
       CHOPTI = CHOPT
@@ -175,9 +177,25 @@
          CALL VZERO (DUM,15)
          CALL TRSCSD (ERPIN(1), DUM(1),   ERPIN(1), DUM(1),   HI(1),
      +                CHARGE, IERR, SPU, ERPLI(1,1), ERPLI(1,2))
+         IF(IERR.NE.0) THEN 
+*     
+*     *** Tracking error - floating point exception
+*     
+            IERTR=1
+            WRITE (LOUT, 780)
+            GOTO 99
+         ENDIF
          IF (LEONLY) GOTO 35
          CALL TRSDSC (ERPIN(1), ERRIN(1), DUM(1),   ERRIN(1), HI(1),
      +                CHARGE, IERR, SPU, ERPLI(1,1), ERPLI(1,2))
+         IF(IERR.NE.0) THEN
+*     
+*     *** Tracking error - floating point exception
+*     
+            IERTR=1
+            WRITE (LOUT, 780)
+            GOTO 99
+         ENDIF
          DO 29 I = 1, 5
             DO 28 J = 1, 5
                ASDSC(I,J) = A(I,J)

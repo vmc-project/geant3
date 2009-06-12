@@ -145,6 +145,7 @@ C
       DO 25 I=1,5
          DO 20 K=I,5
             J=J+1
+            IF(ABS(S(J)).GT.1E30) GOTO 901
             RD(J)=S(J)
    20    CONTINUE
    25 CONTINUE

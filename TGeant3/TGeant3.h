@@ -495,6 +495,12 @@ typedef struct {
   Int_t    iepred;
 } Ertrio_t;
 
+typedef struct {
+  Int_t iertr;
+  Int_t iertr1;
+  Int_t iertr2;
+} Ertrio1_t;
+
 //-----------EROTPS
 //    CHARACTER*8     CHOPTI
 //    LOGICAL         LEEXAC, LELENG, LEONLY, LEPLAN, LEPOIN, LEVOLU
@@ -774,11 +780,12 @@ public:
 
   // Access to GEANE commons
 
-  virtual Ertrio_t* Ertrio() const {return fErtrio;}
-  virtual Eropts_t* Eropts() const {return fEropts;}
-  virtual Eroptc_t* Eroptc() const {return fEroptc;}
-  virtual Erwork_t* Erwork() const {return fErwork;}
-  virtual Trcom3_t* Trcom3() const {return fTrcom3;}
+  virtual Ertrio_t*  Ertrio()  const {return fErtrio;}
+  virtual Ertrio1_t* Ertrio1() const {return fErtrio1;}
+  virtual Eropts_t*  Eropts()  const {return fEropts;}
+  virtual Eroptc_t*  Eroptc()  const {return fEroptc;}
+  virtual Erwork_t*  Erwork()  const {return fErwork;}
+  virtual Trcom3_t*  Trcom3()  const {return fTrcom3;}
 
 
       // functions from GBASE
@@ -1054,11 +1061,12 @@ public:
                   Float_t tof, TMCProcess mech, Int_t &ntr,
                   Float_t weight, Int_t is);
 
-  Ertrio_t *fErtrio;          //! ERTRIO common structure
-  Eropts_t *fEropts;          //! EROPTS common structure
-  Eroptc_t *fEroptc;          //! EROPTC common structure
-  Erwork_t *fErwork;          //! ERWORK common structure
-  Trcom3_t *fTrcom3;          //! TRCOM3 common structure
+  Ertrio_t  *fErtrio;          //! ERTRIO common structure
+  Ertrio1_t *fErtrio1;         //! ERTRIO1 common structure
+  Eropts_t  *fEropts;          //! EROPTS common structure
+  Eroptc_t  *fEroptc;          //! EROPTC common structure
+  Erwork_t  *fErwork;          //! ERWORK common structure
+  Trcom3_t  *fTrcom3;          //! TRCOM3 common structure
 
 
 private:

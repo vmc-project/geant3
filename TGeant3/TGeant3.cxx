@@ -183,11 +183,12 @@ changes in TGeant3/TGeant3.h
 -----------------------
 1. Structures for Geane output are setted as public so that the user can access them
 
-    Ertrio_t *fErtrio
-    Eropts_t *fEropts
-    Eroptc_t *fEroptc
-    Erwork_t *fErwork
-    Trcom3_t *fTrcom3
+    Ertrio_t  *fErtrio
+    Ertrio1_t *fErtrio1
+    Eropts_t  *fEropts
+    Eroptc_t  *fEroptc
+    Erwork_t  *fErwork
+    Trcom3_t  *fTrcom3
 
 2. The size of the error matrix errin is corrected to 15
 
@@ -1261,10 +1262,11 @@ void TGeant3::LoadAddress()
    gcomad(PASSCHARD("GCCHAN"),(int*&) gcchan   PASSCHARL("GCCHAN"));
 
    // Commons for GEANE
-   gcomad(PASSCHARD("ERTRIO"),(int*&) fErtrio  PASSCHARL("ERTRIO"));
-   gcomad(PASSCHARD("EROPTS"),(int*&) fEropts  PASSCHARL("EROPTS"));
-   gcomad(PASSCHARD("EROPTC"),(int*&) fEroptc  PASSCHARL("EROPTC"));
-   gcomad(PASSCHARD("ERWORK"),(int*&) fErwork  PASSCHARL("ERWORK"));
+   gcomad(PASSCHARD("ERTRIO"), (int*&) fErtrio  PASSCHARL("ERTRIO"));
+   gcomad(PASSCHARD("ERTRIO1"),(int*&) fErtrio1 PASSCHARL("ERTRIO1"));
+   gcomad(PASSCHARD("EROPTS"), (int*&) fEropts  PASSCHARL("EROPTS"));
+   gcomad(PASSCHARD("EROPTC"), (int*&) fEroptc  PASSCHARL("EROPTC"));
+   gcomad(PASSCHARD("ERWORK"), (int*&) fErwork  PASSCHARL("ERWORK"));
 
    // Variables for ZEBRA store
    gcomad(PASSCHARD("IQ"), addr  PASSCHARL("IQ"));
