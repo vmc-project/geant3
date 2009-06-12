@@ -2384,17 +2384,13 @@ TMCProcess TGeant3::ProdProcess(Int_t ) const
   //  that had the capability of generating secondaries.  This occasionally 
   //  picked the wrong secondary production mechanism.
 
+  Int_t imech=0;
+
   if ( fGcking->ngkine <= 0 ) return kPNoProcess;
 
   // Secondaries generated, determine production mechanism hollerith 
-  std::string casestr((const char*)(&(fGcking->kcase)));
-  casestr.resize(4);
-
-  int imech = 0;
   for (Int_t km = 0; km < MAXMEC; ++km) {
-    std::string namestr((const char*)(&(fGctrak->namec[km])));
-    namestr.resize(4);
-    if ( casestr == namestr ) {
+    if ( fGcking->kcase == fGctrak->namec[km] ) {
       imech = km;
       break;
     }
