@@ -3515,59 +3515,59 @@ void  TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov,
 }
 
 //______________________________________________________________________
-void  TGeant3::DefineOpSurface(const char* /*name*/,
+void  TGeant3::DefineOpSurface(const char* name,
                 EMCOpSurfaceModel /*model*/, EMCOpSurfaceType /*surfaceType*/,
                 EMCOpSurfaceFinish /*surfaceFinish*/, Double_t /*sigmaAlpha*/) 
 {
    
    Warning("DefineOpSurface", 
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
 //______________________________________________________________________
-void  TGeant3::SetBorderSurface(const char* /*name*/,
+void  TGeant3::SetBorderSurface(const char* name,
                 const char* /*vol1Name*/, int /*vol1CopyNo*/,
                 const char* /*vol2Name*/, int /*vol2CopyNo*/,
                 const char* /*opSurfaceName*/) 
 {
    Warning("SetBorderSurface",
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for border surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
 //______________________________________________________________________
-void  TGeant3::SetSkinSurface(const char* /*name*/,
+void  TGeant3::SetSkinSurface(const char* name,
                 const char* /*volName*/,
                 const char* /*opSurfaceName*/) 
 {
    Warning("SetSkinSurface",
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for skin surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
 //______________________________________________________________________
 void  TGeant3::SetMaterialProperty(
-                Int_t /*itmed*/, const char* /*propertyName*/, 
+                Int_t itmed, const char* /*propertyName*/, 
                 Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
 {
    Warning("SetMaterialProperty",
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for material ID %5d. Not applicable in Geant3 - setting is ignored.", itmed));
 }   
                 
 //______________________________________________________________________
 void  TGeant3::SetMaterialProperty(
-                Int_t /*itmed*/, const char* /*propertyName*/, 
+                Int_t itmed, const char* /*propertyName*/, 
                 Double_t /*value*/) 
 {
    Warning("SetMaterialProperty",
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for material ID %5d. Not applicable in Geant3 - setting is ignored.", itmed));
 }   
                 
 //______________________________________________________________________
 void  TGeant3::SetMaterialProperty(
-                const char* /*surfaceName*/, const char* /*propertyName*/, 
+                const char* surfaceName, const char* /*propertyName*/, 
                 Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
 		{
    Warning("SetMaterialProperty",
-           "Not applicable in Geant3 - setting is ignored.");
+           Form("Called for material surface  %s. Not applicable in Geant3 - setting is ignored.", surfaceName));
 }   
 
 //______________________________________________________________________
