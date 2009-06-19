@@ -307,9 +307,11 @@ void gudcay()
 	    }
 	} // ks==1 ?
 // Skip neutrinos
-	if (kf==12 || kf ==-12) continue;
-	if (kf==14 || kf ==-14) continue;
-	if (kf==16 || kf ==-16) continue;
+        if (geant3->SkipNeutrinos()) {
+           if (kf==12 || kf ==-12) continue;
+           if (kf==14 || kf ==-14) continue;
+           if (kf==16 || kf ==-16) continue;
+        }
 	
 	Int_t index=geant3->Gcking()->ngkine;
 // Put particle on geant stack
@@ -693,7 +695,7 @@ void gustep()
     for (jk = 0; jk < geant3->Gcking()->ngkine; ++jk) {
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
       // --- Skip neutrinos! 
-      if (ipp != 4) {
+      if (ipp != 4 || !(geant3->SkipNeutrinos())) {
         geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
 			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, 1., 0);
       }

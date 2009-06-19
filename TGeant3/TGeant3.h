@@ -655,10 +655,12 @@ public:
   void   StopEvent();
   void   StopRun();
   Double_t MaxStep() const;
-  void  SetMaxStep(Double_t maxstep);
-  void  SetMaxNStep(Int_t maxnstp);
-  Int_t GetMaxNStep() const;
-  void  ForceDecayTime(Float_t time);
+  void   SetMaxStep(Double_t maxstep);
+  void   SetMaxNStep(Int_t maxnstp);
+  Int_t  GetMaxNStep() const;
+  void   ForceDecayTime(Float_t time);
+  void   SetSkipNeutrinos(Bool_t flag) {fSkipNeutrinos = flag;}
+  Bool_t SkipNeutrinos() {return fSkipNeutrinos;}
   Bool_t SetCut(const char* cutName, Double_t cutValue);
   Bool_t SetProcess(const char* flagName, Int_t flagValue);
   const char *GetPath();
@@ -1124,7 +1126,8 @@ protected:
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled
                                         // in FinishGeometry()
-  Bool_t           fStopRun;     // The flag for stopping run by a user
+  Bool_t           fStopRun;            // The flag for stopping run by a user
+  Bool_t           fSkipNeutrinos;      // The flag for skipping neutrinos from decays
 
   TMCProcess G3toVMC(Int_t iproc) const;
 

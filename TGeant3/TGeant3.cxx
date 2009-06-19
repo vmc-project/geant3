@@ -1118,7 +1118,8 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
     fPDGCode(),
     fMCGeo(0),
     fImportRootGeometry(kFALSE),
-    fStopRun(kFALSE)
+    fStopRun(kFALSE),
+    fSkipNeutrinos(kTRUE)
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialization
