@@ -610,6 +610,7 @@ Cleanup of code
 # define trspsc  trspsc_
 # define trscsd  trscsd_
 # define trsdsc  trsdsc_
+# define erxyzc  erxyzc_
 
 # define gcomad gcomad_
 
@@ -701,6 +702,7 @@ Cleanup of code
 # define trspsc  TRSPSC
 # define trscsd  TRSCSD
 # define trsdsc  TRSDSC
+# define erxyzc  ERXYZC
 
 # define gcomad  GCOMAD
 
@@ -930,6 +932,8 @@ extern "C"
 
   void type_of_call ertrgo();
  
+  void type_of_call erxyzc();
+
     float type_of_call g3brelm(const Float_t &z, const Float_t& t, 
                                const Float_t& cut);
     float type_of_call g3prelm(const Float_t &z, const Float_t& t, 
@@ -1007,6 +1011,8 @@ extern "C"
 #  define gustep GUSTEP
 #  define gukine GUKINE
 
+#  define eustep EUSTEP
+
 #  define gheish GHEISH
 #  define flufin FLUFIN
 #  define gfmfin GFMFIN
@@ -1071,6 +1077,13 @@ Int_t count_gmedia = 0;
 Int_t count_gtmedi = 0;
 Int_t count_gtnext = 0;
 Gcchan_t *gcchan = 0;
+
+Gconst_t *gconst=0;          //! GCONST common structure
+Gconsx_t *cconsx=0;          //! GCONSX common structure
+Gcjump_t *gcjump=0;          //! GCJUMP common structure
+
+
+
 
 extern "C"  type_of_call void gtonlyg3(Int_t&);
 void (*fginvol)(Float_t*, Int_t&) = 0;
@@ -1268,6 +1281,9 @@ void TGeant3::LoadAddress()
    gcomad(PASSCHARD("EROPTS"), (int*&) fEropts  PASSCHARL("EROPTS"));
    gcomad(PASSCHARD("EROPTC"), (int*&) fEroptc  PASSCHARL("EROPTC"));
    gcomad(PASSCHARD("ERWORK"), (int*&) fErwork  PASSCHARL("ERWORK"));
+   gcomad(PASSCHARD("GCONST"),(int*&) fGconst  PASSCHARL("GCONST"));
+   gcomad(PASSCHARD("GCONSX"),(int*&) fGconsx  PASSCHARL("GCONSX"));
+   gcomad(PASSCHARD("GCJUMP"),(int*&) fGcjump  PASSCHARL("GCJUMP"));
 
    // Variables for ZEBRA store
    gcomad(PASSCHARD("IQ"), addr  PASSCHARL("IQ"));
@@ -5401,6 +5417,24 @@ void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1,
   //************************************************************************
   ertrak(x1,p1,x2,p2,ipa,PASSCHARD(chopt) PASSCHARL(chopt));
 }
+
+void TGeant3::Erxyzc(){
+//
+//    ******************************************************************
+//    *                                                                *
+//    *        Print track and volume parameters at current point      *
+//    *                                                                *
+//    *    ==>Called by : <USER,EUSTEP>                                *
+//    *       Author    R.Brun  *********                              *
+//    *                                                                *
+//    ******************************************************************
+//
+
+
+  erxyzc();
+}
+
+
 
 void TGeant3::Eufill(Int_t n,Float_t *ein,Float_t *xlf){
 

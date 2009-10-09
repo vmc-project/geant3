@@ -60,6 +60,8 @@ GDICTO   := $(patsubst %.cxx,%.o,$(GDICT))
 
 FSRC	:= $(wildcard $(patsubst %,%/*.F,$(GDIRS))) gcinit.F
 FSRC	:= $(filter-out gtrak/grndm%.F,$(FSRC))
+FSRC	:= $(filter-out erdecks/eustep.F,$(FSRC))
+
 ifeq ($(PLATFORM),linux)
 	  FSRC += minicern/lnxgs/rdmin.F
 endif
@@ -72,6 +74,9 @@ ifeq ($(PLATFORM),linux)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),macosx)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
+ifeq ($(PLATFORM),macosx64)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
 ifeq ($(PLATFORM),linuxicc)
@@ -93,6 +98,9 @@ ifeq ($(PLATFORM),hpuxacc)
 	  CSRC += minicern/lnblnk.c
 endif
 ifeq ($(PLATFORM),macosx)
+	  CSRC += minicern/lnblnk.c
+endif
+ifeq ($(PLATFORM),macosx64)
 	  CSRC += minicern/lnblnk.c
 endif
 CSRC	:= $(filter-out ,$(CSRC))

@@ -14,6 +14,9 @@
 #pragma link C++ class  TG3Application+;
 
 #pragma link C++ class Quest_t+;
+#pragma link C++ class Gconst_t+;
+#pragma link C++ class Gconsx_t+;
+#pragma link C++ class Gcjump_t+;
 #pragma link C++ class Gcbank_t+;
 #pragma link C++ class Gclink_t+;
 #pragma link C++ class Gcflag_t+;

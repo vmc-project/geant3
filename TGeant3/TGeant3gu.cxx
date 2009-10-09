@@ -33,6 +33,8 @@
 #  define gustep gustep_
 #  define gukine gukine_
 
+#  define eustep eustep_
+
 #  define calsig calsig_
 #  define gcalor gcalor_
 
@@ -140,7 +142,6 @@ extern "C" type_of_call void gtonly(Int_t&);
 extern "C" type_of_call void gmedia(Float_t*, Int_t&, Int_t&);
 extern "C" type_of_call void glvolu(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier);
 extern "C" type_of_call void gtnext();
-
 extern "C" type_of_call {
 
 //______________________________________________________________________
@@ -606,7 +607,114 @@ void gufld(Double_t *xdouble, Double_t *bdouble)
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
 #endif
 }
+//______________________________________________________________________
+void eustep(){
+//
+//    ******************************************************************
+//    *                                                                *
+//    *       User routine called at the end of each tracking step     *
+//    *       when using GEANE                                         *
+//    ******************************************************************
+  
+   Int_t cflag;
+   static  Int_t icc=0;
+   static  Int_t icont=0;
+   Float_t  dist2;
+   static Float_t prdist2;
+   Float_t  d2x,d2y,d2z,amodd;
+// clear icc when tracking starts
+   if(geant3->Gctrak()->sleng == 0) icc = 0;
+   cflag=geant3->Gcmore()->iclose;
+   if (geant3->Gcflag()->idebug * geant3->Gcflag()->iswit[2] != 0)geant3->Erxyzc();
+   if(cflag==1){
+// distance between the track point and the point        
+      if(icc==0) prdist2=geant3->Gconst()->big;
+         dist2 = (geant3->Gctrak()->vect[0] - geant3->Gcmore()->pfinal[0])*
+              (geant3->Gctrak()->vect[0] - geant3->Gcmore()->pfinal[0])+
+              (geant3->Gctrak()->vect[1] - geant3->Gcmore()->pfinal[1])*
+              (geant3->Gctrak()->vect[1] - geant3->Gcmore()->pfinal[1])+
+              (geant3->Gctrak()->vect[2] - geant3->Gcmore()->pfinal[2])*
+              (geant3->Gctrak()->vect[2] - geant3->Gcmore()->pfinal[2]);
 
+      if((TMath::Sqrt(dist2)-TMath::Sqrt(prdist2)) < 1.e-3){
+         prdist2 = dist2;
+         icc = 1;
+         icont = 1;
+         geant3->Gcmore()->cleng[0] = geant3->Gcmore()->cleng[1];
+         geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];
+         geant3->Gcmore()->cleng[2] = geant3->Gctrak()->sleng;
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p1[i] = geant3->Gcmore()->p2[i];  //call ucopy(p2,p1,3)
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p2[i] = geant3->Gcmore()->p3[i];  //call ucopy(p3,p2,3)
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; //call ucopy(vect,p3,3)
+      }else{ // store the first point of increasing distance
+         if(icont == 1) {
+            geant3->Gcmore()->cleng[0] = geant3->Gcmore()->cleng[1];
+            geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];   
+            geant3->Gcmore()->cleng[2] = geant3->Gctrak()->sleng;
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p1[i] = geant3->Gcmore()->p2[i];  //call ucopy(p2,p1,3)
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p2[i] = geant3->Gcmore()->p3[i];  //call ucopy(p3,p2,3)
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; //call ucopy(vect,p3,3)
+            icont = 0;
+         }
+      } 
+   }else if(cflag==2) {
+   //   printf("geant3->Gconst()->big = %F" ,geant3->Gconst());
+      if(icc == 0) prdist2=geant3->Gconst()->big;
+      d2x = (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])*
+            (geant3->Gcmore()->wire1[2]-geant3->Gctrak()->vect[2])-
+            (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
+            (geant3->Gcmore()->wire1[1]-geant3->Gctrak()->vect[1]); 
+
+      d2y = (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
+            (geant3->Gcmore()->wire1[0]-geant3->Gctrak()->vect[0])- 
+            (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])*
+            (geant3->Gcmore()->wire1[2]-geant3->Gctrak()->vect[2]);
+
+      d2z = (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])*
+            (geant3->Gcmore()->wire1[1]-geant3->Gctrak()->vect[1])-
+            (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])*
+            (geant3->Gcmore()->wire1[0]-geant3->Gctrak()->vect[0]);
+
+      amodd =(geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])*
+             (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])+ 
+             (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])*
+             (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])+
+             (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
+             (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2]);   
+
+      dist2 = (d2x*d2x + d2y*d2y + d2z*d2z)/amodd;
+
+//   distance between the track point and the wire   
+      if((TMath::Sqrt(dist2)-TMath::Sqrt(prdist2)) < 1.e-3) {
+         prdist2 = dist2;
+         icc=1;
+         icont = 1;
+         geant3->Gcmore()->cleng[0] = geant3->Gcmore()->cleng[1];
+         geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];
+         geant3->Gcmore()->cleng[2] = geant3->Gctrak()->sleng;
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p1[i] = geant3->Gcmore()->p2[i];  //call ucopy(p2,p1,3)
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p2[i] = geant3->Gcmore()->p3[i];  //call ucopy(p3,p2,3)
+         for(Int_t i=0; i<3; i++)geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; //call ucopy(vect,p3,3)
+      }else{ //     store the first point of increasing distance
+         if(icont == 1){
+            geant3->Gcmore()->cleng[0] = geant3->Gcmore()->cleng[1];
+            geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];
+            geant3->Gcmore()->cleng[2] = geant3->Gctrak()->sleng;
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p1[i] = geant3->Gcmore()->p2[i];  //call ucopy(p2,p1,3)
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p2[i] = geant3->Gcmore()->p3[i];  //call ucopy(p3,p2,3)
+            for(Int_t i=0; i<3; i++)geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; //call ucopy(vect,p3,3)
+            icont = 0;
+         }
+      }
+   }
+   
+    // --- Particle leaving the setup ?
+   if (!gMC->IsTrackOut()) {
+      TVirtualMCApplication *app = TVirtualMCApplication::Instance();
+      app->GeaneStepping();
+   }
+   
+}
 //______________________________________________________________________
 void gustep()
 {

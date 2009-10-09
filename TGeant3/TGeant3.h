@@ -36,6 +36,58 @@ class TString;
 //______________________________________________________________
 //
 
+//----------GCONST
+//     COMMON/GCONST/PI,TWOPI,PIBY2,DEGRAD,RADDEG,CLIGHT,BIG,EMASS
+typedef struct {
+   Float_t   pi; 
+   Float_t   twopi;
+   Float_t   piby2;
+   Float_t   degrad;
+   Float_t   raddeg;
+   Float_t   clight;
+   Float_t   big;
+   Float_t   emass;
+}Gconst_t;
+
+//----------GCONSX
+//      COMMON/GCONSX/EMMU,PMASS,AVO
+typedef struct {
+   Float_t   emmu;
+   Float_t   pmass;
+   Float_t   avo;
+} Gconsx_t;
+
+//---------- GCJUMP
+//     PARAMETER    (MAXJMP=30)
+//     COMMON/GCJUMP/JUDCAY, JUDIGI, JUDTIM, JUFLD , JUHADR, JUIGET,
+//     +              JUINME, JUINTI, JUKINE, JUNEAR, JUOUT , JUPHAD,
+//     +              JUSKIP, JUSTEP, JUSWIM, JUTRAK, JUTREV, JUVIEW,
+//     +              JUPARA
+//      DIMENSION     JMPADR(MAXJMP)
+//      EQUIVALENCE  (JMPADR(1), JUDCAY)
+typedef struct {
+   Int_t   judcay; 
+   Int_t   judigi; 
+   Int_t   judtim; 
+   Int_t   jufld ; 
+   Int_t   juhadr; 
+   Int_t   juiget;
+   Int_t   juinme; 
+   Int_t   juinti; 
+   Int_t   jukine; 
+   Int_t   junear; 
+   Int_t   juout ; 
+   Int_t   juphad;
+   Int_t   juskip; 
+   Int_t   justep; 
+   Int_t   juswim; 
+   Int_t   jutrak; 
+   Int_t   jutrev; 
+   Int_t   juview;
+   Int_t   jupara;
+   Int_t   jmpadr[30];
+} Gcjump_t;
+
 //----------QUEST
 //      COMMON/QUEST/IQUEST(100)
 typedef struct {
@@ -752,42 +804,43 @@ public:
 
   // access functions to commons
 
-  virtual Quest_t* Quest() const {return fQuest;}
-  virtual Gcbank_t* Gcbank() const {return fGcbank;}
-  virtual Gclink_t* Gclink() const {return fGclink;}
-  virtual Gccuts_t* Gccuts() const {return fGccuts;}
-  virtual Gcmore_t* Gcmore() const {return fGcmore;}
-  virtual Gcmulo_t* Gcmulo() const {return fGcmulo;}
-  virtual Gcmate_t* Gcmate() const {return fGcmate;}
-  virtual Gctpol_t* Gctpol() const {return fGctpol;}
-  virtual Gcnum_t* Gcnum() const {return fGcnum;}
-  virtual Gcsets_t* Gcsets() const {return fGcsets;}
-  virtual Gcopti_t* Gcopti() const {return fGcopti;}
-  virtual Gctlit_t* Gctlit() const {return fGctlit;}
-  virtual Gcvdma_t* Gcvdma() const {return fGcvdma;}
-  virtual Gcvolu_t* Gcvolu() const {return fGcvolu;}
-  virtual Gckine_t* Gckine() const {return fGckine;}
-  virtual Gcflag_t* Gcflag() const {return fGcflag;}
-  virtual Gctmed_t* Gctmed() const {return fGctmed;}
-  virtual Gcphys_t* Gcphys() const {return fGcphys;}
-  virtual Gcphlt_t* Gcphlt() const {return fGcphlt;}
-  virtual Gcking_t* Gcking() const {return fGcking;}
-  virtual Gckin2_t* Gckin2() const {return fGckin2;}
-  virtual Gckin3_t* Gckin3() const {return fGckin3;}
-  virtual Gctrak_t* Gctrak() const {return fGctrak;}
-  virtual Int_t* Iq() const {return fZiq;}
-  virtual Int_t* Lq() const {return fZlq;}
-  virtual Float_t* Q() const {return fZq;}
-
+   virtual Quest_t* Quest() const {return fQuest;}
+   virtual Gcbank_t* Gcbank() const {return fGcbank;}
+   virtual Gclink_t* Gclink() const {return fGclink;}
+   virtual Gccuts_t* Gccuts() const {return fGccuts;}
+   virtual Gcmore_t* Gcmore() const {return fGcmore;}
+   virtual Gcmulo_t* Gcmulo() const {return fGcmulo;}
+   virtual Gcmate_t* Gcmate() const {return fGcmate;}
+   virtual Gctpol_t* Gctpol() const {return fGctpol;}
+   virtual Gcnum_t* Gcnum() const {return fGcnum;}
+   virtual Gcsets_t* Gcsets() const {return fGcsets;}
+   virtual Gcopti_t* Gcopti() const {return fGcopti;}
+   virtual Gctlit_t* Gctlit() const {return fGctlit;}
+   virtual Gcvdma_t* Gcvdma() const {return fGcvdma;}
+   virtual Gcvolu_t* Gcvolu() const {return fGcvolu;}
+   virtual Gckine_t* Gckine() const {return fGckine;}
+   virtual Gcflag_t* Gcflag() const {return fGcflag;}
+   virtual Gctmed_t* Gctmed() const {return fGctmed;}
+   virtual Gcphys_t* Gcphys() const {return fGcphys;}
+   virtual Gcphlt_t* Gcphlt() const {return fGcphlt;}
+   virtual Gcking_t* Gcking() const {return fGcking;}
+   virtual Gckin2_t* Gckin2() const {return fGckin2;}
+   virtual Gckin3_t* Gckin3() const {return fGckin3;}
+   virtual Gctrak_t* Gctrak() const {return fGctrak;}
+   virtual Int_t* Iq() const {return fZiq;}
+   virtual Int_t* Lq() const {return fZlq;}
+   virtual Float_t* Q() const {return fZq;}
 
   // Access to GEANE commons
 
-  virtual Ertrio_t*  Ertrio()  const {return fErtrio;}
-  virtual Ertrio1_t* Ertrio1() const {return fErtrio1;}
-  virtual Eropts_t*  Eropts()  const {return fEropts;}
-  virtual Eroptc_t*  Eroptc()  const {return fEroptc;}
-  virtual Erwork_t*  Erwork()  const {return fErwork;}
-  virtual Trcom3_t*  Trcom3()  const {return fTrcom3;}
+   virtual Ertrio_t* Ertrio() const {return fErtrio;}
+   virtual Eropts_t* Eropts() const {return fEropts;}
+   virtual Eroptc_t* Eroptc() const {return fEroptc;}
+   virtual Erwork_t* Erwork() const {return fErwork;}
+   virtual Trcom3_t* Trcom3() const {return fTrcom3;}
+   virtual Gconst_t* Gconst() const {return fGconst;}
+   virtual Gconsx_t* Gconsx() const {return fGconsx;}
+   virtual Gcjump_t* Gcjump() const {return fGcjump;}
 
 
       // functions from GBASE
@@ -828,7 +881,7 @@ public:
    virtual  void  Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode);
    virtual  void  Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
                          Float_t dens, Float_t radl, Float_t absl);
- virtual  void  Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
+  virtual  void  Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
 			 Float_t& cosph, Float_t& sinph, Int_t& rotate);
    virtual  void  Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
                          Float_t dens, Int_t nlmat, Float_t *wmat);
@@ -1033,6 +1086,7 @@ public:
    virtual void Ertrak(const Float_t *x1, const Float_t *p1,
 			const Float_t *x2, const Float_t *p2,
 			Int_t ipa,  Option_t *chopt);
+   virtual void Erxyzc();
    virtual void Eufill(Int_t n,Float_t *ein,Float_t *xlf);
    virtual void Eufilp(const Int_t n, Float_t *ein,
 			Float_t *pli, Float_t *plf);
@@ -1046,6 +1100,8 @@ public:
 			Float_t *ch,Int_t *ierr,Float_t *spx);
    virtual void Trspsc(Float_t *ps,Float_t *rs,Float_t *pc,Float_t *rc,Float_t *h,
 			Float_t *ch,Int_t *ierr,Float_t *spx);
+
+
   // Control Methods
 
   virtual void FinishGeometry();
@@ -1110,7 +1166,13 @@ protected:
   Gctrak_t *fGctrak;          //! GCTRAK common structure
   Gcchan_t *fGcchan;          //! GCCHAN common structure
 
+
   // commons for GEANE
+  Gconst_t *fGconst;          //! GCONST common structure
+  Gconsx_t *fGconsx;          //! GCONSX common structure
+  Gcjump_t *fGcjump;          //! GCJUMP common structure
+
+
  
 
   //Put here all volume names
