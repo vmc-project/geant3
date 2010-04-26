@@ -754,7 +754,7 @@ void gustep()
 
   TVirtualGeoTrack *parent = 0;
   if (mid>=0) {
-     parent = gGeoManager->GetTrackOfId(mid);
+     parent = gGeoManager->FindTrackOfId(mid);
      if (!parent) printf("Error: no parent track with id=%i\n",mid);
   }   
   TVirtualGeoTrack *track;
