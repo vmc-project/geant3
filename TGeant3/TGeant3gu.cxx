@@ -7,6 +7,7 @@
 
 //#define COLLECT_TRACKS
 #if defined(COLLECT_TRACKS)
+#include "TDatabasePDG.h"
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
 #endif
@@ -754,7 +755,7 @@ void gustep()
 
   TVirtualGeoTrack *parent = 0;
   if (mid>=0) {
-     parent = gGeoManager->FindTrackOfId(mid);
+     parent = gGeoManager->FindTrackWithId(mid);
      if (!parent) printf("Error: no parent track with id=%i\n",mid);
   }   
   TVirtualGeoTrack *track;
