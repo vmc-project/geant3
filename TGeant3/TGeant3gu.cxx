@@ -1,17 +1,14 @@
 #include <iostream>
 #include "TGeant3.h"
-#include "TCallf77.h" 
+#include "TCallf77.h"
 #include "TLorentzVector.h"
 #include "TClonesArray.h"
 #include "TParticle.h"
 
-//#define COLLECT_TRACKS
-#if defined(COLLECT_TRACKS)
 #include "TDatabasePDG.h"
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
-#endif
-   
+
 #ifndef WIN32
 #  define gudigi gudigi_
 #  define guhadr guhadr_
@@ -106,14 +103,12 @@
 #  define gtmany GTMANY
 #  define gmedia GMEDIA
 #  define glvolu GLVOLU
-#  define gtnext GTNEXT 
+#  define gtnext GTNEXT
 
 #endif
 
 extern TGeant3* geant3;
-#if defined(COLLECT_TRACKS)
 extern TGeoManager *gGeoManager;
-#endif
 
 
 extern "C" type_of_call void calsig();
@@ -146,7 +141,7 @@ extern "C" type_of_call void gtnext();
 extern "C" type_of_call {
 
 //______________________________________________________________________
-void gudigi() 
+void gudigi()
 {
 //
 //    ******************************************************************
@@ -182,7 +177,7 @@ void guhadr()
       else if (ihadr==4){ flufin();}
       else if (ihadr==5){ gcalor();}
       else              { gfmfin();}
-      
+
 }
 
 //______________________________________________________________________
@@ -245,12 +240,12 @@ void gudcay()
 //
 //    ------------------------------------------------------------------
 //
-    
+
     // set decay table
     if (!gMC->GetDecayer()) return;
     gMC->GetDecayer()->ForceDecay();
 
-// Initialize 4-momentum vector    
+// Initialize 4-momentum vector
     Int_t ipart = geant3->Gckine()->ipart;
     static TLorentzVector p;
 
@@ -260,17 +255,17 @@ void gudcay()
     p[1] = pmom * (geant3->Gctrak()->vect[4]);
     p[2] = pmom * (geant3->Gctrak()->vect[5]);
     p[3] = geant3->Gctrak()->getot;
-    
-    
+
+
 // Convert from geant to lund particle code
     Int_t iplund=gMC->PDGFromId(ipart);
-    
+
 // Particle list
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
 // Decay
     gMC->GetDecayer()->Decay(iplund, &p);
-    
+
 // Fetch Particles
     Int_t np = geant3->GetDecayer()->ImportParticles(particles);
     if (np <=1) return;
@@ -283,11 +278,11 @@ void gudcay()
     Int_t*  pFlag = new Int_t[np];
     for (i=0; i<np; i++) pFlag[i]=0;
 // Particle loop
-    for (i=1; i < np; i++) 
+    for (i=1; i < np; i++)
     {
 	iparticle = (TParticle *) particles->At(i);
 	ipF = iparticle->GetFirstDaughter();
-	ipL = iparticle->GetLastDaughter();	
+	ipL = iparticle->GetLastDaughter();
 	Int_t kf = iparticle->GetPdgCode();
 	Int_t ks = iparticle->GetStatusCode();
 //
@@ -299,8 +294,8 @@ void gudcay()
 	} // deselected ??
 // Particles with long life-time are put on the stack for further tracking
 // Decay products are deselected
-//	
-	if (ks != 1) { 
+//
+	if (ks != 1) {
 	    Double_t lifeTime = gMC->GetDecayer()->GetLifetime(kf);
 	    if (lifeTime > (Double_t) 1.e-15) {
 		if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
@@ -314,18 +309,18 @@ void gudcay()
            if (kf==14 || kf ==-14) continue;
            if (kf==16 || kf ==-16) continue;
         }
-	
+
 	Int_t index=geant3->Gcking()->ngkine;
 // Put particle on geant stack
 // momentum vector
-	
+
 	(geant3->Gcking()->gkin[index][0]) = iparticle->Px();
 	(geant3->Gcking()->gkin[index][1]) = iparticle->Py();
 	(geant3->Gcking()->gkin[index][2]) = iparticle->Pz();
 	(geant3->Gcking()->gkin[index][3]) = iparticle->Energy();
 	Int_t ilu = gMC->IdFromPDG(kf);
 
-// particle type	
+// particle type
 	(geant3->Gcking()->gkin[index][4]) = Float_t(ilu);
 // position
 	(geant3->Gckin3()->gpos[index][0]) = geant3->Gctrak()->vect[0];
@@ -585,7 +580,7 @@ void gufld(Float_t *x, Float_t *b)
 {
   Double_t xdouble[3];
   Double_t bdouble[3];
-  for (Int_t i=0; i<3; i++) xdouble[i] = x[i]; 
+  for (Int_t i=0; i<3; i++) xdouble[i] = x[i];
 #else
 void gufld(Double_t *xdouble, Double_t *bdouble)
 {
@@ -593,19 +588,19 @@ void gufld(Double_t *xdouble, Double_t *bdouble)
   if ( gMC->GetMagField() ) {
     gMC->GetMagField()->Field(xdouble,bdouble);
   }
-  else {  
-    static Bool_t warn = true;   
-    if (warn) { 
+  else {
+    static Bool_t warn = true;
+    if (warn) {
       Warning("gufld", "Using deprecated function TVirtualMCApplication::Field().");
       Warning("gufld", "New TVirtualMagField interface should be used instead.");
       warn = false;
-    }        
+    }
 
     TVirtualMCApplication::Instance()->Field(xdouble,bdouble);
-  }  
+  }
 
 #ifdef SINGLEFIELD
-  for (Int_t j=0; j<3; j++) b[j] = bdouble[j]; 
+  for (Int_t j=0; j<3; j++) b[j] = bdouble[j];
 #endif
 }
 //______________________________________________________________________
@@ -616,7 +611,7 @@ void eustep(){
 //    *       User routine called at the end of each tracking step     *
 //    *       when using GEANE                                         *
 //    ******************************************************************
-  
+
    Int_t cflag;
    static  Int_t icc=0;
    static  Int_t icont=0;
@@ -628,7 +623,7 @@ void eustep(){
    cflag=geant3->Gcmore()->iclose;
    if (geant3->Gcflag()->idebug * geant3->Gcflag()->iswit[2] != 0)geant3->Erxyzc();
    if(cflag==1){
-// distance between the track point and the point        
+// distance between the track point and the point
       if(icc==0) prdist2=geant3->Gconst()->big;
          dist2 = (geant3->Gctrak()->vect[0] - geant3->Gcmore()->pfinal[0])*
               (geant3->Gctrak()->vect[0] - geant3->Gcmore()->pfinal[0])+
@@ -650,24 +645,24 @@ void eustep(){
       }else{ // store the first point of increasing distance
          if(icont == 1) {
             geant3->Gcmore()->cleng[0] = geant3->Gcmore()->cleng[1];
-            geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];   
+            geant3->Gcmore()->cleng[1] = geant3->Gcmore()->cleng[2];
             geant3->Gcmore()->cleng[2] = geant3->Gctrak()->sleng;
             for(Int_t i=0; i<3; i++)geant3->Gcmore()->p1[i] = geant3->Gcmore()->p2[i];  //call ucopy(p2,p1,3)
             for(Int_t i=0; i<3; i++)geant3->Gcmore()->p2[i] = geant3->Gcmore()->p3[i];  //call ucopy(p3,p2,3)
             for(Int_t i=0; i<3; i++)geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; //call ucopy(vect,p3,3)
             icont = 0;
          }
-      } 
+      }
    }else if(cflag==2) {
    //   printf("geant3->Gconst()->big = %F" ,geant3->Gconst());
       if(icc == 0) prdist2=geant3->Gconst()->big;
       d2x = (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])*
             (geant3->Gcmore()->wire1[2]-geant3->Gctrak()->vect[2])-
             (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
-            (geant3->Gcmore()->wire1[1]-geant3->Gctrak()->vect[1]); 
+            (geant3->Gcmore()->wire1[1]-geant3->Gctrak()->vect[1]);
 
       d2y = (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
-            (geant3->Gcmore()->wire1[0]-geant3->Gctrak()->vect[0])- 
+            (geant3->Gcmore()->wire1[0]-geant3->Gctrak()->vect[0])-
             (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])*
             (geant3->Gcmore()->wire1[2]-geant3->Gctrak()->vect[2]);
 
@@ -677,15 +672,15 @@ void eustep(){
             (geant3->Gcmore()->wire1[0]-geant3->Gctrak()->vect[0]);
 
       amodd =(geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])*
-             (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])+ 
+             (geant3->Gcmore()->wire2[0]-geant3->Gcmore()->wire1[0])+
              (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])*
              (geant3->Gcmore()->wire2[1]-geant3->Gcmore()->wire1[1])+
              (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2])*
-             (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2]);   
+             (geant3->Gcmore()->wire2[2]-geant3->Gcmore()->wire1[2]);
 
       dist2 = (d2x*d2x + d2y*d2y + d2z*d2z)/amodd;
 
-//   distance between the track point and the wire   
+//   distance between the track point and the wire
       if((TMath::Sqrt(dist2)-TMath::Sqrt(prdist2)) < 1.e-3) {
          prdist2 = dist2;
          icc=1;
@@ -708,13 +703,13 @@ void eustep(){
          }
       }
    }
-   
+
     // --- Particle leaving the setup ?
    if (!gMC->IsTrackOut()) {
       TVirtualMCApplication *app = TVirtualMCApplication::Instance();
       app->GeaneStepping();
    }
-   
+
 }
 //______________________________________________________________________
 void gustep()
@@ -735,62 +730,59 @@ void gustep()
   Float_t polar[3]={0,0,0};
   Float_t mom[3];
   static TMCProcess pProc;
-  
+
   TVirtualMCApplication *app = TVirtualMCApplication::Instance();
   TVirtualMCStack* stack = gMC->GetStack();
-  //     Stop particle if outside user defined tracking region 
+  //     Stop particle if outside user defined tracking region
   Double_t x, y, z, rmax;
   geant3->TrackPosition(x,y,z);
 
-#if defined(COLLECT_TRACKS)
-  if (gMC->IsRootGeometrySupported()) {
-  Int_t nstep = geant3->Gctrak()->nstep;
-  Int_t cpdg = gMC->PDGFromId(geant3->Gckine()->ipart);
-  Bool_t isnew = kFALSE; // gMC->IsNewTrack() returns true just for new used indices
-  if (nstep==0) isnew = kTRUE;
-  Int_t cid = stack->GetCurrentTrackNumber();
-  Int_t mid = stack->GetCurrentParentTrackNumber();
-  Double_t tofg = geant3->Gctrak()->tofg;
-  //printf("id=%i mid=%i pdg=%i nstep=%i (%f,%f,%f)\n",cid,mid,cpdg,nstep,x,y,z);
-
-  TVirtualGeoTrack *parent = 0;
-  if (mid>=0) {
-     parent = gGeoManager->FindTrackWithId(mid);
-     if (!parent) printf("Error: no parent track with id=%i\n",mid);
-  }   
-  TVirtualGeoTrack *track;
-  if (isnew) {
-     if (parent) {
-        //printf("Adding daughter %i of %i\n",cid,mid);
-        track = parent->AddDaughter(cid, cpdg);
-        gGeoManager->SetCurrentTrack(track);
-     } else {     
-        Int_t itrack = gGeoManager->AddTrack(cid, cpdg); 
-        //printf("Added new primary %i\n",cid);
-        gGeoManager->SetCurrentTrack(itrack);
+  if (gMC->IsCollectTracks()) {
+     Int_t nstep = geant3->Gctrak()->nstep;
+     Int_t cpdg = gMC->PDGFromId(geant3->Gckine()->ipart);
+     Bool_t isnew = kFALSE; // gMC->IsNewTrack() returns true just for new used indices
+     if (nstep==0) isnew = kTRUE;
+     Int_t cid = stack->GetCurrentTrackNumber();
+     Int_t mid = stack->GetCurrentParentTrackNumber();
+     Double_t tofg = geant3->Gctrak()->tofg;
+     //printf("id=%i mid=%i pdg=%i nstep=%i (%f,%f,%f)\n",cid,mid,cpdg,nstep,x,y,z);
+     TVirtualGeoTrack *parent = 0;
+     if (mid>=0) {
+        parent = gGeoManager->FindTrackWithId(mid);
+        if (!parent) printf("Error: no parent track with id=%i\n",mid);
+     }
+     TVirtualGeoTrack *track;
+     if (isnew) {
+        if (parent) {
+           //printf("Adding daughter %i of %i\n",cid,mid);
+           track = parent->AddDaughter(cid, cpdg);
+           gGeoManager->SetCurrentTrack(track);
+        } else {
+           Int_t itrack = gGeoManager->AddTrack(cid, cpdg);
+           //printf("Added new primary %i\n",cid);
+           gGeoManager->SetCurrentTrack(itrack);
+           track = gGeoManager->GetCurrentTrack();
+        }
+        TDatabasePDG *pdgdb = TDatabasePDG::Instance();
+        if (pdgdb) {
+           TParticlePDG *part = pdgdb->GetParticle(cpdg);
+           if (part) {
+              track->SetName(part->GetName());
+              track->SetParticle(part);
+           }
+        }
+     } else {
         track = gGeoManager->GetCurrentTrack();
      }
-     TDatabasePDG *pdgdb = TDatabasePDG::Instance();
-     if (pdgdb) {
-        TParticlePDG *part = pdgdb->GetParticle(cpdg);
-        if (part) {
-           track->SetName(part->GetName());
-           track->SetParticle(part);
-        }   
-     }   
-  } else {
-     track = gGeoManager->GetCurrentTrack();
-  } 
-  Double_t xo,yo,zo,to;
-  Bool_t skippoint = kFALSE;
-  if (track->HasPoints()) {
-     track->GetLastPoint(xo,yo,zo,to);
-     Double_t rdist = TMath::Sqrt((xo-x)*(xo-x)+(yo-y)*(yo-y)+(zo-z)*(zo-z));
-     if (rdist<0.01) skippoint=kTRUE;
-  }   
-  if (!skippoint) track->AddPoint(x,y,z,tofg);
-  }
-#endif  
+     Double_t xo,yo,zo,to;
+     Bool_t skippoint = kFALSE;
+     if (track->HasPoints()) {
+        track->GetLastPoint(xo,yo,zo,to);
+        Double_t rdist = TMath::Sqrt((xo-x)*(xo-x)+(yo-y)*(yo-y)+(zo-z)*(zo-z));
+        if (rdist<0.01) skippoint=kTRUE;
+     }
+     if (!skippoint) track->AddPoint(x,y,z,tofg);
+  } /*end collecting tracks*/
 
   rmax = app->TrackingRmax();
   if (x*x+y*y > rmax*rmax ||
@@ -798,14 +790,14 @@ void gustep()
 	gMC->StopTrack();
   }
 
-  // --- Add new created particles 
+  // --- Add new created particles
   if (gMC->NSecondaries() > 0) {
     pProc=gMC->ProdProcess(0);
     for (jk = 0; jk < geant3->Gcking()->ngkine; ++jk) {
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
-      // --- Skip neutrinos! 
+      // --- Skip neutrinos!
       if (ipp != 4 || !(geant3->SkipNeutrinos())) {
-        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk], 
+        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk],
 			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, 1., 0);
       }
     }
@@ -827,7 +819,7 @@ void gustep()
   // --- Particle leaving the setup ?
   if (!gMC->IsTrackOut()) app->Stepping();
 
-  // --- Standard GEANT debug routine 
+  // --- Standard GEANT debug routine
   //g3pcxyz();
   if(geant3->Gcflag()->idebug) geant3->Gdebug();
 }

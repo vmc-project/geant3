@@ -539,7 +539,10 @@ R__EXTERN void (*fggperp)(Float_t*, Float_t*, Int_t&);
 //____________________________________________________________________________
 TGeant3TGeo::TGeant3TGeo()
   : TGeant3(),
-    fMCGeo(0)
+    fMCGeo(0),
+    fImportRootGeometry(kFALSE),
+    fCollectTracks(kFALSE),
+    fGcvol1(0)
 {
   //
   // Default constructor
@@ -548,7 +551,9 @@ TGeant3TGeo::TGeant3TGeo()
 //____________________________________________________________________________
 TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
        : TGeant3(title,nwgeant),
-         fImportRootGeometry(kFALSE)
+         fImportRootGeometry(kFALSE),
+         fCollectTracks(kFALSE),
+         fGcvol1(0)
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation

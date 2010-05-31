@@ -204,11 +204,14 @@ public:
 
   //
   virtual void SetColors();
+  virtual void SetCollectTracks(Bool_t flag=kTRUE) {fCollectTracks = flag;}
+  Bool_t IsCollectTracks() const {return fCollectTracks;}
 
 protected:
   TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled in FinishGeometry()
+  Bool_t           fCollectTracks;      //! Tracks get collected via TGeoTrack 
   Gcvol1_t *fGcvol1;          //! GCVOLU common structure
 
 private:
