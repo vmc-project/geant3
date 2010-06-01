@@ -77,7 +77,20 @@ C.
       ENDIF
 *
       IF(IERR.NE.0) THEN
-         WRITE (LOUT, 778) IERR
+c     added by A. Rotondi and L. Lavezzi (may 2010): the flag
+c     NOPRNT has been added to the common ERTRIO1 to be
+c     able to prevent the IERR related message from being
+c     printed out (default is on):
+         IF(NOPRNT.NE.1) WRITE (LOUT, 778) IERR
+c     
+c     added by A. Rotondi and L. Lavezzi (01/04/2010) to update
+c     the XI, PPI, HI even when the error calculation fails
+         IF(IERR.EQ.3) THEN
+            CALL UCOPY (XF, XI, 3)
+            CALL UCOPY (PF, PPI, 3)
+            CALL UCOPY (HF, HI, 9)
+         ENDIF
+c     end
          RETURN
       ENDIF
 *

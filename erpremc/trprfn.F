@@ -74,6 +74,7 @@
 #endif
 #include "geant321/trcom3.inc"
 #include "geant321/gcunit.inc"
+#include "geant321/ertrio.inc"
       DIMENSION X1(3),P1(3),H1(9),X2(3),P2(3),H2(9)
       DIMENSION R(15),PS(3),PC(3)
 *
@@ -98,11 +99,12 @@
 *____________________________________________________________________
 *
       IERR=0
-      IF(IFLAG) 10, 20, 80
+      IF(IFLAG.GT.0) GO TO 80
+      IF(IFLAG.EQ.0) GO TO 20
 *
 * *** TRANSFORM ERROR MATRIX FROM EXTERNAL TO INTERNAL VARIABLES;
 *
-   10 NEW=1
+      NEW=1
       IF(MVAR.NE.1) GO TO 11
       PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
       IF(PA1.EQ.0.) GO TO 902
@@ -432,9 +434,16 @@ C     IF(INIT.NE.0) GO TO 30
   998 FORMAT('0',' *** S/R TRPROP   DELTA(H*ALFA/P)',5X
      1,'EXCEEDS TOLERANCE    '/'0',3E12.5//' **********    ',///)
       INIT=1
-      GO TO 30
+cc    changed by A. Rotondi and L. Lavezzi (december 2009)
+cc    from GO TO 30 to GO TO 900 
+c     GO TO 30
+      GO TO 900
   904 IERR=4
-  999 WRITE (LOUT, 1000) IERR
+c     added by A. Rotondi and L. Lavezzi (may 2010): the flag
+c     NOPRNT has been added to the common ERTRIO1 to be
+c     able to prevent the IERR related message from being
+c     printed out (default is on):
+  999 IF(NOPRNT.NE.1) WRITE (LOUT, 1000) IERR
  1000 FORMAT(1H ,' *** S/R ERPROP   IERR =',I5)
 *
   900 CONTINUE

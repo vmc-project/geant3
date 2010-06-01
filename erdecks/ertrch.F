@@ -328,7 +328,12 @@ C.    ------------------------------------------------------------------
 *
 *     preset plane reached  ?
    74 CONTINUE
-      IF ((LEPLAN).AND.(STEP.GE.ASCL1)) THEN
+c     25/02/2010: A. Rotondi and L. Lavezzi: sometimes when STEP is 
+c     less than ASCL1 but their difference is very small (less than 
+c     1E-6) the plane is not found properly (if the plane is virtual)
+c     IF ((LEPLAN).AND.(STEP.GE.ASCL1)) THEN
+      IF ((LEPLAN).AND.((STEP.GE.ASCL1)
+     +     .OR.(ABS(STEP - ASCL1).LT.PREC))) THEN
          SCAL3 = 0.
          DO 28 I=1,3
             SCAL3=SCAL3+ERPLO(I,4,INLIST)*(ERPLO(I,3,INLIST)-VOUT(I))
@@ -342,7 +347,10 @@ C.    ------------------------------------------------------------------
              LMEC(NMEC) = 24
              GOTO 50
          ELSE
-           IF(ASCL3.LE.PREC) LERST = 1
+c     25/02/2010: A. Rotondi and L. Lavezzi: for the same 
+c     reason of change at line 335
+c     IF(ASCL3.LE.PREC) LERST = 1
+            IF(ASCL3.LE.(3. * PREC))  LERST = 1
          ENDIF
       ENDIF
 *

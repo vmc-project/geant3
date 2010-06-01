@@ -174,10 +174,16 @@ C  22.09.2008 by Alberto Rotondi
 C      
       IF(XMASS.LT.0.6E-3) THEN
          LX = 1.442695*STEP/RADL
-         EMB=E/(2**LX)
-	 S2B=E*E*(1/3**LX - 1/4**LX)
-	 SB=SQRT(ABS(S2B))
-         DEDXB = 1.2*SB
+c        EMB=E/(2**LX)
+         DEDXB = 0.
+c     correction by A. Rotondi and L. Lavezzi to prevent FPE (15/03/2010)
+         IF(LX.LT.25) THEN
+            S2B=E*E*(1/3**LX - 1/4**LX)
+            SB=SQRT(ABS(S2B))
+            DEDXB = 1.2*SB
+         ENDIF 
+c     end
+
          DEDX2 = DEDX2 + DEDXB**2
       ENDIF
 C      PRINT *,XI/EMAX,AMAT,ZMAT,RHO

@@ -41,6 +41,7 @@
 #pragma link C++ class Gcvdma_t+;
 #pragma link C++ class Gctpol_t+;
 #pragma link C++ class Ertrio_t+;
+#pragma link C++ class Ertrio1_t+;
 #pragma link C++ class Eropts_t+;
 #pragma link C++ class Eroptc_t+;
 #pragma link C++ class Erwork_t+;

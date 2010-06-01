@@ -544,13 +544,14 @@ typedef struct {
   Int_t    nepred;
   Int_t    inlist;
   Int_t    ilpred;
-  Int_t    iepred;
+  Int_t    iepred[MXPRED];
 } Ertrio_t;
 
 typedef struct {
   Int_t iertr;
   Int_t iertr1;
   Int_t iertr2;
+  Int_t noprnt;
 } Ertrio1_t;
 
 //-----------EROTPS

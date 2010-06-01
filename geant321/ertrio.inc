@@ -32,8 +32,8 @@
      +                 ERTRSP(5,5,MXPRED), ERXIN( 3), ERXOUT( 3,MXPRED),
      +                 ERPIN(3), ERPOUT(3,MXPRED), NEPRED,INLIST,ILPRED,
      +                 IEPRED(MXPRED)
-      COMMON /ERTRIO1/ IERTR, IERTR1, IERTR2
-      INTEGER          IERTR, IERTR1, IERTR2
+      COMMON /ERTRIO1/ IERTR, IERTR1, IERTR2, NOPRNT
+      INTEGER          IERTR, IERTR1, IERTR2, NOPRNT
 #include "geant321/eropts.inc"
  
  
