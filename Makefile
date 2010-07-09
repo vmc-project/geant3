@@ -165,8 +165,10 @@ depend:		$(SRCS)
 TOCLEAN		= $(BINDIR)
 TOCLEANALL	= $(BINDIR) $(LIBDIR)
 
-MAKEDIST	= $(ROOT_ETCDIR)/g3_makedist.sh $(GCC_VERS) lib
-MAKEDISTSRC	= $(ROOT_ETCDIR)/g3_makedist.sh $(GCC_VERS)
+MAKEDIST       = $(ROOT_ETCDIR)/makedist.sh -p $(PACKAGE) -c $(GCC_VERS) -b
+MAKEDISTSRC    = $(ROOT_ETCDIR)/makedist.sh -p $(PACKAGE) 
+MAKEINSTALL    = $(ROOT_ETCDIR)/makedist.sh -p $(PACKAGE) -i
+
 
 include $(ROOT_ETCDIR)/MakeMacros
 
