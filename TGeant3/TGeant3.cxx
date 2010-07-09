@@ -3537,7 +3537,7 @@ void  TGeant3::DefineOpSurface(const char* name,
                 EMCOpSurfaceFinish /*surfaceFinish*/, Double_t /*sigmaAlpha*/) 
 {
    
-   Warning("DefineOpSurface", 
+   Warning("DefineOpSurface", "%s",
            Form("Called for surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
@@ -3547,7 +3547,7 @@ void  TGeant3::SetBorderSurface(const char* name,
                 const char* /*vol2Name*/, int /*vol2CopyNo*/,
                 const char* /*opSurfaceName*/) 
 {
-   Warning("SetBorderSurface",
+   Warning("SetBorderSurface","%s",
            Form("Called for border surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
@@ -3556,7 +3556,7 @@ void  TGeant3::SetSkinSurface(const char* name,
                 const char* /*volName*/,
                 const char* /*opSurfaceName*/) 
 {
-   Warning("SetSkinSurface",
+   Warning("SetSkinSurface","%s",
            Form("Called for skin surface %s. Not applicable in Geant3 - setting is ignored.", name));
 }   
                 
@@ -3565,7 +3565,7 @@ void  TGeant3::SetMaterialProperty(
                 Int_t itmed, const char* /*propertyName*/, 
                 Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
 {
-   Warning("SetMaterialProperty",
+   Warning("SetMaterialProperty","%s",
            Form("Called for material ID %5d. Not applicable in Geant3 - setting is ignored.", itmed));
 }   
                 
@@ -3574,7 +3574,7 @@ void  TGeant3::SetMaterialProperty(
                 Int_t itmed, const char* /*propertyName*/, 
                 Double_t /*value*/) 
 {
-   Warning("SetMaterialProperty",
+   Warning("SetMaterialProperty","%s",
            Form("Called for material ID %5d. Not applicable in Geant3 - setting is ignored.", itmed));
 }   
                 
@@ -3583,7 +3583,7 @@ void  TGeant3::SetMaterialProperty(
                 const char* surfaceName, const char* /*propertyName*/, 
                 Int_t /*np*/, Double_t* /*pp*/, Double_t* /*values*/) 
 		{
-   Warning("SetMaterialProperty",
+   Warning("SetMaterialProperty","%s",
            Form("Called for material surface  %s. Not applicable in Geant3 - setting is ignored.", surfaceName));
 }   
 
