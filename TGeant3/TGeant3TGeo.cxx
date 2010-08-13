@@ -561,8 +561,6 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
 
   SetName("TGeant3TGeo");
 
-  if ( ! gGeoManager ) new TGeoManager("TGeo", "Root geometry manager");
-
   fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
 
   LoadAddress();
