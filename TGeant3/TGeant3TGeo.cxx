@@ -516,6 +516,7 @@ extern "C" type_of_call void ggperpTGeo(Float_t*, Float_t*, Int_t&);
 //
 Gcvol1_t *gcvol1 = 0;
 TGeoNode *gCurrentNode = 0;
+TGeant3TGeo *geant3tgeo = 0;                                                               
 R__EXTERN Gctrak_t *gctrak;
 R__EXTERN Gcvolu_t *gcvolu;
 R__EXTERN Gckine_t *gckine;
@@ -542,10 +543,12 @@ TGeant3TGeo::TGeant3TGeo()
     fMCGeo(0),
     fImportRootGeometry(kFALSE),
     fCollectTracks(kFALSE),
+    fIsComputeNextMatrix(kFALSE),                                                          
     fGcvol1(0)
 {
   //
   // Default constructor
+  geant3tgeo = this;                                                                       
 }
 
 //____________________________________________________________________________
@@ -553,6 +556,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
        : TGeant3(title,nwgeant),
          fImportRootGeometry(kFALSE),
          fCollectTracks(kFALSE),
+         fIsComputeNextMatrix(kFALSE),                                                     
          fGcvol1(0)
 {
   //
@@ -560,6 +564,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
   //
 
   SetName("TGeant3TGeo");
+  geant3tgeo = this;                                                                       
 
   fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
 
@@ -579,6 +584,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
 TGeant3TGeo::~TGeant3TGeo()
 {
    delete fMCGeo;
+   geant3tgeo = 0;                                                                         
 }
 
 //____________________________________________________________________________
@@ -692,6 +698,29 @@ const char* TGeant3TGeo::CurrentVolPath()
   return GetPath();
 }
 
+//______________________________________________________________________                   
+Bool_t TGeant3TGeo::CurrentBoundaryNormal(Double_t &x, Double_t &y, Double_t &z) const         
+{                                                                                          
+// Return the normal vector of the surface of the last volume exited                       
+
+  if ( ! fIsComputeNextMatrix ) {
+    Fatal("CurrentBoundaryNormal",
+	  "The option SetComputeNextMatrix has not been activated." );
+  }    
+
+  if ( ! IsTrackEntering() && ! IsTrackExiting() ) return kFALSE;                          
+                                                                                           
+  Double_t pt[3];                                                                          
+  TrackPosition(pt[0], pt[1], pt[2]);                                                      
+  gGeoManager->SetCurrentPoint(pt);                                                        
+  const Double_t* norm = gGeoManager->FindNormalFast();                                    
+  if (!norm) return kFALSE;                                                                
+  x = norm[0];                                                                             
+  y = norm[1];                                                                             
+  z = norm[2];                                                                             
+  return kTRUE;                                                                            
+}                                                                                          
+                                                                                            
 //_____________________________________________________________________________
 Int_t TGeant3TGeo::VolId(const Text_t *name) const
 {
@@ -2286,7 +2315,7 @@ void gtnextTGeo()
    }
    // Find distance to next boundary. Global matrix computed only if
    // gtnext is called by gtckov.
-   if (itrtyp==7) gGeoManager->FindNextBoundary(-step);
+   if (itrtyp==7 || geant3tgeo->IsComputeNextMatrix()) gGeoManager->FindNextBoundary(-step);
    else           gGeoManager->FindNextBoundary(step);
    gctrak->safety = gGeoManager->GetSafeDistance();
    Double_t snext  = gGeoManager->GetStep();
@@ -2312,6 +2341,10 @@ void ggperpTGeo(Float_t * /*x*/, Float_t *norm, Int_t &ierr)
 // Computes the normal to the next crossed surface, assuming that
 // FindNextBoundary() was already called.
    ierr = 0;
+   // Make sure that the geometry has the current point
+   Double_t pt[3];
+   geant3tgeo->TrackPosition(pt[0], pt[1], pt[2]);
+   gGeoManager->SetCurrentPoint(pt);
    Double_t *dblnorm = gGeoManager->FindNormalFast();
    if (!dblnorm) {
       ierr = 1;

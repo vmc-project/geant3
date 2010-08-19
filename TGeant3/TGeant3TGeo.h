@@ -57,6 +57,7 @@ public:
   const char* CurrentVolName() const;
   const char *CurrentVolOffName(Int_t off) const;
   const char *CurrentVolPath();
+  Bool_t CurrentBoundaryNormal(Double_t &x, Double_t &y, Double_t &z) const;
   Int_t VolId(const Text_t *name) const;
   const char* VolName(Int_t id) const;
   Int_t NofVolumes() const;
@@ -66,6 +67,8 @@ public:
   Int_t VolId2Mate(Int_t id) const;
   const char *GetPath();
   const char *GetNodeName();
+  Bool_t IsComputeNextMatrix() const {return fIsComputeNextMatrix;}
+  void   SetComputeNextMatrix(Bool_t flag = kTRUE) {fIsComputeNextMatrix = flag;}
 
   virtual void   Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
 			   Double_t dens, Double_t radl, Double_t absl,
@@ -212,6 +215,7 @@ protected:
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled in FinishGeometry()
   Bool_t           fCollectTracks;      //! Tracks get collected via TGeoTrack 
+  Bool_t           fIsComputeNextMatrix; //! Compute systematically the matrix to the next crossed node.
   Gcvol1_t *fGcvol1;          //! GCVOLU common structure
 
 private:
