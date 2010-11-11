@@ -208,7 +208,7 @@ C.    ------------------------------------------------------------------
       ASCL1  = BIG
       DO 20 IPR = 1,NEPRED
          STEPE  = BIG
-         IF (LELENG) STEPE = ERLENG(IPR) - SLENG
+c         IF (LELENG) STEPE = ERLENG(IPR) - SLENG
          IF (LEPLAN) THEN
             SCAL1 = 0.
             SCAL2 = 0.
@@ -219,6 +219,24 @@ C.    ------------------------------------------------------------------
             STEPE = SCAL1/SCAL2
          ENDIF
          IF (STEPE.LE.PREC) STEPE = BIG
+c *******************************
+c     A. Rotondi and L. Lavezzi (sept 2010)
+c     when leleng (track length propagation) 
+c     if track length (ERLENG) <= 0 then the
+c     particle must not move; else if the step
+c     is <= PREC it is set = to it
+         IF (LELENG) THEN
+            STEPE = ERLENG(IPR) - SLENG
+            IF(ERLENG(IPR).LE.0.) THEN
+               STEPE = 0
+            ELSE IF(STEPE.LE.PREC) THEN
+               STEPE = PREC
+            ENDIF
+         ENDIF
+c *******************************
+
+
+
          IF (STEPE.LT.STEPER) THEN
             STEPER = STEPE
             INLIST = IPR

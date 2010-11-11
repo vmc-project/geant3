@@ -622,6 +622,51 @@ void eustep(){
    if(geant3->Gctrak()->sleng == 0) icc = 0;
    cflag=geant3->Gcmore()->iclose;
    if (geant3->Gcflag()->idebug * geant3->Gcflag()->iswit[2] != 0)geant3->Erxyzc();
+ 
+   // ---------------------------------------
+   // A. Rotondi and L. Lavezzi (sept 2010)
+   // changes to be able to approximate a solution when propagating
+   // along z axis. In that case lambda is 90 deg and 1/cos(lambda)
+   // becomes inf. Here when the theta angle drops below 1e-4 deg
+   // we set it to 1e-4 and this allows to propagate (with a small
+   // approximation) in the forward direction.
+
+   // direction vector set unitary
+   TVector3 dir(geant3->Gctrak()->vect[3], 
+		geant3->Gctrak()->vect[4],
+		geant3->Gctrak()->vect[5]);
+   dir.SetMag(1.);
+
+   if(dir.Mag() != 0.) {
+     
+     // if the direction is REALLY along z, (0., 0., 1), change it
+     // a little
+     if(dir.Z() == 1) dir.SetMagThetaPhi(1., 1e-9, gRandom->Uniform(0., 2 * TMath::Pi())); 
+     
+     Double_t cosLam0 = TMath::Sin(dir.Theta());
+     
+     // cos(lambda) < 2.e-6 means theta < 1e-4 deg
+     if(fabs(cosLam0) < 2.e-6) {
+ 
+       // cos(lambda) @ limit angle
+       Double_t cosLam = TMath::Sign(1., cosLam0) * 2.e-6;
+       Double_t sinLam = TMath::Sqrt(1 - cosLam * cosLam);
+       
+       // px, py, pz reset to limit angle
+       dir.SetX(dir.X() * (cosLam/cosLam0));
+       dir.SetY(dir.Y() * (cosLam/cosLam0));
+       dir.SetZ(sinLam);
+       dir.SetMag(1.);
+       geant3->Gctrak()->vect[3] = dir.X();
+       geant3->Gctrak()->vect[4] = dir.Y();
+       geant3->Gctrak()->vect[5] = dir.Z();
+       
+     }
+   }
+   // ---------------------------------------
+
+
+
    if(cflag==1){
 // distance between the track point and the point
       if(icc==0) prdist2=geant3->Gconst()->big;

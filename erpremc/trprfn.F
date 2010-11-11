@@ -65,6 +65,7 @@
 *               2    MOMENTUM IS ZERO
 *               3    H*ALFA/P AT X1 AND X2 DIFFER TOO MUCH
 *               4    PARTICLE MOVES IN Z - DIRECTION
+*               5    INITIAL AND FINAL POINTS ARE THE SAME
 *
 ************************************************************************
 *
@@ -120,10 +121,21 @@
    11 IF(MVAR.NE.0) GO TO 901
    19 GO TO 900
 *
-* *** ERROR PROPAGATION ON A HELIX ASSUMING SC VARIABLES
- 
+* *** ERROR PROPAGATION ON A HELIX ASSUMING SC VARIABLES 
 *
-   20 PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
+*
+*
+*     A. Rotondi and L. Lavezzi (sept 2010)
+*     if the first and last point coincide
+*     set IERR to 5 and exit
+ 20   IF((X1(1).EQ.X2(1)).AND.(X1(2).EQ.X2(2))
+     +     .AND.(X1(3).EQ.X2(3))) THEN
+         IERR = 5
+         GOTO 999
+      ENDIF
+*     ***********************************
+      
+      PA1=SQRT(P1(1)**2+P1(2)**2+P1(3)**2)
       PA2=SQRT(P2(1)**2+P2(2)**2+P2(3)**2)
       IF(PA1*PA2.EQ.0.) GO TO 902
 C      DPA = PA2 - PA1
