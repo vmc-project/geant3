@@ -646,7 +646,7 @@ void eustep(){
      Double_t cosLam0 = TMath::Sin(dir.Theta());
      
      // cos(lambda) < 2.e-6 means theta < 1e-4 deg
-     if(fabs(cosLam0) < 2.e-6) {
+     if(TMath::Abs(cosLam0) < 2.e-6) {
  
        // cos(lambda) @ limit angle
        Double_t cosLam = TMath::Sign(1., cosLam0) * 2.e-6;
