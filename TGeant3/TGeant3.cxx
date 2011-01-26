@@ -3249,7 +3249,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
   Float_t fdens = dens;
   Float_t fradl = radl;
   Float_t fabsl = absl;
-  Float_t* fubuf = CreateFloatArray(ubuf, nbuf);
+  Float_t fubuf[100];
 
   Gfmate(imat, name, fa, fz, fdens, fradl, fabsl, fubuf, nbuf);
 
@@ -3259,8 +3259,6 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
   radl = fradl;
   absl = fabsl;
   for (Int_t i=0; i<nbuf; i++) ubuf[i] = fubuf[i];
-
-  delete [] fubuf;
 }
 
 //______________________________________________________________________
