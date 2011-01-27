@@ -1079,7 +1079,7 @@ Int_t count_gtnext = 0;
 Gcchan_t *gcchan = 0;
 
 Gconst_t *gconst=0;          //! GCONST common structure
-Gconsx_t *cconsx=0;          //! GCONSX common structure
+Gconsx_t *gconsx=0;          //! GCONSX common structure
 Gcjump_t *gcjump=0;          //! GCJUMP common structure
 
 
