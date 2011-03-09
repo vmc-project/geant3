@@ -1473,6 +1473,16 @@ const char* TGeant3::CurrentVolPath()
   return GetPath();
 }
 
+//______________________________________________________________________                   
+Bool_t TGeant3::CurrentBoundaryNormal(Double_t &/*x*/, Double_t &/*y*/, Double_t &/*z*/) const         
+{                                                                                          
+// Return the normal vector of the surface of the last volume exited  
+
+  Warning("CurrentBoundaryNormal", 
+          "This function is available only in TGeant3TGeo");
+  return kFALSE;
+}                                  
+
 //______________________________________________________________________
 Int_t TGeant3::IdFromPDG(Int_t pdg) const
 {
@@ -3223,7 +3233,6 @@ void  TGeant3::Gzinit()
 //                        Functions from GCONS
 //
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
 //______________________________________________________________________
 void  TGeant3::Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z,
 		      Float_t &dens, Float_t &radl, Float_t &absl,
@@ -3231,9 +3240,36 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z,
 {
   //
   // Return parameters for material IMAT
+  // with added warning about deprecated function
   //
-  g3fmate(imat, PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf
-	 PASSCHARL(name));
+  
+  // Temporary warning, to be removed when the Gfmate is removed from
+  // TVirtualMC interface (and replaced with new GetMaterial(Int_t,...)
+  // function
+  Warning("Gfmate",
+    "Deprecated function - now replaced with GetMaterial(Int_t imat, ...)");
+
+  Gfmate2(imat, name, a, z, dens, radl, absl, ubuf, nbuf);
+}
+
+//______________________________________________________________________
+void  TGeant3::Gfmate2(Int_t imat, char *name, Float_t &a, Float_t &z,
+		      Float_t &dens, Float_t &radl, Float_t &absl,
+		      Float_t* ubuf, Int_t& nbuf)
+{
+  //
+  // Return parameters for material IMAT
+  // without warning about deprecated function
+  //
+  
+  g3fmate(imat, PASSCHARD(name), a, z, dens, radl, absl, ubuf, nbuf, 20);
+
+  for ( Int_t i=0; i<20; i++) {
+    if ( name[i] == ' ' ) { 
+      name[i] = '\0';
+      break;
+    }  
+  }
 }
 
 //______________________________________________________________________
@@ -3251,7 +3287,7 @@ void  TGeant3::Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
   Float_t fabsl = absl;
   Float_t fubuf[100];
 
-  Gfmate(imat, name, fa, fz, fdens, fradl, fabsl, fubuf, nbuf);
+  Gfmate2(imat, name, fa, fz, fdens, fradl, fabsl, fubuf, nbuf);
 
   a = fa;
   z = fz;
@@ -5867,7 +5903,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	if(!strcmp(key,"MATE")) {
 	  sscanf(card,"%d %s %f %f %f %f %f %d",&imatc,namatec,&az,&zc,
               &densc,&radlc,&abslc,&nparc);
-	  Gfmate(imat,namate,a,z,dens,radl,absl,par,npar);
+	  Gfmate2(imat,namate,a,z,dens,radl,absl,par,npar);
 	  if(!strcmp(namatec,namate)) {
 	    if(az==a && zc==z && densc==dens && radlc==radl
 	       && abslc==absl && nparc==nparc) {
@@ -6101,7 +6137,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
       imat =  Int_t (fZq[jtm+6]);
       jma  =  Int_t (fZlq[fGclink->jmate-imat]);
       //*  material
-      Gfmate (imat,namate,a,z,dens,radl,absl,par,npar);
+      Gfmate2 (imat,namate,a,z,dens,radl,absl,par,npar);
       fprintf(lun,"MATE %4d '%20s'%11.5E %11.5E %11.5E %11.5E %11.5E %3d\n",
 	     iomate[imat],namate,a,z,dens,radl,absl,npar);
       //*
@@ -6780,6 +6816,38 @@ Bool_t TGeant3::GetShape(const TString &volumePath,TString &shapeType,
     return kTRUE;
 }
 //______________________________________________________________________
+Bool_t TGeant3::GetMaterial(Int_t imat, TString& name,
+                     Double_t& a, Double_t& z, Double_t& density,
+                     Double_t& radl, Double_t& inter, TArrayD& par)
+{
+  //
+  // Return parameters for material IMAT
+  //
+
+  Float_t fa = a;
+  Float_t fz = z;
+  Float_t fdens = density;
+  Float_t fradl = radl;
+  Float_t finter = inter;
+  Float_t fubuf[100];
+  Int_t nbuf;
+  char matname[21];
+  
+  Gfmate2(imat, matname, fa, fz, fdens, fradl, finter, fubuf, nbuf);
+
+  name = matname;
+  a = fa;
+  z = fz;
+  density = fdens;
+  radl = fradl;
+  inter = finter;
+  par.Set(nbuf); // Resize TArrayD
+  for (Int_t i=0; i<nbuf; i++) par[i] = fubuf[i];
+  
+  return kTRUE;
+}
+
+//______________________________________________________________________
 Bool_t TGeant3::GetMaterial(const TString &volumeName,
                             TString &name,Int_t &imat,
                             Double_t &a,Double_t &z,Double_t &dens,
@@ -6805,7 +6873,7 @@ Bool_t TGeant3::GetMaterial(const TString &volumeName,
     Int_t i,volid,jma,nbuf;
     Float_t af,zf,densf,radlf,interf;
     Float_t *ubuf;
-    Char_t *ch,namec[20] = {20*'\0'};
+    Char_t namec[20] = {20*'\0'};
 
     volid = VolId(volumeName.Data());
     if(volid==0) return kFALSE; // Error
@@ -6827,11 +6895,12 @@ Bool_t TGeant3::GetMaterial(const TString &volumeName,
     } // end if-else
     nbuf = jma = this->Lq()[this->Gclink()->jmate-imat];
     ubuf = new Float_t[nbuf];
-    Gfmate(imat,namec,af,zf,densf,radlf,interf,ubuf,nbuf);
+    Gfmate2(imat,namec,af,zf,densf,radlf,interf,ubuf,nbuf);
+
     // Problem with getting namec back from Gfmate, get it from 
-    // the Zebra bank directly.
-    ch = (char *)(this->Iq()+jma+1);
-    for(i=0;i<20;i++) if(ch[i]!=' ') namec[i] = ch[i];
+    // the Zebra bank directly -> now fixed in Gfmate
+    //Char_t * ch = (char *)(this->Iq()+jma+1);
+    //for(i=0;i<20;i++) if(ch[i]!=' ') namec[i] = ch[i];
     name = namec;
     name = name.Strip();
     //

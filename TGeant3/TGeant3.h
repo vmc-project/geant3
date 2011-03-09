@@ -667,6 +667,7 @@ public:
   const char* CurrentVolName() const;
   const char *CurrentVolOffName(Int_t off) const;
   const char* CurrentVolPath();
+  Bool_t CurrentBoundaryNormal(Double_t &x, Double_t &y, Double_t &z) const;
   Int_t VolId(const Text_t *name) const;
   Int_t MediumId(const Text_t *name) const;
   Int_t IdFromPDG(Int_t pdg) const;
@@ -781,6 +782,11 @@ public:
   // Returns the name of the shape and its parameters for the volume
   // specified by the volumePath and the Top or master volume.
   Bool_t GetShape(const TString &volumePath,TString &shapeType,TArrayD &par);
+  // Returns the material parameters for the material specified by 
+  // the material
+  Bool_t GetMaterial(Int_t imat, TString& name,
+                     Double_t& a, Double_t& z, Double_t& density,
+                     Double_t& radl, Double_t& inter, TArrayD& par);
   // Returns the material parameters for the volume specified by
   // the volume name.
   Bool_t GetMaterial(const TString &volumeName,
@@ -859,6 +865,9 @@ public:
 
       // functions from GCONS
    virtual  void  Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z, 
+                         Float_t &dens, Float_t &radl, Float_t &absl,
+                         Float_t* ubuf, Int_t& nbuf);
+   virtual  void  Gfmate2(Int_t imat, char *name, Float_t &a, Float_t &z, 
                          Float_t &dens, Float_t &radl, Float_t &absl,
                          Float_t* ubuf, Int_t& nbuf);
    virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, 

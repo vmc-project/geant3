@@ -169,6 +169,12 @@ public:
     virtual Bool_t GetShape(const TString& volumePath, 
                          TString& shapeType, TArrayD& par);
 
+    // Returns the material parameters for the material specified by 
+    // the material
+    Bool_t GetMaterial(Int_t imat, TString& name,
+                       Double_t& a, Double_t& z, Double_t& density,
+                       Double_t& radl, Double_t& inter, TArrayD& par);
+
     // Returns the material parameters for the volume specified by
     // the volume name.
     virtual Bool_t GetMaterial(const TString& volumeName,

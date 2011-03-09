@@ -1064,6 +1064,19 @@ Bool_t TGeant3TGeo::GetShape(const TString &volumePath,TString &shapeType,
 }
    
 //______________________________________________________________________
+Bool_t TGeant3TGeo::GetMaterial(Int_t imat, TString& name,
+                            Double_t& a, Double_t& z, Double_t& density,
+                            Double_t& radl, Double_t& inter, TArrayD& par)
+{
+  //
+  // Return parameters for material IMAT
+  // (previously called Gfmate)
+  //
+  
+  return TGeant3::GetMaterial(imat, name, a, z, density, radl, inter, par);
+}  
+
+//______________________________________________________________________
 Bool_t TGeant3TGeo::GetMaterial(const TString &volumeName,
                             TString &name,Int_t &imat,
                             Double_t &a,Double_t &z,Double_t &dens,

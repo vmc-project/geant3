@@ -141,60 +141,62 @@ G3Volume::G3Volume(const G3Volume& volume)
 void G3Volume::Draw(Option_t *)
 {
 // Wraps the geant Gdraw
-    gMC->Gsatt(fName,"seen", fSeen);
+    TGeant3* geant3 = (TGeant3*)gMC;
+    geant3->Gsatt(fName,"seen", fSeen);
     
     if (fHide) {
-	gMC->Gdopt("hide", "on");
+	geant3->Gdopt("hide", "on");
     } else {
-	gMC->Gdopt("hide", "off");
+	geant3->Gdopt("hide", "off");
     }
 
     if (fShadow) {
-	gMC->Gdopt("shad", "on");
-	gMC->Gsatt("*", "fill", fFill);
+	geant3->Gdopt("shad", "on");
+	geant3->Gsatt("*", "fill", fFill);
     } else {
-	gMC->Gdopt("shad", "off");
+	geant3->Gdopt("shad", "off");
     }
 
-    	gMC->SetClipBox(".");
+    	geant3->SetClipBox(".");
     if (fClip) {
-	gMC->SetClipBox("*", fClipXmin, fClipXmax, 
+	geant3->SetClipBox("*", fClipXmin, fClipXmax, 
 			fClipYmin, fClipYmax, fClipZmin, fClipZmax);
     } else {
-	gMC->SetClipBox(".");
+	geant3->SetClipBox(".");
     }
     
 
-    gMC->Gdraw(fName, fTheta, fPhi, fPsi, fU, fV, fUscale, fVscale);
+    geant3->Gdraw(fName, fTheta, fPhi, fPsi, fU, fV, fUscale, fVscale);
 }
 
 void G3Volume::DrawSpec()
 {
 // Wraps the Geant DrawSpec
-    gMC->Gsatt(fName,"seen", fSeen);
+    TGeant3* geant3 = (TGeant3*)gMC;
+    geant3->Gsatt(fName,"seen", fSeen);
     
     if (fHide) {
-	gMC->Gdopt("hide", "on");
+	geant3->Gdopt("hide", "on");
     } else {
-	gMC->Gdopt("hide", "off");
+	geant3->Gdopt("hide", "off");
     }
 
     if (fShadow) {
-	gMC->Gdopt("shad", "on");
-	gMC->Gsatt("*", "fill", fFill);
+	geant3->Gdopt("shad", "on");
+	geant3->Gsatt("*", "fill", fFill);
     } else {
-	gMC->Gdopt("shad", "off");
+	geant3->Gdopt("shad", "off");
     }
 
-    gMC->SetClipBox(".");
+    geant3->SetClipBox(".");
     if (fClip) {
-	gMC->SetClipBox("*", fClipXmin, fClipXmax, fClipYmin, fClipYmax, fClipZmin, fClipZmax);
+	geant3->SetClipBox("*", fClipXmin, fClipXmax, fClipYmin, fClipYmax, fClipZmin, fClipZmax);
     } else {
-	gMC->SetClipBox(".");
+	geant3->SetClipBox(".");
     }
     
 
-    ((TGeant3*) gMC)->DrawOneSpec(fName);
+    ((TGeant3*) geant3)->DrawOneSpec(fName);
 }
 
 void G3Volume::SetParam(Int_t ip, Float_t param)
