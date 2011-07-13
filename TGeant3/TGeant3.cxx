@@ -797,7 +797,7 @@ extern "C"
 
   void type_of_call grndmq(Int_t &is1, Int_t &is2, const Int_t &,
 			   DEFCHARD DEFCHARL)
-  {is1=gRandom->GetSeed(); is2=0; /*only valid with TRandom;*/}
+  {is1=gRandom->TRandom::GetSeed(); is2=0; /*only valid with TRandom;*/}
 
   void type_of_call g3dtom(Float_t *, Float_t *, Int_t &);
 
