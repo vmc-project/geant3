@@ -79,6 +79,9 @@ endif
 ifeq ($(PLATFORM),macosx64)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
+ifeq ($(PLATFORM),macosxicc)
+	  CSRC += minicern/lnxgs/ishftr.c
+endif
 ifeq ($(PLATFORM),linuxicc)
 	  CSRC += minicern/lnxgs/ishftr.c
 endif
