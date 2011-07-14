@@ -1113,7 +1113,7 @@ Bool_t TGeant3TGeo::GetMaterial(const TString &volumeName,
 
    nbuf = jma = Lq()[Gclink()->jmate-imat];
    ubuf = new Float_t[nbuf];
-   Gfmate(imat,namec,af,zf,densf,radlf,interf,ubuf,nbuf);
+   Gfmate2(imat,namec,af,zf,densf,radlf,interf,ubuf,nbuf);
    name = mat->GetName();
    name = name.Strip(TString::kTrailing, '$');
    //
