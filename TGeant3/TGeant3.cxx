@@ -5906,7 +5906,7 @@ void TGeant3::WriteEuclid(const char* filnam, const char* topvol,
 	  Gfmate2(imat,namate,a,z,dens,radl,absl,par,npar);
 	  if(!strcmp(namatec,namate)) {
 	    if(az==a && zc==z && densc==dens && radlc==radl
-	       && abslc==absl && nparc==nparc) {
+	       && abslc==absl && nparc==npar) {
 	      iomate[imat]=imatc;
 	      flag=1;
 	      printf("*** GWEUCL *** material : %3d '%s' restored as %3d\n",
