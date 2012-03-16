@@ -721,6 +721,9 @@ public:
   const char *GetNodeName();
   Bool_t DefineParticle(Int_t pdg, const char* name, 
                    TMCParticleType mcType,
+                   Double_t mass, Double_t charge, Double_t lifetime);
+  Bool_t DefineParticle(Int_t pdg, const char* name, 
+                   TMCParticleType mcType,
                    Double_t mass, Double_t charge, Double_t lifetime,
                    const TString& /*pType*/, Double_t /*width*/, 
                    Int_t /*iSpin*/, Int_t /*iParity*/, Int_t /*iConjugation*/, 
@@ -1113,7 +1116,7 @@ public:
 
   virtual void FinishGeometry();
   virtual void BuildPhysics();
-  virtual void Init(Int_t threadRank = 0);
+  virtual void Init();
   virtual void ProcessEvent();
   virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
