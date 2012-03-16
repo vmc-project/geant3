@@ -1371,6 +1371,33 @@ void TGeant3::AddParticlesToPdgDataBase() const
   if ( !pdgDB->GetParticle(GetIonPdg(2,3)) )
     pdgDB->AddParticle("HE3","HE3",3*kAu2Gev+14.931e-3,kFALSE,
                        0,6,"Ion",GetIonPdg(2,3));
+ 
+  //Anti Ions
+
+  if ( !pdgDB->GetParticle((-1)*GetIonPdg(1,2)) )
+    pdgDB->AddParticle("ANTIDEUTERON","ANTIDEUTERON",2*kAu2Gev+8.071e-3,kTRUE,
+                       0,-3,"Ion",(-1)*GetIonPdg(1,2));
+
+  if ( !pdgDB->GetParticle((-1)*GetIonPdg(1,3)) )
+    pdgDB->AddParticle("ANTITRITON","ANTITRITON",3*kAu2Gev+14.931e-3,kFALSE,
+                       khShGev/(12.33*kYear2Sec),-3,"Ion",(-1)*GetIonPdg(1,3));
+
+  if ( !pdgDB->GetParticle((-1)*GetIonPdg(2,4)) )
+    pdgDB->AddParticle("ANTIALPHA","ANTIALPHA",4*kAu2Gev+2.424e-3,kTRUE,
+                       khShGev/(12.33*kYear2Sec),-6,"Ion",(-1)*GetIonPdg(2,4));
+
+  if ( !pdgDB->GetParticle((-1)*GetIonPdg(2,3)) )
+    pdgDB->AddParticle("ANTIHE3","ANTIHE3",3*kAu2Gev+14.931e-3,kFALSE,
+		       0,-6,"Ion",(-1)*GetIonPdg(2,3));
+  
+  //Hypernuclei
+  
+  if ( !pdgDB->GetParticle(1010010030))
+    pdgDB->AddParticle("HyperTriton","HyperTriton",2.99131,kFALSE,0,3,"Hypernucleus",1010010030);
+
+  if ( !pdgDB->GetParticle(-1010010030))
+    pdgDB->AddParticle("AntiHyperTriton","AntiHyperTriton",2.99131,kFALSE,0,-3,"Hypernucleus",-1010010030);
+
 
 // Special particles
 //
@@ -1690,6 +1717,27 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-16;          // 75 = anti tau neutrino
 
+  fNG3Particles++;
+  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(1, 2); // 76 = antideuteron
+
+  fNG3Particles++;
+  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(1, 3);  // 77 = antitriton
+
+  fNG3Particles++;
+  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(2, 3);  // 78 = antihe3
+
+  fNG3Particles++;
+  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(2, 4);  // 79 = antialpha
+
+
+  Gspart(fNG3Particles++, "HyperTriton",4,2.99131 ,+1.,2.632e-10);
+  fPDGCode[fNPDGCodes++]=1010010030;    //80 = hypertriton
+  
+  Gspart(fNG3Particles++, "AntiHyperTriton",4,2.99131 ,-1.,2.632e-10);
+  fPDGCode[fNPDGCodes++]=-1010010030;  // 81 = Anti-Hypertriton
+
+
+
 /* --- Define additional decay modes --- */
 /* --- omega(783) --- */
     for (kz = 0; kz < 6; ++kz) {
@@ -1814,7 +1862,7 @@ void TGeant3::DefineParticles()
     Gsdk(ipa, bratio, mode);
     /*
 // --- jpsi ---
-    for (kz = 0; kz < 6; ++kz) {
+for (kz = 0; kz < 6; ++kz) {
 	bratio[kz] = 0.;
 	mode[kz] = 0;
     }
@@ -1832,6 +1880,32 @@ void TGeant3::DefineParticles()
     Gsdk(ipa, bratio, mode);
     */
 //
+
+    // Hypertrion 2-Body decay
+    
+    for (kz = 0; kz < 6; ++kz) {
+      bratio[kz] = 0.;
+      mode[kz] = 0;
+    }
+    ipa = 80;
+    bratio[0] = 100.;
+    mode[0] = 949;
+    Gsdk(ipa, bratio, mode);
+
+    // Anti-Hypertrion 2-Body decay
+
+    for (kz = 0; kz < 6; ++kz) {
+      bratio[kz] = 0.;
+      mode[kz] = 0;
+    }
+    ipa = 81;
+    bratio[0] = 100.;
+    mode[0] = 878;
+    //    mode[0] = 949;
+    Gsdk(ipa, bratio, mode);
+
+
+
     AddParticlesToPdgDataBase();
 }
 
@@ -2032,18 +2106,6 @@ Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
 
   return  success;
 }
-
- //______________________________________________________________________
-Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
-                      Double_t mass, Double_t charge, Double_t lifetime)
-{
-// Old function definition, now replaced with more arguments
-
-  TVirtualMC::DefineParticle(pdg, name, type, mass, charge, lifetime);
-  
-  return false;
-}                        
-                      
 
 //______________________________________________________________________
 Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name, TMCParticleType mcType,
@@ -6257,7 +6319,7 @@ void TGeant3::FinishGeometry()
 }
 
 //______________________________________________________________________
-void TGeant3::Init()
+void TGeant3::Init(Int_t /*threadRank*/)
 {
     //
     //=================Create Materials and geometry
