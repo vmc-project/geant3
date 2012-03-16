@@ -2107,6 +2107,18 @@ Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
   return  success;
 }
 
+ //______________________________________________________________________
+Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
+                      Double_t mass, Double_t charge, Double_t lifetime)
+{
+// Old function definition, now replaced with more arguments
+
+  TVirtualMC::DefineParticle(pdg, name, type, mass, charge, lifetime);
+  
+  return false;
+}                        
+                      
+
 //______________________________________________________________________
 Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name, TMCParticleType mcType,
                       Double_t mass, Double_t charge, Double_t lifetime,
@@ -6319,7 +6331,7 @@ void TGeant3::FinishGeometry()
 }
 
 //______________________________________________________________________
-void TGeant3::Init(Int_t /*threadRank*/)
+void TGeant3::Init()
 {
     //
     //=================Create Materials and geometry
