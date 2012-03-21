@@ -66,6 +66,12 @@ C   OMEGA -                 33
 C   OMEGA - BAR             34
 C   NEW PARTICLES           35
 C
+C   HE3                     36 (49)
+C   ANTIDEUTERON            37 (76)
+C   ANTITRITON              38 (77)
+C   ANTIHE3                 39 (78)
+C   ANTIALPHA               40 (79)
+C
 #include "geant321/gcunit.inc"
 #include "geant321/gconsp.inc"
 C
@@ -78,8 +84,8 @@ C --- GHEISHA COMMONS ---
 C
       DIMENSION A(KK),Z(KK),W(KK)
 C
-      DIMENSION ALPHA(35),ALPHAC(41),IPART2(7),CSA(4)
-      DIMENSION PARTEL(35),PARTIN(35),ICORR(35),INTRC(35)
+      DIMENSION ALPHA(40),ALPHAC(41),IPART2(7),CSA(4)
+      DIMENSION PARTEL(40),PARTIN(40),ICORR(40),INTRC(40)
 C
       PARAMETER (ONETHR=1./3.)
       SAVE ALPHA,ALPHAC,PARTEL,PARTIN,CSA,IPART2,ICORR,INTRC
@@ -94,18 +100,19 @@ C
      +                0.76,0.76 ,0.76 ,0.76 ,
      +                0.685,0.63 ,0.685,0.63,0.685,0.63,
      +                3*0.685,3*0.63,2*0.685,2*0.63,
-     +                3*0.7,0.685,0.63,0.7/
+     +                3*0.7,0.685,0.63,0.7,5*0.7/
       DATA ALPHAC    /1.2,1.2,1.2,1.15,0.90,0.91,0.98,1.06,1.10,1.11,
      +                1.10,1.08,1.05,1.01,0.985,0.962,0.945,0.932,
      +                0.925,0.920,0.920,0.921,0.922,0.923,0.928,0.931,
      +                0.940,0.945,0.950,0.955,0.958,0.962,0.965,0.976,
      +                0.982,0.988,0.992,1.010,1.020,1.030,1.040/
-      DATA PARTEL/6*0.,29*1./
+      DATA PARTEL/6*0.,29*1.,5*1./
       DATA PARTIN/6*0.,1.00,0.00,1.05,1.20,1.35,1.30,1.20,1.00,1.30,
      +            1.00,1.30,1.00,1.30,1.00,1.00,1.00,1.30,1.30,1.30,
-     +            1.00,1.00,1.30,1.30,1.00,1.,1.,1.,1.3,1./
-      DATA ICORR /14*1, 0, 1, 0, 1, 0, 3*1, 3*0, 2*1, 2*0, 4*1, 2*0/
-      DATA INTRC /6*0, 1, 0, 12*1, 0, 2*2, 0, 10*1, 0/
+     +            1.00,1.00,1.30,1.30,1.00,1.,1.,1.,1.3,1.,5*1./
+      DATA ICORR /14*1, 0, 1, 0, 1, 0, 3*1, 3*0, 2*1, 2*0, 4*1, 2*0,
+     +            5*1/
+      DATA INTRC /6*0, 1, 0, 12*1, 0, 2*2, 0, 10*1, 0, 5*1/
 C
 C CROSS SECTIONS ON NUCLEUS ARE KNOWN ONLY FOR PIONS AND PROTONS.
 C THE GENERAL LAW SIGMA(A)=1.25*SIGMA(TOT,PROTON)*A**ALPHA IS VALID
@@ -123,7 +130,7 @@ C
 C
 C --- Initialise GHESIG and switch to GHEISHA particle code ---
       GHESIG=0.0
-      IF(LPART.GT.48)GO TO 160
+      IF(LPART.GT.79)GO TO 160
       IPART=KIPART(LPART)
 C
 C --- No interaction for gammas, neutrinos, electrons, positrons, muons,
@@ -140,19 +147,13 @@ C --- Initialise the cross-sections with 0.0 ---
          AICA(K)=0.0
    10 CONTINUE
 C
-      IF ((IPART .GE. 30) .AND. (IPART .LE. 32)) THEN
+      IF(((IPART.GE.30).AND.(IPART.LE.32)).OR.
+     $   ((IPART.GE.36).AND.(IPART.LE.40))) THEN
 C
-C --- Take geometrical cross sections for inelastic scattering ---
-C --- of deuterons, tritons and alphas ---
-         IF (IPART .EQ. 30) THEN
-            APART=2.0**ONETHR
-         ELSEIF (IPART .EQ. 31) THEN
-            APART=3.0**ONETHR
-         ELSEIF (IPART .EQ. 32) THEN
-            APART=4.0**ONETHR
-         END IF
+C --- light (anti)nuclei reaction cross section parametrization ---
+C
          DO 20 K=1,KK
-            AIIN(K)=49.0*(APART+A(K)**ONETHR)**2
+            AIIN(K) = SIGNUC(LPART,EK,A(K))
    20    CONTINUE
          IF (NPRT(9)) THEN
             WRITE(CHMAIL,10000)
@@ -341,6 +342,18 @@ C
                AIIN(K)=AIIN(K)*PARTIN(IPART)
             END IF
   100    CONTINUE
+
+C  ---------------------------------------------
+C   Fix for low energy antiprotons from
+C   Astroparticle Physics Volume 6,
+C   Issues 3-4, April 1997, Pages 379-386
+         IF(IPART.EQ.15) THEN
+            DO 105 K=1,KK
+               AIIN(K)= SIGAPA(EK,A(K))
+  105       CONTINUE
+         END IF
+C  ----------------------------------------
+
 C
 C --- Fission cross sections ---
 C --- A-dependence given by  sigma(3 MeV)=-67.0+38.7*Z**(4/3)/A ---

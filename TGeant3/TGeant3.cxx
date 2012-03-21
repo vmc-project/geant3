@@ -1169,7 +1169,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
   fNPDGCodes=0;
   
   // Set initial size to fPDGCode table
-  fPDGCode.Set(100);
+  fPDGCode.Set(200);
 
   //set pointers to tracker functions
   fginvol = g3invol;
@@ -1737,6 +1737,18 @@ void TGeant3::DefineParticles()
   fPDGCode[fNPDGCodes++]=-1010010030;  // 81 = Anti-Hypertriton
 
 
+
+  Gspart(fNG3Particles++,"ANTIDEUTERON", 8, 1.875613, -1., 1.000000E+20 );
+  fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(1, 2);  // 76 = antideuteron
+
+  Gspart(fNG3Particles++,"ANTITRITON", 8, 2.80925 , -1., 1.000000E+20 );
+  fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(1, 3);  // 77 = antitriton
+
+  Gspart(fNG3Particles++,"ANTIHE3", 8, 2.80923 , -2., 1.000000E+20 );
+  fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(2, 3);  // 78 = antihe3
+
+  Gspart(fNG3Particles++,"ANTIALPHA", 8, 3.727417, -2., 1.000000E+20 );
+  fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(2, 4);  // 79 = antialpha
 
 /* --- Define additional decay modes --- */
 /* --- omega(783) --- */

@@ -295,7 +295,7 @@ C *** DEUTERON ***
       RMASS(30)=Q(LNVE+7)
       RCHARG(30)=Q(LNVE+8)
 C *** TRITON ***
-      RMASS(31)=2.8144798
+      RMASS(31)=2.80925
       RCHARG(31)=1.0
       LNVE=LQ(JPART-46)
       RMASS(31)=Q(LNVE+7)
@@ -321,6 +321,23 @@ C *** OMEGA- BAR ***
 C *** NEW PARTICLE (GEANTINO) ***
       RMASS(35)=0.0
       RCHARG(35)=0.0
+
+C *** HE3 ***
+      RMASS(36)=2.80923
+      RCHARG(36)=2.0
+C *** ANTIDEUTERON ***
+      RMASS(37)=1.875613
+      RCHARG(37)=-1.0
+C *** ANTITRITON ***
+      RMASS(38)=2.80925
+      RCHARG(38)=-1.0
+C *** ANTIHE3 ***
+      RMASS(39)=2.80923
+      RCHARG(39)=-2.0
+C *** ANTIALPHA ***
+      RMASS(40)=3.727417
+      RCHARG(40)=-2.0
+
 C
       IF (NPRT(9))
      $ PRINT 1000,(I,RMASS(I),RCHARG(I),I=1,33),

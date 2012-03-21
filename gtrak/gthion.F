@@ -69,7 +69,9 @@ C.    ------------------------------------------------------------------
          GKR   = (CUTPRO - ELOW(IKCUT))/(ELOW(IKCUT+1) - ELOW(IKCUT))
          STOPC = (1.-GKR)*Q(JRANG+IKCUT) + GKR*Q(JRANG+IKCUT+1)
          FACFLU = DME*(Z*DENS/A)
-         CHAR23 = ONE/CHARGE**TWOTHR
+C        CHAR23 = ONE/CHARGE**TWOTHR
+C fix for negative charge
+         CHAR23 = ONE/(CHARGE*CHARGE)**(1./3.)
          IF(IMCKOV.EQ.1) THEN
             JTCKOV = LQ(JTM-3)
             JABSCO = LQ(JTCKOV-1)
@@ -85,17 +87,21 @@ C.    ------------------------------------------------------------------
       GAMASS=GETOT+AMASS
       BET2=GEKIN*GAMASS/(GETOT*GETOT)
       BET=SQRT(BET2)
-      W1=1.034-0.1777*EXP(-0.08114*CHARGE)
-      W2=BET*CHAR23
-      W3=121.4139*W2+0.0378*SIN(190.7165*W2)
-      CHARG1=CHARGE*(1.-W1*EXP(-W3))
+      IF(CHARGE.LT.0) THEN ! for anti-ions effective charge = Z
+         CHARG1=CHARGE
+      ELSE
+         W1=1.034-0.1777*EXP(-0.08114*CHARGE)
+         W2=BET*CHAR23
+         W3=121.4139*W2+0.0378*SIN(190.7165*W2) 
+         CHARG1=CHARGE*(1.-W1*EXP(-W3))  
 *
 *              the effective charge  CHARG1
 *            can be negative only for very low energy and
 *     for CHARGE > 20 ( very low energy : T/A < 20 keV/nucleon)
 *              in this case short circuit
 *
-      IF(CHARG1.LT.0.) GOTO 100
+         IF(CHARG1.LT.0.) GOTO 100
+      ENDIF
       CHARG2=CHARG1**2
 *
       OMCMOL=Q(JPROB+21)*CHARG2
@@ -418,39 +424,46 @@ C.    ------------------------------------------------------------------
 *     Charge exchange fluctuations + Gaussian 'Landau' fluctuations
 *           (it is the same for ILOSS=1,2,3 !)
 *
-            SIGMA2=CNORM*CHARG1*(1.-CHARG1/CHARGE)
-            SIGMA2=MAX(SIGMA2,0.)
-            TA = RMASS*GEKIN
-            TAM=TA/AMU
-            SIGMA2=SIGMA2+2.+TAM*(2.+TAM)
-*
-            SIGMA2=FACFLU*CHARG2*STEP*SIGMA2
-            IF(SIGMA2.GT.0.0) THEN
-                SIGMA=SQRT(SIGMA2)
-            ELSE
-                SIGMA= 0.0
-            END IF
+C            SIGMA2=CNORM*CHARG1*(1.-CHARG1/CHARGE)
+C            SIGMA2=MAX(SIGMA2,0.)
+C            TA = RMASS*GEKIN
+C            TAM=TA/AMU
+C            SIGMA2=SIGMA2+2.+TAM*(2.+TAM)
+C*
+C            SIGMA2=FACFLU*CHARG2*STEP*SIGMA2
+C            IF(SIGMA2.GT.0.0) THEN
+C                SIGMA=SQRT(SIGMA2)
+C            ELSE
+C                SIGMA= 0.0
+C            END IF
 *
 *     Check if we are in 'Gaussian' regime ...
 *
-            CAPPA=(1.+TAM)/(TAM*(2.+TAM)*EMASS)
-            CAPPA=0.5*CAPPA**2*FACFLU*CHARG2*STEP
+C            CAPPA=(1.+TAM)/(TAM*(2.+TAM)*EMASS)
+C            CAPPA=0.5*CAPPA**2*FACFLU*CHARG2*STEP
 *
 *     ... if not , correct SIGMA !
- 
-            IF( (CAPPA.LT.10.) .AND. (CAPPA.GT.0.0) ) THEN
-               SIGMA=SIGMA/(0.97+0.03*SQRT(10./CAPPA))
-            ENDIF
+C 
+C            IF( (CAPPA.LT.10.) .AND. (CAPPA.GT.0.0) ) THEN
+C               SIGMA=SIGMA/(0.97+0.03*SQRT(10./CAPPA))
+C            ENDIF
 *
-            CALL GRNDM(RNDM,2)
-            DEFLUC=SIGMA*SIN(TWOPI*RNDM(1))*SQRT(-2.*LOG(RNDM(2)))
-            DESTEP=DEMEAN+DEFLUC
-         ENDIF
+C            CALL GRNDM(RNDM,2)
+C            DEFLUC=SIGMA*SIN(TWOPI*RNDM(1))*SQRT(-2.*LOG(RNDM(2)))
+C            DESTEP=DEMEAN+DEFLUC
+C         ENDIF
 *
 *     protection against negative destep
 *
-         IF(DESTEP.LT.0.) DESTEP=DEMEAN
+C        IF(DESTEP.LT.0.) DESTEP=DEMEAN
 *                          IF (DESTEP.LT.0.) DESTEP = 0.
+C note that G3FLUCT will use Z^2 instead of the effective charge^2
+            DEMS   = DEMEAN/CHARG2
+            CALL G3FLUCT(DEMS,DESTEP)
+            DESTEP = DESTEP*CHARG2
+         ENDIF
+         DESTEP=MAX(DESTEP,0.)
+C end
          GEKINT = GEKIN -DESTEP
          IF (GEKINT.LE.(1.01*CUTHAD)) GO TO 100
          DESTEL = DESTEP
