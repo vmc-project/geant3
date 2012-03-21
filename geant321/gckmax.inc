@@ -20,7 +20,7 @@
 *
 #if !defined(CERNLIB_INCLUDE)
       INTEGER MXGKIN
-      PARAMETER (MXGKIN=100)
+      PARAMETER (MXGKIN=300)
 #endif
 *
 * gckmax.inc
