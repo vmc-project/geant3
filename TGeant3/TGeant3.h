@@ -702,7 +702,7 @@ public:
   Int_t  CurrentEvent() const;
   TMCProcess  ProdProcess(Int_t isec) const;
   Int_t  StepProcesses(TArrayI &proc) const;
-  void   GetSecondary(Int_t isec, Int_t& ipart, TLorentzVector &x,
+  void   GetSecondary(Int_t isec, Int_t& partPDG, TLorentzVector &x,
                       TLorentzVector &p);
   Bool_t SecondariesAreOrdered() const {return kTRUE;}
   void   StopTrack();

@@ -2108,12 +2108,13 @@ Bool_t  TGeant3::SetProcess(const char* flagName, Int_t flagValue)
 }
 
  //______________________________________________________________________
-Bool_t TGeant3::DefineParticle(Int_t pdg,const char* name,TMCParticleType type,
-                      Double_t mass, Double_t charge, Double_t lifetime)
+Bool_t TGeant3::DefineParticle(Int_t /*pdg*/,const char* /*name*/,TMCParticleType /*type*/,
+                      Double_t /*mass*/, Double_t /*charge*/, Double_t /*lifetime*/)
 {
 // Old function definition, now replaced with more arguments
 
-  TVirtualMC::DefineParticle(pdg, name, type, mass, charge, lifetime);
+  Warning("DefineParticle",
+          "Deprecated function. The function with long argument list should be used instead.");
   
   return false;
 }                        
@@ -2564,7 +2565,7 @@ TMCProcess TGeant3::G3toVMC(Int_t iproc) const
 
 
 //______________________________________________________________________
-void    TGeant3::GetSecondary(Int_t isec, Int_t& ipart,
+void    TGeant3::GetSecondary(Int_t isec, Int_t& partPDG,
 			      TLorentzVector &x, TLorentzVector &p)
 {
   //
@@ -2573,7 +2574,8 @@ void    TGeant3::GetSecondary(Int_t isec, Int_t& ipart,
   //
   Int_t i;
   if(-1<isec && isec<fGcking->ngkine) {
-    ipart=Int_t (fGcking->gkin[isec][4] +0.5);
+    Int_t ipart=Int_t (fGcking->gkin[isec][4] +0.5);
+    partPDG = PDGFromId(ipart);
     for(i=0;i<3;i++) {
       x[i]=fGckin3->gpos[isec][i];
       p[i]=fGcking->gkin[isec][i];
@@ -2583,7 +2585,7 @@ void    TGeant3::GetSecondary(Int_t isec, Int_t& ipart,
   } else {
     printf(" * TGeant3::GetSecondary * Secondary %d does not exist\n",isec);
     x[0]=x[1]=x[2]=x[3]=p[0]=p[1]=p[2]=p[3]=0;
-    ipart=0;
+    partPDG=0;
   }
 }
 
