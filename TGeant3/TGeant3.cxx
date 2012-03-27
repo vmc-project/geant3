@@ -1717,27 +1717,6 @@ void TGeant3::DefineParticles()
   Gspart(fNG3Particles++, "Anti Neutrino (tau)",3, 0., 0., 1.e20);
   fPDGCode[fNPDGCodes++]=-16;          // 75 = anti tau neutrino
 
-  fNG3Particles++;
-  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(1, 2); // 76 = antideuteron
-
-  fNG3Particles++;
-  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(1, 3);  // 77 = antitriton
-
-  fNG3Particles++;
-  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(2, 3);  // 78 = antihe3
-
-  fNG3Particles++;
-  fPDGCode[fNPDGCodes++]= (-1)*GetIonPdg(2, 4);  // 79 = antialpha
-
-
-  Gspart(fNG3Particles++, "HyperTriton",4,2.99131 ,+1.,2.632e-10);
-  fPDGCode[fNPDGCodes++]=1010010030;    //80 = hypertriton
-  
-  Gspart(fNG3Particles++, "AntiHyperTriton",4,2.99131 ,-1.,2.632e-10);
-  fPDGCode[fNPDGCodes++]=-1010010030;  // 81 = Anti-Hypertriton
-
-
-
   Gspart(fNG3Particles++,"ANTIDEUTERON", 8, 1.875613, -1., 1.000000E+20 );
   fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(1, 2);  // 76 = antideuteron
 
@@ -1749,6 +1728,16 @@ void TGeant3::DefineParticles()
 
   Gspart(fNG3Particles++,"ANTIALPHA", 8, 3.727417, -2., 1.000000E+20 );
   fPDGCode[fNPDGCodes++] = (-1)*GetIonPdg(2, 4);  // 79 = antialpha
+
+  Gspart(fNG3Particles++, "HyperTriton",4,2.99131 ,+1.,2.632e-10);
+  fPDGCode[fNPDGCodes++]=1010010030;    //80 = hypertriton
+  
+  Gspart(fNG3Particles++, "AntiHyperTriton",4,2.99131 ,-1.,2.632e-10);
+  fPDGCode[fNPDGCodes++]=-1010010030;  // 81 = Anti-Hypertriton
+
+
+
+
 
 /* --- Define additional decay modes --- */
 /* --- omega(783) --- */
