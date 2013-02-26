@@ -29,12 +29,13 @@ C
 C
       COMMON/GCJLCK/NJLCK(2),JTCKOV,JABSCO,JEFFIC,JINDEX,JCURIN
      +                      ,JPOLAR,JTSTRA,JTSTCO,JTSTEN,JTASHO
+     +                      ,JDERIV   
 C
       EQUIVALENCE (JLASTV,JTSTEN)
 C
       INTEGER       NJLCK,JTCKOV,JABSCO,JEFFIC,JINDEX,JCURIN
      +                   ,JPOLAR,JLASTV,JTSTRA,JTSTCO,JTSTEN
-     +                   ,JTASHO
+     +                   ,JTASHO,JDERIV
 C
 #endif
 *

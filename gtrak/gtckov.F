@@ -54,7 +54,7 @@ C.
       PARAMETER (EPSMAC=1.E-11)
 #endif
       PARAMETER (MXPUSH=10)
-      SAVE RIN1,EFFIC
+      SAVE RIN1,EFFIC,DERI
 C.
 C.    ------------------------------------------------------------------
 *
@@ -79,6 +79,7 @@ C.    ------------------------------------------------------------------
          JABSCO = LQ(JTCKOV-1)
          JEFFIC = LQ(JTCKOV-2)
          JINDEX = LQ(JTCKOV-3)
+         JDERIV = LQ(JTCKOV-5)
          JPOLAR = LQ(JSTAK-1)
       ENDIF
       IF(SLENG.LE.0.) THEN
@@ -118,6 +119,7 @@ C.    ------------------------------------------------------------------
          ENDIF
          GEKRT1=1.-GEKRAT
          RIN1=Q(JINDEX+IEKBIN)*GEKRT1+Q(JINDEX+IEKBIN+1)*GEKRAT
+         DERI=Q(JDERIV+IEKBIN)*GEKRT1+Q(JDERIV+IEKBIN+1)*GEKRAT
          EFFIC=Q(JEFFIC+IEKBIN)*GEKRT1+Q(JEFFIC+IEKBIN+1)*GEKRAT
          STEPLA=Q(JABSCO+IEKBIN)*GEKRT1+Q(JABSCO+IEKBIN+1)*GEKRAT
       ENDIF
@@ -353,9 +355,10 @@ C
       STEP = STEPT + STEP
       SLENG = SLENG +STEP
 *
-* *** Update time of flight
+* *** Update time of flight 
+* *** using the group velocity (AM)
 *
-      TOFG = TOFG +STEP*RIN1/CLIGHT
+      TOFG = TOFG +STEP/CLIGHT*RIN1*(1.+DERI) 
 *
 * *** Update interaction probabilities
 *

@@ -68,12 +68,13 @@ C.
       IF(IQ(JTM-2).LT.3) THEN
          CALL MZPUSH(IXSTOR,JTM,3-IQ(JTM-2),0,' ')
       ENDIF
-      CALL MZBOOK(IXCONS,JTCKOV,JTM,-3,'CKOV',4,4,NPCKOV+1,3,-1)
+      CALL MZBOOK(IXCONS,JTCKOV,JTM,-3,'CKOV',5,5,NPCKOV+1,3,-1)
       CALL MZBOOK(IXCONS,JABSCO,JTCKOV,-1,'ABSC',0,0,NPCKOV,3,-1)
       CALL MZBOOK(IXCONS,JEFFIC,JTCKOV,-2,'EFFI',0,0,NPCKOV,3,-1)
       IF(RINDEX(1).GE.1.) THEN
          CALL MZBOOK(IXCONS,JINDEX,JTCKOV,-3,'RIND',0,0,NPCKOV,3,-1)
          CALL MZBOOK(IXCONS,JCURIN,JTCKOV,-4,'ABCU',0,0,NPCKOV,3,-1)
+         CALL MZBOOK(IXCONS,JDERIV,JTCKOV,-5,'DERI',0,0,NPCKOV,3,-1)
       ENDIF
       Q(JTCKOV+1)=NPCKOV
       DO 10 J=1, NPCKOV
@@ -89,6 +90,22 @@ C.
             ELSE
                Q(JCURIN+J)=0.
             ENDIF
+         ENDIF
+         IF (J .GT. 1 .AND. J .LT. NPCKOV) THEN
+            Q(JDERIV + J) = (RINDEX(J+1) - RINDEX(J-1)) 
+     +           / (PPCKOV(J+1) - PPCKOV(J-1))
+         ELSEIF (J .EQ. 1) THEN
+            Q(JDERIV + 1) = (RINDEX(2) - RINDEX(1)) 
+     +           / (PPCKOV(2) - PPCKOV(1))
+         ELSEIF (J .EQ. NPCKOV) THEN
+            Q(JDERIV + NPCKOV) = (RINDEX(NPCKOV) - RINDEX(NPCKOV-1)) 
+     +           / (PPCKOV(NPCKOV) - PPCKOV(NPCKOV-1))
+            
+         ENDIF
+         IF (RINDEX(J) .GT. 0.) THEN
+            Q(JDERIV + J) = Q(JDERIV + J) * PPCKOV(J) / RINDEX(J)
+         ELSE
+            Q(JDERIV + J) = 0.
          ENDIF
    10 CONTINUE
 *
