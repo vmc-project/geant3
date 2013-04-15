@@ -343,7 +343,7 @@ C
                VECT(1)=VOUT(1)
                VECT(2)=VOUT(2)
                VECT(3)=VOUT(3)
-               GOTO 110
+               GOTO 71
             ENDIF
          ENDIF
       ELSE
@@ -352,7 +352,7 @@ C
    70    CONTINUE
       ENDIF
 *
-      STEP = STEPT + STEP
+   71 STEP = STEPT + STEP
       SLENG = SLENG +STEP
 *
 * *** Update time of flight 
