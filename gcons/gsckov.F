@@ -90,22 +90,23 @@ C.
             ELSE
                Q(JCURIN+J)=0.
             ENDIF
-         ENDIF
-         IF (J .GT. 1 .AND. J .LT. NPCKOV) THEN
-            Q(JDERIV + J) = (RINDEX(J+1) - RINDEX(J-1)) 
-     +           / (PPCKOV(J+1) - PPCKOV(J-1))
-         ELSEIF (J .EQ. 1) THEN
-            Q(JDERIV + 1) = (RINDEX(2) - RINDEX(1)) 
-     +           / (PPCKOV(2) - PPCKOV(1))
-         ELSEIF (J .EQ. NPCKOV) THEN
-            Q(JDERIV + NPCKOV) = (RINDEX(NPCKOV) - RINDEX(NPCKOV-1)) 
-     +           / (PPCKOV(NPCKOV) - PPCKOV(NPCKOV-1))
-            
-         ENDIF
-         IF (RINDEX(J) .GT. 0.) THEN
-            Q(JDERIV + J) = Q(JDERIV + J) * PPCKOV(J) / RINDEX(J)
-         ELSE
-            Q(JDERIV + J) = 0.
+        
+            IF (J .GT. 1 .AND. J .LT. NPCKOV) THEN
+               Q(JDERIV + J) = (RINDEX(J+1) - RINDEX(J-1)) 
+     +              / (PPCKOV(J+1) - PPCKOV(J-1))
+            ELSEIF (J .EQ. 1) THEN
+               Q(JDERIV + 1) = (RINDEX(2) - RINDEX(1)) 
+     +              / (PPCKOV(2) - PPCKOV(1))
+            ELSEIF (J .EQ. NPCKOV) THEN
+               Q(JDERIV + NPCKOV) = (RINDEX(NPCKOV) - RINDEX(NPCKOV-1)) 
+     +              / (PPCKOV(NPCKOV) - PPCKOV(NPCKOV-1))
+               
+            ENDIF
+            IF (RINDEX(J) .GT. 0.) THEN
+               Q(JDERIV + J) = Q(JDERIV + J) * PPCKOV(J) / RINDEX(J)
+            ELSE
+               Q(JDERIV + J) = 0.
+            ENDIF
          ENDIF
    10 CONTINUE
 *
