@@ -85,8 +85,8 @@ void TG3Application::InitMC(const char* /*setup*/)
   // Initialize MC.
   //
 
-  gMC->Init();
-  gMC->BuildPhysics();  
+  TVirtualMC::GetMC()->Init();
+  TVirtualMC::GetMC()->BuildPhysics();  
 }
 
 //_____________________________________________________________________________
@@ -97,7 +97,7 @@ void TG3Application::RunMC(Int_t /*nofEvents*/)
   //
 
 
-  //gMC->ProcessRun(nofEvents);
+  //TVirtualMC::GetMC()->ProcessRun(nofEvents);
   //FinishRun();
 }
 

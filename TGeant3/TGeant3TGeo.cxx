@@ -172,11 +172,11 @@ speed - 1% gain (computation of global matrix only when called from gtckov)
 eliminated
 
 I removed the option WITHBOTH and fixed a problem in VolId() - in the
-last version of AliRoot some detector was calling gMC->VolId(name) with
+last version of AliRoot some detector was calling TVirtualMC::GetMC()->VolId(name) with
 a name containing a blank at the end and now all volumes have the blanks
 supressed. Fixing this I noticed that there are 4 detectors that in
 their StepManager() they call at each step things like:
-  if (gMC->CurrentVolId(copy) == gMC->VolId("RICH")) ...
+  if (TVirtualMC::GetMC()->CurrentVolId(copy) == TVirtualMC::GetMC()->VolId("RICH")) ...
 Incredible !!! In G3 native this search by name does not penalize so
 much since names are converted to Int_t and the volume bank is looked
 for this Int_t. In TGeo we cannot do this since we support long names so
@@ -345,7 +345,7 @@ Ivana suggested corrections.
 
 Revision 1.5  2003/01/23 11:34:04  brun
 In gustep, replace
-   gMC->TrackPosition(x,y,z);
+   TVirtualMC::GetMC()->TrackPosition(x,y,z);
 by
    geant3->TrackPosition(x,y,z);
 

@@ -298,11 +298,11 @@ speed - 1% gain (computation of global matrix only when called from gtckov)
 eliminated
 
 I removed the option WITHBOTH and fixed a problem in VolId() - in the
-last version of AliRoot some detector was calling gMC->VolId(name) with
+last version of AliRoot some detector was calling TVirtualMC::GetMC()->VolId(name) with
 a name containing a blank at the end and now all volumes have the blanks
 supressed. Fixing this I noticed that there are 4 detectors that in
 their StepManager() they call at each step things like:
-  if (gMC->CurrentVolId(copy) == gMC->VolId("RICH")) ...
+  if (TVirtualMC::GetMC()->CurrentVolId(copy) == TVirtualMC::GetMC()->VolId("RICH")) ...
 Incredible !!! In G3 native this search by name does not penalize so
 much since names are converted to Int_t and the volume bank is looked
 for this Int_t. In TGeo we cannot do this since we support long names so
@@ -472,7 +472,7 @@ Ivana suggested corrections.
 
 Revision 1.5  2003/01/23 11:34:04  brun
 In gustep, replace
-   gMC->TrackPosition(x,y,z);
+   TVirtualMC::GetMC()->TrackPosition(x,y,z);
 by
    geant3->TrackPosition(x,y,z);
 
@@ -3945,7 +3945,7 @@ void  TGeant3::Grndm(Float_t *rvec, Int_t len) const
   //
   //  To set/retrieve the seed of the random number generator
   //
-  TRandom* r=gMC->GetRandom();
+  TRandom* r=TVirtualMC::GetMC()->GetRandom();
   for(Int_t i=0; i<len; rvec[i++]=r->Rndm()) {};
 }
 
@@ -6588,7 +6588,7 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
   //      tof     Particle time of flight in seconds
   //
 
-  TParticle* track = gMC->GetStack()->PopNextTrack(mtrack);
+  TParticle* track = TVirtualMC::GetMC()->GetStack()->PopNextTrack(mtrack);
 
   if (track) {
     // fill G3 arrays
@@ -6605,7 +6605,7 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
     polar[0] = pol.X();
     polar[1] = pol.Y();
     polar[2] = pol.Z();
-    ipart = gMC->IdFromPDG(track->GetPdgCode());
+    ipart = TVirtualMC::GetMC()->IdFromPDG(track->GetPdgCode());
   }
 
   mtrack++;

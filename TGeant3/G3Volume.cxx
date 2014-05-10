@@ -141,7 +141,7 @@ G3Volume::G3Volume(const G3Volume& volume)
 void G3Volume::Draw(Option_t *)
 {
 // Wraps the geant Gdraw
-    TGeant3* geant3 = (TGeant3*)gMC;
+    TGeant3* geant3 = (TGeant3*)TVirtualMC::GetMC();
     geant3->Gsatt(fName,"seen", fSeen);
     
     if (fHide) {
@@ -172,7 +172,7 @@ void G3Volume::Draw(Option_t *)
 void G3Volume::DrawSpec()
 {
 // Wraps the Geant DrawSpec
-    TGeant3* geant3 = (TGeant3*)gMC;
+    TGeant3* geant3 = (TGeant3*)TVirtualMC::GetMC();
     geant3->Gsatt(fName,"seen", fSeen);
     
     if (fHide) {

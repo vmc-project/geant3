@@ -242,8 +242,8 @@ void gudcay()
 //
 
     // set decay table
-    if (!gMC->GetDecayer()) return;
-    gMC->GetDecayer()->ForceDecay();
+    if (!TVirtualMC::GetMC()->GetDecayer()) return;
+    TVirtualMC::GetMC()->GetDecayer()->ForceDecay();
 
 // Initialize 4-momentum vector
     Int_t ipart = geant3->Gckine()->ipart;
@@ -258,13 +258,13 @@ void gudcay()
 
 
 // Convert from geant to lund particle code
-    Int_t iplund=gMC->PDGFromId(ipart);
+    Int_t iplund=TVirtualMC::GetMC()->PDGFromId(ipart);
 
 // Particle list
     static TClonesArray *particles;
     if(!particles) particles=new TClonesArray("TParticle",1000);
 // Decay
-    gMC->GetDecayer()->Decay(iplund, &p);
+    TVirtualMC::GetMC()->GetDecayer()->Decay(iplund, &p);
 
 // Fetch Particles
     Int_t np = geant3->GetDecayer()->ImportParticles(particles);
@@ -296,7 +296,7 @@ void gudcay()
 // Decay products are deselected
 //
 	if (ks != 1) {
-	    Double_t lifeTime = gMC->GetDecayer()->GetLifetime(kf);
+	    Double_t lifeTime = TVirtualMC::GetMC()->GetDecayer()->GetLifetime(kf);
 	    if (lifeTime > (Double_t) 1.e-15) {
 		if (ipF > 0) for (j=ipF-1; j<ipL; j++) pFlag[j]=1;
 	    } else{
@@ -318,7 +318,7 @@ void gudcay()
 	(geant3->Gcking()->gkin[index][1]) = iparticle->Py();
 	(geant3->Gcking()->gkin[index][2]) = iparticle->Pz();
 	(geant3->Gcking()->gkin[index][3]) = iparticle->Energy();
-	Int_t ilu = gMC->IdFromPDG(kf);
+	Int_t ilu = TVirtualMC::GetMC()->IdFromPDG(kf);
 
 // particle type
 	(geant3->Gcking()->gkin[index][4]) = Float_t(ilu);
@@ -585,8 +585,8 @@ void gufld(Float_t *x, Float_t *b)
 void gufld(Double_t *xdouble, Double_t *bdouble)
 {
 #endif
-  if ( gMC->GetMagField() ) {
-    gMC->GetMagField()->Field(xdouble,bdouble);
+  if ( TVirtualMC::GetMC()->GetMagField() ) {
+    TVirtualMC::GetMC()->GetMagField()->Field(xdouble,bdouble);
   }
   else {
     static Bool_t warn = true;
@@ -750,7 +750,7 @@ void eustep(){
    }
 
     // --- Particle leaving the setup ?
-   if (!gMC->IsTrackOut()) {
+   if (!TVirtualMC::GetMC()->IsTrackOut()) {
       TVirtualMCApplication *app = TVirtualMCApplication::Instance();
       app->GeaneStepping();
    }
@@ -777,15 +777,15 @@ void gustep()
   static TMCProcess pProc;
 
   TVirtualMCApplication *app = TVirtualMCApplication::Instance();
-  TVirtualMCStack* stack = gMC->GetStack();
+  TVirtualMCStack* stack = TVirtualMC::GetMC()->GetStack();
   //     Stop particle if outside user defined tracking region
   Double_t x, y, z, rmax;
   geant3->TrackPosition(x,y,z);
 
-  if (gMC->IsCollectTracks()) {
+  if (TVirtualMC::GetMC()->IsCollectTracks()) {
      Int_t nstep = geant3->Gctrak()->nstep;
-     Int_t cpdg = gMC->PDGFromId(geant3->Gckine()->ipart);
-     Bool_t isnew = kFALSE; // gMC->IsNewTrack() returns true just for new used indices
+     Int_t cpdg = TVirtualMC::GetMC()->PDGFromId(geant3->Gckine()->ipart);
+     Bool_t isnew = kFALSE; // TVirtualMC::GetMC()->IsNewTrack() returns true just for new used indices
      if (nstep==0) isnew = kTRUE;
      Int_t cid = stack->GetCurrentTrackNumber();
      Int_t mid = stack->GetCurrentParentTrackNumber();
@@ -832,17 +832,17 @@ void gustep()
   rmax = app->TrackingRmax();
   if (x*x+y*y > rmax*rmax ||
       TMath::Abs(z) > app->TrackingZmax()) {
-	gMC->StopTrack();
+	TVirtualMC::GetMC()->StopTrack();
   }
 
   // --- Add new created particles
-  if (gMC->NSecondaries() > 0) {
-    pProc=gMC->ProdProcess(0);
+  if (TVirtualMC::GetMC()->NSecondaries() > 0) {
+    pProc=TVirtualMC::GetMC()->ProdProcess(0);
     for (jk = 0; jk < geant3->Gcking()->ngkine; ++jk) {
       ipp = Int_t (geant3->Gcking()->gkin[jk][4]+0.5);
       // --- Skip neutrinos!
       if (ipp != 4 || !(geant3->SkipNeutrinos())) {
-        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),gMC->PDGFromId(ipp), geant3->Gcking()->gkin[jk],
+        geant3->SetTrack(1,stack->GetCurrentTrackNumber(),TVirtualMC::GetMC()->PDGFromId(ipp), geant3->Gcking()->gkin[jk],
 			 geant3->Gckin3()->gpos[jk], polar,geant3->Gctrak()->tofg, pProc, nt, 1., 0);
       }
     }
@@ -853,7 +853,7 @@ void gustep()
       mom[0]=geant3->Gckin2()->xphot[jk][3]*geant3->Gckin2()->xphot[jk][6];
       mom[1]=geant3->Gckin2()->xphot[jk][4]*geant3->Gckin2()->xphot[jk][6];
       mom[2]=geant3->Gckin2()->xphot[jk][5]*geant3->Gckin2()->xphot[jk][6];
-      geant3->SetTrack(1, stack->GetCurrentTrackNumber(), gMC->PDGFromId(50),
+      geant3->SetTrack(1, stack->GetCurrentTrackNumber(), TVirtualMC::GetMC()->PDGFromId(50),
 		       mom,                             //momentum
 		       geant3->Gckin2()->xphot[jk],     //position
 		       &geant3->Gckin2()->xphot[jk][7], //polarisation
@@ -862,7 +862,7 @@ void gustep()
       }
   }
   // --- Particle leaving the setup ?
-  if (!gMC->IsTrackOut()) app->Stepping();
+  if (!TVirtualMC::GetMC()->IsTrackOut()) app->Stepping();
 
   // --- Standard GEANT debug routine
   //g3pcxyz();
