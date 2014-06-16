@@ -42,15 +42,8 @@ set(${PROJECT_NAME}_VERSION
 #--- Options -------------------------------------------------------------------
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
 
-#--- Fortran compiler definition -----------------------------------------------
-# TODO: make this using CMake definitions
-#message(STATUS "CMAKE_FORTRAN_COMPILER ${CMAKE_FORTRAN_COMPILER}")
-#set(FORTRAN_COMPILER gfortran)
-#set(FORTRAN_COMPILER_FLAGS -O2 -g -fno-second-underscore)
+#--- Enable Fortran ------------------------------------------------------------
 enable_language(Fortran)
-set(CMAKE_Fortran_COMPILER  gfortran)
-set(CMAKE_CC_COMPILER  gcc)
-set(CMAKE_CXX_COMPILER  g++)
 
 #--- Find required packages ----------------------------------------------------
 find_package(ROOT REQUIRED)

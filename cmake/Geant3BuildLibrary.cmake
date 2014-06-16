@@ -65,8 +65,7 @@ list(APPEND fortran_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/rdmin.F)
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndm.F)
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndmq.F)
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/erdecks/eustep.F)
-
-message(STATUS "fortran_sources ${fortran_sources}")
+#message(STATUS "fortran_sources ${fortran_sources}")
        
 # C sources
 set(c_sources)
@@ -78,14 +77,13 @@ endforeach()
 list(APPEND c_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/ishftr.c)
 # Linux specific, the file is kept on macosx, macosx64)
 list(REMOVE_ITEM c_sources ${PROJECT_SOURCE_DIR}/minicern/lnblnk.c)
-
-message(STATUS "c_sources ${c_sources}")
+#message(STATUS "c_sources ${c_sources}")
        
 # C++ sources
 file(GLOB cxx_sources 
      ${PROJECT_SOURCE_DIR}/comad/gcadd.cxx
      ${PROJECT_SOURCE_DIR}/TGeant3/*.cxx)
-message(STATUS "cxx_sources ${cxx_sources}")
+#message(STATUS "cxx_sources ${cxx_sources}")
        
 #-------------------------------------------------------------------------------
 # Locate headers for this project
@@ -93,8 +91,23 @@ message(STATUS "cxx_sources ${cxx_sources}")
 file(GLOB headers ${PROJECT_SOURCE_DIR}/TGeant3/*.h)
 
 #---Add definitions-------------------------------------------------------------
-# TODO: make this properly !!
-add_definitions(-DCERNLIB_LXIA64 -DCERNLIB_BLDLIB -DCERNLIB_CZ -DCERNLIB_GFORTRAN)
+add_definitions(-DCERNLIB_LXIA64 -DCERNLIB_BLDLIB -DCERNLIB_CZ)
+# Architecture dependent not ported flags:
+# -DCERNLIB_LINUX (linux, linuxx8664icc, linuxicc, macosx, macosxxlc, macosicc)
+# -DCERNLIB_PPC (macosx64, macosxxlc, macosicc)
+# -DCERNLIB_UNIX (alphagcc)
+# -DCERNLIB_DECS (alphagcc, alphacxx6)
+# -DCERNLIB_SUN (solarisCC5)
+# -DCERNLIB_HPUX (hpuxacc)
+if (${CMAKE_Fortran_COMPILER} MATCHES gfortran+)
+  add_definitions(-DCERNLIB_GFORTRAN)
+endif()
+if (${CMAKE_Fortran_COMPILER} MATCHES gfortran+)
+  add_definitions(-DCERNLIB_GFORTRAN)
+endif()
+if (${CMAKE_Fortran_COMPILER} MATCHES g95+)
+  add_definitions(-DCERNLIB_G95)
+endif()
 
 #---Add library-----------------------------------------------------------------
 add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources} geant3vmcDict.cxx ${headers})
