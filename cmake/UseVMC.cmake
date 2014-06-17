@@ -32,12 +32,6 @@ if(Geant4_FOUND)
   if(Geant4VMC_FOUND)
     include_directories(${Geant4VMC_INCLUDE_DIRS})
     set(VMC_LIBRARIES ${VMC_LIBRARIES} ${Geant4VMC_LIBRARIES})
-    # currently G4Root is not optional in Geant4 VMC
-    set(VMC_WITH_G4Root ON)
-    # set use VGM according to USE_VGM environment variable
-    if(VGM_FOUND}) 
-      set(VMC_WITH_VGM ON)
-    endif()
   endif(Geant4VMC_FOUND)
 
   if(G4Root_FOUND)

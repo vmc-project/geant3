@@ -14,8 +14,9 @@
 # I. Hrivnacova, 26/02/2014
 
 #---Options---------------------------------------------------------------------
-option(VMC_WITH_GEANT4   "Build with Geant4" OFF)
-option(VMC_WITH_GEANT3   "Build with Geant3" OFF)
+option(VMC_WITH_Geant4   "Build with Geant4" OFF)
+option(VMC_WITH_Geant3   "Build with Geant3" OFF)
+option(VMC_WITH_MTRoot   "Build with MTRoot" ON)
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
 
 #---Find required packages------------------------------------------------------
@@ -29,7 +30,12 @@ find_package(ROOT REQUIRED)
 find_package(MTRoot REQUIRED)
 
 # Geant4 
-if(VMC_WITH_GEANT4)
+if(VMC_WITH_Geant4)
+  # External G4Root (if required)
+  if (Geant4VMC_USE_EXTERN_G4Root)
+      find_package(G4Root REQUIRED)
+  endif()
+
   # Geant4VMC  
   # (it includes also Geant4 configuration options used in Geant4 VMC installation)
   set(Geant4VMC_DIR "" CACHE PATH "Directory where Geant4VMC is installed")
@@ -48,6 +54,13 @@ if(VMC_WITH_GEANT4)
   endif()
   find_package(Geant4 REQUIRED ${_components})
   add_definitions(-DUSE_GEANT4)
+ 
+  # G4Root
+  if (Geant4VMC_USE_G4Root)
+    if (NOT G4Root_FOUND)
+      find_package(G4Root REQUIRED)
+    endif()
+  endif()
 
   # VGM
   if (Geant4VMC_USE_VGM)
@@ -56,10 +69,15 @@ if(VMC_WITH_GEANT4)
 endif()
 
 # Geant3
-if(VMC_WITH_GEANT3)
+if(VMC_WITH_Geant3)
   find_package(Geant3 REQUIRED)
   #PYTHIA6
   find_package(Pythia6 REQUIRED)
+endif()
+
+# MTRoot
+if(VMC_WITH_MTRoot)
+  find_package(MTRoot REQUIRED)
 endif()
 
 # If all required packages above were found we can update VMC_FOUND
