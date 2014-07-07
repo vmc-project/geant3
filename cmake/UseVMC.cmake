@@ -15,49 +15,24 @@
 
 #message(STATUS "Processing UseVMC.cmake")
 
-if (NOT VMC_FOUND)
-  find_package(VMC REQUIRED)
-endif(NOT VMC_FOUND)
+# ROOT (required)
+if (NOT ROOT_FOUND)
+  find_package(ROOT REQUIRED)
+endif(NOT ROOT_FOUND)
+
+# MTRoot (optional)
+if(VMC_WITH_MTRoot)
+  if (NOT MTRoot_FOUND)
+    find_package(MTRoot REQUIRED)
+  endif(NOT MTRoot_FOUND)
+endif(VMC_WITH_MTRoot)
+#find_package(MTRoot REQUIRED)
 
 set(VMC_LIBRARIES)
 
 if(ROOT_FOUND)
   include_directories(${ROOT_INCLUDE_DIRS})
 endif(ROOT_FOUND)
-
-if(Geant4_FOUND)
-  add_definitions(-DUSE_GEANT4) 
-  include(${Geant4_USE_FILE})
-  
-  if(Geant4VMC_FOUND)
-    include_directories(${Geant4VMC_INCLUDE_DIRS})
-    set(VMC_LIBRARIES ${VMC_LIBRARIES} ${Geant4VMC_LIBRARIES})
-  endif(Geant4VMC_FOUND)
-
-  if(G4Root_FOUND)
-    set(VMC_LIBRARIES ${VMC_LIBRARIES} ${G4Root_LIBRARIES})
-  endif(G4Root_FOUND)
-
-  if(VGM_FOUND)
-    set(VMC_LIBRARIES ${VMC_LIBRARIES} ${VGM_LIBRARIES})
-  endif(VGM_FOUND)
-
-  set(VMC_LIBRARIES ${VMC_LIBRARIES} ${Geant4_LIBRARIES})
-
-endif(Geant4_FOUND)
-
-if(Geant3_FOUND)
-  add_definitions(-DUSE_GEANT3) 
-  include_directories(${Geant3_INCLUDE_DIRS})
-  
-  #Pythia6
-  if(Pythia6_FOUND)
-    set(VMC_LIBRARIES ${VMC_LIBRARIES} ${Pythia6_LIBRARIES} ${Geant3_LIBRARIES})
-  else()
-    set(VMC_LIBRARIES ${Geant3_LIBRARIES} ${VMC_LIBRARIES})
-  endif(Pythia6_FOUND)
-    
-endif(Geant3_FOUND)
 
 # MTRoot
 if (MTRoot_FOUND)
