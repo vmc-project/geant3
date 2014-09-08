@@ -22,6 +22,7 @@
 # ROOT_FOUND          If ROOT is found
 # ROOT_INCLUDE_DIRS   PATH to the include directories
 # ROOT_LIBRARIES      the libraries needed to use ROOT
+# ROOT_FOUND_VERSION  ROOT version number with removed separation characters
 
 #message(STATUS "Looking for ROOT ...")
 
@@ -69,6 +70,13 @@ if(ROOT_CONFIG_EXECUTABLE)
     OUTPUT_VARIABLE ROOT_LIBRARIES
     OUTPUT_STRIP_TRAILING_WHITESPACE)
     set (ROOT_LIBRARIES ${ROOT_LIBRARIES} -lGeom)
+
+  # Extract ROOT_FOUND_VERSION easier to compare in cmake
+  string(SUBSTRING ${ROOT_VERSION} 0 1 ROOT_MAJOR_VERSION)
+  string(SUBSTRING ${ROOT_VERSION} 2 2 ROOT_MINOR_VERSION)
+  string(SUBSTRING ${ROOT_VERSION} 5 2 ROOT_PATCH_VERSION)
+  MATH(EXPR ROOT_FOUND_VERSION
+       "${ROOT_MAJOR_VERSION}*10000 + ${ROOT_MINOR_VERSION}*100 + ${ROOT_PATCH_VERSION}")
 endif()
 
 # If search for root-config failed try to use directly user paths if set
@@ -89,6 +97,10 @@ if (NOT ROOT_FOUND)
 endif()    
 
 if(ROOT_FOUND)
+  # ROOT 6 requires C++11 support
+  if (ROOT_FOUND_VERSION GREATER 59999)
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  endif()
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
   if(NOT ROOT_FIND_QUIETLY)
     message(STATUS "Found ROOT ${ROOT_VERSION} in ${ROOT_PREFIX}")
@@ -104,6 +116,7 @@ mark_as_advanced(ROOT_INCLUDE_DIRS)
 mark_as_advanced(ROOT_LIBRARIES)
 mark_as_advanced(ROOT_LIBRARY_DIR)
 mark_as_advanced(ROOT_CONFIG_EXECUTABLE)
+mark_as_advanced(ROOT_FOUND_VERSION)
 
 #----------------------------------------------------------------------------
 # Dictionary generation
@@ -118,7 +131,7 @@ find_program(ROOTCINT_EXECUTABLE rootcint PATHS
 #---------------------------------------------------------------------------------------------------
 #---ROOT_GENERATE_DICTIONARY( dictionary headerfiles LINKDEF linkdef OPTIONS opt1 opt2 ...)
 #---------------------------------------------------------------------------------------------------
-function(ROOT_GENERATE_DICTIONARY dictionary)
+function(ROOT_GENERATE_DICTIONARY libname with_rootmap)
   PARSE_ARGUMENTS(ARG "LINKDEF;OPTIONS" "" ${ARGN})
   #---Get the list of header files-------------------------
   set(headerfiles)
@@ -149,8 +162,12 @@ function(ROOT_GENERATE_DICTIONARY dictionary)
   foreach( d ${incdirs})    
    set(includedirs ${includedirs} -I${d})
   endforeach()
-  # filter-out -I/usr/include
-  string(REPLACE "-I/usr/include" ""  includedirs "${includedirs}")
+  # filter-out directories which make problems to Cint processing
+  list(REMOVE_ITEM includedirs "-I/usr/include/QtCore")
+  list(REMOVE_ITEM includedirs "-I/usr/include/QtGui")
+  list(REMOVE_ITEM includedirs "-I/usr/include/QtOpenGL")
+  list(REMOVE_ITEM includedirs "-I/usr/include")
+
   #---Get the list of definitions---------------------------
   get_directory_property(defs COMPILE_DEFINITIONS)
   foreach( d ${defs})
@@ -170,15 +187,18 @@ function(ROOT_GENERATE_DICTIONARY dictionary)
       endif()
     endif()
   endforeach()
-  #---call rootcint------------------------------------------
-  #add_custom_command(OUTPUT ${dictionary}.cxx ${dictionary}.h
-  #                   COMMAND ${ROOTCINT_EXECUTABLE} -cint -f  ${dictionary}.cxx 
-  #                      -c ${ARG_OPTIONS} ${definitions} ${includedirs} ${rheaderfiles} ${_linkdef} 
-  #                   DEPENDS ${headerfiles} ${_linkdef} ${ROOTCINTDEP})
-  add_custom_command(OUTPUT ${dictionary}.cxx ${dictionary}.h
-                     COMMAND ${ROOTCINT_EXECUTABLE} -cint -f  ${dictionary}.cxx 
-                         -c ${ARG_OPTIONS} ${definitions} ${includedirs} ${rheaderfiles} ${_linkdef} 
-                     DEPENDS ${headerfiles} ${_linkdef} ${ROOTCINTDEP})
+  #---call rootcint / cling --------------------------------
+  set(OUTPUT_FILES ${libname}_dict.cxx ${libname}_dict.h)
+  set(EXTRA_DICT_PARAMETERS "")
+  if (ROOT_FOUND_VERSION GREATER 59999)
+    set(OUTPUT_FILES ${OUTPUT_FILES} ${libname}_rdict.pcm ${libname}.rootmap)
+    set(EXTRA_DICT_PARAMETERS ${EXTRA_DICT_PARAMETERS}
+        -inlineInputHeader -rmf ${libname}.rootmap
+        -rml ${libname}${CMAKE_SHARED_LIBRARY_SUFFIX})
+  endif()
+  add_custom_command(
+    OUTPUT ${OUTPUT_FILES}
+    COMMAND ${ROOTCINT_EXECUTABLE} -cint -f ${libname}_dict.cxx ${EXTRA_DICT_PARAMETERS}
+      -c ${ARG_OPTIONS} ${definitions} ${includedirs} ${rheaderfiles} ${_linkdef}
+      DEPENDS ${headerfiles} ${_linkdef} ${ROOTCINTDEP})
 endfunction()
-
-

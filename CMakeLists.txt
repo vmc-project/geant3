@@ -49,7 +49,7 @@ enable_language(Fortran)
 find_package(ROOT REQUIRED)
 
 #--- Utility to defined installation lib directory -----------------------------
-include(Geant3InstallLibDir)
+include(VMCInstallLibDir)
 
 #--- Project library -----------------------------------------------------------
 include(Geant3BuildLibrary)

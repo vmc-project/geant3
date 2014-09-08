@@ -15,32 +15,36 @@
 
 #message(STATUS "Processing UseVMC.cmake")
 
-# ROOT (required)
-if (NOT ROOT_FOUND)
-  find_package(ROOT REQUIRED)
-endif(NOT ROOT_FOUND)
-
-# MTRoot (optional)
-if(VMC_WITH_MTRoot)
-  if (NOT MTRoot_FOUND)
-    find_package(MTRoot REQUIRED)
-  endif(NOT MTRoot_FOUND)
-endif(VMC_WITH_MTRoot)
-#find_package(MTRoot REQUIRED)
+if (NOT VMC_FOUND)
+  find_package(VMC REQUIRED)
+endif()
 
 set(VMC_LIBRARIES)
 
-if(ROOT_FOUND)
-  include_directories(${ROOT_INCLUDE_DIRS})
-endif(ROOT_FOUND)
+# ROOT (required)
+include_directories(${ROOT_INCLUDE_DIRS})
 
-# MTRoot
-if (MTRoot_FOUND)
-  include_directories(${MTRoot_INCLUDE_DIRS})
-  set(VMC_LIBRARIES ${MTRoot_LIBRARIES} ${VMC_LIBRARIES})
-endif(MTRoot_FOUND)
+# MTRoot (optional)
+if (VMC_WITH_MTRoot)
+  # MTRoot
+  if (MTRoot_FOUND)
+     # build outside Geant4VMC
+    include_directories(${MTRoot_INCLUDE_DIRS})
+    set(MC_LIBRARIES ${MTRoot_LIBRARIES} ${MC_LIBRARIES})
+  else()
+     # build inside Geant4VMC
+     # includes are already defined
+     include_directories(${Geant4VMC_SOURCE_DIR}/mtroot/include)
+     set(MC_LIBRARIES ${MC_LIBRARIES} mtroot)
+  endif(MTRoot_FOUND)
+endif(VMC_WITH_MTRoot)
 
 # Finally add Root libraries
 set(VMC_LIBRARIES ${VMC_LIBRARIES} ${ROOT_LIBRARIES} -lVMC -lEG)
+
+# Utility to defined installation lib directory
+if("${CMAKE_INSTALL_LIBDIR}" MATCHES "")
+  include(VMCInstallLibDir)
+endif()
 
 #message(STATUS "VMC_LIBRARIES ${VMC_LIBRARIES}")

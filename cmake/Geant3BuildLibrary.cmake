@@ -32,7 +32,8 @@ include_directories(
 # Generate Root dictionaries
 #
 ROOT_GENERATE_DICTIONARY(
-  geant3vmcDict
+  ${CMAKE_SHARED_LIBRARY_PREFIX}geant321
+  with_rootmap
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/G3Material.h
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/G3Medium.h
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/G3Node.h
@@ -110,7 +111,7 @@ if (${CMAKE_Fortran_COMPILER} MATCHES g95+)
 endif()
 
 #---Add library-----------------------------------------------------------------
-add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources} geant3vmcDict.cxx ${headers})
+add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources} ${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict.cxx ${headers})
 target_link_libraries(geant321 ${ROOT_LIBRARIES} -lVMC -lEG)
 
 #----Installation---------------------------------------------------------------

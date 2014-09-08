@@ -13,7 +13,7 @@
 # I. Hrivnacova, 13/06/2014
 
 # Copy the custom cmake modules into the build tree
-foreach(_mod CMakeMacroParseArguments UseVMC UseMC)
+foreach(_mod CMakeMacroParseArguments UseVMC UseMC VMCInstallLibDir)
   configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/${_mod}.cmake
     ${PROJECT_BINARY_DIR}/Modules/${_mod}.cmake
