@@ -109,6 +109,10 @@ endif()
 if (${CMAKE_Fortran_COMPILER} MATCHES g95+)
   add_definitions(-DCERNLIB_G95)
 endif()
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  # using Clang
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
+endif()
 
 #---Add library-----------------------------------------------------------------
 add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources} ${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict.cxx ${headers})
