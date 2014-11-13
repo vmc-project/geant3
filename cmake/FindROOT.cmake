@@ -38,7 +38,7 @@ set(ROOT_FOUND FALSE)
 # or path defined via ROOTSYS environment variable
 
 find_program(ROOT_CONFIG_EXECUTABLE root-config PATHS
-  $ROOT_DIR/bin
+  ${ROOT_DIR}/bin
   $ENV{ROOTSYS}/bin
   )
 
