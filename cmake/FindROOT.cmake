@@ -122,7 +122,7 @@ mark_as_advanced(ROOT_FOUND_VERSION)
 # Dictionary generation
 include(CMakeMacroParseArguments)
 find_program(ROOTCINT_EXECUTABLE rootcint PATHS
-  $ROOT_DIR/bin
+  ${ROOT_DIR}/bin
   $ENV{ROOTSYS}/bin
 )
 
