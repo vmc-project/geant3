@@ -30,12 +30,12 @@ if (VMC_WITH_MTRoot)
   if (MTRoot_FOUND)
      # build outside Geant4VMC
     include_directories(${MTRoot_INCLUDE_DIRS})
-    set(MC_LIBRARIES ${MTRoot_LIBRARIES} ${MC_LIBRARIES})
+    set(VMC_LIBRARIES ${MTRoot_LIBRARIES} ${VMC_LIBRARIES})
   else()
      # build inside Geant4VMC
      # includes are already defined
      include_directories(${Geant4VMC_SOURCE_DIR}/mtroot/include)
-     set(MC_LIBRARIES ${MC_LIBRARIES} mtroot)
+     set(VMC_LIBRARIES ${VMC_LIBRARIES} mtroot)
   endif(MTRoot_FOUND)
 endif(VMC_WITH_MTRoot)
 
