@@ -57,3 +57,6 @@ include(Geant3BuildLibrary)
 #--- Build project configuration -----------------------------------------------
 include(Geant3BuildProject)
 
+#--- CPack ----------------- --------------------------------------------------
+include(Geant3CPack)
+

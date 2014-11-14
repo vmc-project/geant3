@@ -50,8 +50,9 @@ ROOT_GENERATE_DICTIONARY(
 # Locate sources for this project
 #
 set(directories
-    added gbase gcons geocad ggeom gheisha ghits ghrout ghutils giface giopa gkine gparal gphys gscan gstrag gtrak matx55 miface miguti neutron peanut fiface cgpack fluka block comad erdecks erpremc minicern gdraw
-    )
+    added gbase gcons geocad ggeom gheisha ghits ghrout ghutils giface giopa
+    gkine gparal gphys gscan gstrag gtrak matx55 miface miguti neutron peanut
+    fiface cgpack fluka block comad erdecks erpremc minicern gdraw)
 
 # Fortran sources
 set(fortran_sources gcinit.F)
@@ -115,7 +116,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 
 #---Add library-----------------------------------------------------------------
-add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources} ${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict.cxx ${headers})
+add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources}
+            ${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict.cxx ${headers})
 target_link_libraries(geant321 ${ROOT_LIBRARIES} -lVMC -lEG)
 
 #----Installation---------------------------------------------------------------
