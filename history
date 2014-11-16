@@ -1,0 +1,87 @@
+Geant3 tags (history):
+======================
+
+10/07/2014:
+  v1-15b:
+  From M. Kowalski: updated gfluct.F:
+  The changes in ILOSS=5 energy loss model (ALICE-TPC specific):
+  The parameters previously hardwired in the PARAMETER statement are now initialized
+  in the BLOCK DATA. This allows to use the parameters from OCDB in ALICE TPC code.
+  
+  Tested with Root 5.34/04 and 5.34/18 
+
+25/04/2013:
+  v1-15a:
+  Fixed a problem in gtckov.F reported by Maria Patsyuk (PANDA collaboration):  
+  the step length, total step length and tof where not updated when photon
+  gets in a geometrical boundary with a medium without optical properties
+  
+  Tested with Root 5.34/04 and 5.34/05 
+
+28/02/2013:
+  v1-15:
+  Fixed the problem of time of flight for optical photons. 
+  (Geant3 was using the phase velocity instead of the group velocity);
+  reported by M. Patsyuk (GSI)
+  
+  Tested with Root 5.34/04.  
+
+27/03/2012:
+  v1-14:
+  - Increase stack to 300 particles  
+  - Include light (anti)nuclei (Savannah #84396)
+  - In GetSecondary(Int_t isec, Int_t& partPDG, ...): 
+    return the PDG code instead of G3 internal particle ID
+    
+  Tested with Root 5.32/01 and 5.33/02.  
+
+16/03/2012:
+  v1-13:
+  - Include (anti)hypertriton (Savannah #90939)
+  - Fixes:
+    - fix in WriteEuclid
+
+  Tested with Root 5.32/01.  
+
+14/07/2011:
+  v1-12:
+  - Update for Geane 
+    (M. Al-Turanny GSI; Lia Lavezzi, Alberto Rotondi, INFN Pavia)
+  - Adding new TVirtualMC functions in TGeant3:
+    CurrentBoundaryNormal(), GetMaterial() 
+    + clean-up of obsolete functions
+  - Various fixes:
+    - parent track Id in CollectTracks option 
+    - fixes in Geane by Lia Lavezzi et al (r525)  
+    - fix in Gfmate with Double_t arguments
+    - fix in the declaration of common GCONSX
+    - fix in printing of Random seed
+    - fix for compilation with icc
+
+  Tested with Root 5.28/00e and 5.30/00.  
+  
+ For the older versions, ony a table with required ROOT versions was 
+ maintained:
+
+ Version number      CVS tag        Root version
+ -------------------------------------------------------------------
+       1.11           v1-11             5.24/00
+       1.10           v1-10             5.23/02
+       1.9            v1-9              5.17/08
+       1.8            v1-8              5.15/08
+       1.6            v1-6              5.12/00
+       1.5            v1-5              5.11/02
+       1.4            v1-4              5.10/00
+       1.3            v1-3              5.02/00
+       1.2            v1-2              5.01/01
+       1.1            v1-1              4.04/02
+       1.0            v1-0              4.02/00
+       0.8            v0-8              4.01/04
+       0.7            v0-7              4.01/02
+       0.6            v0-6              3.10/02 or 4.00/03
+       0.5            v0-5              3.10/02
+       0.4            not in CVS        3.10/01
+       0.31           v0-31             3.10/01
+       0.3            v-03              3.05/06
+       0.2            v0-2              3.05/03
+       0.1            v0_1              3.03/05
