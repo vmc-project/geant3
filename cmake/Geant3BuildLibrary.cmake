@@ -123,3 +123,11 @@ target_link_libraries(geant321 ${ROOT_LIBRARIES} -lVMC -lEG)
 #----Installation---------------------------------------------------------------
 install(FILES ${headers} DESTINATION include/TGeant3)
 install(TARGETS geant321 EXPORT Geant3Targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# Install dictionary map (only if ROOT 6.x
+if (${ROOT_FOUND_VERSION} GREATER 59999)
+  install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict_rdict.pcm
+    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}geant321.rootmap
+    DESTINATION ${CMAKE_INSTALL_LIBDIR})
+endif()
