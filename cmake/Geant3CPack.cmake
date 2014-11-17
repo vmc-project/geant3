@@ -4,7 +4,7 @@
 # All rights reserved.
 #
 # For the licensing terms see geant4_vmc/LICENSE.
-# Contact: vmc@pcroot.cern.ch
+# Contact: root-vmc@cern.ch
 #-------------------------------------------------
 
 # Configuration file for CMake build for Geant3 with VMC package.

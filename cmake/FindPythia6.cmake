@@ -4,7 +4,7 @@
 # All rights reserved.
 #
 # For the licensing terms see geant4_vmc/LICENSE.
-# Contact: vmc@pcroot.cern.ch
+# Contact: root-vmc@cern.ch
 #-------------------------------------------------
 
 # Adopted from Virtual Geometry Model and ROOT (ROOT_GENERATE_DICTIONARY)
