@@ -1,6 +1,12 @@
 Geant3 tags (history):
 ======================
 
+17/11/2014:
+  Replaced the old build system based on makefiles in root/etc/vmc with CMake.
+  By I. Hrivnacova, IPN Orsay.
+
+  Tested with Root 5.34/23 and 6.02/01
+
 10/07/2014:
   v1-15b:
   From M. Kowalski: updated gfluct.F:
