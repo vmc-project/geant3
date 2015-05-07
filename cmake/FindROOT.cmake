@@ -188,10 +188,10 @@ function(ROOT_GENERATE_DICTIONARY libname with_rootmap)
     endif()
   endforeach()
   #---call rootcint / cling --------------------------------
-  set(OUTPUT_FILES ${libname}_dict.cxx ${libname}_dict.h)
+  set(OUTPUT_FILES ${libname}_dict.cxx)
   set(EXTRA_DICT_PARAMETERS "")
   if (ROOT_FOUND_VERSION GREATER 59999)
-    set(OUTPUT_FILES ${OUTPUT_FILES} ${libname}_rdict.pcm ${libname}.rootmap)
+    set(OUTPUT_FILES ${OUTPUT_FILES} ${libname}_dict_rdict.pcm ${libname}.rootmap)
     set(EXTRA_DICT_PARAMETERS ${EXTRA_DICT_PARAMETERS}
         -inlineInputHeader -rmf ${libname}.rootmap
         -rml ${libname}${CMAKE_SHARED_LIBRARY_SUFFIX})
