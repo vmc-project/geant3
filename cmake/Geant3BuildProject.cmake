@@ -40,6 +40,14 @@ install(DIRECTORY
   COMPONENT Development
 )
 
+# Install examples
+if(Geant3_INSTALL_DATA)
+  install(DIRECTORY
+    ${PROJECT_SOURCE_DIR}/data
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/Geant3-${Geant3_VERSION}
+  )
+endif()
+
 #
 # Install the Geant3Config, Geant3ConfigVersion
 #

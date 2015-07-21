@@ -40,6 +40,7 @@ set(${PROJECT_NAME}_VERSION
     ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
 
 #--- Options -------------------------------------------------------------------
+option(Geant3_INSTALL_DATA "Install data directory" ON)
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
 
 #--- Enable Fortran ------------------------------------------------------------
