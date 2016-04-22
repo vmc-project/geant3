@@ -47,6 +47,15 @@ ROOT_GENERATE_DICTIONARY(
   LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/geant3LinkDef.h)
 
 #-------------------------------------------------------------------------------
+# Make sure a default build type is used
+#
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
+      "Choose the type of build, options are: Debug Release RelWithDebInfo
+       MinSizeRel." FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
+
+#-------------------------------------------------------------------------------
 # Locate sources for this project
 #
 set(directories
@@ -93,7 +102,10 @@ file(GLOB cxx_sources
 file(GLOB headers ${PROJECT_SOURCE_DIR}/TGeant3/*.h)
 
 #---Add definitions-------------------------------------------------------------
+# cernlib settings
 add_definitions(-DCERNLIB_BLDLIB -DCERNLIB_CZ)
+# add flags to make gfortran build stable at -O2
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -finit-local-zero -fno-strict-overflow")
 # Architecture dependent not ported flags:
 # -DCERNLIB_LINUX (linux, linuxx8664icc, linuxicc, macosx, macosxxlc, macosicc)
 # -DCERNLIB_PPC (macosx64, macosxxlc, macosicc)
@@ -117,7 +129,8 @@ if (${CMAKE_Fortran_COMPILER} MATCHES g95+)
 endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   # using Clang
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
+  set(CMAKE_SHARED_LINKER_FLAGS
+      "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup -Wl,-no_compact_unwind")
 endif()
 
 #---Add library-----------------------------------------------------------------
