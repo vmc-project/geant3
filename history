@@ -2,6 +2,18 @@ Geant3 tags (history):
 ======================
 
 17/11/2014:
+  v2-1:
+  - Fixed building Geant3 library with optimization and set the default build mode to RelWithDebInfo 
+    (thanks to S. Wenzel, CERN)
+  - Fixed compilation on 32-bit platforms (thanks to Florian Uhlig, GSI)
+  - Added installing data (thanks to F. Uhlig, GSI)
+  - Fixed the expected names of output-files from rootcint (required by CMake 3.2.x):
+    (thanks to Oliver Freyermuth, Physics Institute of the University of Bonn)
+
+  Tested with Root 5.34/36 and 6.06/02
+
+17/11/2014:
+  v2-0:
   Replaced the old build system based on makefiles in root/etc/vmc with CMake.
   By I. Hrivnacova, IPN Orsay.
 
