@@ -1120,6 +1120,8 @@ public:
   virtual void ProcessEvent();
   virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
+  virtual void SetCollectTracks(Bool_t) {}
+  Bool_t IsCollectTracks() const {return kFALSE;}
 
   //
   virtual void SetColors();
@@ -1207,8 +1209,6 @@ protected:
   Int_t  TransportMethod(TMCParticleType particleType) const;
   TString  ParticleClass(TMCParticleType particleType) const;
   TMCParticleType ParticleType(Int_t itrtyp) const;
-  virtual void SetCollectTracks(Bool_t) {}
-  Bool_t IsCollectTracks() const {return kFALSE;}
 
   enum {kTRIG = BIT(14),
         kSWIT = BIT(15),

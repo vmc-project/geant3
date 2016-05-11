@@ -1082,8 +1082,10 @@ Gconst_t *gconst=0;          //! GCONST common structure
 Gconsx_t *gconsx=0;          //! GCONSX common structure
 Gcjump_t *gcjump=0;          //! GCJUMP common structure
 
-
-
+//
+// TVirtualMCApplication global pointer
+//
+TVirtualMCApplication* vmcApplication =0;
 
 extern "C"  type_of_call void gtonlyg3(Int_t&);
 void (*fginvol)(Float_t*, Int_t&) = 0;
@@ -1121,6 +1123,7 @@ TGeant3::TGeant3()
   // Default constructor
   //
    geant3 = this;
+   vmcApplication = TVirtualMCApplication::Instance();
 }
 
 //______________________________________________________________________
@@ -1152,6 +1155,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
 #endif
 
   geant3 = this;
+  vmcApplication = TVirtualMCApplication::Instance();
 
   if(nwgeant) {
     g3zebra(nwgeant);
@@ -1240,6 +1244,7 @@ void TGeant3::InitGEANE()
   geant3 = this;
   geant3->SetECut(1.);
   geant3->SetClose(0,pf,999.,w1,w2,p1,p2,p3,cl);
+  vmcApplication = TVirtualMCApplication::Instance();
 }
 
 //______________________________________________________________________
