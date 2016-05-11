@@ -590,16 +590,6 @@ void gufld(Double_t *xdouble, Double_t *bdouble)
   if ( geant3->GetMagField() ) {
     geant3->GetMagField()->Field(xdouble,bdouble);
   }
-  else {
-    static Bool_t warn = true;
-    if (warn) {
-      Warning("gufld", "Using deprecated function TVirtualMCApplication::Field().");
-      Warning("gufld", "New TVirtualMagField interface should be used instead.");
-      warn = false;
-    }
-
-    TVirtualMCApplication::Instance()->Field(xdouble,bdouble);
-  }
 
 #ifdef SINGLEFIELD
   for (Int_t j=0; j<3; j++) b[j] = bdouble[j];
