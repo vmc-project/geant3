@@ -50,10 +50,5 @@
 #pragma link C++ class Erwork_t+;
 */
 
-#pragma link C++ class  G3Material+;
-#pragma link C++ class  G3Medium-;
-#pragma link C++ class  G3Node+;
-#pragma link C++ class  G3Volume+;
-
 #endif
 
