@@ -349,9 +349,15 @@ C.
           Y=1.E10
        ENDIF
        P2=AC(7)**2
-       AC(11)=P2*(AC(1)*EXP(-AC(2)*(AC(7)+AC(5)*P2)-
-     1            AC(3)*EXP(-AC(4)*(AC(7)+AC(6)*P2)))-0.045*Y/AC(7))/
-     2            (1+X*Y*AC(7))
+C.     PROTECT AGAINST DIVISION BY ZERO
+       DIVISOR=1+X*Y*AC(7)
+       IF(DIVISOR .EQ. 0) THEN
+        AC(11)=1.E10
+       ELSE
+        AC(11)=P2*(AC(1)*EXP(-AC(2)*(AC(7)+AC(5)*P2)-
+     1             AC(3)*EXP(-AC(4)*(AC(7)+AC(6)*P2)))-0.045*Y/AC(7))/
+     2             DIVISOR
+       ENDIF
        AC(12)=(0.045+X*AC(11))*Y
       ENDIF
       IF(ITYPE .EQ. 4) AC(10)=0.995/G3LANDS(AC(8))
