@@ -1,6 +1,17 @@
 Geant3 tags (history):
 ======================
 
+27/09/2016:
+  v2-2:
+  - Changes for performance optimization (according to suggestion by S, Wenzel, CERN):
+    - Cache pointers to the thread-local static VMC objects
+  - Fixed floating point exception reported in ALIROOT-6837
+    (Thanks to S. Wenzel, CERN)
+  - Removed classes for G3 GUI (now obsolete)
+  - Removed call to deprecated function TVirtualMCApplication::Field()
+
+  Tested with Root 5.34/36 and 6.06/08
+
 25/04/2016:
   v2-1:
   - Fixed building Geant3 library with optimization and set the default build mode to RelWithDebInfo 
