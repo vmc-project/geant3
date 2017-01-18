@@ -52,6 +52,11 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 #-------------------------------------------------------------------------------
+# Always use '@rpath' in install names of libraries.
+#
+set(CMAKE_MACOSX_RPATH 1)
+
+#-------------------------------------------------------------------------------
 # Locate sources for this project
 #
 set(directories
