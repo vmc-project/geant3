@@ -43,15 +43,6 @@ ROOT_GENERATE_DICTIONARY(
   LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/geant3LinkDef.h)
 
 #-------------------------------------------------------------------------------
-# Make sure a default build type is used
-#
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
-      "Choose the type of build, options are: Debug Release RelWithDebInfo
-       MinSizeRel." FORCE)
-endif(NOT CMAKE_BUILD_TYPE)
-
-#-------------------------------------------------------------------------------
 # Always use '@rpath' in install names of libraries.
 #
 set(CMAKE_MACOSX_RPATH 1)

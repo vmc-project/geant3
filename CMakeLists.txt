@@ -39,6 +39,9 @@ set(${PROJECT_NAME}_VERSION_PATCH "0")
 set(${PROJECT_NAME}_VERSION
     ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
 
+#--- Default project build mode ------------------------------------------------
+include(VMCBuildMode)
+
 #--- Options -------------------------------------------------------------------
 option(Geant3_INSTALL_DATA "Install data directory" ON)
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)

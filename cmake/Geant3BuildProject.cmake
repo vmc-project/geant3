@@ -13,7 +13,7 @@
 # I. Hrivnacova, 13/06/2014
 
 # Copy the custom cmake modules into the build tree
-foreach(_mod CMakeMacroParseArguments UseVMC UseMC VMCInstallLibDir)
+foreach(_mod CMakeMacroParseArguments UseVMC UseMC VMCBuildMode VMCInstallLibDir)
   configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/${_mod}.cmake
     ${PROJECT_BINARY_DIR}/Modules/${_mod}.cmake
@@ -22,7 +22,7 @@ foreach(_mod CMakeMacroParseArguments UseVMC UseMC VMCInstallLibDir)
 endforeach()
 
 # Find modules
-foreach(_find_mod Pythia6 ROOT VMC MC)
+foreach(_find_mod Garfield Pythia6 ROOT VMC MC)
   configure_file(
     ${PROJECT_SOURCE_DIR}/cmake/Find${_find_mod}.cmake
     ${PROJECT_BINARY_DIR}/Modules/Find${_find_mod}.cmake
