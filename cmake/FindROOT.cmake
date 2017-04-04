@@ -97,9 +97,13 @@ if (NOT ROOT_FOUND)
 endif()    
 
 if(ROOT_FOUND)
-  # ROOT 6 requires C++11 support
+  # ROOT 6+ requires at least C++11 support
   if (ROOT_FOUND_VERSION GREATER 59999)
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    if(ROOT_FEATURES MATCHES cxx11 AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+11")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    elseif(ROOT_FEATURES MATCHES cxx14 AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+14" AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+1y")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    endif()
   endif()
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
   if(NOT ROOT_FIND_QUIETLY)
