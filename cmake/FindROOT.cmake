@@ -71,6 +71,15 @@ if(ROOT_CONFIG_EXECUTABLE)
     OUTPUT_STRIP_TRAILING_WHITESPACE)
     set (ROOT_LIBRARIES ${ROOT_LIBRARIES} -lGeom)
 
+  execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --cflags
+    OUTPUT_VARIABLE ROOT_CFLAGS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    # Extract C++ standard
+    string(FIND ${ROOT_CFLAGS} "-std=" POSITION)
+    string(SUBSTRING ${ROOT_CFLAGS} ${POSITION} 11 ROOT_CXX_STD)
+    #message(STATUS "ROOT_CXX_STD: " ${ROOT_CXX_STD})
+
   # Extract ROOT_FOUND_VERSION easier to compare in cmake
   string(SUBSTRING ${ROOT_VERSION} 0 1 ROOT_MAJOR_VERSION)
   string(SUBSTRING ${ROOT_VERSION} 2 2 ROOT_MINOR_VERSION)
@@ -99,10 +108,18 @@ endif()
 if(ROOT_FOUND)
   # ROOT 6+ requires at least C++11 support
   if (ROOT_FOUND_VERSION GREATER 59999)
-    if(ROOT_FEATURES MATCHES cxx11 AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+11")
+    # set C++ standard from ROOT CMake configuration
+    if (ROOT_FEATURES MATCHES cxx11 AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+11")
+      #message(STATUS "setting c++11")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     elseif(ROOT_FEATURES MATCHES cxx14 AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+14" AND NOT CMAKE_CXX_FLAGS MATCHES "-std=c\\+\\+1y")
+      #message(STATUS "setting c++14")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    endif()
+    # set C++ standard from root-config --cflags
+    if (ROOT_CXX_STD)
+      #message(STATUS "setting c++ standard from root-config")
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_STD}")
     endif()
   endif()
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
