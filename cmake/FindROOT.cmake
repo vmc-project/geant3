@@ -77,8 +77,10 @@ if(ROOT_CONFIG_EXECUTABLE)
     OUTPUT_STRIP_TRAILING_WHITESPACE)
     # Extract C++ standard
     string(FIND ${ROOT_CFLAGS} "-std=" POSITION)
-    string(SUBSTRING ${ROOT_CFLAGS} ${POSITION} 11 ROOT_CXX_STD)
-    #message(STATUS "ROOT_CXX_STD: " ${ROOT_CXX_STD})
+    if (${POSITION} GREATER -1)
+      string(SUBSTRING ${ROOT_CFLAGS} ${POSITION} 11 ROOT_CXX_STD)
+      #message(STATUS "ROOT_CXX_STD: " ${ROOT_CXX_STD})
+    endif()
 
   # Extract ROOT_FOUND_VERSION easier to compare in cmake
   string(SUBSTRING ${ROOT_VERSION} 0 1 ROOT_MAJOR_VERSION)
