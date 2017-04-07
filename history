@@ -1,6 +1,14 @@
 Geant3 tags (history):
 ======================
 
+07/04/2017:
+  v2-3:
+  - Add support for ROOT compiled with C++14
+    (thanks to Dario Berzano, CERN)
+  - Defined CMake policy required with newer versions of CMake
+
+  Tested with Root 5.34/36 and 6.08/06
+
 27/09/2016:
   v2-2:
   - Changes for performance optimization (according to suggestion by S, Wenzel, CERN):
