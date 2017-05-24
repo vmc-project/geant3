@@ -1,6 +1,15 @@
 Geant3 tags (history):
 ======================
 
+24/05/2017:
+  v2-4:
+  - Adding a protection against division by zero in gthadr.F:
+    thanks to Roberto Preghenella (INFN)
+  - Fixed the out-of-bound error reported by ROOT::TArrayI in TGeant3TGeo::FinishGeometry()
+    reported by S. Wenzel, CERN (GitHub issue #2):
+
+  Tested with Root 5.34/36 and 6.08/06
+
 07/04/2017:
   v2-3:
   - Add support for ROOT compiled with C++14
