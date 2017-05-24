@@ -2093,6 +2093,15 @@ void TGeant3TGeo::FinishGeometry()
     while ((mat=(TGeoMaterial*)next1())) {
       Int_t kmat = ImportMaterial(mat);
       mat->SetUniqueID(kmat);
+
+      // If kmat>1 some (or all) materials were already defines in G3 way
+      // (via TVirtialMC::Material() etc. functions)
+      // Importing the materials again from ROOT will result in their
+      // duplication in Geant3 structures.
+      if ( nofMaterials == 0 && kmat > 1 ) {
+        Warning("FinishGeometry", "Some (or all) materials were already defined in Geant3; while they are being imported from Root.");
+        nofMaterials = kmat;
+      }
       nofMaterials++;
     }  	         
 
@@ -2105,7 +2114,8 @@ void TGeant3TGeo::FinishGeometry()
     // Import media
     //
     Int_t  maxNofMaterials = nofMaterials + nofMedia;
-    TArrayI usedMaterials(maxNofMaterials);
+    TArrayI usedMaterials(maxNofMaterials+1);
+       // Added +1 as Geant3 indexing starts from 1
     for (Int_t i=0; i<maxNofMaterials; i++)
       usedMaterials[i] = -1;
 
