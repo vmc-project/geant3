@@ -2327,6 +2327,18 @@ void TGeant3::TrackPosition(Double_t &x, Double_t &y, Double_t &z) const
 }
 
 //______________________________________________________________________
+void TGeant3::TrackPosition(Float_t &x, Float_t &y, Float_t &z) const
+{
+  //
+  // Return the current position in the master reference frame of the
+  // track being transported
+  //
+  x=fGctrak->vect[0];
+  y=fGctrak->vect[1];
+  z=fGctrak->vect[2];
+}
+
+//______________________________________________________________________
 Double_t TGeant3::TrackTime() const
 {
   //
@@ -2358,6 +2370,21 @@ void TGeant3::TrackMomentum(Double_t &px, Double_t &py, Double_t &pz,
   // currently being transported
   //
   Double_t ptot=fGctrak->vect[6];
+  px  =fGctrak->vect[3]*ptot;
+  py  =fGctrak->vect[4]*ptot;
+  pz  =fGctrak->vect[5]*ptot;
+  etot=fGctrak->getot;
+}
+
+//______________________________________________________________________
+void TGeant3::TrackMomentum(Float_t &px, Float_t &py, Float_t &pz,
+                            Float_t &etot) const
+{
+  //
+  // Return the direction and the momentum (GeV/c) of the track
+  // currently being transported
+  //
+  Float_t ptot=fGctrak->vect[6];
   px  =fGctrak->vect[3]*ptot;
   py  =fGctrak->vect[4]*ptot;
   pz  =fGctrak->vect[5]*ptot;

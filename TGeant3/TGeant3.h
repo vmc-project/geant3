@@ -676,9 +676,12 @@ public:
   Double_t Xsec(char* reac, Double_t energy, Int_t part, Int_t mate);
   void  TrackPosition(TLorentzVector &xyz) const;
   void  TrackPosition(Double_t &x, Double_t &y, Double_t &z) const;
+  void  TrackPosition(Float_t &x, Float_t &y, Float_t &z) const;
   void  TrackMomentum(TLorentzVector &xyz) const;
   void  TrackMomentum(Double_t &px, Double_t &py, Double_t &pz,
                       Double_t &etot) const;
+  void  TrackMomentum(Float_t &px, Float_t &py, Float_t &pz,
+                      Float_t &etot) const;
   Int_t NofVolumes() const;
   Int_t NofVolDaughters(const char* volName) const;
   const char*  VolDaughterName(const char* volName, Int_t i) const;
