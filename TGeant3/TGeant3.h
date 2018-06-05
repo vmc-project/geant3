@@ -25,7 +25,12 @@
 #include "TObjArray.h"
 #include "TArrayI.h"
 
+#include <map>
+#include <set>
+
 class TGeoHMatrix;
+class TGeoRCExtension;
+class TVirtualMCSensitiveDetector;
 class TArrayD;
 class TString;
 
@@ -747,6 +752,7 @@ public:
   virtual Int_t CurrentMedium() const;
   virtual Int_t GetMedium() const;
   virtual Double_t Edep() const;
+  virtual Double_t NIELEdep() const;
   virtual Double_t Etot() const;
 
   virtual void  Material(Int_t& kmat, const char* name, Double_t a, Double_t z,
@@ -1115,6 +1121,14 @@ public:
 			Float_t *ch,Int_t *ierr,Float_t *spx);
 
 
+  // Methods for sensitive detectors
+
+   virtual void SetSensitiveDetector(const TString& volumeName, TVirtualMCSensitiveDetector* sd);
+   virtual TVirtualMCSensitiveDetector* GetSensitiveDetector(const TString& volumeName) const;
+   virtual TVirtualMCSensitiveDetector* GetCurrentSensitiveDetector() const;
+   virtual void SetExclusiveSDScoring(Bool_t exclusiveSDScoring);
+   Bool_t IsExclusiveSDScoring() const;
+
   // Control Methods
 
   virtual void FinishGeometry();
@@ -1206,6 +1220,10 @@ protected:
   Bool_t           fStopRun;            // The flag for stopping run by a user
   Bool_t           fSkipNeutrinos;      // The flag for skipping neutrinos from decays
 
+  Bool_t           fExclusiveSDScoring; //!
+  std::set<TVirtualMCSensitiveDetector*>  fUserSDs; //!
+  std::map<TString, TVirtualMCSensitiveDetector*>  fUserSDMap; //!
+
   TMCProcess G3toVMC(Int_t iproc) const;
 
   void   DefineParticles();
@@ -1248,7 +1266,11 @@ protected:
                  
   // particles definition
   Int_t GetIonPdg(Int_t z, Int_t a, Int_t i = 0) const;                
-  Int_t GetSpecialPdg(Int_t number) const;                
+  Int_t GetSpecialPdg(Int_t number) const;
+
+  // sensitive detectors
+  void InitSDs();
+  void EndOfEventForSDs();
 
   ClassDef(TGeant3,1)  //C++ interface to Geant basic routines
 };

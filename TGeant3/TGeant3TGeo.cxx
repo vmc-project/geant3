@@ -396,10 +396,12 @@ Cleanup of code
 
 #include "TGeoManager.h"
 #include "TGeoMatrix.h"
+#include "TGeoExtension.h"
 #include "TGeoMCGeometry.h"
 
 #include "TCallf77.h"
 #include "TVirtualMCDecayer.h"
+#include "TVirtualMCSensitiveDetector.h"
 #include "TPDGCode.h"
 
 #ifndef WIN32
@@ -544,7 +546,8 @@ TGeant3TGeo::TGeant3TGeo()
     fImportRootGeometry(kFALSE),
     fCollectTracks(kFALSE),
     fIsComputeNextMatrix(kFALSE),                                                          
-    fGcvol1(0)
+    fGcvol1(0),
+    fUserSDTGeoMap()
 {
   //
   // Default constructor
@@ -557,7 +560,8 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
          fImportRootGeometry(kFALSE),
          fCollectTracks(kFALSE),
          fIsComputeNextMatrix(kFALSE),                                                     
-         fGcvol1(0)
+         fGcvol1(0),
+         fUserSDTGeoMap()
 {
   //
   // Standard constructor for TGeant3 with ZEBRA initialisation
@@ -1050,9 +1054,9 @@ Bool_t TGeant3TGeo::GetShape(const TString &volumePath,TString &shapeType,
                          TArrayD &par)
 {
     // Returns the shape and its parameters for the volume specified
-    // by volumeName.
+    // by volumePath.
     // Inputs:
-    //   TString& volumeName  The volume name
+    //   TString& volumePath  The volume path
     // Outputs:
     //   TString &shapeType   Shape type
     //   TArrayD &par         A TArrayD of parameters with all of the
@@ -2159,6 +2163,61 @@ void TGeant3TGeo::FinishGeometry()
   //Create the color table
   SetColors();
   if (gDebug > 0) printf("FinishGeometry, returning\n");
+}
+
+//_____________________________________________________________________________
+void TGeant3TGeo::SetSensitiveDetector(const TString& volumeName,
+                                       TVirtualMCSensitiveDetector* userSD)
+{
+  if (gDebug > 0) {
+    printf("TGeant3TGeo::SetSensitiveDetector to volume %s \n", volumeName.Data());
+  }
+
+  // save userSD in TGeant3 data
+  TGeant3::SetSensitiveDetector(volumeName, userSD);
+
+  // Get or create TGeoExtension
+  std::map<TVirtualMCSensitiveDetector*, TGeoRCExtension*>::iterator it
+    = fUserSDTGeoMap.find(userSD);
+
+  TGeoRCExtension* tgeoExtension = 0;
+  if ( it == fUserSDTGeoMap.end() ) {
+    tgeoExtension = new TGeoRCExtension();
+    tgeoExtension->SetUserObject(userSD);
+    fUserSDTGeoMap[userSD] = tgeoExtension;
+  } else {
+    tgeoExtension = it->second;
+  }
+
+  // Set extension to TGeoVolume with given name,
+  // print error message if volume does not exist or
+  // if the volume already has an extension
+  TGeoVolume* volume = gGeoManager->FindVolumeFast(volumeName);
+  if ( ! volume ) {
+    Error("SetSensitiveDetector", "volume %s not found. Setting was ignored.\n", volumeName.Data());
+  }
+  else {
+    // Issue a warning if the volume already has another extension
+    if ( volume->GetUserExtension() ) {
+      Warning("SetSensitiveDetector", "The existing extension of volume %s will be lost.\n", volumeName.Data());
+    }
+
+    // attach the extension to the volume
+    volume->SetUserExtension(tgeoExtension);
+  }
+}
+
+//_____________________________________________________________________________
+TVirtualMCSensitiveDetector* TGeant3TGeo::GetCurrentSensitiveDetector() const
+{
+  if ( gGeoManager->IsOutside() ) return 0;
+
+  TGeoExtension* extension = gGeoManager->GetCurrentVolume()->GetUserExtension();
+  if ( ! extension) return 0;
+
+  // Using static cast require exclusive use of TGeoVolume extension for VMC senistive detectors
+  return static_cast<TVirtualMCSensitiveDetector*>(
+           static_cast<TGeoRCExtension*>(extension)->GetUserObject());
 }
 
 //_____________________________________________________________________________

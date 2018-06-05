@@ -8,6 +8,7 @@
 #include "TDatabasePDG.h"
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
+#include "TVirtualMCSensitiveDetector.h"
 
 #ifndef WIN32
 #  define gudigi gudigi_
@@ -852,7 +853,16 @@ void gustep()
       }
   }
   // --- Particle leaving the setup ?
-  if (!geant3->IsTrackOut()) vmcApplication->Stepping();
+  if (!geant3->IsTrackOut()) {
+    TVirtualMCSensitiveDetector* userSD = geant3->GetCurrentSensitiveDetector();
+    if ( userSD ) {
+       userSD->ProcessHits();
+    }
+
+    if (! geant3->IsExclusiveSDScoring() ) {
+       vmcApplication->Stepping();
+    }
+  }
 
   // --- Standard GEANT debug routine
   //g3pcxyz();

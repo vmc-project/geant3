@@ -12,7 +12,11 @@
 
 #include "TGeant3.h"
 
+#include <map>
+#include <set>
+
 class TGeoMaterial;
+class TVirtualMCSensitiveDetector;
 
 //______________________________________________________________
 //
@@ -211,6 +215,10 @@ public:
 
   virtual void FinishGeometry();
 
+  // methods for sensitive detectors
+  virtual void SetSensitiveDetector(const TString& volumeName, TVirtualMCSensitiveDetector* sd);
+  virtual TVirtualMCSensitiveDetector* GetCurrentSensitiveDetector() const;
+
   //
   virtual void SetColors();
   virtual void SetCollectTracks(Bool_t flag=kTRUE) {fCollectTracks = flag;}
@@ -223,6 +231,8 @@ protected:
   Bool_t           fCollectTracks;      //! Tracks get collected via TGeoTrack 
   Bool_t           fIsComputeNextMatrix; //! Compute systematically the matrix to the next crossed node.
   Gcvol1_t *fGcvol1;          //! GCVOLU common structure
+
+  std::map<TVirtualMCSensitiveDetector*, TGeoRCExtension*>  fUserSDTGeoMap; //!
 
 private:
 
