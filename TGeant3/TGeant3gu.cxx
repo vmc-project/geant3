@@ -8,7 +8,9 @@
 #include "TDatabasePDG.h"
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 #include "TVirtualMCSensitiveDetector.h"
+#endif
 
 #ifndef WIN32
 #  define gudigi gudigi_
@@ -854,6 +856,7 @@ void gustep()
   }
   // --- Particle leaving the setup ?
   if (!geant3->IsTrackOut()) {
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
     TVirtualMCSensitiveDetector* userSD = geant3->GetCurrentSensitiveDetector();
     if ( userSD ) {
        userSD->ProcessHits();
@@ -862,6 +865,9 @@ void gustep()
     if (! geant3->IsExclusiveSDScoring() ) {
        vmcApplication->Stepping();
     }
+#else
+    vmcApplication->Stepping();
+#endif
   }
 
   // --- Standard GEANT debug routine

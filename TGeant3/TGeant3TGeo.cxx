@@ -401,7 +401,9 @@ Cleanup of code
 
 #include "TCallf77.h"
 #include "TVirtualMCDecayer.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 #include "TVirtualMCSensitiveDetector.h"
+#endif
 #include "TPDGCode.h"
 
 #ifndef WIN32
@@ -2165,6 +2167,7 @@ void TGeant3TGeo::FinishGeometry()
   if (gDebug > 0) printf("FinishGeometry, returning\n");
 }
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 //_____________________________________________________________________________
 void TGeant3TGeo::SetSensitiveDetector(const TString& volumeName,
                                        TVirtualMCSensitiveDetector* userSD)
@@ -2219,6 +2222,22 @@ TVirtualMCSensitiveDetector* TGeant3TGeo::GetCurrentSensitiveDetector() const
   return static_cast<TVirtualMCSensitiveDetector*>(
            static_cast<TGeoRCExtension*>(extension)->GetUserObject());
 }
+#else
+
+//_____________________________________________________________________________
+void TGeant3TGeo::SetSensitiveDetector(const TString& /*volumeName*/, TVirtualMCSensitiveDetector* /*sd*/)
+{
+   Warning("SetSensitiveDetector(...)", "New function - requires ROOT version >= 6.14/00.");
+}
+
+//_____________________________________________________________________________
+TVirtualMCSensitiveDetector* TGeant3TGeo::GetCurrentSensitiveDetector() const
+{
+  Warning("GetCurrentSensitiveDetector(...)", "New function - requires ROOT version >= 6.14/00.");
+  return NULL;
+}
+
+#endif
 
 //_____________________________________________________________________________
 void TGeant3TGeo::SetColors()

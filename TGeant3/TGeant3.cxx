@@ -527,7 +527,9 @@ Cleanup of code
 
 #include "TCallf77.h"
 #include "TVirtualMCDecayer.h"
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 #include "TVirtualMCSensitiveDetector.h"
+#endif
 #include "TPDGCode.h"
 
 #ifndef WIN32
@@ -6362,6 +6364,7 @@ TString  TGeant3::ParticleClass(TMCParticleType particleType) const
   }
 }
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 //_____________________________________________________________________________
 void TGeant3::SetSensitiveDetector(const TString& volumeName,
                                    TVirtualMCSensitiveDetector* userSD)
@@ -6411,6 +6414,43 @@ Bool_t TGeant3::IsExclusiveSDScoring() const
   return fExclusiveSDScoring;
 }
 
+#else
+
+//_____________________________________________________________________________
+void TGeant3::SetSensitiveDetector(const TString& /*volumeName*/, TVirtualMCSensitiveDetector* /*sd*/)
+{
+   Warning("SetSensitiveDetector(...)", "New function - requires ROOT version >= 6.14/00.");
+}
+
+//_____________________________________________________________________________
+TVirtualMCSensitiveDetector* TGeant3::GetSensitiveDetector(const TString& /*volumeName*/) const
+{
+   Warning("GetSensitiveDetector(...)", "New function - requires ROOT version >= 6.14/00.");
+   return NULL;
+}
+
+//_____________________________________________________________________________
+TVirtualMCSensitiveDetector* TGeant3::GetCurrentSensitiveDetector() const
+{
+  Warning("GetCurrentSensitiveDetector(...)", "New function - requires ROOT version >= 6.14/00.");
+  return NULL;
+}
+
+//_____________________________________________________________________________
+void TGeant3::SetExclusiveSDScoring(Bool_t /*exclusiveSDScoring*/)
+{
+   Warning("SetExclusiveScoring(...)", "New function - requires ROOT version >= 6.14/00.");
+}
+
+//_____________________________________________________________________________
+Bool_t TGeant3::IsExclusiveSDScoring() const
+{
+   Warning("SetExclusiveScoring(...)", "New function - requires ROOT version >= 6.14/00.");
+   return false;
+}
+
+#endif
+
 //______________________________________________________________________
 void TGeant3::FinishGeometry()
 {
@@ -6458,9 +6498,13 @@ void TGeant3::Init()
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,01,1)
     fApplication->ConstructOpGeometry();
 #endif
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
     fApplication->ConstructSensitiveDetectors();
+#endif
     fApplication->InitGeometry();
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
     InitSDs();
+#endif
 }
 
 //____________________________________________________________________________
@@ -6480,7 +6524,9 @@ Bool_t TGeant3::ProcessRun(Int_t nevent)
      if (fStopRun) break;
      ProcessEvent();
      if (fStopRun) break;
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
      EndOfEventForSDs();
+#endif
      fApplication->FinishEvent();
      if (fStopRun) break;
   }
@@ -7255,6 +7301,7 @@ Int_t TGeant3::GetSpecialPdg(Int_t number) const
   return 50000000 + number;
 }
 
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
 //__________________________________________________________________
 void TGeant3::InitSDs()
 {
@@ -7273,3 +7320,7 @@ void TGeant3::EndOfEventForSDs()
      if ( fStopRun ) break;
   }
 }
+#else
+void TGeant3::InitSDs() {}
+void TGeant3::EndOfEventForSDs() {}
+#endif
