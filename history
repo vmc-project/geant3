@@ -1,6 +1,21 @@
 Geant3 tags (history):
 ======================
 
+15/01/2019:
+  v2-6:
+  - Added support for user defined sensitive detectors and new TVirtualMC::NIELEdep() function:
+    Details:
+    - Implemented new functions in TVirtualMC:
+        void SetSensitiveDetector(const TString &volName, TVirtualMCSensitiveDetector *sd);
+        TVirtualMCSensitiveDetector *GetSensitiveDetector(const TString &volName) const;
+        void SetExclusiveSDScoring(Bool_t exclusiveSDScoring);
+        TVirtualMC::NIELEdep() function
+  - Fixed a problem with the SAVE statement in miface/gmicap.F (thanks to P. Hristov, CERN)
+    this fixes a compilation error observed on centos7 with devtoolset-7-gcc-gfortran
+    in ALICE.
+
+  Tested with Root 5.34/38 and 6.14/06
+
 08/09/2017:
   v2-5:
   - Implemented new TVirtualMC functions
