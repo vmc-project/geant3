@@ -697,6 +697,10 @@ public:
   Double_t TrackMass() const;
   Double_t TrackStep() const;
   Double_t TrackLength() const;
+  Int_t StepNumber() const;
+  Double_t TrackWeight() const;
+  void TrackPolarization(Double_t &polX, Double_t &polY, Double_t &polZ) const;
+  void TrackPolarization(TVector3& pol) const;
   Int_t   TrackPid() const;
   Bool_t IsNewTrack() const;
   Bool_t IsTrackInside() const;
@@ -714,6 +718,7 @@ public:
                       TLorentzVector &p);
   Bool_t SecondariesAreOrdered() const {return kTRUE;}
   void   StopTrack();
+  void   InterruptTrack();
   void   StopEvent();
   void   StopRun();
   Double_t MaxStep() const;
@@ -1135,10 +1140,13 @@ public:
   virtual void BuildPhysics();
   virtual void Init();
   virtual void ProcessEvent();
+  virtual void ProcessEvent(Int_t eventId, Bool_t isInterruptible = kFALSE);
   virtual Bool_t ProcessRun(Int_t nevent);
   virtual void AddParticlesToPdgDataBase() const;
   virtual void SetCollectTracks(Bool_t) {}
   Bool_t IsCollectTracks() const {return kFALSE;}
+
+
 
   //
   virtual void SetColors();

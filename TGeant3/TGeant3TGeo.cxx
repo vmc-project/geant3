@@ -395,9 +395,11 @@ Cleanup of code
 #include "TGeant3TGeo.h"
 
 #include "TGeoManager.h"
+#include "TGeoBranchArray.h"
 #include "TGeoMatrix.h"
 #include "TGeoExtension.h"
 #include "TGeoMCGeometry.h"
+#include "TMCManagerStack.h"
 
 #include "TCallf77.h"
 #include "TVirtualMCDecayer.h"
@@ -520,6 +522,7 @@ extern "C" type_of_call void ggperpTGeo(Float_t*, Float_t*, Int_t&);
 //
 Gcvol1_t *gcvol1 = 0;
 TGeoNode *gCurrentNode = 0;
+extern TGeoBranchArray *gCurrentGeoState;
 TGeant3TGeo *geant3tgeo = 0;
 R__EXTERN Gctrak_t *gctrak;
 R__EXTERN Gcvolu_t *gcvolu;
@@ -2276,7 +2279,17 @@ void ginvolTGeo(Float_t *x, Int_t &isame)
 void gtmediTGeo(Float_t *x, Int_t &numed)
 {
    gcchan->lsamvl = kTRUE;
-   gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+   // Set cached geometry state if available, else find node manually.
+   if(gCurrentGeoState) {
+     gCurrentGeoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
+     gMC->GetManagerStack()->NotifyOnRestoredGeometry(gCurrentGeoState);
+     // Reset geo state index
+     gCurrentGeoState = 0;
+     gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
+     gCurrentNode = gGeoManager->GetCurrentNode();
+   } else {
+     gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+   }
    gcchan->lsamvl = gGeoManager->IsSameLocation();
    if (gGeoManager->IsOutside()) {
       numed=0;
@@ -2298,7 +2311,17 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 //______________________________________________________________________
 void gmediaTGeo(Float_t *x, Int_t &numed, Int_t & /*check*/)
 {
-   gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+  // Set cached geometry state if available, else find node manually.
+  if(gCurrentGeoState) {
+    gCurrentGeoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
+    gMC->GetManagerStack()->NotifyOnRestoredGeometry(gCurrentGeoState);
+    // Reset geo state index
+    gCurrentGeoState = 0;
+    gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
+    gCurrentNode = gGeoManager->GetCurrentNode();
+  } else {
+    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+  }
    if (gGeoManager->IsOutside()) {
       numed=0;
    } else {
@@ -2455,4 +2478,3 @@ void ggperpTGeo(Float_t * /*x*/, Float_t *norm, Int_t &ierr)
    norm[1] = -dblnorm[1];
    norm[2] = -dblnorm[2];
 }
-

@@ -522,8 +522,11 @@ Cleanup of code
 #include "TParameter.h"
 #include "TGeoMatrix.h"
 #include "TObjString.h"
+#include "TGeoBranchArray.h"
 
 #include "TGeant3.h"
+#include "TMCManagerStack.h"
+#include "TMCParticleStatus.h"
 
 #include "TCallf77.h"
 #include "TVirtualMCDecayer.h"
@@ -1089,6 +1092,16 @@ Gcjump_t *gcjump=0;          //! GCJUMP common structure
 // TVirtualMCApplication global pointer
 //
 TVirtualMCApplication* vmcApplication =0;
+TGeoBranchArray* gCurrentGeoState = 0;
+TMCParticleStatus* gCurrentParticleStatus = 0;
+// NOTE Use to control calls to TVirtualMCApplication::PreTrack
+//                                                   ::PostTrack
+//                                                   ::BeginPrimary
+//                                                   ::FinishPrimary
+Bool_t gDoEventHooks = kTRUE;
+Bool_t gDoPreTrackHooks = kTRUE;
+Bool_t gDoPostTrackHooks = kTRUE;
+Bool_t gDoPrimaryHooks = kTRUE;
 
 extern "C"  type_of_call void gtonlyg3(Int_t&);
 void (*fginvol)(Float_t*, Int_t&) = 0;
@@ -2442,7 +2455,55 @@ Double_t TGeant3::TrackLength() const
   //
   // Return the length of the current track from its origin
   //
-  return fGctrak->sleng;
+  if(!gCurrentParticleStatus) {
+    return fGctrak->sleng;
+  }
+  return fGctrak->sleng + gCurrentParticleStatus->fTrackLength;
+}
+
+//______________________________________________________________________
+Int_t TGeant3::StepNumber() const
+{
+  //
+  // Return the current number of steps
+  //
+  if(!gCurrentParticleStatus) {
+    return fGctrak->nstep;
+  }
+  return fGctrak->nstep + gCurrentParticleStatus->fStepNumber;
+}
+
+//______________________________________________________________________
+Double_t TGeant3::TrackWeight() const
+{
+  //
+  // Return the current weight
+  //
+  return fGctrak->upwght;
+}
+
+//______________________________________________________________________
+void TGeant3::TrackPolarization(Double_t& polX, Double_t& polY, Double_t& polZ) const
+{
+  //
+  // Return the current polarization
+  //
+  // TODO Extract actual polarization
+  polX = 0.;
+  polY = 0.;
+  polZ = 0.;
+}
+
+//______________________________________________________________________
+void TGeant3::TrackPolarization(TVector3& pol) const
+{
+  //
+  // Return the current polarization
+  //
+  // TODO Extract actual polarization
+  pol[0] = 0.;
+  pol[1] = 0.;
+  pol[2] = 0.;
 }
 
 //______________________________________________________________________
@@ -2668,6 +2729,16 @@ void TGeant3::StopTrack()
   //
   // Stop the transport of the current particle and skip to the next
   //
+  fGctrak->istop=1;
+}
+
+//______________________________________________________________________
+void TGeant3::InterruptTrack()
+{
+  //
+  // Stop the transport of the current particle and skip to the next
+  //
+  gDoPostTrackHooks = kFALSE;
   fGctrak->istop=1;
 }
 
@@ -6493,7 +6564,10 @@ void TGeant3::Init()
     DefineParticles();
     fApplication->AddParticles();
     fApplication->AddIons();
-    fApplication->ConstructGeometry();
+    // NOTE Check whether geometry is constructed externally
+    if(!UseExternalGeometryConstruction()) {
+      fApplication->ConstructGeometry();
+    }
     FinishGeometry();
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,01,1)
     fApplication->ConstructOpGeometry();
@@ -6517,17 +6591,7 @@ Bool_t TGeant3::ProcessRun(Int_t nevent)
   Int_t todo = TMath::Abs(nevent);
   for (Int_t i=0; i<todo; i++) {
      // Process one run (one run = one event)
-     fGcflag->idevt  = i;
-     fGcflag->ievent = i+1;
-     if (fStopRun) break;
-     fApplication->BeginEvent();
-     if (fStopRun) break;
-     ProcessEvent();
-     if (fStopRun) break;
-#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
-     EndOfEventForSDs();
-#endif
-     fApplication->FinishEvent();
+     ProcessEvent(i);
      if (fStopRun) break;
   }
 
@@ -6556,6 +6620,34 @@ void TGeant3::ProcessEvent()
   Gtrigi();
   Gtrigc();
   Gtrig();
+}
+
+//______________________________________________________________________
+void TGeant3::ProcessEvent(Int_t eventId, Bool_t isInterruptible)
+{
+  //
+  // Process one event
+  //
+  gDoEventHooks = !isInterruptible;
+  fGcflag->idevt  = eventId;
+  fGcflag->ievent = eventId+1;
+  if (fStopRun) return;
+  // Right now do nothing with the eventId
+  if(gDoEventHooks) {
+    fApplication->BeginEvent();
+  }
+  if (fStopRun) return;
+  Gtrigi();
+  Gtrigc();
+  Gtrig();
+  if (fStopRun) return;
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6,14,0)
+  EndOfEventForSDs();
+#endif
+  if(gDoEventHooks) {
+    fApplication->FinishEvent();
+  }
+  if (fStopRun) return;
 }
 
 //______________________________________________________________________
@@ -6735,26 +6827,60 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
   //      tof     Particle time of flight in seconds
   //
 
-  TParticle* track = TVirtualMC::GetMC()->GetStack()->PopNextTrack(mtrack);
-
+  TVirtualMCStack* stack = TVirtualMC::GetMC()->GetStack();
+  TParticle* track = stack->PopNextTrack(mtrack);
+  gDoPreTrackHooks = kTRUE;
+  gDoPostTrackHooks = kTRUE;
+  gDoPrimaryHooks = kTRUE;
+  gCurrentParticleStatus = 0;
+  gCurrentGeoState = 0;
   if (track) {
-    // fill G3 arrays
-    pmom[0] = track->Px();
-    pmom[1] = track->Py();
-    pmom[2] = track->Pz();
-    e = track->Energy();
-    vpos[0] = track->Vx();;
-    vpos[1] = track->Vy();
-    vpos[2] = track->Vz();
-    tof = track->T();
-    TVector3 pol;
-    track->GetPolarisation(pol);
-    polar[0] = pol.X();
-    polar[1] = pol.Y();
-    polar[2] = pol.Z();
+    TMCManagerStack* mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
+    if(mcManagerStack) {
+      gCurrentParticleStatus = const_cast<TMCParticleStatus*>(mcManagerStack->GetParticleStatus(mtrack));
+      gCurrentGeoState = (TGeoBranchArray*)mcManagerStack->GetGeoState(mtrack);
+    }
+    // NOTE Primary hooks need to be disabled explicitly since GEANT3 derives
+    //      that based on the stack structure and track counting. However, if
+    //      the VMC stack does not have the counting which is assumed by GEANT3,
+    //      the internal logic might not make the right concnlusion.
+    // TODO Make sure that primary hooks are called when necessary
+    if(gCurrentParticleStatus && gCurrentParticleStatus->fParentId >= 0) {
+      gDoPrimaryHooks = kFALSE;
+    }
+    if(gCurrentParticleStatus && gCurrentParticleStatus->fStepNumber > 0) {
+      gDoPreTrackHooks = kFALSE;
+      // fill G3 arrays
+      pmom[0] = gCurrentParticleStatus->fMomentum.Px();
+      pmom[1] = gCurrentParticleStatus->fMomentum.Py();
+      pmom[2] = gCurrentParticleStatus->fMomentum.Pz();
+      e = gCurrentParticleStatus->fMomentum.Energy();
+      vpos[0] = gCurrentParticleStatus->fPosition.X();
+      vpos[1] = gCurrentParticleStatus->fPosition.Y();
+      vpos[2] = gCurrentParticleStatus->fPosition.Z();
+      tof = gCurrentParticleStatus->fPosition.T();
+      polar[0] = gCurrentParticleStatus->fPolarization.X();
+      polar[1] = gCurrentParticleStatus->fPolarization.Y();
+      polar[2] = gCurrentParticleStatus->fPolarization.Z();
+      mcManagerStack->SetCurrentTrack(mtrack);
+    } else {
+      pmom[0] = track->Px();
+      pmom[1] = track->Py();
+      pmom[2] = track->Pz();
+      e = track->Energy();
+      vpos[0] = track->Vx();;
+      vpos[1] = track->Vy();
+      vpos[2] = track->Vz();
+      tof = track->T();
+      TVector3 pol;
+      track->GetPolarisation(pol);
+      polar[0] = pol.X();
+      polar[1] = pol.Y();
+      polar[2] = pol.Z();
+      stack->SetCurrentTrack(mtrack);
+    }
     ipart = TVirtualMC::GetMC()->IdFromPDG(track->GetPdgCode());
   }
-
   mtrack++;
 }
 
@@ -6765,7 +6891,9 @@ extern "C" void type_of_call  rxouth ()
   //
   // Called by Gtreve at the end of each primary track
   //
-  TVirtualMCApplication::Instance()->FinishPrimary();
+  if(gDoPostTrackHooks && gDoPrimaryHooks) {
+    TVirtualMCApplication::Instance()->FinishPrimary();
+  }
 }
 
 //______________________________________________________________________
@@ -6774,7 +6902,9 @@ extern "C" void type_of_call  rxinh ()
   //
   // Called by Gtreve at the beginning of each primary track
   //
-  TVirtualMCApplication::Instance()->BeginPrimary();
+  if(gDoPreTrackHooks && gDoPrimaryHooks) {
+    TVirtualMCApplication::Instance()->BeginPrimary();
+  }
 }
 
 //______________________________________________________________________
