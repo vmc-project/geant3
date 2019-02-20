@@ -554,6 +554,8 @@ void gutrak()
 //
 //    ------------------------------------------------------------------
 //
+     geant3->Gctrak()->istop = 0;
+
      vmcApplication->PreTrack();
 
      g3track();

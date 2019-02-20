@@ -71,7 +71,8 @@ C.
 #endif
 C.
 C.    ------------------------------------------------------------------
-      ISTOP = 0
+C.    ISTOP = 0
+      IF (ISTOP .NE. 0) GO TO 999
       EPSCUR = EPSMAC
       NSTOUT = 0
       INWOLD = 0
