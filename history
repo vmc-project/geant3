@@ -1,6 +1,13 @@
 Geant3 tags (history):
 ======================
 
+22/02/2019:
+  v2-7:
+  - Fixed stopping a track if called from MCApplication::PreTrack():
+    thanks to A. Morsch (CERN)
+
+  Tested with Root 6.14/06
+
 15/01/2019:
   v2-6:
   - Added support for user defined sensitive detectors and new TVirtualMC::NIELEdep() function:
