@@ -7,15 +7,15 @@
 
 #ifndef WIN32
 # define type_of_call
-# define DEFCHARD     const char* 
-# define DEFCHARL   , const int 
-# define PASSCHARD(string) string 
-# define PASSCHARL(string) , strlen(string) 
+# define DEFCHARD     const char*
+# define DEFCHARL   , const int
+# define PASSCHARD(string) string
+# define PASSCHARL(string) , strlen(string)
 #else
 # define type_of_call  _stdcall
-# define DEFCHARD   const char* , const int        
-# define DEFCHARL          
-# define PASSCHARD(string) string, strlen(string) 
-# define PASSCHARL(string) 
+# define DEFCHARD   const char* , const int
+# define DEFCHARL
+# define PASSCHARD(string) string, strlen(string)
+# define PASSCHARL(string)
 #endif
 #endif //ROOT_TCallf77

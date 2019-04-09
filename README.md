@@ -19,7 +19,7 @@ which implement the  TVirtualMC interface, see more about VMC at: <br/>
 
 ### Examples
 
-The directory examples includes a set of FORTRAN examples 
+The directory examples includes a set of FORTRAN examples
 like gexam1.F, gexam3.F, gexam4.F and model.F, plus the ROOT (C++) macros
 E01.C, E02.C, E03.C
 

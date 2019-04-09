@@ -68,7 +68,7 @@ Geant3 tags (history):
 
 25/04/2016:
   v2-1:
-  - Fixed building Geant3 library with optimization and set the default build mode to RelWithDebInfo 
+  - Fixed building Geant3 library with optimization and set the default build mode to RelWithDebInfo
     (thanks to S. Wenzel, CERN)
   - Fixed compilation on 32-bit platforms (thanks to Florian Uhlig, GSI)
   - Added installing data (thanks to F. Uhlig, GSI)
@@ -90,33 +90,33 @@ Geant3 tags (history):
   The changes in ILOSS=5 energy loss model (ALICE-TPC specific):
   The parameters previously hardwired in the PARAMETER statement are now initialized
   in the BLOCK DATA. This allows to use the parameters from OCDB in ALICE TPC code.
-  
-  Tested with Root 5.34/04 and 5.34/18 
+
+  Tested with Root 5.34/04 and 5.34/18
 
 25/04/2013:
   v1-15a:
-  Fixed a problem in gtckov.F reported by Maria Patsyuk (PANDA collaboration):  
+  Fixed a problem in gtckov.F reported by Maria Patsyuk (PANDA collaboration):
   the step length, total step length and tof where not updated when photon
   gets in a geometrical boundary with a medium without optical properties
-  
-  Tested with Root 5.34/04 and 5.34/05 
+
+  Tested with Root 5.34/04 and 5.34/05
 
 28/02/2013:
   v1-15:
-  Fixed the problem of time of flight for optical photons. 
+  Fixed the problem of time of flight for optical photons.
   (Geant3 was using the phase velocity instead of the group velocity);
   reported by M. Patsyuk (GSI)
-  
-  Tested with Root 5.34/04.  
+
+  Tested with Root 5.34/04.
 
 27/03/2012:
   v1-14:
-  - Increase stack to 300 particles  
+  - Increase stack to 300 particles
   - Include light (anti)nuclei (Savannah #84396)
-  - In GetSecondary(Int_t isec, Int_t& partPDG, ...): 
+  - In GetSecondary(Int_t isec, Int_t& partPDG, ...):
     return the PDG code instead of G3 internal particle ID
-    
-  Tested with Root 5.32/01 and 5.33/02.  
+
+  Tested with Root 5.32/01 and 5.33/02.
 
 16/03/2012:
   v1-13:
@@ -124,26 +124,26 @@ Geant3 tags (history):
   - Fixes:
     - fix in WriteEuclid
 
-  Tested with Root 5.32/01.  
+  Tested with Root 5.32/01.
 
 14/07/2011:
   v1-12:
-  - Update for Geane 
+  - Update for Geane
     (M. Al-Turanny GSI; Lia Lavezzi, Alberto Rotondi, INFN Pavia)
   - Adding new TVirtualMC functions in TGeant3:
-    CurrentBoundaryNormal(), GetMaterial() 
+    CurrentBoundaryNormal(), GetMaterial()
     + clean-up of obsolete functions
   - Various fixes:
-    - parent track Id in CollectTracks option 
-    - fixes in Geane by Lia Lavezzi et al (r525)  
+    - parent track Id in CollectTracks option
+    - fixes in Geane by Lia Lavezzi et al (r525)
     - fix in Gfmate with Double_t arguments
     - fix in the declaration of common GCONSX
     - fix in printing of Random seed
     - fix for compilation with icc
 
-  Tested with Root 5.28/00e and 5.30/00.  
-  
- For the older versions, ony a table with required ROOT versions was 
+  Tested with Root 5.28/00e and 5.30/00.
+
+ For the older versions, ony a table with required ROOT versions was
  maintained:
 
  Version number      CVS tag        Root version

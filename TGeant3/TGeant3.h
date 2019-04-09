@@ -44,7 +44,7 @@ class TString;
 //----------GCONST
 //     COMMON/GCONST/PI,TWOPI,PIBY2,DEGRAD,RADDEG,CLIGHT,BIG,EMASS
 typedef struct {
-   Float_t   pi; 
+   Float_t   pi;
    Float_t   twopi;
    Float_t   piby2;
    Float_t   degrad;
@@ -71,23 +71,23 @@ typedef struct {
 //      DIMENSION     JMPADR(MAXJMP)
 //      EQUIVALENCE  (JMPADR(1), JUDCAY)
 typedef struct {
-   Int_t   judcay; 
-   Int_t   judigi; 
-   Int_t   judtim; 
-   Int_t   jufld ; 
-   Int_t   juhadr; 
+   Int_t   judcay;
+   Int_t   judigi;
+   Int_t   judtim;
+   Int_t   jufld ;
+   Int_t   juhadr;
    Int_t   juiget;
-   Int_t   juinme; 
-   Int_t   juinti; 
-   Int_t   jukine; 
-   Int_t   junear; 
-   Int_t   juout ; 
+   Int_t   juinme;
+   Int_t   juinti;
+   Int_t   jukine;
+   Int_t   junear;
+   Int_t   juout ;
    Int_t   juphad;
-   Int_t   juskip; 
-   Int_t   justep; 
-   Int_t   juswim; 
-   Int_t   jutrak; 
-   Int_t   jutrev; 
+   Int_t   juskip;
+   Int_t   justep;
+   Int_t   juswim;
+   Int_t   jutrak;
+   Int_t   jutrev;
    Int_t   juview;
    Int_t   jupara;
    Int_t   jmpadr[30];
@@ -664,7 +664,7 @@ public:
 ///////////////////////////////////////////////////////////////////////
 
   void  GeomIter();
-  Int_t CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens, 
+  Int_t CurrentMaterial(Float_t &a, Float_t &z, Float_t &dens,
                         Float_t &radl, Float_t &absl) const;
   Int_t NextVolUp(Text_t *name, Int_t &copy);
   Int_t CurrentVolID(Int_t &copy) const;
@@ -727,14 +727,14 @@ public:
   Bool_t SetProcess(const char* flagName, Int_t flagValue);
   const char *GetPath();
   const char *GetNodeName();
-  Bool_t DefineParticle(Int_t pdg, const char* name, 
+  Bool_t DefineParticle(Int_t pdg, const char* name,
                    TMCParticleType mcType,
                    Double_t mass, Double_t charge, Double_t lifetime);
-  Bool_t DefineParticle(Int_t pdg, const char* name, 
+  Bool_t DefineParticle(Int_t pdg, const char* name,
                    TMCParticleType mcType,
                    Double_t mass, Double_t charge, Double_t lifetime,
-                   const TString& /*pType*/, Double_t /*width*/, 
-                   Int_t /*iSpin*/, Int_t /*iParity*/, Int_t /*iConjugation*/, 
+                   const TString& /*pType*/, Double_t /*width*/,
+                   Int_t /*iSpin*/, Int_t /*iParity*/, Int_t /*iConjugation*/,
                    Int_t /*iIsospin*/, Int_t /*iIsospinZ*/, Int_t /*gParity*/,
                    Int_t /*lepton*/, Int_t /*baryon*/,
                    Bool_t /*stable*/, Bool_t /*shortlived*/ = kFALSE,
@@ -791,7 +791,7 @@ public:
   // Returns the name of the shape and its parameters for the volume
   // specified by the volumePath and the Top or master volume.
   Bool_t GetShape(const TString &volumePath,TString &shapeType,TArrayD &par);
-  // Returns the material parameters for the material specified by 
+  // Returns the material parameters for the material specified by
   // the material
   Bool_t GetMaterial(Int_t imat, TString& name,
                      Double_t& a, Double_t& z, Double_t& density,
@@ -873,13 +873,13 @@ public:
    virtual  void  Gzinit();
 
       // functions from GCONS
-   virtual  void  Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z, 
+   virtual  void  Gfmate(Int_t imat, char *name, Float_t &a, Float_t &z,
                          Float_t &dens, Float_t &radl, Float_t &absl,
                          Float_t* ubuf, Int_t& nbuf);
-   virtual  void  Gfmate2(Int_t imat, char *name, Float_t &a, Float_t &z, 
+   virtual  void  Gfmate2(Int_t imat, char *name, Float_t &a, Float_t &z,
                          Float_t &dens, Float_t &radl, Float_t &absl,
                          Float_t* ubuf, Int_t& nbuf);
-   virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z, 
+   virtual  void  Gfmate(Int_t imat, char *name, Double_t &a, Double_t &z,
                          Double_t &dens, Double_t &radl, Double_t &absl,
                          Double_t* ubuf, Int_t& nbuf);
    virtual  void  Gfpart(Int_t ipart, char *name, Int_t &itrtyp,
@@ -900,7 +900,7 @@ public:
    virtual  void  Gsdk(Int_t ipart, Float_t *bratio, Int_t *mode);
    virtual  void  Gsmate(Int_t imat, const char *name, Float_t a, Float_t z,
                          Float_t dens, Float_t radl, Float_t absl);
-  virtual  void  Gfang( Float_t* p, Float_t& costh, Float_t& sinth, 
+  virtual  void  Gfang( Float_t* p, Float_t& costh, Float_t& sinth,
 			 Float_t& cosph, Float_t& sinph, Int_t& rotate);
    virtual  void  Gsmixt(Int_t imat, const char *name, Float_t *a, Float_t *z,
                          Float_t dens, Int_t nlmat, Float_t *wmat);
@@ -916,7 +916,7 @@ public:
 			     Float_t *absco, Float_t *effic, Float_t *rindex);
    virtual void  SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov,
 			     Double_t *absco, Double_t *effic, Double_t *rindex);
-    
+
    // functions for definition of surfaces
    // and material properties for optical physics
    virtual void  DefineOpSurface(const char* name,
@@ -932,15 +932,15 @@ public:
                          const char* volName,
                          const char* opSurfaceName);
    virtual void  SetMaterialProperty(
-                         Int_t itmed, const char* propertyName, 
+                         Int_t itmed, const char* propertyName,
                          Int_t np, Double_t* pp, Double_t* values);
    virtual void  SetMaterialProperty(
                          Int_t itmed, const char* propertyName,
                          Double_t value);
    virtual void  SetMaterialProperty(
-                         const char* surfaceName, const char* propertyName, 
+                         const char* surfaceName, const char* propertyName,
                          Int_t np, Double_t* pp, Double_t* values);
-			 
+
   // functions from GKINE
    virtual  void  Gfkine(Int_t itra, Float_t *vert, Float_t *pvert,
                          Int_t &ipart, Int_t &nvert);
@@ -1035,7 +1035,7 @@ public:
    virtual  void  Gdrawc(const char *name,Int_t axis=1, Float_t cut=0,
                          Float_t u0=10,Float_t v0=10,Float_t ul=0.01,
                          Float_t vl=0.01);
-   virtual  void  Gdrawx(const char *name,Float_t cutthe, Float_t cutphi, 
+   virtual  void  Gdrawx(const char *name,Float_t cutthe, Float_t cutphi,
                          Float_t cutval, Float_t theta=30, Float_t phi=30,
                          Float_t u0=10,Float_t v0=10,Float_t ul=0.01,
                          Float_t vl=0.01);
@@ -1079,9 +1079,9 @@ public:
    virtual  void  SetERAN(Float_t ekmin=1.e-5, Float_t ekmax=1.e4,
 			  Int_t nekbin=90);
    virtual  void  SetHADR(Int_t par=1);
-   virtual  void  SetKINE(Int_t kine, Float_t xk1=0, Float_t xk2=0, 
+   virtual  void  SetKINE(Int_t kine, Float_t xk1=0, Float_t xk2=0,
                           Float_t xk3=0, Float_t xk4=0,
-                          Float_t xk5=0, Float_t xk6=0, Float_t xk7=0, 
+                          Float_t xk5=0, Float_t xk6=0, Float_t xk7=0,
                           Float_t xk8=0, Float_t xk9=0, Float_t xk10=0);
    virtual  void  SetLOSS(Int_t par=2);
    virtual  void  SetMULS(Int_t par=1);
@@ -1202,7 +1202,7 @@ protected:
   Gcjump_t *fGcjump;          //! GCJUMP common structure
 
 
- 
+
 
   //Put here all volume names
 
@@ -1261,11 +1261,11 @@ protected:
   Int_t G3Gsvolu(const char *name, const char *shape, Int_t nmed,
                     Float_t *upar, Int_t np);
   void  G3Gsposp(const char *name, Int_t nr, const char *mother,
-                 Double_t x, Double_t y, Double_t z, Int_t irot, 
+                 Double_t x, Double_t y, Double_t z, Int_t irot,
                  const char *konly, Float_t *upar, Int_t np);
-                 
+
   // particles definition
-  Int_t GetIonPdg(Int_t z, Int_t a, Int_t i = 0) const;                
+  Int_t GetIonPdg(Int_t z, Int_t a, Int_t i = 0) const;
   Int_t GetSpecialPdg(Int_t number) const;
 
   // sensitive detectors

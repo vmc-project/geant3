@@ -165,15 +165,15 @@ public:
     //
     // Return the Transformation matrix between the volume specified by
     // the path volumePath and the top or master volume.
-    virtual Bool_t GetTransformation(const TString& volumePath, 
+    virtual Bool_t GetTransformation(const TString& volumePath,
                          TGeoHMatrix& matrix);
-   
+
     // Return the name of the shape and its parameters for the volume
     // specified by the volume name.
-    virtual Bool_t GetShape(const TString& volumePath, 
+    virtual Bool_t GetShape(const TString& volumePath,
                          TString& shapeType, TArrayD& par);
 
-    // Returns the material parameters for the material specified by 
+    // Returns the material parameters for the material specified by
     // the material
     Bool_t GetMaterial(Int_t imat, TString& name,
                        Double_t& a, Double_t& z, Double_t& density,
@@ -185,7 +185,7 @@ public:
 	 	         TString& name, Int_t& imat,
 		         Double_t& a, Double_t& z, Double_t& density,
 		         Double_t& radl, Double_t& inter, TArrayD& par);
-		     
+
     // Returns the medium parameters for the volume specified by the
     // volume name.
     virtual Bool_t GetMedium(const TString& volumeName,
@@ -194,11 +194,11 @@ public:
 		         Double_t& fieldm, Double_t& tmaxfd, Double_t& stemax,
 		         Double_t& deemax, Double_t& epsil, Double_t& stmin,
 		         TArrayD& par);
-    
+
    // Returns the current medium (implemented in TGeant3)
    virtual Int_t   GetMedium() const;
-    
-    
+
+
       // functions from GDRAW
    virtual  void  Gdshow(Int_t view);
    virtual  void  Gdopt(const char *name,const char *value);
@@ -228,7 +228,7 @@ protected:
   TGeoMCGeometry*  fMCGeo; // Implementation of TVirtualMCGeometry for TGeo
   Bool_t           fImportRootGeometry; // Option to import geometry from TGeo
                                         // (materials and medias are filled in FinishGeometry()
-  Bool_t           fCollectTracks;      //! Tracks get collected via TGeoTrack 
+  Bool_t           fCollectTracks;      //! Tracks get collected via TGeoTrack
   Bool_t           fIsComputeNextMatrix; //! Compute systematically the matrix to the next crossed node.
   Gcvol1_t *fGcvol1;          //! GCVOLU common structure
 

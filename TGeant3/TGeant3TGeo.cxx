@@ -520,7 +520,7 @@ extern "C" type_of_call void ggperpTGeo(Float_t*, Float_t*, Int_t&);
 //
 Gcvol1_t *gcvol1 = 0;
 TGeoNode *gCurrentNode = 0;
-TGeant3TGeo *geant3tgeo = 0;                                                               
+TGeant3TGeo *geant3tgeo = 0;
 R__EXTERN Gctrak_t *gctrak;
 R__EXTERN Gcvolu_t *gcvolu;
 R__EXTERN Gckine_t *gckine;
@@ -547,13 +547,13 @@ TGeant3TGeo::TGeant3TGeo()
     fMCGeo(0),
     fImportRootGeometry(kFALSE),
     fCollectTracks(kFALSE),
-    fIsComputeNextMatrix(kFALSE),                                                          
+    fIsComputeNextMatrix(kFALSE),
     fGcvol1(0),
     fUserSDTGeoMap()
 {
   //
   // Default constructor
-  geant3tgeo = this;                                                                       
+  geant3tgeo = this;
 }
 
 //____________________________________________________________________________
@@ -561,7 +561,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
        : TGeant3(title,nwgeant),
          fImportRootGeometry(kFALSE),
          fCollectTracks(kFALSE),
-         fIsComputeNextMatrix(kFALSE),                                                     
+         fIsComputeNextMatrix(kFALSE),
          fGcvol1(0),
          fUserSDTGeoMap()
 {
@@ -570,7 +570,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
   //
 
   SetName("TGeant3TGeo");
-  geant3tgeo = this;                                                                       
+  geant3tgeo = this;
 
   fMCGeo = new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry");
 
@@ -590,7 +590,7 @@ TGeant3TGeo::TGeant3TGeo(const char *title, Int_t nwgeant)
 TGeant3TGeo::~TGeant3TGeo()
 {
    delete fMCGeo;
-   geant3tgeo = 0;                                                                         
+   geant3tgeo = 0;
 }
 
 //____________________________________________________________________________
@@ -704,29 +704,29 @@ const char* TGeant3TGeo::CurrentVolPath()
   return GetPath();
 }
 
-//______________________________________________________________________                   
-Bool_t TGeant3TGeo::CurrentBoundaryNormal(Double_t &x, Double_t &y, Double_t &z) const         
-{                                                                                          
-// Return the normal vector of the surface of the last volume exited                       
+//______________________________________________________________________
+Bool_t TGeant3TGeo::CurrentBoundaryNormal(Double_t &x, Double_t &y, Double_t &z) const
+{
+// Return the normal vector of the surface of the last volume exited
 
   if ( ! fIsComputeNextMatrix ) {
     Fatal("CurrentBoundaryNormal",
 	  "The option SetComputeNextMatrix has not been activated." );
-  }    
+  }
 
-  if ( ! IsTrackEntering() && ! IsTrackExiting() ) return kFALSE;                          
-                                                                                           
-  Double_t pt[3];                                                                          
-  TrackPosition(pt[0], pt[1], pt[2]);                                                      
-  gGeoManager->SetCurrentPoint(pt);                                                        
-  const Double_t* norm = gGeoManager->FindNormalFast();                                    
-  if (!norm) return kFALSE;                                                                
-  x = norm[0];                                                                             
-  y = norm[1];                                                                             
-  z = norm[2];                                                                             
-  return kTRUE;                                                                            
-}                                                                                          
-                                                                                            
+  if ( ! IsTrackEntering() && ! IsTrackExiting() ) return kFALSE;
+
+  Double_t pt[3];
+  TrackPosition(pt[0], pt[1], pt[2]);
+  gGeoManager->SetCurrentPoint(pt);
+  const Double_t* norm = gGeoManager->FindNormalFast();
+  if (!norm) return kFALSE;
+  x = norm[0];
+  y = norm[1];
+  z = norm[2];
+  return kTRUE;
+}
+
 //_____________________________________________________________________________
 Int_t TGeant3TGeo::VolId(const Text_t *name) const
 {
@@ -1008,7 +1008,7 @@ void  TGeant3TGeo::SetRootGeometry()
 
 
   fImportRootGeometry = kTRUE;
-}  
+}
 
 //_____________________________________________________________________________
 const char *TGeant3TGeo::GetPath()
@@ -1049,8 +1049,8 @@ Bool_t TGeant3TGeo::GetTransformation(const TString &volumePath,TGeoHMatrix &mat
 
    // We have to preserve the modeler state
    return fMCGeo->GetTransformation(volumePath, mat);
-}   
-   
+}
+
 //______________________________________________________________________
 Bool_t TGeant3TGeo::GetShape(const TString &volumePath,TString &shapeType,
                          TArrayD &par)
@@ -1068,7 +1068,7 @@ Bool_t TGeant3TGeo::GetShape(const TString &volumePath,TString &shapeType,
     //   information
    return fMCGeo->GetShape(volumePath, shapeType, par);
 }
-   
+
 //______________________________________________________________________
 Bool_t TGeant3TGeo::GetMaterial(Int_t imat, TString& name,
                             Double_t& a, Double_t& z, Double_t& density,
@@ -1078,9 +1078,9 @@ Bool_t TGeant3TGeo::GetMaterial(Int_t imat, TString& name,
   // Return parameters for material IMAT
   // (previously called Gfmate)
   //
-  
+
   return TGeant3::GetMaterial(imat, name, a, z, density, radl, inter, par);
-}  
+}
 
 //______________________________________________________________________
 Bool_t TGeant3TGeo::GetMaterial(const TString &volumeName,
@@ -1115,7 +1115,7 @@ Bool_t TGeant3TGeo::GetMaterial(const TString &volumeName,
    TGeoMedium *med = vol->GetMedium();
    if (!med) return kFALSE;
    TGeoMaterial *mat = med->GetMaterial();
-   imat = mat->GetUniqueID();   
+   imat = mat->GetUniqueID();
 
    nbuf = jma = Lq()[Gclink()->jmate-imat];
    ubuf = new Float_t[nbuf];
@@ -1187,16 +1187,16 @@ Bool_t TGeant3TGeo::GetMedium(const TString &volumeName,TString &name,
    epsil  = (Double_t) epsilf;
    stmin  = (Double_t) stminf;
    return kTRUE;
-}         
+}
 
 //_____________________________________________________________________________
 Int_t  TGeant3TGeo::GetMedium() const
 {
-// Temporary added 
+// Temporary added
 
   return TGeant3::GetMedium();
 }
-  
+
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 //
@@ -1650,7 +1650,7 @@ void  TGeant3TGeo::Gprotm(Int_t nmat)
         matrix->Print();
 	return;
      }
-  }     
+  }
   Error("Gprotm","Rotation with id=%i not found", nmat);
  }
 
@@ -2109,7 +2109,7 @@ void TGeant3TGeo::FinishGeometry()
         nofMaterials = kmat;
       }
       nofMaterials++;
-    }  	         
+    }
 
     // Number of media
     Int_t nofMedia = 0;
@@ -2135,7 +2135,7 @@ void TGeant3TGeo::FinishGeometry()
       // (do not reset TGeoMaterial index)
       if (usedMaterials[nmat] >0 )
         nmat = ImportMaterial(med->GetMaterial());
-      usedMaterials[nmat] = 1;        
+      usedMaterials[nmat] = 1;
 
       Int_t isvol  = (Int_t) med->GetParam(0);
       Int_t ifield = (Int_t) med->GetParam(1);
@@ -2326,8 +2326,8 @@ void gtmanyTGeo(Int_t &level1)
          memcpy(gcvol1->names1, gcvolu->names, nlevel*sizeof(Int_t));
          memcpy(gcvol1->numbr1, gcvolu->number, nlevel*sizeof(Int_t));
          memcpy(gcvol1->lvolu1, gcvolu->lvolum, nlevel*sizeof(Int_t));
-      }  
-   }   
+      }
+   }
 }
 
 //______________________________________________________________________
@@ -2375,7 +2375,7 @@ void glvoluTGeo(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
    memcpy(gcvolu->number, lnum, nlev*sizeof(Int_t));
    memcpy(gcvolu->lvolum, lvol, nlev*sizeof(Int_t));
 //   for (Int_t i=0;i<nlev;i++) printf(" #%i: %i  %i  %i\n", i, lnam[i], lnum[i],lvol[i]);
-   
+
    for (Int_t i=1; i<nlev; i++) {
       nd = vol->GetNdaughters();
       found = kFALSE;
@@ -2388,15 +2388,15 @@ void glvoluTGeo(Int_t &nlev, Int_t *lnam,Int_t *lnum, Int_t &ier)
                gGeoManager->CdDown(id);
                vol = vdaughter;
                break;
-            } 
+            }
          }
       }
       if (!found) {
          printf("### ERROR in TGeant3TGeo::glvoluTGeo(): cannot restore path\n");
          ier = 1;
          return;
-      }           
-   }   
+      }
+   }
 }
 
 
