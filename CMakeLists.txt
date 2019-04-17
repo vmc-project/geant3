@@ -14,7 +14,7 @@
 
 #---  Enforce an out-of-source builds before anything else ---------------------
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(STATUS "Geant4 VMC requires an out-of-source build.")
+    message(STATUS "Geant3 requires an out-of-source build.")
     message(STATUS "Please remove these files from ${CMAKE_BINARY_DIR} first:")
     message(STATUS "CMakeCache.txt")
     message(STATUS "CMakeFiles")
