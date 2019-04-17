@@ -8,10 +8,10 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class  TGeant3-;
-#pragma link C++ class  TGeant3TGeo+;
-#pragma link C++ class  TGeant3f77+;
-#pragma link C++ class  TG3Application+;
+#pragma link C++ class TGeant3 - ;
+#pragma link C++ class TGeant3TGeo + ;
+#pragma link C++ class TGeant3f77 + ;
+#pragma link C++ class TG3Application + ;
 
 /*
 // Unused class rule
@@ -51,4 +51,3 @@
 */
 
 #endif
-
