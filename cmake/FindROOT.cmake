@@ -11,13 +11,13 @@
 # (http://ivana.home.cern.ch/ivana/VGM.html)
 # I. Hrivnacova, 31/01/2014
 #
-# The CMake build for Virtual Geometry Model is a result of a merge 
-# of the CMake configuration files kindly provided 
+# The CMake build for Virtual Geometry Model is a result of a merge
+# of the CMake configuration files kindly provided
 # by Florian Uhlig, GSI and Pere Mato, CERN.
 # (http://ivana.home.cern.ch/ivana/VGM.html)
 
 # - Try to find ROOT instalation
-# This module sets up ROOT information 
+# This module sets up ROOT information
 # It defines:
 # ROOT_FOUND          If ROOT is found
 # ROOT_INCLUDE_DIRS   PATH to the include directories
@@ -46,12 +46,12 @@ if(ROOT_CONFIG_EXECUTABLE)
   set(ROOT_FOUND TRUE)
 
   execute_process(
-    COMMAND ${ROOT_CONFIG_EXECUTABLE} --prefix 
-    OUTPUT_VARIABLE ROOT_PREFIX 
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --prefix
+    OUTPUT_VARIABLE ROOT_PREFIX
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 
   execute_process(
-    COMMAND ${ROOT_CONFIG_EXECUTABLE} --version 
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --version
     OUTPUT_VARIABLE ROOT_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE)
 
@@ -104,8 +104,8 @@ if (NOT ROOT_FOUND)
   if (ROOT_INCLUDE_DIRS AND ROOT_LIBRARY_DIR)
     set (ROOT_FOUND TRUE)
     set (ROOT_LIBRARIES -L${ROOT_LIBRARY_DIR} -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl -rdynamic -lGeom)
-  endif()  
-endif()    
+  endif()
+endif()
 
 if(ROOT_FOUND)
   # ROOT 6+ requires at least C++11 support
@@ -127,11 +127,11 @@ if(ROOT_FOUND)
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
   if(NOT ROOT_FIND_QUIETLY)
     message(STATUS "Found ROOT ${ROOT_VERSION} in ${ROOT_PREFIX}")
-  endif()  
+  endif()
 else()
   if (ROOT_FIND_REQUIRED)
     message(FATAL_ERROR "ROOT required, but not found")
-  endif (ROOT_FIND_REQUIRED)   
+  endif (ROOT_FIND_REQUIRED)
 endif()
 
 # Make variables changeble to the advanced user
@@ -149,7 +149,7 @@ find_program(ROOTCINT_EXECUTABLE rootcint PATHS
   $ENV{ROOTSYS}/bin
 )
 
-# According to root/cmake/modules/RootNewMacros.cmake 
+# According to root/cmake/modules/RootNewMacros.cmake
 # from Root v5.34.14
 #---------------------------------------------------------------------------------------------------
 #---ROOT_GENERATE_DICTIONARY( dictionary headerfiles LINKDEF linkdef OPTIONS opt1 opt2 ...)
@@ -174,15 +174,15 @@ function(ROOT_GENERATE_DICTIONARY libname with_rootmap)
   #---Get the list of include directories------------------
   get_directory_property(incdirs INCLUDE_DIRECTORIES)
   if(CMAKE_PROJECT_NAME STREQUAL ROOT)
-    set(includedirs -I${CMAKE_CURRENT_SOURCE_DIR}/include 
+    set(includedirs -I${CMAKE_CURRENT_SOURCE_DIR}/include
                     -I${CMAKE_BINARY_DIR}/include
-                    -I${CMAKE_SOURCE_DIR}/cint/cint/include 
-                    -I${CMAKE_SOURCE_DIR}/cint/cint/stl 
+                    -I${CMAKE_SOURCE_DIR}/cint/cint/include
+                    -I${CMAKE_SOURCE_DIR}/cint/cint/stl
                     -I${CMAKE_SOURCE_DIR}/cint/cint/lib)
   else()
-    set(includedirs -I${CMAKE_CURRENT_SOURCE_DIR}/include) 
-  endif() 
-  foreach( d ${incdirs})    
+    set(includedirs -I${CMAKE_CURRENT_SOURCE_DIR}/include)
+  endif()
+  foreach( d ${incdirs})
    set(includedirs ${includedirs} -I${d})
   endforeach()
   # filter-out directories which make problems to Cint processing
@@ -194,7 +194,7 @@ function(ROOT_GENERATE_DICTIONARY libname with_rootmap)
   #---Get the list of definitions---------------------------
   get_directory_property(defs COMPILE_DEFINITIONS)
   foreach( d ${defs})
-   if(NOT d MATCHES "=")   
+   if(NOT d MATCHES "=")
      set(definitions ${definitions} -D${d})
    endif()
   endforeach()
@@ -202,7 +202,7 @@ function(ROOT_GENERATE_DICTIONARY libname with_rootmap)
   foreach( f ${ARG_LINKDEF})
     if( IS_ABSOLUTE ${f})
       set(_linkdef ${_linkdef} ${f})
-    else() 
+    else()
       if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/include/${f})
         set(_linkdef ${_linkdef} ${CMAKE_CURRENT_SOURCE_DIR}/include/${f})
       else()

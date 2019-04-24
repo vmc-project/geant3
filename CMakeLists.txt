@@ -27,9 +27,9 @@ endif()
 cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
 
 #--- Prepend our own CMake Modules to the search path --------------------------
-set(CMAKE_MODULE_PATH 
+set(CMAKE_MODULE_PATH
     ${CMAKE_SOURCE_DIR}/cmake
-    ${CMAKE_MODULE_PATH}) 
+    ${CMAKE_MODULE_PATH})
 
 #--- Project definitions -------------------------------------------------------
 project(Geant3)
