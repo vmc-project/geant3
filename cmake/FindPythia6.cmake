@@ -7,7 +7,7 @@
 # Contact: root-vmc@cern.ch
 #-------------------------------------------------
 
-# Adopted from Virtual Geometry Model and ROOT (ROOT_GENERATE_DICTIONARY)
+# Adopted from Virtual Geometry Model
 # (http://ivana.home.cern.ch/ivana/VGM.html)
 # I. Hrivnacova, 31/01/2014
 #

@@ -9,7 +9,7 @@
 
 # Configuration file for CMake build for VMC applications.
 # It finds the MC package according to user selection and sets
-# MC_FOUND
+# MCPackages_FOUND
 #
 # I. Hrivnacova, 07/07/2014
 
@@ -64,8 +64,8 @@ if(VMC_WITH_Geant4)
     find_package(VGM REQUIRED)
   endif()
 
-  # If all required packages above were found we can update MC_FOUND
-  set(MC_FOUND TRUE)
+  # If all required packages above were found we can update MCPackages_FOUND
+  set(MCPackages_FOUND TRUE)
   return()
 endif()
 
@@ -74,7 +74,7 @@ if(VMC_WITH_Geant3)
   find_package(Geant3 REQUIRED)
   #PYTHIA6
   find_package(Pythia6 REQUIRED)
-  # If all required packages above were found we can update MC_FOUND
-  set(MC_FOUND TRUE)
+  # If all required packages above were found we can update MCPackages_FOUND
+  set(MCPackages_FOUND TRUE)
   return()
 endif()

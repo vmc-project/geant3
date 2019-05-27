@@ -13,11 +13,16 @@
 #---CMake required version -----------------------------------------------------
 cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
 
-#-- ROOT (required) ------------------------------------------------------------
-if(NOT ROOT_FOUND)
-  find_package(ROOT REQUIRED)
-endif(NOT ROOT_FOUND)
+#-------------------------------------------------------------------------------
+# Define installed names
+#
+set(library_name geant321)
+
+#-------------------------------------------------------------------------------
+# Includes
+#
 include_directories(${ROOT_INCLUDE_DIRS})
+include_directories(${VMC_INCLUDE_DIRS})
 
 #-------------------------------------------------------------------------------
 # Setup project include directories; compile definitions; link libraries
@@ -32,8 +37,7 @@ include_directories(
 # Generate Root dictionaries
 #
 ROOT_GENERATE_DICTIONARY(
-  ${CMAKE_SHARED_LIBRARY_PREFIX}geant321
-  with_rootmap
+  ${library_name}_dict
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TCallf77.h
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TG3Application.h
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3f77.h
@@ -41,6 +45,13 @@ ROOT_GENERATE_DICTIONARY(
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3.h
   ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3TGeo.h
   LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/geant3LinkDef.h)
+
+# Files produced by the dictionary generation
+SET(root_dict
+  ${library_name}_dict.cxx)
+SET(root_dict_libs
+  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${library_name}_dict_rdict.pcm
+  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}${library_name}_dict.rootmap)
 
 #-------------------------------------------------------------------------------
 # Always use '@rpath' in install names of libraries.
@@ -126,18 +137,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND APPLE)
 endif()
 
 #---Add library-----------------------------------------------------------------
-add_library(geant321 ${fortran_sources} ${c_sources} ${cxx_sources}
-            ${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict.cxx ${headers})
-target_link_libraries(geant321 ${ROOT_LIBRARIES} -lVMC -lEG)
+add_library(${library_name} ${fortran_sources} ${c_sources} ${cxx_sources}
+            ${root_dict} ${headers})
+target_link_libraries(${library_name} ${VMC_LIBRARIES} ${ROOT_LIBRARIES})
 
 #----Installation---------------------------------------------------------------
 install(FILES ${headers} DESTINATION include/TGeant3)
-install(TARGETS geant321 EXPORT Geant3Targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-# Install dictionary map (only if ROOT 6.x
-if (${ROOT_FOUND_VERSION} GREATER 59999)
-  install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}geant321_dict_rdict.pcm
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}geant321.rootmap
-    DESTINATION ${CMAKE_INSTALL_LIBDIR})
-endif()
+install(TARGETS ${library_name} EXPORT Geant3Targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${root_dict_libs} DESTINATION ${CMAKE_INSTALL_LIBDIR})

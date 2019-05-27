@@ -50,7 +50,7 @@ option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
 enable_language(Fortran)
 
 #--- Find required packages ----------------------------------------------------
-find_package(ROOT REQUIRED)
+include(Geant3RequiredPackages)
 
 #--- Utility to defined installation lib directory -----------------------------
 include(VMCInstallLibDir)
@@ -63,4 +63,3 @@ include(Geant3BuildProject)
 
 #--- CPack ----------------- --------------------------------------------------
 include(Geant3CPack)
-
