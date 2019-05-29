@@ -1092,7 +1092,6 @@ Gcjump_t *gcjump=0;          //! GCJUMP common structure
 // TVirtualMCApplication global pointer
 //
 TVirtualMCApplication* vmcApplication =0;
-TGeoBranchArray* gCurrentGeoState = 0;
 TMCParticleStatus* gCurrentParticleStatus = 0;
 // NOTE Use to control calls to TVirtualMCApplication::PreTrack
 //                                                   ::PostTrack
@@ -6833,23 +6832,20 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
   gDoPostTrackHooks = kTRUE;
   gDoPrimaryHooks = kTRUE;
   gCurrentParticleStatus = 0;
-  gCurrentGeoState = 0;
   if (track) {
     TMCManagerStack* mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
     if(mcManagerStack) {
       gCurrentParticleStatus = const_cast<TMCParticleStatus*>(mcManagerStack->GetParticleStatus(mtrack));
-      gCurrentGeoState = (TGeoBranchArray*)mcManagerStack->GetGeoState(mtrack);
-    }
-    // NOTE Primary hooks need to be disabled explicitly since GEANT3 derives
-    //      that based on the stack structure and track counting. However, if
-    //      the VMC stack does not have the counting which is assumed by GEANT3,
-    //      the internal logic might not make the right concnlusion.
-    // TODO Make sure that primary hooks are called when necessary
-    if(gCurrentParticleStatus && gCurrentParticleStatus->fParentId >= 0) {
-      gDoPrimaryHooks = kFALSE;
-    }
-    if(gCurrentParticleStatus && gCurrentParticleStatus->fStepNumber > 0) {
-      gDoPreTrackHooks = kFALSE;
+      // NOTE Primary hooks need to be disabled explicitly since GEANT3 derives
+      //      that based on the stack structure and track counting.
+      // TODO However, if the VMC stack does not have the counting which is
+      //      assumed by GEANT3, the internal logic might not make the right concnlusion.
+      if(gCurrentParticleStatus->fParentId >= 0) {
+        gDoPrimaryHooks = kFALSE;
+      }
+      if(gCurrentParticleStatus->fStepNumber > 0) {
+        gDoPreTrackHooks = kFALSE;
+      }
       // fill G3 arrays
       pmom[0] = gCurrentParticleStatus->fMomentum.Px();
       pmom[1] = gCurrentParticleStatus->fMomentum.Py();
@@ -6862,7 +6858,7 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
       polar[0] = gCurrentParticleStatus->fPolarization.X();
       polar[1] = gCurrentParticleStatus->fPolarization.Y();
       polar[2] = gCurrentParticleStatus->fPolarization.Z();
-      mcManagerStack->SetCurrentTrack(mtrack);
+
     } else {
       pmom[0] = track->Px();
       pmom[1] = track->Py();
@@ -6877,8 +6873,8 @@ extern "C" void type_of_call  rxgtrak(Int_t &mtrack,Int_t &ipart,Float_t *pmom,
       polar[0] = pol.X();
       polar[1] = pol.Y();
       polar[2] = pol.Z();
-      stack->SetCurrentTrack(mtrack);
     }
+    stack->SetCurrentTrack(mtrack);
     ipart = TVirtualMC::GetMC()->IdFromPDG(track->GetPdgCode());
   }
   mtrack++;

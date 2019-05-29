@@ -522,7 +522,7 @@ extern "C" type_of_call void ggperpTGeo(Float_t*, Float_t*, Int_t&);
 //
 Gcvol1_t *gcvol1 = 0;
 TGeoNode *gCurrentNode = 0;
-extern TGeoBranchArray *gCurrentGeoState;
+extern TMCParticleStatus* gCurrentParticleStatus;
 TGeant3TGeo *geant3tgeo = 0;
 R__EXTERN Gctrak_t *gctrak;
 R__EXTERN Gcvolu_t *gcvolu;
@@ -2280,14 +2280,18 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 {
    gcchan->lsamvl = kTRUE;
    // Set cached geometry state if available, else find node manually.
-   if(gCurrentGeoState) {
-     gCurrentGeoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
-     gMC->GetManagerStack()->NotifyOnRestoredGeometry(gCurrentGeoState);
-     // Reset geo state index
-     gCurrentGeoState = 0;
-     gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
-     gCurrentNode = gGeoManager->GetCurrentNode();
-   } else {
+   TGeoBranchArray* geoState = 0;
+   if(gCurrentParticleStatus) {
+     TMCManagerStack* mcManagerStack = gMC->GetManagerStack();
+     geoState = (TGeoBranchArray*)mcManagerStack->GetCurrentGeoState();
+     if(geoState) {
+       geoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
+       mcManagerStack->NotifyOnRestoredGeometry();
+       gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
+       gCurrentNode = gGeoManager->GetCurrentNode();
+     }
+   }
+   if(!geoState) {
      gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
    }
    gcchan->lsamvl = gGeoManager->IsSameLocation();
@@ -2312,16 +2316,20 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 void gmediaTGeo(Float_t *x, Int_t &numed, Int_t & /*check*/)
 {
   // Set cached geometry state if available, else find node manually.
-  if(gCurrentGeoState) {
-    gCurrentGeoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
-    gMC->GetManagerStack()->NotifyOnRestoredGeometry(gCurrentGeoState);
-    // Reset geo state index
-    gCurrentGeoState = 0;
-    gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
-    gCurrentNode = gGeoManager->GetCurrentNode();
-  } else {
-    gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
-  }
+   TGeoBranchArray* geoState = 0;
+   if(gCurrentParticleStatus) {
+     TMCManagerStack* mcManagerStack = gMC->GetManagerStack();
+     geoState = (TGeoBranchArray*)mcManagerStack->GetCurrentGeoState();
+     if(geoState) {
+       geoState->UpdateNavigator(gGeoManager->GetCurrentNavigator());
+       mcManagerStack->NotifyOnRestoredGeometry();
+       gGeoManager->SetCurrentPoint(x[0],x[1],x[2]);
+       gCurrentNode = gGeoManager->GetCurrentNode();
+     }
+   }
+   if(!geoState) {
+     gCurrentNode = gGeoManager->FindNode(x[0],x[1],x[2]);
+   }
    if (gGeoManager->IsOutside()) {
       numed=0;
    } else {
