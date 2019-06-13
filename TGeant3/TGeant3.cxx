@@ -522,6 +522,7 @@ Cleanup of code
 #include "TParameter.h"
 #include "TGeoMatrix.h"
 #include "TObjString.h"
+#include "RVersion.h"
 
 #include "TGeant3.h"
 
@@ -6425,6 +6426,9 @@ Bool_t TGeant3::ProcessRun(Int_t nevent)
       ProcessEvent();
       if (fStopRun)
          break;
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 18, 0)
+      fApplication->EndOfEvent();
+#endif
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
       EndOfEventForSDs();
 #endif
