@@ -525,6 +525,7 @@ Cleanup of code
 #include "RVersion.h"
 
 #include "TGeant3.h"
+#include "TMCManager.h"
 #include "TMCManagerStack.h"
 #include "TMCParticleStatus.h"
 
@@ -1060,6 +1061,7 @@ Gcjump_t *gcjump = 0; //! GCJUMP common structure
 //
 TVirtualMCApplication *vmcApplication = 0;
 TMCParticleStatus *gCurrentParticleStatus = 0;
+TMCManager *gMCManager = 0;
 // NOTE Use to control calls to TVirtualMCApplication::PreTrack
 //                                                   ::PostTrack
 //                                                   ::BeginPrimary
@@ -1101,6 +1103,7 @@ TGeant3::TGeant3()
    //
    geant3 = this;
    vmcApplication = TVirtualMCApplication::Instance();
+   gMCManager = TMCManager::Instance();
 }
 
 //______________________________________________________________________
@@ -1128,6 +1131,7 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
 
    geant3 = this;
    vmcApplication = TVirtualMCApplication::Instance();
+   gMCManager = TMCManager::Instance();
 
    if (nwgeant) {
       g3zebra(nwgeant);
@@ -2418,7 +2422,8 @@ void TGeant3::TrackPolarization(Double_t &polX, Double_t &polY, Double_t &polZ) 
    //
    // Return the current polarization
    //
-   // TODO Extract actual polarization
+   // NOTE Polarization, used in Geant3 for Cherenkov photons only,
+   //      not yet taken into account here
    polX = 0.;
    polY = 0.;
    polZ = 0.;
@@ -2430,7 +2435,8 @@ void TGeant3::TrackPolarization(TVector3 &pol) const
    //
    // Return the current polarization
    //
-   // TODO Extract actual polarization
+   // NOTE Polarization, used in Geant3 for Cherenkov photons only,
+   //      not yet taken into account here
    pol[0] = 0.;
    pol[1] = 0.;
    pol[2] = 0.;
@@ -5900,9 +5906,9 @@ void TGeant3::WriteEuclid(const char *filnam, const char *topvol, Int_t number, 
    iws[nvstak] = ivo;
    iws[iadvol + ivo] = level;
    ivstak = 0;
-//
-//*** flag all volumes and fill the stack
-//
+   //
+   //*** flag all volumes and fill the stack
+   //
 L10:
    //
    //    pick the next volume in stack
@@ -6462,7 +6468,7 @@ void TGeant3::Init()
    fApplication->AddParticles();
    fApplication->AddIons();
    // First, check whether geometry is constructed externally
-   if (!UseExternalGeometryConstruction()) {
+   if (!gMCManager) {
       fApplication->ConstructGeometry();
    }
    FinishGeometry();

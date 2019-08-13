@@ -113,6 +113,7 @@
 extern TGeant3 *geant3;
 extern TGeoManager *gGeoManager;
 extern TVirtualMCApplication *vmcApplication;
+extern TMCManager *gMCManager;
 extern Bool_t gDoPreTrackHooks;
 extern Bool_t gDoPostTrackHooks;
 
@@ -887,10 +888,11 @@ extern "C" type_of_call
             mom[0] = geant3->Gckin2()->xphot[jk][3] * geant3->Gckin2()->xphot[jk][6];
             mom[1] = geant3->Gckin2()->xphot[jk][4] * geant3->Gckin2()->xphot[jk][6];
             mom[2] = geant3->Gckin2()->xphot[jk][5] * geant3->Gckin2()->xphot[jk][6];
-            geant3->SetTrack(1, stack->GetCurrentTrackNumber(), geant3->PDGFromId(50), mom, // momentum
-                             geant3->Gckin2()->xphot[jk],                                   // position
-                             &geant3->Gckin2()->xphot[jk][7],                               // polarisation
-                             geant3->Gckin2()->xphot[jk][10],                               // time of flight
+            geant3->SetTrack(1, stack->GetCurrentTrackNumber(), geant3->PDGFromId(50),
+                             mom,                             // momentum
+                             geant3->Gckin2()->xphot[jk],     // position
+                             &geant3->Gckin2()->xphot[jk][7], // polarisation
+                             geant3->Gckin2()->xphot[jk][10], // time of flight
                              kPCerenkov, nt, 1., 0);
          }
       }
@@ -931,7 +933,7 @@ extern "C" type_of_call
       //
       //    ------------------------------------------------------------------
       //
-      if (!geant3->UseExternalParticleGeneration()) {
+      if (!gMCManager) {
          // Check whether particles are generated externally
          vmcApplication->GeneratePrimaries();
       }
