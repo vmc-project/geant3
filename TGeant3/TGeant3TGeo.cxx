@@ -2268,8 +2268,13 @@ void ginvolTGeo(Float_t *x, Int_t &isame)
 void gtmediTGeo(Float_t *x, Int_t &numed)
 {
    gcchan->lsamvl = kTRUE;
+#ifndef USE_ROOT_VMC
    // Set cached geometry state if available, else find node manually.
    if (gCurrentParticleStatus && gMCManager && gMCManager->RestoreGeometryState(gCurrentParticleStatus->fId)) {
+#else
+   // Set cached geometry state if available, else find node manually.
+   if (gCurrentParticleStatus && gMCManager) {
+#endif
       gCurrentNode = gGeoManager->GetCurrentNode();
    } else {
       gCurrentNode = gGeoManager->FindNode(x[0], x[1], x[2]);
@@ -2296,7 +2301,11 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 void gmediaTGeo(Float_t *x, Int_t &numed, Int_t & /*check*/)
 {
    // Set cached geometry state if available, else find node manually.
+#ifndef USE_ROOT_VMC
    if (gCurrentParticleStatus && gMCManager && gMCManager->RestoreGeometryState(gCurrentParticleStatus->fId)) {
+#else
+   if (gCurrentParticleStatus && gMCManager) {
+#endif
       gCurrentNode = gGeoManager->GetCurrentNode();
    } else {
       gCurrentNode = gGeoManager->FindNode(x[0], x[1], x[2]);

@@ -21,6 +21,8 @@ set (ROOT_LIBRARIES ${ROOT_LIBRARIES} -lEG -lGeom)
 if(ROOT_vmc_FOUND)
   message(STATUS "Using VMC built with ROOT")
   set(VMC_LIBRARIES "VMC")
+  message(STATUS "Adding -DUSE_ROOT_VMC")
+  add_definitions(-DUSE_ROOT_VMC)
 else()
   #-- VMC (required) ------------------------------------------------------------
   find_package(VMC CONFIG REQUIRED)
