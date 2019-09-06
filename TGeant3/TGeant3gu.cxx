@@ -113,6 +113,9 @@
 extern TGeant3 *geant3;
 extern TGeoManager *gGeoManager;
 extern TVirtualMCApplication *vmcApplication;
+extern TMCManager *gMCManager;
+extern Bool_t gDoPreTrackHooks;
+extern Bool_t gDoPostTrackHooks;
 
 extern "C" type_of_call void calsig();
 extern "C" type_of_call void gcalor();
@@ -572,11 +575,15 @@ extern "C" type_of_call
       //
       geant3->Gctrak()->istop = 0;
 
-      vmcApplication->PreTrack();
+      if (gDoPreTrackHooks) {
+         vmcApplication->PreTrack();
+      }
 
       g3track();
 
-      vmcApplication->PostTrack();
+      if (gDoPostTrackHooks) {
+         vmcApplication->PostTrack();
+      }
    }
 
    //______________________________________________________________________
@@ -926,8 +933,10 @@ extern "C" type_of_call
       //
       //    ------------------------------------------------------------------
       //
-
-      vmcApplication->GeneratePrimaries();
+      if (!gMCManager) {
+         // Check whether particles are generated externally
+         vmcApplication->GeneratePrimaries();
+      }
    }
 }
 // end of extern "C"

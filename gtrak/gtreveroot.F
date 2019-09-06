@@ -77,16 +77,17 @@ C.    ------------------------------------------------------------------
 *
       MTRACK=-999
       FINISHPRIMA=0
-10    MTROLD=MTRACK
-      ISPRIMA=0
-      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF,ISPRIMA)
-* Finish primary track if flagged
+10    ISPRIMA=0
       IF(FINISHPRIMA.GE.1) THEN
          CALL RXOUTH
          FINISHPRIMA=0
       ENDIF
-
-      IF(MTRACK.LE.0) GOTO 999
+      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF,ISPRIMA)
+* Finish primary track if flagged
+      IF(MTRACK.LE.0) THEN
+         FINISHPRIMA=0
+         GOTO 999
+      ENDIF
 
       IF(ISPRIMA.GE.1) THEN
          CALL RXINH
