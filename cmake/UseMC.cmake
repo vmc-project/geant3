@@ -77,6 +77,7 @@ if(VMC_WITH_Geant4)
   set(MC_PREFIX "g4")
 endif(VMC_WITH_Geant4)
 
+# Geant3
 if(VMC_WITH_Geant3)
   # always build outside Geant4VMC
   add_definitions(-DUSE_GEANT3)
@@ -88,10 +89,14 @@ if(VMC_WITH_Geant3)
   else()
     set(MCPackages_LIBRARIES ${Geant3_LIBRARIES} ${MCPackages_LIBRARIES})
   endif(Pythia6_FOUND)
-
   set(MC_PREFIX "g3")
-
 endif(VMC_WITH_Geant3)
+
+# Multiple engines
+if(VMC_WITH_Multi)
+  add_definitions(-DUSE_MULTI)
+  set(MC_PREFIX "multi")
+endif(VMC_WITH_Multi)
 
 # MTRoot (optional)
 if (VMC_WITH_MTRoot)

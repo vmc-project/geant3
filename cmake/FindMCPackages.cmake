@@ -18,11 +18,13 @@
 #---Options---------------------------------------------------------------------
 option(VMC_WITH_Geant4   "Build with Geant4" OFF)
 option(VMC_WITH_Geant3   "Build with Geant3" OFF)
+option(VMC_WITH_Multi    "Build with Multiple engines" OFF)
 
-if (VMC_WITH_Geant4 AND VMC_WITH_Geant3)
+if (VMC_WITH_Geant4 AND VMC_WITH_Geant3 AND (NOT VMC_WITH_Multi))
   message(STATUS "VMC applications cannot be built with two MCs at one time.")
   message(STATUS "Please select one of [VMC_WITH_Geant4,VMC_WITH_Geant3] options")
-  message(STATUS "and use another build/installation directory for another MC.")
+  message(STATUS "and use another build/installation directory for another MC,")
+  message(STATUS "or select also VMC_WITH_Multi option to build with multiple engines.")
   message(FATAL_ERROR "unsupported configuration detected.")
 endif()
 
@@ -65,8 +67,12 @@ if(VMC_WITH_Geant4)
   endif()
 
   # If all required packages above were found we can update MCPackages_FOUND
-  set(MCPackages_FOUND TRUE)
-  return()
+  if(NOT VMC_WITH_Multi)
+    set(MCPackages_FOUND TRUE)
+    return()
+  else()
+    set(G4MCPackages_FOUND TRUE)
+  endif()
 endif()
 
 # Geant3
@@ -75,6 +81,14 @@ if(VMC_WITH_Geant3)
   #PYTHIA6
   find_package(Pythia6 REQUIRED)
   # If all required packages above were found we can update MCPackages_FOUND
+  if(NOT VMC_WITH_Multi)
+    set(MCPackages_FOUND TRUE)
+    return()
+  else()
+    set(G3MCPackages_FOUND TRUE)
+  endif()
+endif()
+
+if(VMC_WITH_Multi AND G4MCPackages_FOUND AND G3MCPackages_FOUND)
   set(MCPackages_FOUND TRUE)
-  return()
 endif()
