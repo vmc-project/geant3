@@ -11,7 +11,7 @@
 # I. Hrivnacova, 13/06/2014
 
 #---CMake required version -----------------------------------------------------
-cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 #-------------------------------------------------------------------------------
 # Define installed names
@@ -136,10 +136,27 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND APPLE)
       "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup -Wl,-no_compact_unwind")
 endif()
 
+# Determine CXX STD from ROOT
+SET(CMAKE_CXX_STANDARD 11)
+# Find ROOT CXX standard
+string(FIND ${ROOT_CXX_FLAGS} "-std=" POSITION)
+if (${POSITION} GREATER -1)
+    string(SUBSTRING ${ROOT_CXX_FLAGS} ${POSITION} 11 ROOT_CXX_STD)
+    if(${ROOT_CXX_STD} STREQUAL "-std=c++1z " OR ${ROOT_CXX_STD} STREQUAL "-std=c++17 ")
+        SET(CMAKE_CXX_STANDARD 17)
+    elseif(${ROOT_CXX_STD} STREQUAL "-std=c++1y " OR ${ROOT_CXX_STD} STREQUAL "-std=c++14 ")
+        SET(CMAKE_CXX_STANDARD 14)
+    endif()
+endif()
+message(STATUS "Build with CXX STD ${CMAKE_CXX_STANDARD}")
+
 #---Add library-----------------------------------------------------------------
 add_library(${library_name} ${fortran_sources} ${c_sources} ${cxx_sources}
             ${root_dict} ${headers})
-target_link_libraries(${library_name} ${VMC_LIBRARIES} ${ROOT_LIBRARIES})
+set(DEPS ${ROOT_DEPS} ${VMC_DEPS})
+target_link_libraries(${library_name} ${VMC_DEPS} ${ROOT_DEPS})
+set_target_properties(geant321 PROPERTIES INTERFACE_LINK_LIBRARIES "${DEPS}")
+target_include_directories(geant321 INTERFACE $<INSTALL_INTERFACE:include/TGeant3>)
 
 #----Installation---------------------------------------------------------------
 install(FILES ${headers} DESTINATION include/TGeant3)
