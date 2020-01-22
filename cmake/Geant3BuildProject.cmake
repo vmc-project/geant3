@@ -64,5 +64,5 @@ install(FILES
   "${PROJECT_BINARY_DIR}/Geant3ConfigVersion.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/Geant3-${Geant3_VERSION})
 
-install(EXPORT Geant3Targets NAMESPACE GEANT3_VMC::
+install(EXPORT Geant3Targets
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/Geant3-${Geant3_VERSION})

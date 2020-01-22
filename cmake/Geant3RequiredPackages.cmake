@@ -28,7 +28,7 @@ if(ROOT_vmc_FOUND)
 else()
   #-- VMC (required) ------------------------------------------------------------
   find_package(VMC CONFIG REQUIRED)
-  set(VMC_DEPS VMC::VMCLibrary)
+  set(VMC_DEPS VMCLibrary)
   if(NOT VMC_FIND_QUIETLY)
     message(STATUS "Found VMC ${VMC_VERSION} in ${VMC_DIR}")
   endif()
