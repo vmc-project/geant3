@@ -33,4 +33,3 @@ else()
     message(STATUS "Found VMC ${VMC_VERSION} in ${VMC_DIR}")
   endif()
 endif()
-

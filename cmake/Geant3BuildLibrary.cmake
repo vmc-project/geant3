@@ -136,20 +136,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND APPLE)
       "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup -Wl,-no_compact_unwind")
 endif()
 
-# Determine CXX STD from ROOT
-SET(CMAKE_CXX_STANDARD 11)
-# Find ROOT CXX standard
-string(FIND ${ROOT_CXX_FLAGS} "-std=" POSITION)
-if (${POSITION} GREATER -1)
-    string(SUBSTRING ${ROOT_CXX_FLAGS} ${POSITION} 11 ROOT_CXX_STD)
-    if(${ROOT_CXX_STD} STREQUAL "-std=c++1z " OR ${ROOT_CXX_STD} STREQUAL "-std=c++17 ")
-        SET(CMAKE_CXX_STANDARD 17)
-    elseif(${ROOT_CXX_STD} STREQUAL "-std=c++1y " OR ${ROOT_CXX_STD} STREQUAL "-std=c++14 ")
-        SET(CMAKE_CXX_STANDARD 14)
-    endif()
-endif()
-message(STATUS "Build with CXX STD ${CMAKE_CXX_STANDARD}")
-
 #---Add library-----------------------------------------------------------------
 add_library(${library_name} ${fortran_sources} ${c_sources} ${cxx_sources}
             ${root_dict} ${headers})
