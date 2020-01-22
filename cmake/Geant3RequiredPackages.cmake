@@ -13,10 +13,9 @@
 # I. Hrivnacova, 15/04/2019
 
 #-- ROOT (required) ------------------------------------------------------------
-find_package(ROOT CONFIG REQUIRED)
-set(ROOT_DEPS ROOT::Core ROOT::RIO ROOT::Net ROOT::Hist ROOT::Graf ROOT::Graf3d ROOT::Gpad
-    ROOT::Tree ROOT::Rint ROOT::Postscript ROOT::Matrix ROOT::Physics ROOT::MathCore
-    ROOT::Thread ROOT::Geom ROOT::EG)
+find_package(ROOT CONFIG COMPONENTS EG Geom REQUIRED)
+set(ROOT_DEPS ROOT::Core ROOT::RIO ROOT::Tree ROOT::Rint ROOT::Physics
+    ROOT::MathCore ROOT::Thread ROOT::Geom ROOT::EG)
 include(${ROOT_USE_FILE})
 
 #-- VMC (required) ------------------------------------------------------------
