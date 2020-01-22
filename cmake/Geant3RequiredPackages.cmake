@@ -13,22 +13,22 @@
 # I. Hrivnacova, 15/04/2019
 
 #-- ROOT (required) ------------------------------------------------------------
-find_package(ROOT CONFIG REQUIRED)
+find_package(ROOT CONFIG COMPONENTS EG Geom REQUIRED)
+set(ROOT_DEPS ROOT::Core ROOT::RIO ROOT::Tree ROOT::Rint ROOT::Physics
+    ROOT::MathCore ROOT::Thread ROOT::Geom ROOT::EG)
 include(${ROOT_USE_FILE})
-set (ROOT_LIBRARIES ${ROOT_LIBRARIES} -lEG -lGeom)
 
 #-- VMC (required) ------------------------------------------------------------
 if(ROOT_vmc_FOUND)
   message(STATUS "Using VMC built with ROOT")
-  set(VMC_LIBRARIES "VMC")
+  set(VMC_DEPS ROOT::VMC)
   message(STATUS "Adding -DUSE_ROOT_VMC")
   add_definitions(-DUSE_ROOT_VMC)
 else()
   #-- VMC (required) ------------------------------------------------------------
   find_package(VMC CONFIG REQUIRED)
+  set(VMC_DEPS VMCLibrary)
   if(NOT VMC_FIND_QUIETLY)
     message(STATUS "Found VMC ${VMC_VERSION} in ${VMC_DIR}")
-    #message(STATUS VMC_INCLUDE_DIRS ${VMC_INCLUDE_DIRS})
-    #message(STATUS VMC_LIBRARIES ${VMC_LIBRARIES})
   endif()
 endif()

@@ -11,7 +11,7 @@
 # I. Hrivnacova, 13/06/2014
 
 #---CMake required version -----------------------------------------------------
-cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 #-------------------------------------------------------------------------------
 # Define installed names
@@ -139,7 +139,10 @@ endif()
 #---Add library-----------------------------------------------------------------
 add_library(${library_name} ${fortran_sources} ${c_sources} ${cxx_sources}
             ${root_dict} ${headers})
-target_link_libraries(${library_name} ${VMC_LIBRARIES} ${ROOT_LIBRARIES})
+set(DEPS ${ROOT_DEPS} ${VMC_DEPS})
+target_link_libraries(${library_name} ${VMC_DEPS} ${ROOT_DEPS})
+set_target_properties(geant321 PROPERTIES INTERFACE_LINK_LIBRARIES "${DEPS}")
+target_include_directories(geant321 INTERFACE $<INSTALL_INTERFACE:include/TGeant3>)
 
 #----Installation---------------------------------------------------------------
 install(FILES ${headers} DESTINATION include/TGeant3)
