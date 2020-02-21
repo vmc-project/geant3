@@ -1093,6 +1093,26 @@ TTree *stattree = 0;
 TFile *statfile = 0;
 #endif
 
+namespace {
+
+//_____________________________________________________________________________
+void PrintVersion()
+{
+  /// Prints the  version banner
+
+  std::cout
+    << std::endl
+    << "============================================================="
+    << std::endl << " Geant3 Virtual Monte Carlo " << std::endl << " Version "
+    << GEANT3_VMC_RELEASE << " ( " << GEANT3_VMC_RELEASE_DATE << " )"
+    << std::endl << " WWW : https://vmc-project.github.io/"
+    << std::endl
+    << "============================================================="
+    << std::endl << std::endl;
+}
+
+} // namespace
+
 //______________________________________________________________________
 TGeant3::TGeant3()
    : TVirtualMC(), fNG3Particles(0), fNPDGCodes(0), fPDGCode(), fMCGeo(0), fImportRootGeometry(kFALSE),
@@ -1115,6 +1135,8 @@ TGeant3::TGeant3(const char *title, Int_t nwgeant)
    //
    // Standard constructor for TGeant3 with ZEBRA initialization
    //
+
+   PrintVersion();
 
 #ifdef STATISTICS
    statfile = new TFile("stat.root", "recreate");

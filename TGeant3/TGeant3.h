@@ -22,6 +22,7 @@
 #include "TMCProcess.h"
 #include "TMCParticleType.h"
 #include "TGeoMCGeometry.h"
+#include "TG3Version.h"
 #include "TObjArray.h"
 #include "TArrayI.h"
 
