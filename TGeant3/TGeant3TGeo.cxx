@@ -2268,7 +2268,7 @@ void ginvolTGeo(Float_t *x, Int_t &isame)
 void gtmediTGeo(Float_t *x, Int_t &numed)
 {
    gcchan->lsamvl = kTRUE;
-#ifndef USE_ROOT_VMC
+#if ((!defined(USE_ROOT_VMC) || (ROOT_VERSION_CODE >= ROOT_VERSION(6, 18, 6))))
    // Set cached geometry state if available, else find node manually.
    if (gCurrentParticleStatus && gMCManager && gMCManager->RestoreGeometryState(gCurrentParticleStatus->fId)) {
 #else
@@ -2301,7 +2301,7 @@ void gtmediTGeo(Float_t *x, Int_t &numed)
 void gmediaTGeo(Float_t *x, Int_t &numed, Int_t & /*check*/)
 {
    // Set cached geometry state if available, else find node manually.
-#ifndef USE_ROOT_VMC
+#if ((!defined(USE_ROOT_VMC) || (ROOT_VERSION_CODE >= ROOT_VERSION(6, 18, 6))))
    if (gCurrentParticleStatus && gMCManager && gMCManager->RestoreGeometryState(gCurrentParticleStatus->fId)) {
 #else
    if (gCurrentParticleStatus && gMCManager) {
