@@ -1,6 +1,12 @@
 Geant3 tags (history):
 ======================
 
+14/03/2020:
+  v3-1:
+  - Fixed generation of root dictionary map
+
+  Tested with VMC 1.0 and Root 6.20/00
+
 24/02/2020:
   v3-0:
   - Implemented Multiple-engine usage: with this update GEANT3 becomes capable
