@@ -1,6 +1,13 @@
 Geant3 tags (history):
 ======================
 
+31/03/2020:
+  v3-2:
+  -  Fix for segmentation violation (MacOS 10.15.4)
+     Thanks to P. Hristov, CERN.
+
+  Tested with VMC 1.0.p1 and Root 6.20/00
+
 14/03/2020:
   v3-1:
   - Fixed generation of root dictionary map
