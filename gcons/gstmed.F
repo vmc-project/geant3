@@ -116,7 +116,7 @@
       EQUIVALENCE (MECA(1,1),IPAIR)
       DIMENSION UBUF(1),CUTVEC(10)
       EQUIVALENCE (CUTVEC,CUTGAM)
-      CHARACTER*(*) NATMED
+      CHARACTER*20 NATMED
       CHARACTER*20 NAME
 C.
 C.    ------------------------------------------------------------------
