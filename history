@@ -1,6 +1,13 @@
 Geant3 tags (history):
 ======================
 
+03/04/2020:
+  v2-7-p1:
+  - Fix for segmentation violation (MacOS 10.15.4) (#12):
+    thanks to P.Hristov (CERN)
+
+  Tested with Root 6.20/00 (built with vmc)
+
 22/02/2019:
   v2-7:
   - Fixed stopping a track if called from MCApplication::PreTrack():
