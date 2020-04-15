@@ -6757,6 +6757,7 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
    gDoPostTrackHooks = kTRUE;
    gDoPrimaryHooks = kTRUE;
    gCurrentParticleStatus = 0;
+   isPrima = 0;
 
    if (track) {
       TMCManagerStack *mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
@@ -6765,6 +6766,8 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
          if (gCurrentParticleStatus->fParentId >= 0) {
             // Suppress primary hooks if not a primary
             gDoPrimaryHooks = kFALSE;
+         } else {
+            isPrima = 2;
          }
          if (gCurrentParticleStatus->fStepNumber > 0) {
             // Suppress pre track hook if this track has already been transported this far
@@ -6797,10 +6800,11 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
          polar[0] = pol.X();
          polar[1] = pol.Y();
          polar[2] = pol.Z();
+         if (track->IsPrimary() || track->GetUniqueID() == 0) {
+            isPrima = 1;
+         }
       }
-      stack->SetCurrentTrack(mtrack);
       ipart = TVirtualMC::GetMC()->IdFromPDG(track->GetPdgCode());
-      isPrima = track->IsPrimary() ? 1 : 0;
    }
    mtrack++;
 }

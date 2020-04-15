@@ -78,12 +78,25 @@ C.    ------------------------------------------------------------------
       MTRACK=-999
       FINISHPRIMA=0
 10    ISPRIMA=0
-      IF(FINISHPRIMA.GE.1) THEN
+* Finish previous primary immediately
+      IF(FINISHPRIMA.GE.2) THEN
          CALL RXOUTH
          FINISHPRIMA=0
       ENDIF
       CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF,ISPRIMA)
-* Finish primary track if flagged
+      IF(FINISHPRIMA.GE.1) THEN
+* Finish primary only when the next one has been popped...
+         IF(ISPRIMA.GE.1) THEN
+            CALL RXOUTH
+         ENDIF
+* ...or when the stack is empty
+         IF(MTRACK.LE.0) THEN
+            CALL RXOUTH
+            FINISHPRIMA=0
+            GOTO 999
+         ENDIF
+      ENDIF
+* Reset primary flag and finish
       IF(MTRACK.LE.0) THEN
          FINISHPRIMA=0
          GOTO 999
@@ -91,7 +104,9 @@ C.    ------------------------------------------------------------------
 
       IF(ISPRIMA.GE.1) THEN
          CALL RXINH
-         FINISHPRIMA=1
+* Set ISPRIMA flag, can be 1 (finish when next primary is popped) or 2
+* (finish when any other track has been popped)
+         FINISHPRIMA=ISPRIMA
 C --- Output root hits tree only for each primary MTRACK
         IF(ISWIT(4).GT.0) THEN
             IF(ISWIT(4).EQ.1.OR.MOD(MTRACK,ISWIT(4)).EQ.0) THEN
