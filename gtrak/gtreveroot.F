@@ -76,46 +76,27 @@ C.    ------------------------------------------------------------------
       CALL G3SKINE(PMOM,IPART,NVTX,UBUF,0,NT)
 *
       MTRACK=-999
-      FINISHPRIMA=0
-10    ISPRIMA=0
-* Finish previous primary immediately
-      IF(FINISHPRIMA.GE.2) THEN
-         CALL RXOUTH
-         FINISHPRIMA=0
+ 10   MTROLD=MTRACK
+      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF)
+      IF(MTROLD.LT.0) THEN
+         MPRIMA=MTRACK
       ENDIF
-      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF,ISPRIMA)
-      IF(FINISHPRIMA.GE.1) THEN
-* Finish primary only when the next one has been popped...
-         IF(ISPRIMA.GE.1) THEN
-            CALL RXOUTH
-         ENDIF
-* ...or when the stack is empty
-         IF(MTRACK.LE.0) THEN
-            CALL RXOUTH
-            FINISHPRIMA=0
-            GOTO 999
-         ENDIF
-      ENDIF
-* Reset primary flag and finish
-      IF(MTRACK.LE.0) THEN
-         FINISHPRIMA=0
-         GOTO 999
-      ENDIF
-
-      IF(ISPRIMA.GE.1) THEN
-         CALL RXINH
-* Set ISPRIMA flag, can be 1 (finish when next primary is popped) or 2
-* (finish when any other track has been popped)
-         FINISHPRIMA=ISPRIMA
+      IF(MTRACK.LE.MPRIMA) THEN
+         IF(MTROLD.GT.0) THEN
 C --- Output root hits tree only for each primary MTRACK
-        IF(ISWIT(4).GT.0) THEN
-            IF(ISWIT(4).EQ.1.OR.MOD(MTRACK,ISWIT(4)).EQ.0) THEN
-               WRITE(CHMAIL,10200) MTRACK
-               CALL GMAIL(0,0)
+            CALL RXOUTH
+         ENDIF
+         IF(MTRACK.GT.0) THEN
+            CALL RXINH
+            IF(ISWIT(4).GT.0) THEN
+               IF(ISWIT(4).EQ.1.OR.MOD(MTRACK,ISWIT(4)).EQ.0) THEN
+                  WRITE(CHMAIL,10200) MTRACK
+                  CALL GMAIL(0,0)
+               ENDIF
             ENDIF
          ENDIF
       ENDIF
-
+      IF(MTRACK.LE.0) GOTO 999
       ITRTYP = NINT(Q(LQ(JPART-IPART)+6))
       IF(ITRTYP.EQ.7) THEN
 * This is a cherenkov photon, more complicated...
@@ -197,3 +178,4 @@ C      CALL G3PKINE(0)
 10200 FORMAT (' GTREVE_ROOT : Transporting primary track No ',I10)
 *                                                             END GTREVE_ROOT
   999 END
+ 
