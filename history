@@ -1,6 +1,18 @@
 Geant3 tags (history):
 ======================
 
+17/04/2020:
+  v3-3:
+  - Fixed stacking and G3 internal track indexing.
+    Reverted the development in commit e1a8a44 causing a break in ALICE simulation.
+    The calls to MCApplication::FinishPrimary() happened too early, before tracking
+    of the secondaries of the primary track.
+    Thanks to B. Volkel, CERN, Ruprecht Karls Universitaet Heidelberg.
+  - ** Note that this fix breaks the multiple engine mode, which will be adapted
+    to comply with the VMC stacking logic in the next tag. **
+
+  Tested with VMC 1.0.p1 and Root 6.20/00
+
 31/03/2020:
   v3-2:
   -  Fix for segmentation violation (MacOS 10.15.4)
