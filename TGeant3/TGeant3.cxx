@@ -6734,7 +6734,7 @@ void TGeant3::Streamer(TBuffer &R__b)
 
 //______________________________________________________________________
 extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom, Float_t &e, Float_t *vpos,
-                                     Float_t *polar, Float_t &tof, Int_t &isPrima)
+                                     Float_t *polar, Float_t &tof)
 {
    //
    //     Fetches next track from the ROOT stack for transport. Called by the
@@ -6798,9 +6798,7 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
          polar[1] = pol.Y();
          polar[2] = pol.Z();
       }
-      stack->SetCurrentTrack(mtrack);
       ipart = TVirtualMC::GetMC()->IdFromPDG(track->GetPdgCode());
-      isPrima = track->IsPrimary() ? 1 : 0;
    }
    mtrack++;
 }
