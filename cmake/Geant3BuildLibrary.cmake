@@ -38,14 +38,17 @@ include_directories(
 #
 ROOT_GENERATE_DICTIONARY(
   ${library_name}_dict
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TCallf77.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TG3Application.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3f77.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3gu.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/TGeant3TGeo.h
+  TCallf77.h
+  TG3Application.h
+  TGeant3f77.h
+  TGeant3gu.h
+  TGeant3.h
+  TGeant3TGeo.h
   MODULE ${library_name}
-  LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/TGeant3/geant3LinkDef.h)
+  OPTIONS "-I${CMAKE_INSTALL_PREFIX}/include/TGeant3"
+    -excludePath "${CMAKE_CURRENT_BINARY_DIR}"
+    -excludePath "${PROJECT_SOURCE_DIR}/TGeant3"
+  LINKDEF TGeant3/geant3LinkDef.h)
 
 # Files produced by the dictionary generation
 SET(root_dict
