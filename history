@@ -1,6 +1,14 @@
 Geant3 tags (history):
 ======================
 
+30/04/2020:
+  v3-4:
+  -  Restored the dictionaries relocability, improve security and clean up
+     for packaging
+     Thanks to Christian Tacke, GSI.
+
+  Tested with VMC 1.0.p2 and Root 6.20/04
+
 17/04/2020:
   v3-3:
   - Fixed stacking and G3 internal track indexing.

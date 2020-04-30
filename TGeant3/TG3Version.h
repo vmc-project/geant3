@@ -6,7 +6,7 @@
 ///
 /// \author I. Hrivnacova; IJCLab, Orsay
 
-#define GEANT3_VMC_RELEASE "3.3"
-#define GEANT3_VMC_RELEASE_DATE "17 April 2020"
+#define GEANT3_VMC_RELEASE "3.4"
+#define GEANT3_VMC_RELEASE_DATE "30 April 2020"
 
 #endif // ROOT_TG3VERSION
