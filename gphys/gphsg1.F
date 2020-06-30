@@ -49,16 +49,16 @@ C.
       IF(E.LT.G10EV) GO TO 20
 C Use Sandia data
       JPHXS = LQ(JPHOT-1)
-      IPOINT = JPHXS+Q(JPHXS+1)*3+2
-      IMAX = Q(IPOINT)
+      IPOINT = Q(JPHXS+1)*3+2
+      IMAX = Q(jphxs+IPOINT)
       IPOINT = IPOINT+1
       ECUR = E*1.E6
-      IF(ECUR.LT.Q(IPOINT)) GO TO 20
+      IF(ECUR.LT.Q(jphxs+IPOINT)) GO TO 20
       EINV = ONE/ECUR
       DO 10 I = 2,IMAX
          IPOINT = IPOINT+5
-         IF(ECUR.LT.Q(IPOINT)) THEN
-            J = IPOINT+1
+         IF(ECUR.LT.Q(jphxs+IPOINT)) THEN
+            J = jphxs+IPOINT+1
             RES = EINV*(Q(J)+EINV*(Q(J+1)+EINV*(Q(J+2)+EINV*Q(J+3))))
             GO TO 20
          ENDIF
