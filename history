@@ -1,6 +1,15 @@
 Geant3 tags (history):
 ======================
 
+03/07/2020:
+  v2-7-p2:
+  - Update masses of long lived particles possibly decayed by G3
+    (thanks to Ch. Zampolli, CERN)
+  - Fix floating point roundoff error in addressing the zebra array
+    (thanks to Jason Webb, BNL, STAR Experiment)
+
+  Tested with Root 5.34/36.
+
 03/04/2020:
   v2-7-p1:
   - Fix for segmentation violation (MacOS 10.15.4) (#12):
