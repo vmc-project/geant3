@@ -1070,6 +1070,7 @@ Bool_t gDoEventHooks = kTRUE;
 Bool_t gDoPreTrackHooks = kTRUE;
 Bool_t gDoPostTrackHooks = kTRUE;
 Bool_t gDoPrimaryHooks = kTRUE;
+Bool_t gDoFinishPrimaryHook = kTRUE;
 
 extern "C" type_of_call void gtonlyg3(Int_t &);
 void (*fginvol)(Float_t *, Int_t &) = 0;
@@ -6512,7 +6513,6 @@ Bool_t TGeant3::ProcessRun(Int_t nevent)
    //
    // Process the run and return true if run has finished successfully,
    // return false in other cases (run aborted by user)
-
    Int_t todo = TMath::Abs(nevent);
    for (Int_t i = 0; i < todo; i++) {
       // Process one run event by event
@@ -6556,6 +6556,7 @@ void TGeant3::ProcessEvent(Int_t eventId, Bool_t isInterruptible)
    // Process one event
    //
    gDoEventHooks = !isInterruptible;
+
    fGcflag->idevt = eventId;
    fGcflag->ievent = eventId + 1;
    if (fStopRun)
@@ -6734,7 +6735,7 @@ void TGeant3::Streamer(TBuffer &R__b)
 
 //______________________________________________________________________
 extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom, Float_t &e, Float_t *vpos,
-                                     Float_t *polar, Float_t &tof)
+                                     Float_t *polar, Float_t &tof, Int_t &isPrima)
 {
    //
    //     Fetches next track from the ROOT stack for transport. Called by the
@@ -6748,24 +6749,40 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
    //      e       Particle energy in GeV
    //      vpos[3] Particle position
    //      tof     Particle time of flight in seconds
+   //      isPrima Whether or not the particle is a primary.
+   //              If >=0, multi-run where 1 (0) indicates (no)
+   //              primary. -999 means no multi-run
    //
 
    TVirtualMCStack *stack = TVirtualMC::GetMC()->GetStack();
 
    TParticle *track = stack->PopNextTrack(mtrack);
+
+   TMCManagerStack *mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
+
+   // This is -999 for single run and 1 for multi run. In the latter case it will be set to 0
+   // if it is not a primary
+   isPrima = mcManagerStack ? 1 : -999 ;
+
+   // Need to cache that info here because gtrak/gtreveroot.F decides on whether to call
+   // FinishPrimary routines after popping the next track. Nothing would be done before
+   // the very first track so in that case the boolean value does not matter.
+   gDoFinishPrimaryHook = gDoPrimaryHooks && gDoPostTrackHooks;
    gDoPreTrackHooks = kTRUE;
    gDoPostTrackHooks = kTRUE;
    gDoPrimaryHooks = kTRUE;
-   gCurrentParticleStatus = 0;
 
    if (track) {
-      TMCManagerStack *mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
       if (mcManagerStack) {
          gCurrentParticleStatus = const_cast<TMCParticleStatus *>(mcManagerStack->GetParticleStatus(mtrack));
+
+         // Now check whether it's a primary
          if (gCurrentParticleStatus->fParentId >= 0) {
             // Suppress primary hooks if not a primary
             gDoPrimaryHooks = kFALSE;
+            isPrima = 0;
          }
+
          if (gCurrentParticleStatus->fStepNumber > 0) {
             // Suppress pre track hook if this track has already been transported this far
             gDoPreTrackHooks = kFALSE;
@@ -6782,6 +6799,7 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
          polar[0] = gCurrentParticleStatus->fPolarization.X();
          polar[1] = gCurrentParticleStatus->fPolarization.Y();
          polar[2] = gCurrentParticleStatus->fPolarization.Z();
+
       } else {
          // fill G3 arrays from TParticle directly
          pmom[0] = track->Px();
@@ -6809,7 +6827,8 @@ extern "C" void type_of_call rxouth()
    //
    // Called by Gtreve at the end of each primary track
    //
-   if (gDoPostTrackHooks && gDoPrimaryHooks) {
+   if (gDoFinishPrimaryHook) {
+      std::cout << "FINISH" << std::endl;
       TVirtualMCApplication::Instance()->FinishPrimary();
    }
 }
@@ -6820,7 +6839,8 @@ extern "C" void type_of_call rxinh()
    //
    // Called by Gtreve at the beginning of each primary track
    //
-   if (gDoPreTrackHooks && gDoPrimaryHooks) {
+   if (gDoPrimaryHooks && gDoPreTrackHooks) {
+      std::cout << "BEGIN" << std::endl;
       TVirtualMCApplication::Instance()->BeginPrimary();
    }
 }
