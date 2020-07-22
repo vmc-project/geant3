@@ -6556,7 +6556,6 @@ void TGeant3::ProcessEvent(Int_t eventId, Bool_t isInterruptible)
    // Process one event
    //
    gDoEventHooks = !isInterruptible;
-
    fGcflag->idevt = eventId;
    fGcflag->ievent = eventId + 1;
    if (fStopRun)
@@ -6754,10 +6753,10 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
    //              primary. -999 means no multi-run
    //
 
+
+   // Obtain stack and track pointers
    TVirtualMCStack *stack = TVirtualMC::GetMC()->GetStack();
-
    TParticle *track = stack->PopNextTrack(mtrack);
-
    TMCManagerStack *mcManagerStack = TVirtualMC::GetMC()->GetManagerStack();
 
    // This is -999 for single run and 1 for multi run. In the latter case it will be set to 0
@@ -6776,7 +6775,7 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
       if (mcManagerStack) {
          gCurrentParticleStatus = const_cast<TMCParticleStatus *>(mcManagerStack->GetParticleStatus(mtrack));
 
-         // Now check whether it's a primary
+         // Now check whether it's a primary or not
          if (gCurrentParticleStatus->fParentId >= 0) {
             // Suppress primary hooks if not a primary
             gDoPrimaryHooks = kFALSE;
@@ -6828,7 +6827,6 @@ extern "C" void type_of_call rxouth()
    // Called by Gtreve at the end of each primary track
    //
    if (gDoFinishPrimaryHook) {
-      std::cout << "FINISH" << std::endl;
       TVirtualMCApplication::Instance()->FinishPrimary();
    }
 }
@@ -6840,7 +6838,6 @@ extern "C" void type_of_call rxinh()
    // Called by Gtreve at the beginning of each primary track
    //
    if (gDoPrimaryHooks && gDoPreTrackHooks) {
-      std::cout << "BEGIN" << std::endl;
       TVirtualMCApplication::Instance()->BeginPrimary();
    }
 }
