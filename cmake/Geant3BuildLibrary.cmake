@@ -113,6 +113,11 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/TGeant3/*.h)
 add_definitions(-DCERNLIB_BLDLIB -DCERNLIB_CZ)
 # add flags to make gfortran build stable at -O2
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -finit-local-zero -fno-strict-overflow")
+# allow non-standard-conform BOZ literal constants in GCC >=10
+if (        "${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU"
+    AND NOT "${CMAKE_Fortran_COMPILER_VERSION}" VERSION_LESS 10)
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-invalid-boz")
+endif()
 # Architecture dependent not ported flags:
 # -DCERNLIB_LINUX (linux, linuxx8664icc, linuxicc, macosx, macosxxlc, macosicc)
 # -DCERNLIB_PPC (macosx64, macosxxlc, macosicc)
