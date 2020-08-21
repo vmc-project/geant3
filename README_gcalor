@@ -25,26 +25,18 @@ GEANT as well as the tracking and the calculation of the energy deposition.
 
 Installation with VMC:
 ------------
- 1. download the CALOR code (see below) and copy it to  geant3/gcalor directory
- 2. Rename the file gcalor_unix.f to gcalor.F
- 3. Apply the patch gcalor_vmc.diff to the original gcalor code
-    (patch -p1 gcalor.F gcalor_vmc.diff)
- 4. In the geant3/Makefile add the gcalor directory to the GDIRS
- 5. In the directory geant3 call make.
+ 1. Configure Geant3 with the CMake build option -DBUILD_GCALOR=ON
 
 Usage with vmc
 --------------
  1. one has to call TGeant3::SetHADR(5) in the initalization of Geant3.
  2. $G3SYS variable has to defined
- 3. One has to apply the patch in gcalor_vmc.diff
 
 For the initialisation, GCALOR needs the following  additional cross-section
-data (expected files: chetc.dat and xsneut.dat in the $G3SYS/lib directory)
+data (expected files: chetc.dat and xsneut.dat in the $G3SYS/data directory)
 for all needed materials, GCALOR Calculate the macroscopic cross-section for
 low energy neutrons and write relevant informations for the user to file
 calor.out
-
-
 
 The GCALOR package has been tested on different computer platforms:
 
@@ -55,11 +47,6 @@ DecALpha and VAX
 MVS
 IBM Mainframe 3090
 
-The GCALOR does not work for the moment on 64 bit arcitecture. For the 64 bit,
-it is needed to compile with the option "-m32".
-
 
 For download and  more detailed information:
-http://www.staff.uni-mainz.de/zeitnitz/Gcalor/gcalor.html
-
-
+https://www.atlas.uni-wuppertal.de/zeitnitz/gcalor

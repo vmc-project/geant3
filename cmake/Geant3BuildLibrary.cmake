@@ -68,7 +68,11 @@ set(CMAKE_MACOSX_RPATH 1)
 set(directories
     added gbase gcons geocad ggeom gheisha ghits ghrout ghutils giface giopa
     gkine gparal gphys gscan gstrag gtrak matx55 miface miguti neutron peanut
-    fiface cgpack fluka block comad erdecks erpremc minicern gdraw gcalor)
+    fiface cgpack fluka block comad erdecks erpremc minicern gdraw)
+
+if(BUILD_GCALOR)
+  list(APPEND directories gcalor)
+endif()
 
 # Fortran sources
 set(fortran_sources gcinit.F)
@@ -95,6 +99,9 @@ endforeach()
 list(APPEND c_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/ishftr.c)
 # Linux specific, the file is kept on macosx, macosx64)
 list(REMOVE_ITEM c_sources ${PROJECT_SOURCE_DIR}/minicern/lnblnk.c)
+if(BUILD_GCALOR)
+  list(REMOVE_ITEM c_sources ${PROJECT_SOURCE_DIR}/added/dummies_gcalor.c)
+endif()
 #message(STATUS "c_sources ${c_sources}")
 
 # C++ sources
