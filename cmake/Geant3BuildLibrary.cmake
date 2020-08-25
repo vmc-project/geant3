@@ -110,6 +110,9 @@ file(GLOB cxx_sources
      ${PROJECT_SOURCE_DIR}/TGeant3/*.cxx)
 #message(STATUS "cxx_sources ${cxx_sources}")
 
+# special compiler flags for gcalor
+set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
+
 #-------------------------------------------------------------------------------
 # Locate headers for this project
 #
