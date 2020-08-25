@@ -735,13 +735,9 @@ Int_t TGeant3TGeo::VolId(const Text_t *name) const
    //
    // Return the unique numeric identifier for volume name
    //
-   char sname[20];
-   Int_t len = strlen(name) - 1;
-   if (name[len] != ' ')
-      return fMCGeo->VolId(name);
-   strncpy(sname, name, len);
-   sname[len] = 0;
-   return fMCGeo->VolId(sname);
+   TString sname = name;
+   sname = sname.Strip();
+   return fMCGeo->VolId(sname.Data());
 }
 
 //_____________________________________________________________________________
