@@ -82,6 +82,10 @@ foreach(_directory ${directories})
   list(APPEND fortran_sources ${add_f_sources})
 endforeach()
 list(APPEND fortran_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/rdmin.F)
+if(BUILD_GCALOR)
+  # special compiler flags for gcalor
+  set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
+endif()
 
 # Exclude some files from the list
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndm.F)
@@ -110,8 +114,6 @@ file(GLOB cxx_sources
      ${PROJECT_SOURCE_DIR}/TGeant3/*.cxx)
 #message(STATUS "cxx_sources ${cxx_sources}")
 
-# special compiler flags for gcalor
-set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
 
 #-------------------------------------------------------------------------------
 # Locate headers for this project
