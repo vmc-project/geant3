@@ -1028,7 +1028,7 @@ public:
 
    virtual void Ertrgo();
    virtual void
-   Ertrak(const Float_t *x1, const Float_t *p1, const Float_t *x2, const Float_t *p2, Int_t ipa, Option_t *chopt);
+   Ertrak(const Float_t *x1, const Float_t *p1, const Float_t *x2, const Float_t *p2, Int_t ipa,  const char *chopt);
    virtual void Erxyzc();
    virtual void Eufill(Int_t n, Float_t *ein, Float_t *xlf);
    virtual void Eufilp(const Int_t n, Float_t *ein, Float_t *pli, Float_t *plf);
