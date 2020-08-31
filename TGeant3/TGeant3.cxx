@@ -5512,7 +5512,7 @@ void TGeant3::Ertrgo()
 
 //______________________________________________________________________
 void TGeant3::Ertrak(const Float_t *x1, const Float_t *p1, const Float_t *x2, const Float_t *p2, Int_t ipa,
-                     Option_t *chopt)
+                     const char *chopt)
 {
    //************************************************************************
    //*                                                                      *
