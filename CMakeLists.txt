@@ -45,6 +45,7 @@ include(VMCBuildMode)
 #--- Options -------------------------------------------------------------------
 option(Geant3_INSTALL_DATA "Install data directory" ON)
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
+option(BUILD_GCALOR "Build the gcalor module" OFF)
 
 #--- Enable Fortran ------------------------------------------------------------
 enable_language(Fortran)

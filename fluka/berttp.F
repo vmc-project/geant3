@@ -45,9 +45,9 @@ C     --------------------------------- EVAPORATION DATA
 #include "geant321/xsepar.inc"
       LOGICAL OPENED,EXISTS
       LOGICAL LRMSCH, LRD1O2, LTRASP
-      CHARACTER*100 FILNAM
+      CHARACTER*1024 FILNAM
 #if defined(CERNLIB_UNIX)||defined(CERNLIB_VAX)||defined(CERNLIB_CRAY)
-      CHARACTER*100 CHROOT
+      CHARACTER*1024 CHROOT
 #endif
 C---------------------------------------------------------------------
 #if defined(CERNLIB_FDEBUG)
