@@ -1,6 +1,27 @@
 Geant3 tags (history):
 ======================
 
+09/09/2020:
+  v3-7:
+  - Fixed compilation with GCC >=10:
+    Allow non-standard-conform BOZ literal constants -fallow-invalid-boz
+  - Applied changes to be able to properly use geane
+  - Fixed implementation of TGeant3TGeo::VolId
+    (thanks to Dennis Klein, GSI for the problem report)
+  - Add gcalor:
+    - Added gcalor code and its data files
+    - Its build, disabled by default, can be enabled via -DBUILD_GCALOR=ON
+    - Fixed compiler warnings:
+      - Increased string sizes to support long installation prefixes
+      - Set extra compiler flags only if gcalor is build
+    - Updated documentation (README_gcalor)
+    See README_gcalor for the credits for this code.
+
+    Thanks to Mohammad Al-Turany, Dennis Klein, Dmytro Kresanand Florian Uhlig, GSI
+    for the updates in this version.
+
+  Tested with VMC 1.0.p3 and Root 6.22/00.
+
 24/07/2020:
   v3-6:
   - Fixed multiple engine mode:
