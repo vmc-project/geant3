@@ -128,7 +128,7 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -finit-local-zero -fno-strict-ov
 # allow non-standard-conform BOZ literal constants in GCC >=10
 if (        "${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU"
     AND NOT "${CMAKE_Fortran_COMPILER_VERSION}" VERSION_LESS 10)
-  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-invalid-boz")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
 endif()
 # Architecture dependent not ported flags:
 # -DCERNLIB_LINUX (linux, linuxx8664icc, linuxicc, macosx, macosxxlc, macosicc)
