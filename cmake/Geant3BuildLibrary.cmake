@@ -84,7 +84,7 @@ endforeach()
 list(APPEND fortran_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/rdmin.F)
 if(BUILD_GCALOR)
   # special compiler flags for gcalor
-  set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-Wno-aggressive-loop-optimizations")
+  set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-fno-aggressive-loop-optimizations")
 endif()
 
 # Exclude some files from the list
