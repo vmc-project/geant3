@@ -1,6 +1,21 @@
 Geant3 tags (history):
 ======================
 
+17/02/2020:
+  v3-8:
+  - Fixed compilation with GCC >=10 ()
+    - Added -fallow-argument-mismatch option
+      (thanks to Art Olin, TRIUMF)
+  - Fix gfortran 7 compilation (#25)
+    - Fix in gcalor.F:
+      Error: COMMON attribute conflicts with SAVE attribute in 'q' at (1)
+      (thanks to Mohammad Al-Turany, Dennis Klein, GSI)
+  - Fix in ertrak.F (#24)
+    - Fix the problem with string as function argument.
+      (thanks to Radoslaw Karabowicz, GSI)
+
+  Tested with VMC 1.0.p3 and Root 6.22/06.
+
 09/09/2020:
   v3-7:
   - Fixed compilation with GCC >=10:
