@@ -1841,9 +1841,16 @@ C     PIO MASS IN RECIP. CM
          POAC(I) = POAC(I) + POAC(I)
    20 PPAC(I) = PPAC(I)/SF
 C     POAC(19),PPAC(19)
+C Dirty way to initialize all integer values in CBERT common block from
+C ISPEC(1) to NWDS in one go without the need to initilaize each single value
+C Assumes that the memory layout in the common block is consecutive
    30 DO 40 I =1,60
    40 IPEC(I) =0
       DO 50 I =1,2114
+C Dirty way to initialize all REAL*8 values in CBERT common block from
+C ESPS(1) to CTOF except for CRSC() in one go without the need to initilaize
+C each single value
+C Assumes that the memory layout in the common block is consecutive
    50 ESPS(I) = 0.D0
       DO 60 I = 4515,4849
    60 ESPS(I) = 0.D0
@@ -4598,11 +4605,18 @@ C     NUMBER OF FORBIDDEN COLLISIONS FOR NEUTRONS     FCN
 C     NUMBER OF FORBIDDEN COLLISIONS FOR PROTONS   FCP
 C     PARTICLE WITH VELOCITY LESS THAN CRITERION   PLVC
 C     PARTICLE WITH VELOCITY GREATER THAN CRITERION   PGVC
+C Dirty way to initialize all integer values in CBERT common block from
+C ISPEC(1) to NWDS in one go without the need to initilaize each single value
+C Assumes that the memory layout in the common block is consecutive
    40 DO 50 I=1,60
          IPEC(I)=0
    50 CONTINUE
       I18=0
       I19=0
+C Dirty way to initialize all REAL*8 values in CBERT common block from
+C ESPS(1) to CTOF except for CRSC() in one go without the need to initilaize
+C each single value
+C Assumes that the memory layout in the common block is consecutive
       DO 60 I=1,2114
          ESPS(I)=0.0
    60 CONTINUE
