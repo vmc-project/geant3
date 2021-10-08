@@ -6544,9 +6544,7 @@ void TGeant3::ProcessEvent()
    //
    // Process one event
    //
-   Gtrigi();
-   Gtrigc();
-   Gtrig();
+   ProcessEvent(fGcflag->idevt);
 }
 
 //______________________________________________________________________
