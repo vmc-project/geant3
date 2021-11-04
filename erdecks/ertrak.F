@@ -78,8 +78,8 @@
 *     
 * *** Decode character option
 *
-      CHOPTI = CHOPT
-      CALL UOPTC (CHOPT, 'BELMOPVX', IOPT)
+      CHOPTI = CHOPT(1:len(CHOPT))
+      CALL UOPTC (CHOPTI, 'BELMOPVX', IOPT)
 *
       IF (IOPTB.EQ.0) THEN
          BACKTR = 1.

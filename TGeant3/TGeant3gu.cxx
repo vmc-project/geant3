@@ -724,6 +724,8 @@ extern "C" type_of_call
                for (Int_t i = 0; i < 3; i++)
                   geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; // call ucopy(vect,p3,3)
                icont = 0;
+               geant3->StopTrack();
+               geant3->Gcmore()->iclose = 0;
             }
          }
       } else if (cflag == 2) {
@@ -780,6 +782,8 @@ extern "C" type_of_call
                for (Int_t i = 0; i < 3; i++)
                   geant3->Gcmore()->p3[i] = geant3->Gctrak()->vect[i]; // call ucopy(vect,p3,3)
                icont = 0;
+               geant3->StopTrack();
+               geant3->Gcmore()->iclose = 0;
             }
          }
       }

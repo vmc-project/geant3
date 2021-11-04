@@ -34,7 +34,7 @@ set(CMAKE_MODULE_PATH
 #--- Project definitions -------------------------------------------------------
 project(Geant3)
 set(${PROJECT_NAME}_VERSION_MAJOR "3")
-set(${PROJECT_NAME}_VERSION_MINOR "4")
+set(${PROJECT_NAME}_VERSION_MINOR "8")
 set(${PROJECT_NAME}_VERSION_PATCH "0")
 set(${PROJECT_NAME}_VERSION
     ${${PROJECT_NAME}_VERSION_MAJOR}.${${PROJECT_NAME}_VERSION_MINOR}.${${PROJECT_NAME}_VERSION_PATCH})
@@ -45,6 +45,7 @@ include(VMCBuildMode)
 #--- Options -------------------------------------------------------------------
 option(Geant3_INSTALL_DATA "Install data directory" ON)
 option(BUILD_SHARED_LIBS "Build the dynamic libraries" ON)
+option(BUILD_GCALOR "Build the gcalor module" OFF)
 
 #--- Enable Fortran ------------------------------------------------------------
 enable_language(Fortran)

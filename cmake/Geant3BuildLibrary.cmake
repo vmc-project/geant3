@@ -70,6 +70,10 @@ set(directories
     gkine gparal gphys gscan gstrag gtrak matx55 miface miguti neutron peanut
     fiface cgpack fluka block comad erdecks erpremc minicern gdraw)
 
+if(BUILD_GCALOR)
+  list(APPEND directories gcalor)
+endif()
+
 # Fortran sources
 set(fortran_sources gcinit.F)
 foreach(_directory ${directories})
@@ -78,6 +82,10 @@ foreach(_directory ${directories})
   list(APPEND fortran_sources ${add_f_sources})
 endforeach()
 list(APPEND fortran_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/rdmin.F)
+if(BUILD_GCALOR)
+  # special compiler flags for gcalor
+  set_source_files_properties(${PROJECT_SOURCE_DIR}/gcalor/gcalor.F PROPERTIES COMPILE_OPTIONS "-fno-aggressive-loop-optimizations")
+endif()
 
 # Exclude some files from the list
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndm.F)
@@ -95,6 +103,9 @@ endforeach()
 list(APPEND c_sources ${PROJECT_SOURCE_DIR}/minicern/lnxgs/ishftr.c)
 # Linux specific, the file is kept on macosx, macosx64)
 list(REMOVE_ITEM c_sources ${PROJECT_SOURCE_DIR}/minicern/lnblnk.c)
+if(BUILD_GCALOR)
+  list(REMOVE_ITEM c_sources ${PROJECT_SOURCE_DIR}/added/dummies_gcalor.c)
+endif()
 #message(STATUS "c_sources ${c_sources}")
 
 # C++ sources
@@ -102,6 +113,7 @@ file(GLOB cxx_sources
      ${PROJECT_SOURCE_DIR}/comad/gcadd.cxx
      ${PROJECT_SOURCE_DIR}/TGeant3/*.cxx)
 #message(STATUS "cxx_sources ${cxx_sources}")
+
 
 #-------------------------------------------------------------------------------
 # Locate headers for this project
@@ -113,6 +125,11 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/TGeant3/*.h)
 add_definitions(-DCERNLIB_BLDLIB -DCERNLIB_CZ)
 # add flags to make gfortran build stable at -O2
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -finit-local-zero -fno-strict-overflow")
+# allow non-standard-conform BOZ literal constants in GCC >=10
+if (        "${CMAKE_Fortran_COMPILER_ID}" STREQUAL "GNU"
+    AND NOT "${CMAKE_Fortran_COMPILER_VERSION}" VERSION_LESS 10)
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
+endif()
 # Architecture dependent not ported flags:
 # -DCERNLIB_LINUX (linux, linuxx8664icc, linuxicc, macosx, macosxxlc, macosicc)
 # -DCERNLIB_PPC (macosx64, macosxxlc, macosicc)

@@ -76,17 +76,42 @@ C.    ------------------------------------------------------------------
       CALL G3SKINE(PMOM,IPART,NVTX,UBUF,0,NT)
 *
       MTRACK=-999
+      FINISHPRIMA=-999
  10   MTROLD=MTRACK
-      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF)
-      IF(MTROLD.LT.0) THEN
-         MPRIMA=MTRACK
-      ENDIF
-      IF(MTRACK.LE.MPRIMA) THEN
-         IF(MTROLD.GT.0) THEN
-C --- Output root hits tree only for each primary MTRACK
-            CALL RXOUTH
+      ISPRIMAMULT=-999
+      CALL RXGTRAK(MTRACK,IPART,PMOM,E,VPOS,VPOLA,TTOF,ISPRIMAMULT)
+      IF(ISPRIMAMULT.LT.0) THEN
+         IF(MTROLD.LT.0) THEN
+            MPRIMA=MTRACK
          ENDIF
-         IF(MTRACK.GT.0) THEN
+         IF(MTRACK.LE.MPRIMA) THEN
+            IF(MTROLD.GT.0) THEN
+C --- Output root hits tree only for each primary MTRACK
+               CALL RXOUTH
+            ENDIF
+            IF(MTRACK.GT.0) THEN
+               CALL RXINH
+               IF(ISWIT(4).GT.0) THEN
+                  IF(ISWIT(4).EQ.1.OR.MOD(MTRACK,ISWIT(4)).EQ.0) THEN
+                     WRITE(CHMAIL,10200) MTRACK
+                     CALL GMAIL(0,0)
+                  ENDIF
+               ENDIF
+            ENDIF
+         ENDIF
+         IF(MTRACK.LE.0) GOTO 999
+      
+      ELSE
+         IF(FINISHPRIMA.GE.1) THEN
+            CALL RXOUTH
+            FINISHPRIMA=-999
+         ENDIF
+         IF(MTRACK.LE.0) THEN
+            FINISHPRIMA=-999
+            GOTO 999
+         ENDIF
+         FINISHPRIMA=ISPRIMAMULT
+         IF(ISPRIMAMULT.GT.0) THEN
             CALL RXINH
             IF(ISWIT(4).GT.0) THEN
                IF(ISWIT(4).EQ.1.OR.MOD(MTRACK,ISWIT(4)).EQ.0) THEN
@@ -96,7 +121,6 @@ C --- Output root hits tree only for each primary MTRACK
             ENDIF
          ENDIF
       ENDIF
-      IF(MTRACK.LE.0) GOTO 999
       ITRTYP = NINT(Q(LQ(JPART-IPART)+6))
       IF(ITRTYP.EQ.7) THEN
 * This is a cherenkov photon, more complicated...

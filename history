@@ -1,6 +1,64 @@
 Geant3 tags (history):
 ======================
 
+17/02/2020:
+  v3-8:
+  - Fixed compilation with GCC >=10 ()
+    - Added -fallow-argument-mismatch option
+      (thanks to Art Olin, TRIUMF)
+  - Fix gfortran 7 compilation (#25)
+    - Fix in gcalor.F:
+      Error: COMMON attribute conflicts with SAVE attribute in 'q' at (1)
+      (thanks to Mohammad Al-Turany, Dennis Klein, GSI)
+  - Fix in ertrak.F (#24)
+    - Fix the problem with string as function argument.
+      (thanks to Radoslaw Karabowicz, GSI)
+
+  Tested with VMC 1.0.p3 and Root 6.22/06.
+
+09/09/2020:
+  v3-7:
+  - Fixed compilation with GCC >=10:
+    Allow non-standard-conform BOZ literal constants -fallow-invalid-boz
+  - Applied changes to be able to properly use geane
+  - Fixed implementation of TGeant3TGeo::VolId
+    (thanks to Dennis Klein, GSI for the problem report)
+  - Add gcalor:
+    - Added gcalor code and its data files
+    - Its build, disabled by default, can be enabled via -DBUILD_GCALOR=ON
+    - Fixed compiler warnings:
+      - Increased string sizes to support long installation prefixes
+      - Set extra compiler flags only if gcalor is build
+    - Updated documentation (README_gcalor)
+    See README_gcalor for the credits for this code.
+
+    Thanks to Mohammad Al-Turany, Dennis Klein, Dmytro Kresanand Florian Uhlig, GSI
+    for the updates in this version.
+
+  Tested with VMC 1.0.p3 and Root 6.22/00.
+
+24/07/2020:
+  v3-6:
+  - Fixed multiple engine mode:
+    In multiple engine mode, the info whether a track is primary or not is
+    taken from TMCParticleStatus and passed to gtreveroot.F,
+    while in single run the original G3 logic for indexing and transport
+    is preserved.
+  - ** Note that this fix requires also a fix in VMC (included in 1.0.p3), which is
+    not yet present in Root 6.22/00. That's why the multiple engine mode works correctly
+    only with VMC stand-alone.
+
+  Tested with VMC 1.0.p3 and Root 6.22/00.
+
+02/07/2020:
+  v3-5:
+  - Update masses of long lived particles possibly decayed by G3
+    (thanks to Ch. Zampolli, CERN)
+  - Fix floating point roundoff error in addressing the zebra array
+    (thanks to Jason Webb, BNL, STAR Experiment)
+
+  Tested with VMC 1.0.p2 and Root 6.22/00.
+  
 30/04/2020:
   v3-4:
   -  Restored the dictionaries relocability, improve security and clean up

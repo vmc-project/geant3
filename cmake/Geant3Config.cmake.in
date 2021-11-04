@@ -9,6 +9,7 @@
 
 # Configuration file for CMake build for Geant4 VMC packages.
 # It defines the following variables
+#  Geant3_PREFIX               - installation prefix
 #  Geant3_INCLUDE_DIRS         - include directories for Geant4VMC
 #  Geant3_LIBRARIES            - libraries to link against
 #  Geant3_CMAKE_INSTALL_LIBDIR - library installation directory
@@ -23,6 +24,7 @@ get_filename_component(_prefix "${_dir}/../.." ABSOLUTE)
 include("${_dir}/Geant3Targets.cmake")
  
 # Import options
+set(Geant3_PREFIX "${_prefix}")
 set(Geant3_CMAKE_INSTALL_LIBDIR @CMAKE_INSTALL_LIBDIR@)
 
 # These are IMPORTED targets created by Geant4VMCTargets.cmake
@@ -30,4 +32,3 @@ set(Geant3_LIBRARIES geant321)
 
 # Set includes
 set(Geant3_INCLUDE_DIRS "${_prefix}/include/TGeant3")
-

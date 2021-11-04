@@ -167,6 +167,8 @@
                CALL UCOPY(P3,P2,3)
                CALL UCOPY(VECT,P3,3)
                ICONT = 0
+               ISTOP = 1
+               ICLOSE = 0
             ENDIF
          ENDIF
          
@@ -204,6 +206,8 @@
                CALL UCOPY(P3,P2,3)
                CALL UCOPY(VECT,P3,3)
                ICONT = 0
+               ISTOP = 1
+               ICLOSE = 0
             ENDIF
          ENDIF
       ENDIF
