@@ -26,16 +26,22 @@ include(${ROOT_USE_FILE})
 set (ROOT_LIBRARIES ${ROOT_LIBRARIES} -lEG -lGeom)
 
 #-- VMC (required) ------------------------------------------------------------
-if(ROOT_vmc_FOUND)
-  message(STATUS "Using VMC built with ROOT")
-  set(VMC_LIBRARIES "VMC")
-else()
-  #-- VMC (required) ------------------------------------------------------------
-  find_package(VMC CONFIG REQUIRED)
+# first try VMC standalone (default)
+find_package(VMC CONFIG)
+if(VMC_FOUND)
   if(NOT VMC_FIND_QUIETLY)
     message(STATUS "Found VMC ${VMC_VERSION} in ${VMC_DIR}")
-    #message(STATUS VMC_INCLUDE_DIRS ${VMC_INCLUDE_DIRS})
-    #message(STATUS VMC_LIBRARIES ${VMC_LIBRARIES})
+  endif()
+else()
+  # otherwise fallback to ROOT's internal if possible (deprecated)
+  if(ROOT_vmc_FOUND)
+    message(WARNING "Using VMC built with ROOT - Deprecated")
+    set(VMC_LIBRARIES "VMC")
+  else()
+    message(FATAL_ERROR
+            "Could not find VMC package. "
+            "VMC package is not provided with ROOT since v6.26/00. "
+            "Please, install it from https://github.com/vmc-project/vmc. ")
   endif()
 endif()
 
