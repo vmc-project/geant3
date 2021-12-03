@@ -1,6 +1,19 @@
 Geant3 tags (history):
 ======================
 
+03/12/2021:
+  v3-9:
+  - Fixes in Gcalor
+    (thaks to F. Uhlig, GSI)
+  - Updates in cmake:
+    - Export install prefix
+    - Build aganst VMC standalone library by default,
+      keep compiling with VMC in ROOT with a deprecation warning
+  - Further completion of ProcessEvent interfaces
+    (thanks to B. Volkel, CERN, Ruprecht Karls Universitaet Heidelberg)
+
+  Tested with VMC 1.1.0 and Root 6.24/06.
+
 17/02/2020:
   v3-8:
   - Fixed compilation with GCC >=10 ()
