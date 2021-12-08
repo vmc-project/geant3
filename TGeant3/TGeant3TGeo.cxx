@@ -2156,6 +2156,16 @@ void TGeant3TGeo::FinishGeometry()
       printf("FinishGeometry, returning\n");
 }
 
+//______________________________________________________________________
+void TGeant3TGeo::Init()
+{
+   // Set Root default units to TGeo
+   TGeoManager::LockDefaultUnits(false);
+   TGeoManager::SetDefaultUnits(TGeoManager::kRootUnits);
+
+   TGeant3::Init();
+}
+
 #if ROOT_VERSION_CODE >= ROOT_VERSION(6, 14, 0)
 //_____________________________________________________________________________
 void TGeant3TGeo::SetSensitiveDetector(const TString &volumeName, TVirtualMCSensitiveDetector *userSD)
