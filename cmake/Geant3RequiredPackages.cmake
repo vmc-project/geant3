@@ -15,7 +15,7 @@
 #-- ROOT (required) ------------------------------------------------------------
 find_package(ROOT CONFIG COMPONENTS EG Geom REQUIRED)
 set(ROOT_DEPS ROOT::Core ROOT::RIO ROOT::Tree ROOT::Rint ROOT::Physics
-    ROOT::MathCore ROOT::Thread ROOT::Geom ROOT::EG)
+    ROOT::MathCore ROOT::Thread ROOT::Geom ROOT::EG ROOT::EGPythia6)
 include(${ROOT_USE_FILE})
 
 #-- VMC (required) ------------------------------------------------------------
