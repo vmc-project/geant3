@@ -1,4 +1,4 @@
-#if (defined(__linux) && !defined(__ia64))
+#if (defined(__linux) && !defined(__ia64) && !defined(__aarch64__))
 #include <fpu_control.h>
 void __attribute__ ((constructor))
      trapfpe () {
