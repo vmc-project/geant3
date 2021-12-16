@@ -2159,9 +2159,12 @@ void TGeant3TGeo::FinishGeometry()
 //______________________________________________________________________
 void TGeant3TGeo::Init()
 {
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 22, 8)
    // Set Root default units to TGeo
    TGeoManager::LockDefaultUnits(false);
    TGeoManager::SetDefaultUnits(TGeoManager::kRootUnits);
+   TGeoManager::LockDefaultUnits(true);
+#endif
 
    TGeant3::Init();
 }
