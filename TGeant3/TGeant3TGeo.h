@@ -193,6 +193,7 @@ public:
    // Control Methods
 
    virtual void FinishGeometry();
+   virtual void Init();
 
    // methods for sensitive detectors
    virtual void SetSensitiveDetector(const TString &volumeName, TVirtualMCSensitiveDetector *sd);
