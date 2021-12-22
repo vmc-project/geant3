@@ -883,9 +883,9 @@ public:
    virtual void Gstpar(Int_t itmed, const char *param, Double_t parval);
 
    virtual void
-   SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic, Float_t *rindex);
+   SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic, Float_t *rindex, Bool_t aspline = false, Bool_t rspline = false);
    virtual void
-   SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov, Double_t *absco, Double_t *effic, Double_t *rindex);
+   SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov, Double_t *absco, Double_t *effic, Double_t *rindex, Bool_t aspline = false, Bool_t rspline = false);
 
    // functions for definition of surfaces
    // and material properties for optical physics
@@ -894,10 +894,11 @@ public:
    virtual void SetBorderSurface(const char *name, const char *vol1Name, int vol1CopyNo, const char *vol2Name,
                                  int vol2CopyNo, const char *opSurfaceName);
    virtual void SetSkinSurface(const char *name, const char *volName, const char *opSurfaceName);
-   virtual void SetMaterialProperty(Int_t itmed, const char *propertyName, Int_t np, Double_t *pp, Double_t *values);
+   virtual void SetMaterialProperty(Int_t itmed, const char *propertyName, Int_t np, Double_t *pp, Double_t *values,
+                                    Bool_t createNewKey = false, Bool_t spline = false);
    virtual void SetMaterialProperty(Int_t itmed, const char *propertyName, Double_t value);
-   virtual void
-   SetMaterialProperty(const char *surfaceName, const char *propertyName, Int_t np, Double_t *pp, Double_t *values);
+   virtual void SetMaterialProperty(const char *surfaceName, const char *propertyName, Int_t np, Double_t *pp,
+                                    Double_t *values, Bool_t createNewKey = false, Bool_t spline = false);
 
    // functions from GKINE
    virtual void Gfkine(Int_t itra, Float_t *vert, Float_t *pvert, Int_t &ipart, Int_t &nvert);
