@@ -2192,21 +2192,29 @@ void TGeant3TGeo::SetSensitiveDetector(const TString &volumeName, TVirtualMCSens
       tgeoExtension = it->second;
    }
 
-   // Set extension to TGeoVolume with given name,
-   // print error message if volume does not exist or
-   // if the volume already has an extension
-   TGeoVolume *volume = gGeoManager->FindVolumeFast(volumeName);
-   if (!volume) {
-      Error("SetSensitiveDetector", "volume %s not found. Setting was ignored.\n", volumeName.Data());
-   } else {
-      // Issue a warning if the volume already has another extension
-      if (volume->GetUserExtension()) {
-         Warning("SetSensitiveDetector", "The existing extension of volume %s will be lost.\n", volumeName.Data());
-      }
-
-      // attach the extension to the volume
-      volume->SetUserExtension(tgeoExtension);
+   //
+   // Set extension to any instance of the TGeoVolume with the specified name.
+   // Extension holds the registered SD object.
+   //
+   //   Error if the named volume is not found.
+   //   Error if we overwrite a user's extension.
+   //
+   TIter next( gGeoManager->GetListOfVolumes() );
+   
+   TGeoVolume* volume = 0;
+   int nfound = 0;
+   while ( (volume = static_cast<TGeoVolume*>( next() )) ) {
+     if ( volumeName == volume->GetName() ) {
+       TGeoRCExtension* extension = static_cast<TGeoRCExtension*>( volume->GetUserExtension() );
+       if ( extension && extension != tgeoExtension ) {
+	 Error("SetSensitiveDetector", "The existing extension of volume %s is overwritten by the SD implementation.\n", volumeName.Data());
+       }
+       volume->SetUserExtension(tgeoExtension);
+       nfound++;
+     }
    }
+   if ( 0==nfound ) Error("SetSensitiveDetector", "volume %s not found. Setting was ignored.\n", volumeName.Data());
+   
 }
 
 //_____________________________________________________________________________
