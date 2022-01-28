@@ -3663,7 +3663,8 @@ void TGeant3::Gsckov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco,
 }
 
 //______________________________________________________________________
-void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic, Float_t *rindex)
+void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic,
+                          Float_t *rindex, Bool_t /*aspline*/, Bool_t /*rspline*/)
 {
    //
    //    Stores the tables for UV photon tracking in medium ITMED
@@ -3685,7 +3686,7 @@ void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *a
 
 //______________________________________________________________________
 void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Double_t *ppckov, Double_t *absco, Double_t *effic,
-                          Double_t *rindex)
+                          Double_t *rindex, Bool_t /*aspline*/, Bool_t /*rspline*/)
 {
    //
    //    Stores the tables for UV photon tracking in medium ITMED
@@ -3742,7 +3743,7 @@ void TGeant3::SetSkinSurface(const char *name, const char * /*volName*/, const c
 
 //______________________________________________________________________
 void TGeant3::SetMaterialProperty(Int_t itmed, const char * /*propertyName*/, Int_t /*np*/, Double_t * /*pp*/,
-                                  Double_t * /*values*/)
+                                  Double_t * /*values*/, Bool_t /*createNewKey*/, Bool_t /*spline*/)
 {
    Warning("SetMaterialProperty", "%s",
            Form("Called for material ID %5d. Not applicable in Geant3 - setting is ignored.", itmed));
@@ -3757,7 +3758,7 @@ void TGeant3::SetMaterialProperty(Int_t itmed, const char * /*propertyName*/, Do
 
 //______________________________________________________________________
 void TGeant3::SetMaterialProperty(const char *surfaceName, const char * /*propertyName*/, Int_t /*np*/,
-                                  Double_t * /*pp*/, Double_t * /*values*/)
+                                  Double_t * /*pp*/, Double_t * /*values*/, Bool_t /*createNewKey*/, Bool_t /*spline*/)
 {
    Warning("SetMaterialProperty", "%s",
            Form("Called for material surface  %s. Not applicable in Geant3 - setting is ignored.", surfaceName));
