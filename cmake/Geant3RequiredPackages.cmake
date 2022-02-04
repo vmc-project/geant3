@@ -14,28 +14,14 @@
 
 #-- ROOT (required) ------------------------------------------------------------
 find_package(ROOT CONFIG COMPONENTS EG Geom REQUIRED)
+# Cannot mix VMC standalone and vmc in ROOT (deprecated)
+if(ROOT_vmc_FOUND)
+  message(FATAL_ERROR
+          "Cannot use VMC standalone with ROOT built with vmc.")
+endif()
 set(ROOT_DEPS ROOT::Core ROOT::RIO ROOT::Tree ROOT::Rint ROOT::Physics
     ROOT::MathCore ROOT::Thread ROOT::Geom ROOT::EG ROOT::EGPythia6)
 include(${ROOT_USE_FILE})
 
 #-- VMC (required) ------------------------------------------------------------
-find_package(VMC CONFIG)
-# first try VMC standalone (default)
-if(VMC_FOUND)
-  set(VMC_DEPS VMCLibrary)
-  if(NOT VMC_FIND_QUIETLY)
-    message(STATUS "Found VMC ${VMC_VERSION} in ${VMC_DIR}")
-  endif()
-else()
-  # otherwise fallback to ROOT's internal if possible (deprecated)
-  if(ROOT_vmc_FOUND)
-    message(WARNING "Using VMC built with ROOT - Deprecated")
-    set(VMC_DEPS ROOT::VMC)
-    add_definitions(-DUSE_ROOT_VMC)
-  else()
-    message(FATAL_ERROR
-            "Could not find VMC package. "
-            "VMC package is not provided with ROOT since v6.26/00. "
-            "Please, install it from https://github.com/vmc-project/vmc. ")
-  endif()
-endif()
+find_package(VMC CONFIG REQUIRED)
