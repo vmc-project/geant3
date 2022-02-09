@@ -76,10 +76,10 @@ public:
    virtual void Material(Int_t &kmat, const char *name, Double_t a, Double_t z, Double_t dens, Double_t radl,
                          Double_t absl, Double_t *buf, Int_t nwbuf);
 
-   virtual void
-   Mixture(Int_t &kmat, const char *name, Float_t *a, Float_t *z, Double_t dens, Int_t nlmat, Float_t *wmat);
-   virtual void
-   Mixture(Int_t &kmat, const char *name, Double_t *a, Double_t *z, Double_t dens, Int_t nlmat, Double_t *wmat);
+   virtual void Mixture(Int_t &kmat, const char *name, Float_t *a, Float_t *z, Double_t dens, Int_t nlmat,
+                        Float_t *wmat);
+   virtual void Mixture(Int_t &kmat, const char *name, Double_t *a, Double_t *z, Double_t dens, Int_t nlmat,
+                        Double_t *wmat);
 
    virtual void Medium(Int_t &kmed, const char *name, Int_t nmat, Int_t isvol, Int_t ifield, Double_t fieldm,
                        Double_t tmaxfd, Double_t stemax, Double_t deemax, Double_t epsil, Double_t stmin,
@@ -88,8 +88,8 @@ public:
                        Double_t tmaxfd, Double_t stemax, Double_t deemax, Double_t epsil, Double_t stmin,
                        Double_t *ubuf, Int_t nbuf);
 
-   virtual void
-   Matrix(Int_t &krot, Double_t thex, Double_t phix, Double_t they, Double_t phiy, Double_t thez, Double_t phiz);
+   virtual void Matrix(Int_t &krot, Double_t thex, Double_t phix, Double_t they, Double_t phiy, Double_t thez,
+                       Double_t phiz);
 
    virtual void SetRootGeometry();
 
@@ -130,8 +130,8 @@ public:
    virtual void Gsdvs(const char *name, const char *mother, Float_t step, Int_t iaxis, Int_t numed);
    virtual void Gsdvs2(const char *name, const char *mother, Float_t step, Int_t iaxis, Float_t c0, Int_t numed);
    virtual void Gsdvt(const char *name, const char *mother, Double_t step, Int_t iaxis, Int_t numed, Int_t ndvmx);
-   virtual void
-   Gsdvt2(const char *name, const char *mother, Double_t step, Int_t iaxis, Double_t c0, Int_t numed, Int_t ndvmx);
+   virtual void Gsdvt2(const char *name, const char *mother, Double_t step, Int_t iaxis, Double_t c0, Int_t numed,
+                       Int_t ndvmx);
    virtual void Gsord(const char *name, Int_t iax);
    virtual void Gspos(const char *name, Int_t nr, const char *mother, Double_t x, Double_t y, Double_t z, Int_t irot,
                       const char *konly = "ONLY");
@@ -139,8 +139,8 @@ public:
                        const char *konly, Float_t *upar, Int_t np);
    virtual void Gsposp(const char *name, Int_t nr, const char *mother, Double_t x, Double_t y, Double_t z, Int_t irot,
                        const char *konly, Double_t *upar, Int_t np);
-   virtual void
-   Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2, Float_t phi2, Float_t theta3, Float_t phi3);
+   virtual void Gsrotm(Int_t nmat, Float_t theta1, Float_t phi1, Float_t theta2, Float_t phi2, Float_t theta3,
+                       Float_t phi3);
    virtual void Gprotm(Int_t nmat = 0);
    virtual Int_t Gsvolu(const char *name, const char *shape, Int_t nmed, Float_t *upar, Int_t np);
    virtual Int_t Gsvolu(const char *name, const char *shape, Int_t nmed, Double_t *upar, Int_t np);

@@ -1099,17 +1099,15 @@ namespace {
 //_____________________________________________________________________________
 void PrintVersion()
 {
-  /// Prints the  version banner
+   /// Prints the  version banner
 
-  std::cout
-    << std::endl
-    << "============================================================="
-    << std::endl << " Geant3 Virtual Monte Carlo " << std::endl << " Version "
-    << GEANT3_VMC_RELEASE << " ( " << GEANT3_VMC_RELEASE_DATE << " )"
-    << std::endl << " WWW : https://vmc-project.github.io/"
-    << std::endl
-    << "============================================================="
-    << std::endl << std::endl;
+   std::cout << std::endl
+             << "=============================================================" << std::endl
+             << " Geant3 Virtual Monte Carlo " << std::endl
+             << " Version " << GEANT3_VMC_RELEASE << " ( " << GEANT3_VMC_RELEASE_DATE << " )" << std::endl
+             << " WWW : https://vmc-project.github.io/" << std::endl
+             << "=============================================================" << std::endl
+             << std::endl;
 }
 
 } // namespace
@@ -3663,8 +3661,8 @@ void TGeant3::Gsckov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco,
 }
 
 //______________________________________________________________________
-void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic,
-                          Float_t *rindex, Bool_t /*aspline*/, Bool_t /*rspline*/)
+void TGeant3::SetCerenkov(Int_t itmed, Int_t npckov, Float_t *ppckov, Float_t *absco, Float_t *effic, Float_t *rindex,
+                          Bool_t /*aspline*/, Bool_t /*rspline*/)
 {
    //
    //    Stores the tables for UV photon tracking in medium ITMED
@@ -6752,7 +6750,6 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
    //              primary. -999 means no multi-run
    //
 
-
    // Obtain stack and track pointers
    TVirtualMCStack *stack = TVirtualMC::GetMC()->GetStack();
    TParticle *track = stack->PopNextTrack(mtrack);
@@ -6760,7 +6757,7 @@ extern "C" void type_of_call rxgtrak(Int_t &mtrack, Int_t &ipart, Float_t *pmom,
 
    // This is -999 for single run and 1 for multi run. In the latter case it will be set to 0
    // if it is not a primary
-   isPrima = mcManagerStack ? 1 : -999 ;
+   isPrima = mcManagerStack ? 1 : -999;
 
    // Need to cache that info here because gtrak/gtreveroot.F decides on whether to call
    // FinishPrimary routines after popping the next track. Nothing would be done before
