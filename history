@@ -1,6 +1,21 @@
 Geant3 tags (history):
 ======================
 
+10/02/2022
+  v4-0:
+  - Update for changes in in TVirtualMC methods for setting optical
+    material properties  (PR #35)
+  - Removed fallback to ROOT's internal VMC and added fatal error
+    if VMC is found in ROOT (PR #36)
+  - Patch mutiple volumes to sd (PR #34):
+    Sensitive detectors can be registered to multiple volumes with the same name.
+  - Fix compilation on ARM64 linux (a Linux VM on a MacBook with
+    the Apple M1 processor (solution proposed at Issue #32)
+  - Make sure that TGeo is using the old Root units (PR #31)
+  - Fixed linking on macosx12 (PR #30)
+
+  Tested with VMC 2.0 and Root 6.24/06.
+
 03/12/2021:
   v3-9:
   - Fixes in Gcalor
