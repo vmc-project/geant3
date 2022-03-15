@@ -38,21 +38,6 @@ include_directories(${ROOT_INCLUDE_DIRS})
 # VMC (required)
 include_directories(${VMC_INCLUDE_DIRS})
 
-# MTRoot (optional)
-if (VMC_WITH_MTRoot)
-  # MTRoot
-  if (MTRoot_FOUND)
-     # build outside Geant4VMC
-    include_directories(${MTRoot_INCLUDE_DIRS})
-    set(VMCPackages_LIBRARIES ${MTRoot_LIBRARIES} ${VMCPackages_LIBRARIES})
-  else()
-     # build inside Geant4VMC
-     # includes are already defined
-     include_directories(${Geant4VMC_SOURCE_DIR}/mtroot/include)
-     set(VMCPackages_LIBRARIES ${VMCPackages_LIBRARIES} mtroot)
-  endif(MTRoot_FOUND)
-endif(VMC_WITH_MTRoot)
-
 # Finally add Root libraries
 set(VMCPackages_LIBRARIES ${VMCPackages_LIBRARIES} ${VMC_LIBRARIES})
 
