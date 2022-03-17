@@ -1,6 +1,12 @@
 Geant3 tags (history):
 ======================
 
+17/02/2022
+  v4-1:
+  - Updated cmake for removal of MTRoot and removal of ow UseGeant4.cmake
+
+  Tested with VMC 2.0 and Root 6.24/06 and 6.26/00
+
 10/02/2022
   v4-0:
   - Update for changes in in TVirtualMC methods for setting optical
