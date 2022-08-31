@@ -9,15 +9,6 @@
 //  C++ interface to Geant3 basic routines    //
 ////////////////////////////////////////////////
 
-#define WITHG3
-#ifdef WITHROOT
-#undef WITHG3
-#endif
-#ifdef WITHBOTH
-#undef WITHG3
-#undef WITHROOT
-#endif
-
 #include "TVirtualMC.h"
 #include "TMCProcess.h"
 #include "TMCParticleType.h"
