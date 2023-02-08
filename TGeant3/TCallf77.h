@@ -8,7 +8,7 @@
 #ifndef WIN32
 #define type_of_call
 #define DEFCHARD const char *
-#define DEFCHARL , const int
+#define DEFCHARL , size_t
 #define PASSCHARD(string) string
 #define PASSCHARL(string) , strlen(string)
 #else
