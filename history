@@ -1,6 +1,20 @@
 Geant3 tags (history):
 ======================
 
+09/02/2023
+  v4-2:
+  - Fixed a segmentation violation observed on MacOSX with M1/M2 processors
+    with AliRoot:
+    - TCallf77.h: Use size_t corresponding to the return type of strlen (#4 0)
+    (thanks to P. Hristov, CERN)
+  - Removed unused definitions WITHG3, WITHROOT, WITHBOTH
+  - Updated package description in README.md:
+    - Removed obsolete information
+    - Updated links to documentation
+    - Moved examples section in examples/README.md
+
+  Tested with VMC 2.0 and Root 6.24/10
+
 17/02/2022
   v4-1:
   - Updated cmake for removal of MTRoot and removal of ow UseGeant4.cmake
