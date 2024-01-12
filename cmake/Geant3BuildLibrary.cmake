@@ -91,6 +91,9 @@ endif()
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndm.F)
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gtrak/grndmq.F)
 list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/erdecks/eustep.F)
+list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gkine/gludky.F)
+list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gkine/glund.F)
+list(REMOVE_ITEM fortran_sources ${PROJECT_SOURCE_DIR}/gkine/glundi.F)
 #message(STATUS "fortran_sources ${fortran_sources}")
 
 # C sources
