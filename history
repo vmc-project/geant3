@@ -1,6 +1,16 @@
 Geant3 tags (history):
 ======================
 
+15/01/2024
+  v4-3:
+  - Removed dependencies on pythia6:
+    - Excluded gludky.F, glund.F, glundi.F from compilation
+    - Removed ROOT::EGPythia6 from ROOT_DEPS in cmake configuration
+    The pythia6 interface is deprecated in ROOT since version 6.30
+    (see https://root.cern/doc/v630/release-notes.html)
+
+  Tested with VMC 2.0 and Root 6.30/02
+
 09/02/2023
   v4-2:
   - Fixed a segmentation violation observed on MacOSX with M1/M2 processors
