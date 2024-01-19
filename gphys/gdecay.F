@@ -1,7 +1,10 @@
 *
-* $Id$
+* $Id: gdecay.F,v 1.2 2003/11/28 11:23:56 brun Exp $
 *
 * $Log: gdecay.F,v $
+* Revision 1.2  2003/11/28 11:23:56  brun
+* New version of geant321 with all geant3 routines renamed from G to G3
+*
 * Revision 1.1.1.1  2002/07/24 15:56:25  rdm
 * initial import into CVS
 *
@@ -148,8 +151,38 @@ C--  (via integral-transformation of Lorentz-distribution)
             GO TO 99
  41         DMASS = RMASS
          END IF
-         CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+
+
+         IF (IPART.EQ.7) THEN      ! pi0
+           IF (MXX.EQ.30201) THEN  ! pi0  -> gamma e+e-  (=30201)
+             CALL GDALET(DMASS,XM(1),XM(2),XM(3),PCM,1)
+           ELSE                    ! phase space
+             CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+           ENDIF
+         ENDIF
+
+         IF (IPART.EQ.17) THEN     ! eta
+           IF(MXX.EQ.30201) THEN   ! eta -> gamma e+e-  (=30201)
+             CALL GDALET(DMASS,XM(1),XM(2),XM(3),PCM,2)
+           ELSE                    ! phase space
+             CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+           ENDIF
+         ENDIF
+
+         IF (IPART.EQ.33) THEN     ! omega
+           IF(MXX.EQ.30207) THEN   ! omega -> pi0 e+e-
+             CALL GDALET(DMASS,XM(1),XM(2),XM(3),PCM,3)
+           ELSE                    ! phase space
+             CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+           ENDIF
+         ENDIF
+
+         IF (IPART.NE.7.AND.IPART.NE.17.AND.IPART.NE.33) THEN ! other particle
+           CALL G3DECA3(DMASS,XM(1),XM(2),XM(3),PCM)
+         ENDIF
+
       ENDIF
+
 C
 C             LORENTZ boost into LAB system defined along parent vector
 C             followed by rotation back into GEANT system.
