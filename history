@@ -1,6 +1,15 @@
 Geant3 tags (history):
 ======================
 
+12/09/2024
+  v4-4:
+  - Use explicit EQUIVALENCE to fix the issues on MacOSX Sonoma (PR #44)
+    It seems the implicit alignment (EQUIVALENCE in terms of Fortran) of common blocks with the same name and different content is removed in the linker of MacOS Sonoma. Since /COMMON/GCBANK/ that was initially created in gcinit.F with a dummy array to allocate the memory, and then redefined in geant321/gcbank.inc, only the last was seen at execution time and we got overlapping ZEBRA banks.
+    (thanks to P. Hristov, CERN)
+  - Removed dependency on pythia6 in FindMCPackages.cmake (#45)
+
+  Tested with VMC 2.0 and Root 6.30/01 (alice)
+
 15/01/2024
   v4-3:
   - Removed dependencies on pythia6:
