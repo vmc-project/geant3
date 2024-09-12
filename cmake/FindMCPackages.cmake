@@ -78,8 +78,6 @@ endif()
 # Geant3
 if(VMC_WITH_Geant3)
   find_package(Geant3 REQUIRED)
-  #PYTHIA6
-  find_package(Pythia6 REQUIRED)
   # If all required packages above were found we can update MCPackages_FOUND
   if(NOT VMC_WITH_Multi)
     set(MCPackages_FOUND TRUE)
