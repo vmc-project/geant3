@@ -24,7 +24,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 #--- Define CMake requirements -------------------------------------------------
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 #--- Prepend our own CMake Modules to the search path --------------------------
 set(CMAKE_MODULE_PATH

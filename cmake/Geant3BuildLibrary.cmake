@@ -11,7 +11,7 @@
 # I. Hrivnacova, 13/06/2014
 
 #---CMake required version -----------------------------------------------------
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 #-------------------------------------------------------------------------------
 # Define installed names
