@@ -27,3 +27,4 @@ include(${ROOT_USE_FILE})
 
 #-- VMC (required) ------------------------------------------------------------
 find_package(VMC CONFIG REQUIRED)
+set(VMC_DEPS ${VMC_LIBRARIES})
