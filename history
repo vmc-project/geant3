@@ -1,6 +1,15 @@
 Geant3 tags (history):
 ======================
 
+06/01/2026
+  v4-5:
+  - Allow building with CMake 4 (PR #46)
+    Minimum requirement on CMake 2.8.x has been deprecated by the new CMake.
+  - Adding VMC_DEPS setting in Geant3RequiredPackages (PR #47)
+    This fixes linking error (missing symbols from VMC).
+
+  Tested with VMC 2.1 and Root 6.36/06
+
 12/09/2024
   v4-4:
   - Use explicit EQUIVALENCE to fix the issues on MacOSX Sonoma (PR #44)
